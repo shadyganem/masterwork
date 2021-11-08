@@ -19,12 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CApp.h" />
-    <ClInclude Include="CMainFrame.h" />
+    <ClInclude Include="mwApp.h" />
+    <ClInclude Include="mwMainFrame.h" />
+    <ClInclude Include="mwStatusBar.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CApp.cpp" />
-    <ClCompile Include="CMainFrame.cpp" />
+    <ClCompile Include="mwApp.cpp" />
+    <ClCompile Include="mwMainFrame.cpp" />
+    <ClCompile Include="mwStatusBar.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

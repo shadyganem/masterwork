@@ -15,18 +15,24 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CApp.h">
+    <ClInclude Include="mwStatusBar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CMainFrame.h">
+    <ClInclude Include="mwMainFrame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mwApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CApp.cpp">
+    <ClCompile Include="mwStatusBar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CMainFrame.cpp">
+    <ClCompile Include="mwMainFrame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mwApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
