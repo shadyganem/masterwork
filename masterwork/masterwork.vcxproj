@@ -20,11 +20,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mwApp.h" />
+    <ClInclude Include="mwBottomPanel.h" />
     <ClInclude Include="mwMainFrame.h" />
+    <ClInclude Include="mwSidePanel.h" />
+    <ClInclude Include="mwWorkPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="mwApp.cpp" />
+    <ClCompile Include="mwBottomPanel.cpp" />
     <ClCompile Include="mwMainFrame.cpp" />
+    <ClCompile Include="mwSidePanel.cpp" />
+    <ClCompile Include="mwWorkPanel.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
