@@ -21,12 +21,10 @@
   <ItemGroup>
     <ClInclude Include="mwApp.h" />
     <ClInclude Include="mwMainFrame.h" />
-    <ClInclude Include="mwStatusBar.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="mwApp.cpp" />
     <ClCompile Include="mwMainFrame.cpp" />
-    <ClCompile Include="mwStatusBar.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

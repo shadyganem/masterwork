@@ -12,17 +12,15 @@ mwMainFrame::mwMainFrame(const wxString& title, const wxPoint& pos, const wxSize
 	m_ver_sizer = new wxBoxSizer(wxVERTICAL);
 
 	// initialzing info controls
+	m_status_bar = CreateStatusBar();
+	m_status_bar->SetBackgroundColour(m_info_bg);
+
+	InitMenuBar();
+
 	m_info_bar = new wxInfoBar(this);
 	m_info_bar->SetBackgroundColour(wxColor(100, 200, 400));
 	m_ver_sizer->Add(m_info_bar, wxSizerFlags().Expand());
 	ShowInfoBarMessage("Welcome to MasterWork");
-	
-	/*
-	mwStatusBar* m_status_bar = new mwStatusBar(this, wxID_ANY, wxDefaultPosition, wxSize(200, 100));
-	m_status_bar->SetBackgroundColour(wxColor(100, 100, 200));
-	wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
-	sizer->Add(m_status_bar, 1, wxEXPAND);
-	*/
 	this->SetSizer(m_ver_sizer);
 }
 
@@ -30,7 +28,22 @@ mwMainFrame::~mwMainFrame()
 {
 }
 
+void mwMainFrame::InitMenuBar()
+{
+	m_menu_bar = new wxMenuBar();
+	this->SetMenuBar(m_menu_bar);
+	wxMenu* menu_file = new wxMenu();
+	menu_file->Append(10001, "New");
+	menu_file->Append(10004, "Exit");
+	m_menu_bar->Append(menu_file, "File");
+
+}
+
 void mwMainFrame::ShowInfoBarMessage(const wxString& msg)
 {
 	m_info_bar->ShowMessage(msg);
+}
+
+void mwMainFrame::ShowStutusBarMessage(const wxString& msg, wxColor& bg_color)
+{
 }

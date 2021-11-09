@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="mwStatusBar.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="mwMainFrame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -26,9 +23,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="mwStatusBar.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="mwMainFrame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
