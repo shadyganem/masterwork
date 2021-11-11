@@ -11,4 +11,8 @@ public:
                   long style = wxTAB_TRAVERSAL | wxNO_BORDER,
                   const wxString& name = wxASCII_STR(wxPanelNameStr));
 	~mwBottomPanel();
+
+private:
+    // any class wishing to process wxWidgets events must use this macro
+    DECLARE_EVENT_TABLE()
 };

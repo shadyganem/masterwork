@@ -30,6 +30,9 @@
     <ClInclude Include="mwWorkPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="mwDefines.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="mwMainFrame.cpp">

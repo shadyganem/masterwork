@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="mwApp.h" />
     <ClInclude Include="mwBottomPanel.h" />
+    <ClInclude Include="mwDefines.h" />
     <ClInclude Include="mwMainFrame.h" />
     <ClInclude Include="mwSidePanel.h" />
     <ClInclude Include="mwWorkPanel.h" />

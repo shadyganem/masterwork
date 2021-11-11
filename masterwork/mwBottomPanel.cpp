@@ -1,5 +1,11 @@
 #include "mwBottomPanel.h"
 
+
+BEGIN_EVENT_TABLE(mwBottomPanel, wxPanel)
+	
+END_EVENT_TABLE()
+
+
 mwBottomPanel::mwBottomPanel(wxWindow* parent, 
 	                         wxWindowID winid, 
 	                         const wxPoint& pos, 
@@ -7,6 +13,8 @@ mwBottomPanel::mwBottomPanel(wxWindow* parent,
 	                         long style, 
 	                         const wxString& name) : wxPanel(parent, winid, pos, size, style, name)
 {
+
+
 }
 
 mwBottomPanel::~mwBottomPanel()
