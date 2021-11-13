@@ -1,34 +1,27 @@
 #include "mwTopPanel.h"
 
 BEGIN_EVENT_TABLE(mwTopPanel, wxPanel)
-	EVT_SEARCH(TOP_PANEL_SERACH_ID, mwTopPanel::OnTopPanelSearch)
+	EVT_BUTTON(TOP_PANEL_NEW_TASK_ID, mwTopPanel::OnNewTaskButton)
 END_EVENT_TABLE()
 
 mwTopPanel::mwTopPanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, const wxString& name)
 	: wxPanel(parent, winid, pos, size, style, name)
 {
-	wxSizer* top_panel_sizer = new wxBoxSizer(wxVERTICAL);
-	m_search_ctrl = new wxSearchCtrl(this, TOP_PANEL_SERACH_ID);
-	top_panel_sizer->Add(m_search_ctrl, 1, wxALIGN_RIGHT);
-	this->SetSizer(top_panel_sizer);
+	wxSizer* buttons_sizer = new wxBoxSizer(wxHORIZONTAL);
+	wxSizer* top_panel_sizer = new wxBoxSizer(wxHORIZONTAL);
+
+
+	m_new_task = new wxButton(this, TOP_PANEL_NEW_TASK_ID, "New Task", wxDefaultPosition, wxDefaultSize);
+	buttons_sizer->Add(m_new_task, 0, wxRIGHT, 3);
+	top_panel_sizer->Add(buttons_sizer);
+	SetSizer(top_panel_sizer);
 }
 
 mwTopPanel::~mwTopPanel()
 {
 }
 
-wxString mwTopPanel::GetSearchText()
-{
-	return m_search_ctrl->GetLineText(0);
-}
-
-void mwTopPanel::ClearSearchText()
-{
-	m_search_ctrl->Clear();
-}
-
-void mwTopPanel::OnTopPanelSearch(wxCommandEvent& event)
+void mwTopPanel::OnNewTaskButton(wxCommandEvent& event)
 {
 	event.Skip();
 }
-

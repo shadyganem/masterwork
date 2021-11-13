@@ -14,18 +14,16 @@ public:
         const wxString& name = wxASCII_STR(wxPanelNameStr));
     ~mwTopPanel();
 
-public:
-    wxString GetSearchText();
-    void ClearSearchText();
 private:
     // any class wishing to process wxWidgets events must use this macro
     DECLARE_EVENT_TABLE()
 
 
 private:
-    void OnTopPanelSearch(wxCommandEvent& event);
+    void OnNewTaskButton(wxCommandEvent& event);
 
 
 private:
-    wxSearchCtrl* m_search_ctrl;
+    wxButton* m_new_task;
+
 };

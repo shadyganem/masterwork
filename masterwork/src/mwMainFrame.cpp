@@ -4,7 +4,8 @@ BEGIN_EVENT_TABLE(mwMainFrame, wxFrame)
 	EVT_MENU(MENU_FILE_EXIT_ID, mwMainFrame::OnExit)
 	EVT_MENU(MENU_WINDOW_PROPERTIES_ID, mwMainFrame::OnProperties)
 	EVT_TIMER(MAIN_1SEC_TIMER_ID, mwMainFrame::On1SecTimer)
-	EVT_SEARCH(TOP_PANEL_SERACH_ID, mwMainFrame::OnTopPanelSearch)
+	EVT_SEARCH(MAIN_SEARCH_ID, mwMainFrame::OnSearch)
+	EVT_BUTTON(TOP_PANEL_NEW_TASK_ID, mwMainFrame::OnNewTaskButton)
 END_EVENT_TABLE()
 
 mwMainFrame::mwMainFrame(const wxString& title, const wxPoint& pos, const wxSize& size) : wxFrame(nullptr, wxID_ANY, title, pos, size)
@@ -13,7 +14,7 @@ mwMainFrame::mwMainFrame(const wxString& title, const wxPoint& pos, const wxSize
 	this->SetMinSize(wxSize(576, 432));
 	this->SetBackgroundColour(wxColor(30, 30, 30));
 	// first layer components
-	m_main_ver_sizer = new wxBoxSizer(wxVERTICAL);
+	wxSizer* m_main_ver_sizer = new wxBoxSizer(wxVERTICAL);
 	this->SetSizer(m_main_ver_sizer);
 	m_info_bar_timer_couter = 0;
 	m_10_sec_check = 0;
@@ -30,10 +31,13 @@ mwMainFrame::mwMainFrame(const wxString& title, const wxPoint& pos, const wxSize
 	wxSizer* main_panel_ver_sizer1 = new wxBoxSizer(wxVERTICAL);
 
 	wxSizer* main_panel_hor_sizer = new wxBoxSizer(wxHORIZONTAL);
+	wxSizer* main_panel_hor_sizer2 = new wxBoxSizer(wxHORIZONTAL);
 	wxSizer* main_panel_ver_sizer = new wxBoxSizer(wxVERTICAL);
-	m_main_panel->SetSizer(main_panel_ver_sizer1);
 
-	m_top_panel = new mwTopPanel(m_main_panel, wxID_ANY, wxDefaultPosition, wxSize(40, 21));
+	m_search_ctrl = new wxSearchCtrl(m_main_panel, MAIN_SEARCH_ID, wxEmptyString, wxDefaultPosition, wxSize(200, 21));
+	m_top_panel = new mwTopPanel(m_main_panel, wxID_ANY, wxDefaultPosition, wxSize(600, 21));
+	main_panel_hor_sizer2->Add(m_search_ctrl, 0, wxEXPAND | wxRIGHT, 5);
+	main_panel_hor_sizer2->Add(m_top_panel, 1, wxEXPAND, 0);
 	m_top_panel->SetBackgroundColour(m_side_panel_bg);
 	m_side_panel = new mwSidePanel(m_main_panel, wxID_ANY, wxDefaultPosition, wxSize(200, 200));
 	m_side_panel->SetBackgroundColour(m_side_panel_bg);
@@ -43,12 +47,14 @@ mwMainFrame::mwMainFrame(const wxString& title, const wxPoint& pos, const wxSize
 	m_work_panel->SetBackgroundColour(m_side_panel_bg);
 
 	// Order of addition matters
-	main_panel_ver_sizer1->Add(m_top_panel, 0, wxEXPAND | wxBOTTOM, 5);
+	main_panel_ver_sizer1->Add(main_panel_hor_sizer2, 0, wxBOTTOM, 5);
 	main_panel_ver_sizer1->Add(main_panel_hor_sizer, 1, wxEXPAND);
-	main_panel_hor_sizer->Add(m_side_panel, 1, wxEXPAND | wxRIGHT, 5);
+	main_panel_hor_sizer->Add(m_side_panel, 0, wxEXPAND | wxRIGHT, 5);
 	main_panel_hor_sizer->Add(main_panel_ver_sizer, 8, wxEXPAND);
-	main_panel_ver_sizer->Add(m_work_panel, 2, wxEXPAND | wxBOTTOM, 5);
+	main_panel_ver_sizer->Add(m_work_panel, 3, wxEXPAND | wxBOTTOM, 5);
 	main_panel_ver_sizer->Add(m_bottom_panel, 1, wxEXPAND);
+	m_main_panel->SetSizer(main_panel_ver_sizer1);
+
 	m_1sec_timer->Start(1000);
 }
 
@@ -82,9 +88,9 @@ void mwMainFrame::InitStatusBar()
 void mwMainFrame::InitInfoBar()
 {
 	m_info_bar = new wxInfoBar(this);
-	m_info_bar->SetBackgroundColour(m_msg_bg);
+	m_info_bar->SetBackgroundColour(m_err_bg);
 	m_info_bar->SetForegroundColour(m_white_fg);
-	ShowInfoBarMessage("Welcome to MasterWork");
+	ShowInfoBarInfoMessage("Welcome to MasterWork");
 }
 
 void mwMainFrame::InitMainPanel()
@@ -93,20 +99,22 @@ void mwMainFrame::InitMainPanel()
 	m_main_panel->SetBackgroundColour(wxColor(30, 30, 30));
 }
 
+void mwMainFrame::InitColorScheme()
+{
+	m_info_bg = wxColor(0, 122, 204);
+	m_err_bg = wxColor(134, 27, 45);
+	m_white_fg = wxColor(255, 255, 255);
+	m_tool_bar_bg = wxColor(61, 61, 61);
+	m_side_panel_bg = wxColor(37, 37, 38);
+}
+
 void mwMainFrame::Refresh()
 {
 }
 
-void mwMainFrame::ShowInfoBarMessage(const wxString& msg)
-{
-	m_info_bar->Dismiss();
-	m_info_bar->SetBackgroundColour(m_msg_bg);
-	m_info_bar->Show();
-	m_info_bar->ShowMessage(msg);
-}
-
 void mwMainFrame::ShowInfoBarInfoMessage(const wxString& msg)
 {
+	m_info_bar_timer_couter = 0;
 	m_info_bar->Dismiss();
 	m_info_bar->SetBackgroundColour(m_info_bg);
 	m_info_bar->Show();
@@ -115,8 +123,9 @@ void mwMainFrame::ShowInfoBarInfoMessage(const wxString& msg)
 
 void mwMainFrame::ShowInfoBarErrorMessage(const wxString& msg)
 {
+	m_info_bar_timer_couter = 0;
 	m_info_bar->Dismiss();
-	m_info_bar->SetBackgroundColour(m_info_bg);
+	m_info_bar->SetBackgroundColour(m_err_bg);
 	m_info_bar->Show();
 	m_info_bar->ShowMessage(msg);
 }
@@ -143,9 +152,9 @@ void mwMainFrame::OnProperties(wxCommandEvent& event)
 	ShowStutusBarMessage("Propeties");
 }
 
+// called every 1 second
 void mwMainFrame::On1SecTimer(wxTimerEvent& event)
 {
-	// This method is called every 1 second
 	if (m_info_bar_timer_couter == 2)
 	{
 		m_info_bar->Dismiss();
@@ -158,7 +167,7 @@ void mwMainFrame::On1SecTimer(wxTimerEvent& event)
 
 	if (m_10_sec_check == 10)
 	{
-		ShowInfoBarMessage("MasterWork! - By Shady Ganem");
+		ShowInfoBarErrorMessage("MasterWork! - By Shady Ganem");
 		m_10_sec_check = 0;
 	}
 	else
@@ -170,9 +179,14 @@ void mwMainFrame::On1SecTimer(wxTimerEvent& event)
 	ShowStutusBarMessage("Ready - MasterWork");
 }
 
-void mwMainFrame::OnTopPanelSearch(wxCommandEvent& event)
+void mwMainFrame::OnNewTaskButton(wxCommandEvent& event)
+{
+	ShowInfoBarInfoMessage("New Task!");
+}
+
+void mwMainFrame::OnSearch(wxCommandEvent& event)
 {
 
-	ShowInfoBarInfoMessage("Searching: " + m_top_panel->GetSearchText());
-	m_top_panel->ClearSearchText();
+	ShowInfoBarInfoMessage("Searching: " + m_search_ctrl->GetLineText(0));
+	m_search_ctrl->Clear();
 }

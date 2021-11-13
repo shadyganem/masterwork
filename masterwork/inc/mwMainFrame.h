@@ -9,6 +9,7 @@
 #include "mwTopPanel.h"
 #include "mwDefines.h"
 #include "wx/event.h"
+#include "wx/srchctrl.h"
 
 
 class mwMainFrame : public wxFrame
@@ -21,9 +22,9 @@ private:
 	void InitStatusBar();
 	void InitInfoBar();
 	void InitMainPanel();
+	void InitColorScheme();
 	void Refresh();
 	// private method
-	void ShowInfoBarMessage(const wxString& msg);
 	void ShowInfoBarInfoMessage(const wxString& msg);
 	void ShowInfoBarErrorMessage(const wxString& msg);
 	void ShowStutusBarMessage(const wxString& msg);
@@ -33,8 +34,9 @@ private:
 	wxInfoBar* m_info_bar;
 	wxStatusBar* m_status_bar;
 	wxMenuBar* m_menu_bar;
-	wxToolBar* m_tool_bar;
+	//wxToolBar* m_tool_bar;
 	wxStaticText* m_status_bar_text;
+	wxSearchCtrl* m_search_ctrl;
 	// initialzing panels
 	mwTopPanel* m_top_panel;
 	mwSidePanel* m_side_panel;
@@ -44,9 +46,8 @@ private:
 
 	// panels
 	wxPanel* m_main_panel;
-	wxSizer* m_main_ver_sizer;
 	wxColor m_info_bg = wxColor(0, 122, 204);
-	wxColor m_msg_bg = wxColor(134, 27, 45);
+	wxColor m_err_bg = wxColor(134, 27, 45);
 	wxColor m_white_fg = wxColor(255, 255, 255);
 	wxColor m_tool_bar_bg = wxColor(61, 61, 61);
 	wxColor m_side_panel_bg = wxColor(37, 37, 38);
@@ -57,7 +58,9 @@ private:
 	void OnExit(wxCommandEvent& event);
 	void OnProperties(wxCommandEvent& event);
 	void On1SecTimer(wxTimerEvent& event);
-	void OnTopPanelSearch(wxCommandEvent& event);
+	void OnNewTaskButton(wxCommandEvent& event);
+	void OnSearch(wxCommandEvent& event);
+
 
 private:
 	int m_info_bar_timer_couter;
