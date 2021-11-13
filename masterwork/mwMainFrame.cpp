@@ -8,6 +8,7 @@ END_EVENT_TABLE()
 
 mwMainFrame::mwMainFrame(const wxString& title, const wxPoint& pos, const wxSize& size) : wxFrame(nullptr, wxID_ANY, title, pos, size)
 {
+	this->SetBackgroundColour(wxColor(30, 30, 30));
 	// first layer components
 	m_main_ver_sizer = new wxBoxSizer(wxVERTICAL);
 	this->SetSizer(m_main_ver_sizer);
