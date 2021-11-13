@@ -15,40 +15,49 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="mwMainFrame.h">
+    <ClInclude Include="inc\mwMainFrame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mwApp.h">
+    <ClInclude Include="inc\mwApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mwSidePanel.h">
+    <ClInclude Include="inc\mwSidePanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mwBottomPanel.h">
+    <ClInclude Include="inc\mwBottomPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mwWorkPanel.h">
+    <ClInclude Include="inc\mwWorkPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mwDefines.h">
+    <ClInclude Include="inc\mwDefines.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\mwManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="mwMainFrame.cpp">
+    <ClCompile Include="src\mwMainFrame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mwApp.cpp">
+    <ClCompile Include="src\mwApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mwSidePanel.cpp">
+    <ClCompile Include="src\mwSidePanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mwBottomPanel.cpp">
+    <ClCompile Include="src\mwBottomPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mwWorkPanel.cpp">
+    <ClCompile Include="src\mwWorkPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\mwManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="resources\style\style.xml" />
   </ItemGroup>
 </Project>

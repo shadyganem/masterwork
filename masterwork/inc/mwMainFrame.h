@@ -13,6 +13,7 @@ class mwMainFrame : public wxFrame
 {
 public:
 	mwMainFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
+	mwMainFrame();
 	~mwMainFrame();
 private:
 	void InitMenuBar();
@@ -59,5 +60,6 @@ private:
 private:
 	int m_info_bar_timer_couter;
 	int m_10_sec_check;
+	bool m_ready_msg;
 };
 

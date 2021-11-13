@@ -14,6 +14,7 @@ mwMainFrame::mwMainFrame(const wxString& title, const wxPoint& pos, const wxSize
 	this->SetSizer(m_main_ver_sizer);
 	m_info_bar_timer_couter = 0;
 	m_10_sec_check = 0;
+	m_ready_msg;
 	m_1sec_timer = new wxTimer(this, MAIN_1SEC_Timer_ID);
 	InitMenuBar();
 	InitStatusBar();
@@ -35,12 +36,16 @@ mwMainFrame::mwMainFrame(const wxString& title, const wxPoint& pos, const wxSize
 	m_work_panel->SetBackgroundColour(m_side_panel_bg);
 
 	wxSizer* m_main_panel_ver_sizer = new wxBoxSizer(wxVERTICAL);
-	m_main_panel_hor_sizer->Add(m_side_panel,1, wxEXPAND | wxRIGHT, 5);
+	m_main_panel_hor_sizer->Add(m_side_panel, 1, wxEXPAND | wxRIGHT, 5);
 	m_main_panel_hor_sizer->Add(m_main_panel_ver_sizer, 8, wxEXPAND);
 	m_main_panel_ver_sizer->Add(m_work_panel, 2, wxEXPAND | wxBOTTOM, 5);
 	m_main_panel_ver_sizer->Add(m_bottom_panel, 1, wxEXPAND);
 
 	m_1sec_timer->Start(1000);
+}
+
+mwMainFrame::mwMainFrame()
+{
 }
 
 mwMainFrame::~mwMainFrame()
@@ -162,6 +167,7 @@ void mwMainFrame::On1SecTimer(wxTimerEvent& event)
 	{ 
 		m_10_sec_check++;
 	}
-		
+	
+
 	ShowStutusBarMessage("MasterWork - By Shady Ganem");
 }
