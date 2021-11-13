@@ -26,8 +26,10 @@
     <ClInclude Include="inc\mwSidePanel.h" />
     <ClInclude Include="inc\mwWorkPanel.h" />
     <ClInclude Include="inc\mwManager.h" />
+    <ClInclude Include="inc\mwTopPanel.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\mwTopPanel.cpp" />
     <ClCompile Include="src\mwManager.cpp" />
     <ClCompile Include="src\mwApp.cpp" />
     <ClCompile Include="src\mwBottomPanel.cpp" />

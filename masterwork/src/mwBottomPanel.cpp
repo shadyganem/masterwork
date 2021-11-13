@@ -11,7 +11,8 @@ mwBottomPanel::mwBottomPanel(wxWindow* parent,
 	                         const wxPoint& pos, 
 	                         const wxSize& size, 
 	                         long style, 
-	                         const wxString& name) : wxPanel(parent, winid, pos, size, style, name)
+	                         const wxString& name) 
+	: wxPanel(parent, winid, pos, size, style, name)
 {
 
 

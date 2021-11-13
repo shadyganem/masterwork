@@ -3,11 +3,14 @@
 BEGIN_EVENT_TABLE(mwMainFrame, wxFrame)
 	EVT_MENU(MENU_FILE_EXIT_ID, mwMainFrame::OnExit)
 	EVT_MENU(MENU_WINDOW_PROPERTIES_ID, mwMainFrame::OnProperties)
-	EVT_TIMER(MAIN_1SEC_Timer_ID, mwMainFrame::On1SecTimer)
+	EVT_TIMER(MAIN_1SEC_TIMER_ID, mwMainFrame::On1SecTimer)
+	EVT_SEARCH(TOP_PANEL_SERACH_ID, mwMainFrame::OnTopPanelSearch)
 END_EVENT_TABLE()
 
 mwMainFrame::mwMainFrame(const wxString& title, const wxPoint& pos, const wxSize& size) : wxFrame(nullptr, wxID_ANY, title, pos, size)
 {
+	Maximize();
+	this->SetMinSize(wxSize(576, 432));
 	this->SetBackgroundColour(wxColor(30, 30, 30));
 	// first layer components
 	m_main_ver_sizer = new wxBoxSizer(wxVERTICAL);
@@ -15,19 +18,23 @@ mwMainFrame::mwMainFrame(const wxString& title, const wxPoint& pos, const wxSize
 	m_info_bar_timer_couter = 0;
 	m_10_sec_check = 0;
 	m_ready_msg;
-	m_1sec_timer = new wxTimer(this, MAIN_1SEC_Timer_ID);
+	m_1sec_timer = new wxTimer(this, MAIN_1SEC_TIMER_ID);
 	InitMenuBar();
 	InitStatusBar();
-	InitToolBar();
 	InitInfoBar();
 	InitMainPanel();
 	m_main_ver_sizer->Add(m_info_bar, 0, wxEXPAND | wxRESERVE_SPACE_EVEN_IF_HIDDEN);
 	m_main_ver_sizer->Add(m_main_panel, 1, wxEXPAND);
 
 	// second layer components
-	wxSizer* m_main_panel_hor_sizer = new wxBoxSizer(wxHORIZONTAL);
-	m_main_panel->SetSizer(m_main_panel_hor_sizer);
+	wxSizer* main_panel_ver_sizer1 = new wxBoxSizer(wxVERTICAL);
 
+	wxSizer* main_panel_hor_sizer = new wxBoxSizer(wxHORIZONTAL);
+	wxSizer* main_panel_ver_sizer = new wxBoxSizer(wxVERTICAL);
+	m_main_panel->SetSizer(main_panel_ver_sizer1);
+
+	m_top_panel = new mwTopPanel(m_main_panel, wxID_ANY, wxDefaultPosition, wxSize(40, 21));
+	m_top_panel->SetBackgroundColour(m_side_panel_bg);
 	m_side_panel = new mwSidePanel(m_main_panel, wxID_ANY, wxDefaultPosition, wxSize(200, 200));
 	m_side_panel->SetBackgroundColour(m_side_panel_bg);
 	m_bottom_panel = new mwBottomPanel(m_main_panel, wxID_ANY, wxDefaultPosition, wxSize(200, 200));
@@ -35,17 +42,14 @@ mwMainFrame::mwMainFrame(const wxString& title, const wxPoint& pos, const wxSize
 	m_work_panel = new mwWorkPanel(m_main_panel, wxID_ANY, wxDefaultPosition, wxSize(200, 200));
 	m_work_panel->SetBackgroundColour(m_side_panel_bg);
 
-	wxSizer* m_main_panel_ver_sizer = new wxBoxSizer(wxVERTICAL);
-	m_main_panel_hor_sizer->Add(m_side_panel, 1, wxEXPAND | wxRIGHT, 5);
-	m_main_panel_hor_sizer->Add(m_main_panel_ver_sizer, 8, wxEXPAND);
-	m_main_panel_ver_sizer->Add(m_work_panel, 2, wxEXPAND | wxBOTTOM, 5);
-	m_main_panel_ver_sizer->Add(m_bottom_panel, 1, wxEXPAND);
-
+	// Order of addition matters
+	main_panel_ver_sizer1->Add(m_top_panel, 0, wxEXPAND | wxBOTTOM, 5);
+	main_panel_ver_sizer1->Add(main_panel_hor_sizer, 1, wxEXPAND);
+	main_panel_hor_sizer->Add(m_side_panel, 1, wxEXPAND | wxRIGHT, 5);
+	main_panel_hor_sizer->Add(main_panel_ver_sizer, 8, wxEXPAND);
+	main_panel_ver_sizer->Add(m_work_panel, 2, wxEXPAND | wxBOTTOM, 5);
+	main_panel_ver_sizer->Add(m_bottom_panel, 1, wxEXPAND);
 	m_1sec_timer->Start(1000);
-}
-
-mwMainFrame::mwMainFrame()
-{
 }
 
 mwMainFrame::~mwMainFrame()
@@ -55,6 +59,7 @@ mwMainFrame::~mwMainFrame()
 void mwMainFrame::InitMenuBar()
 {
 	m_menu_bar = new wxMenuBar();
+	// TODO: find a way to change the menu bar backgournd color. 
 	this->SetMenuBar(m_menu_bar);
 	wxMenu* menu_file = new wxMenu();
 	menu_file->AppendSeparator();
@@ -72,13 +77,6 @@ void mwMainFrame::InitStatusBar()
 	m_status_bar_text = new wxStaticText(m_status_bar, wxID_ANY, "", wxPoint(5, 5), wxDefaultSize, wxALIGN_LEFT);
 	m_status_bar_text->SetForegroundColour(wxColor(255, 255, 255));
 	m_status_bar_text->SetLabel("MasterWork - By Shady Ganem");
-}
-
-void mwMainFrame::InitToolBar()
-{
-	m_tool_bar = CreateToolBar();
-	m_tool_bar->SetBackgroundColour(m_tool_bar_bg);
-	m_tool_bar->SetBackgroundColour(m_tool_bar_bg);
 }
 
 void mwMainFrame::InitInfoBar()
@@ -133,10 +131,10 @@ void mwMainFrame::SetStatusBarBackgrounColor(const wxColor& color)
 	m_status_bar->SetBackgroundColour(color);
 }
 
-void mwMainFrame::OnExit(wxCommandEvent& evt)
+void mwMainFrame::OnExit(wxCommandEvent& event)
 {
 	Close();
-	evt.Skip();
+	event.Skip();
 }
 
 void mwMainFrame::OnProperties(wxCommandEvent& event)
@@ -169,5 +167,12 @@ void mwMainFrame::On1SecTimer(wxTimerEvent& event)
 	}
 	
 
-	ShowStutusBarMessage("MasterWork - By Shady Ganem");
+	ShowStutusBarMessage("Ready - MasterWork");
+}
+
+void mwMainFrame::OnTopPanelSearch(wxCommandEvent& event)
+{
+
+	ShowInfoBarInfoMessage("Searching: " + m_top_panel->GetSearchText());
+	m_top_panel->ClearSearchText();
 }

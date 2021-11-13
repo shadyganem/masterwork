@@ -1,5 +1,8 @@
 #pragma once
-class mwManager
+#include "wx/thread.h"
+#include "wx/event.h"
+
+class mwManager : public wxThread
 {
 };
 

@@ -12,3 +12,9 @@ mwWorkPanel::mwWorkPanel(wxWindow* parent,
 mwWorkPanel::~mwWorkPanel()
 {
 }
+
+void mwWorkPanel::InitToolBar()
+{
+	m_tool_bar = new wxToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
+	m_tool_bar->SetBackgroundColour(m_tool_bar_bg);
+}

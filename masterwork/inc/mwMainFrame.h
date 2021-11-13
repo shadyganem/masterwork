@@ -6,19 +6,19 @@
 #include "mwSidePanel.h"
 #include "mwBottomPanel.h"
 #include "mwWorkPanel.h"
+#include "mwTopPanel.h"
 #include "mwDefines.h"
+#include "wx/event.h"
 
 
 class mwMainFrame : public wxFrame
 {
 public:
 	mwMainFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
-	mwMainFrame();
 	~mwMainFrame();
 private:
 	void InitMenuBar();
 	void InitStatusBar();
-	void InitToolBar();
 	void InitInfoBar();
 	void InitMainPanel();
 	void Refresh();
@@ -36,9 +36,10 @@ private:
 	wxToolBar* m_tool_bar;
 	wxStaticText* m_status_bar_text;
 	// initialzing panels
-	wxPanel* m_side_panel;
-	wxPanel* m_bottom_panel;
-	wxPanel* m_work_panel;
+	mwTopPanel* m_top_panel;
+	mwSidePanel* m_side_panel;
+	mwBottomPanel* m_bottom_panel;
+	mwWorkPanel* m_work_panel;
 	wxTimer* m_1sec_timer;
 
 	// panels
@@ -56,6 +57,7 @@ private:
 	void OnExit(wxCommandEvent& event);
 	void OnProperties(wxCommandEvent& event);
 	void On1SecTimer(wxTimerEvent& event);
+	void OnTopPanelSearch(wxCommandEvent& event);
 
 private:
 	int m_info_bar_timer_couter;

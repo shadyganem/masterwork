@@ -36,6 +36,9 @@
     <ClInclude Include="inc\mwManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="inc\mwTopPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\mwMainFrame.cpp">
@@ -54,6 +57,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\mwManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mwTopPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
