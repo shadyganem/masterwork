@@ -1,4 +1,4 @@
-#include "mwSidePanel.h"
+#include "view/mwSidePanel.h"
 
 mwSidePanel::mwSidePanel(wxWindow* parent, 
 	                     wxWindowID winid, 

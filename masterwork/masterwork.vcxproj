@@ -19,23 +19,27 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="inc\mwApp.h" />
-    <ClInclude Include="inc\mwBottomPanel.h" />
+    <ClInclude Include="inc\MasterWork.h" />
+    <ClInclude Include="inc\model\sqlite3.h" />
+    <ClInclude Include="inc\view\mwBottomPanel.h" />
     <ClInclude Include="inc\mwDefines.h" />
-    <ClInclude Include="inc\mwMainFrame.h" />
-    <ClInclude Include="inc\mwSidePanel.h" />
-    <ClInclude Include="inc\mwWorkPanel.h" />
-    <ClInclude Include="inc\mwManager.h" />
-    <ClInclude Include="inc\mwTopPanel.h" />
+    <ClInclude Include="inc\view\mwMainFrame.h" />
+    <ClInclude Include="inc\view\mwSidePanel.h" />
+    <ClInclude Include="inc\view\mwWorkPanel.h" />
+    <ClInclude Include="inc\view\mwTopPanel.h" />
+    <ClInclude Include="inc\controller\mwController.h" />
+    <ClInclude Include="inc\model\mwTaskModel.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\mwTaskModel.cpp" />
+    <ClCompile Include="src\mwController.cpp" />
     <ClCompile Include="src\mwTopPanel.cpp" />
-    <ClCompile Include="src\mwManager.cpp" />
-    <ClCompile Include="src\mwApp.cpp" />
+    <ClCompile Include="src\MasterWork.cpp" />
     <ClCompile Include="src\mwBottomPanel.cpp" />
     <ClCompile Include="src\mwMainFrame.cpp" />
     <ClCompile Include="src\mwSidePanel.cpp" />
     <ClCompile Include="src\mwWorkPanel.cpp" />
+    <ClCompile Include="src\sqlite3.c" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="resources\style\style.xml" />
@@ -118,7 +122,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(WXWIN)\include;$(WXWIN)\include\msvc;$(ProjectDir)inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN)\include;$(WXWIN)\include\msvc;$(ProjectDir)inc;$(ProjectDir)inc\controller </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -134,7 +138,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(WXWIN)\include;$(WXWIN)\include\msvc;$(ProjectDir)inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN)\include;$(WXWIN)\include\msvc;$(ProjectDir)inc;$(ProjectDir)inc\controller </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -150,7 +154,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(WXWIN)\include;$(WXWIN)\include\msvc;$(ProjectDir)inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN)\include;$(WXWIN)\include\msvc;$(ProjectDir)inc;$(ProjectDir)inc\controller </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -166,7 +170,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(WXWIN)\include;$(WXWIN)\include\msvc;$(ProjectDir)inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN)\include;$(WXWIN)\include\msvc;$(ProjectDir)inc;$(ProjectDir)inc\controller </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

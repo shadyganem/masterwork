@@ -1,4 +1,4 @@
-#include "mwMainFrame.h"
+#include "view/mwMainFrame.h"
 
 BEGIN_EVENT_TABLE(mwMainFrame, wxFrame)
 	EVT_MENU(MENU_FILE_EXIT_ID, mwMainFrame::OnExit)
@@ -32,7 +32,6 @@ mwMainFrame::mwMainFrame(const wxString& title, const wxPoint& pos, const wxSize
 	wxSizer* main_panel_ver_sizer1 = new wxBoxSizer(wxVERTICAL);
 	wxSizer* main_panel_ver_sizer2 = new wxBoxSizer(wxVERTICAL);
 
-
 	m_search_ctrl = new wxSearchCtrl(m_main_panel, MAIN_SEARCH_ID, wxEmptyString, wxDefaultPosition, wxSize(200, 21));
 	m_top_panel = new mwTopPanel(m_main_panel, wxID_ANY, wxDefaultPosition, wxSize(600, 21));
 	m_top_panel->SetBackgroundColour(m_side_panel_bg);
@@ -43,17 +42,15 @@ mwMainFrame::mwMainFrame(const wxString& title, const wxPoint& pos, const wxSize
 	m_work_panel = new mwWorkPanel(m_main_panel, wxID_ANY, wxDefaultPosition, wxSize(200, 200));
 	m_work_panel->SetBackgroundColour(m_side_panel_bg);
 
-
 	main_panel_ver_sizer1->Add(m_search_ctrl, 0, wxEXPAND | wxBOTTOM, 5);
 	main_panel_ver_sizer1->Add(m_side_panel, 1, wxEXPAND, 0);
 	main_panel_hor_sizer1->Add(main_panel_ver_sizer1, 0, wxEXPAND | wxRIGHT, 5);
 	main_panel_ver_sizer2->Add(m_top_panel, 0, wxEXPAND | wxBOTTOM, 5);
-	main_panel_ver_sizer2->Add(m_work_panel, 2, wxEXPAND | wxBOTTOM, 5);
+	main_panel_ver_sizer2->Add(m_work_panel, 3, wxEXPAND | wxBOTTOM, 5);
 	main_panel_ver_sizer2->Add(m_bottom_panel, 1, wxEXPAND, 0);
 
 	main_panel_hor_sizer1->Add(main_panel_ver_sizer2, 1, wxEXPAND, 0);
 	m_main_panel->SetSizer(main_panel_hor_sizer1);
-
 	m_1sec_timer->Start(1000);
 }
 
@@ -173,7 +170,6 @@ void mwMainFrame::On1SecTimer(wxTimerEvent& event)
 	{ 
 		m_10_sec_check++;
 	}
-	
 
 	ShowStutusBarMessage("Ready - MasterWork");
 }
@@ -185,7 +181,8 @@ void mwMainFrame::OnNewTaskButton(wxCommandEvent& event)
 
 void mwMainFrame::OnSearch(wxCommandEvent& event)
 {
-
+	mwController& mw_cotroller = mwController::Get();
+	wxString seach_txt = m_search_ctrl->GetLineText(0);
 	ShowInfoBarInfoMessage("Searching: " + m_search_ctrl->GetLineText(0));
 	m_search_ctrl->Clear();
 }

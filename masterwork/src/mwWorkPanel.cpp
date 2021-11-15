@@ -1,4 +1,4 @@
-#include "mwWorkPanel.h"
+#include "view/mwWorkPanel.h"
 
 mwWorkPanel::mwWorkPanel(wxWindow* parent, 
 	                     wxWindowID winid, 

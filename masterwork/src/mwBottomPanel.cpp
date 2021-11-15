@@ -1,4 +1,4 @@
-#include "mwBottomPanel.h"
+#include "view/mwBottomPanel.h"
 
 
 BEGIN_EVENT_TABLE(mwBottomPanel, wxPanel)

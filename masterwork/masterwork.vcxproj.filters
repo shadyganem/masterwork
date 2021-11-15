@@ -15,28 +15,34 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="inc\mwMainFrame.h">
+    <ClInclude Include="inc\view\mwMainFrame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\mwApp.h">
+    <ClInclude Include="inc\MasterWork.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\mwSidePanel.h">
+    <ClInclude Include="inc\view\mwSidePanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\mwBottomPanel.h">
+    <ClInclude Include="inc\view\mwBottomPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\mwWorkPanel.h">
+    <ClInclude Include="inc\view\mwWorkPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\mwDefines.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\mwManager.h">
+    <ClInclude Include="inc\view\mwTopPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\mwTopPanel.h">
+    <ClInclude Include="inc\controller\mwController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\model\mwTaskModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\model\sqlite3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -44,7 +50,7 @@
     <ClCompile Include="src\mwMainFrame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mwApp.cpp">
+    <ClCompile Include="src\MasterWork.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\mwSidePanel.cpp">
@@ -56,10 +62,16 @@
     <ClCompile Include="src\mwWorkPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mwManager.cpp">
+    <ClCompile Include="src\mwTopPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mwTopPanel.cpp">
+    <ClCompile Include="src\mwController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mwTaskModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sqlite3.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
