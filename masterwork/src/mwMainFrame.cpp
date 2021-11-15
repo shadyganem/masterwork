@@ -28,16 +28,13 @@ mwMainFrame::mwMainFrame(const wxString& title, const wxPoint& pos, const wxSize
 	m_main_ver_sizer->Add(m_main_panel, 1, wxEXPAND);
 
 	// second layer components
+	wxSizer* main_panel_hor_sizer1 = new wxBoxSizer(wxHORIZONTAL);
 	wxSizer* main_panel_ver_sizer1 = new wxBoxSizer(wxVERTICAL);
+	wxSizer* main_panel_ver_sizer2 = new wxBoxSizer(wxVERTICAL);
 
-	wxSizer* main_panel_hor_sizer = new wxBoxSizer(wxHORIZONTAL);
-	wxSizer* main_panel_hor_sizer2 = new wxBoxSizer(wxHORIZONTAL);
-	wxSizer* main_panel_ver_sizer = new wxBoxSizer(wxVERTICAL);
 
 	m_search_ctrl = new wxSearchCtrl(m_main_panel, MAIN_SEARCH_ID, wxEmptyString, wxDefaultPosition, wxSize(200, 21));
 	m_top_panel = new mwTopPanel(m_main_panel, wxID_ANY, wxDefaultPosition, wxSize(600, 21));
-	main_panel_hor_sizer2->Add(m_search_ctrl, 0, wxEXPAND | wxRIGHT, 5);
-	main_panel_hor_sizer2->Add(m_top_panel, 1, wxEXPAND, 0);
 	m_top_panel->SetBackgroundColour(m_side_panel_bg);
 	m_side_panel = new mwSidePanel(m_main_panel, wxID_ANY, wxDefaultPosition, wxSize(200, 200));
 	m_side_panel->SetBackgroundColour(m_side_panel_bg);
@@ -46,14 +43,16 @@ mwMainFrame::mwMainFrame(const wxString& title, const wxPoint& pos, const wxSize
 	m_work_panel = new mwWorkPanel(m_main_panel, wxID_ANY, wxDefaultPosition, wxSize(200, 200));
 	m_work_panel->SetBackgroundColour(m_side_panel_bg);
 
-	// Order of addition matters
-	main_panel_ver_sizer1->Add(main_panel_hor_sizer2, 0, wxBOTTOM, 5);
-	main_panel_ver_sizer1->Add(main_panel_hor_sizer, 1, wxEXPAND);
-	main_panel_hor_sizer->Add(m_side_panel, 0, wxEXPAND | wxRIGHT, 5);
-	main_panel_hor_sizer->Add(main_panel_ver_sizer, 8, wxEXPAND);
-	main_panel_ver_sizer->Add(m_work_panel, 3, wxEXPAND | wxBOTTOM, 5);
-	main_panel_ver_sizer->Add(m_bottom_panel, 1, wxEXPAND);
-	m_main_panel->SetSizer(main_panel_ver_sizer1);
+
+	main_panel_ver_sizer1->Add(m_search_ctrl, 0, wxEXPAND | wxBOTTOM, 5);
+	main_panel_ver_sizer1->Add(m_side_panel, 1, wxEXPAND, 0);
+	main_panel_hor_sizer1->Add(main_panel_ver_sizer1, 0, wxEXPAND | wxRIGHT, 5);
+	main_panel_ver_sizer2->Add(m_top_panel, 0, wxEXPAND | wxBOTTOM, 5);
+	main_panel_ver_sizer2->Add(m_work_panel, 2, wxEXPAND | wxBOTTOM, 5);
+	main_panel_ver_sizer2->Add(m_bottom_panel, 1, wxEXPAND, 0);
+
+	main_panel_hor_sizer1->Add(main_panel_ver_sizer2, 1, wxEXPAND, 0);
+	m_main_panel->SetSizer(main_panel_hor_sizer1);
 
 	m_1sec_timer->Start(1000);
 }
