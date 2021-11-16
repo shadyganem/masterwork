@@ -1,5 +1,9 @@
 #include "view/mwWorkPanel.h"
 
+
+BEGIN_EVENT_TABLE(mwWorkPanel, wxPanel)
+END_EVENT_TABLE()
+
 mwWorkPanel::mwWorkPanel(wxWindow* parent, 
 	                     wxWindowID winid, 
 	                     const wxPoint& pos, 
@@ -11,10 +15,4 @@ mwWorkPanel::mwWorkPanel(wxWindow* parent,
 
 mwWorkPanel::~mwWorkPanel()
 {
-}
-
-void mwWorkPanel::InitToolBar()
-{
-	m_tool_bar = new wxToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
-	m_tool_bar->SetBackgroundColour(m_tool_bar_bg);
 }

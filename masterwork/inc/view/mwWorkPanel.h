@@ -1,6 +1,9 @@
 #pragma once
 #include "wx/wx.h"
 #include <wx/toolbar.h>
+#include "controller/mwController.h"
+#include "mwDefines.h"
+
 
 class mwWorkPanel : public wxPanel
 {
@@ -12,8 +15,10 @@ public:
                 long style = wxTAB_TRAVERSAL | wxNO_BORDER,
                 const wxString& name = wxASCII_STR(wxPanelNameStr));;
 	~mwWorkPanel();
+
 private:
-    void InitToolBar();
+    DECLARE_EVENT_TABLE()
+
 private:
     wxToolBar* m_tool_bar;
     wxColor m_tool_bar_bg = wxColor(0, 0, 255);

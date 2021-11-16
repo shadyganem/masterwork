@@ -62,23 +62,25 @@ void mwMainFrame::InitMenuBar()
 {
 	m_menu_bar = new wxMenuBar();
 	// TODO: find a way to change the menu bar backgournd color. 
-	this->SetMenuBar(m_menu_bar);
 	wxMenu* menu_file = new wxMenu();
+	menu_file->Append(MENU_FILE_NEW_ID, "New");
 	menu_file->AppendSeparator();
 	menu_file->Append(MENU_FILE_EXIT_ID, "Exit");
 	wxMenu* menu_window = new wxMenu();
 	menu_window->Append(MENU_WINDOW_PROPERTIES_ID, "Properties");
 	m_menu_bar->Append(menu_file, "File");
 	m_menu_bar->Append(menu_window, "Window");
+	this->SetMenuBar(m_menu_bar);
 }
 
 void mwMainFrame::InitStatusBar()
 {
+	mwController& controller = mwController::Get();
 	m_status_bar = CreateStatusBar();
 	m_status_bar->SetBackgroundColour(m_info_bg);
 	m_status_bar_text = new wxStaticText(m_status_bar, wxID_ANY, "", wxPoint(5, 5), wxDefaultSize, wxALIGN_LEFT);
 	m_status_bar_text->SetForegroundColour(wxColor(255, 255, 255));
-	m_status_bar_text->SetLabel("MasterWork - By Shady Ganem");
+	controller.SetStatusBarText("Ready - MasterWork");
 }
 
 void mwMainFrame::InitInfoBar()
@@ -151,6 +153,7 @@ void mwMainFrame::OnProperties(wxCommandEvent& event)
 // called every 1 second
 void mwMainFrame::On1SecTimer(wxTimerEvent& event)
 {
+	mwController& controller = mwController::Get();
 	if (m_info_bar_timer_couter == 2)
 	{
 		m_info_bar->Dismiss();
@@ -171,12 +174,13 @@ void mwMainFrame::On1SecTimer(wxTimerEvent& event)
 		m_10_sec_check++;
 	}
 
-	ShowStutusBarMessage("Ready - MasterWork");
+	ShowStutusBarMessage(controller.GetStatusBarText());
 }
 
 void mwMainFrame::OnNewTaskButton(wxCommandEvent& event)
 {
 	ShowInfoBarInfoMessage("New Task!");
+	event.Skip();
 }
 
 void mwMainFrame::OnSearch(wxCommandEvent& event)
