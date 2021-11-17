@@ -68,6 +68,7 @@ bool mwModel::InitUsersTable()
 	const char* sql = "CREATE TABLE IF NOT EXISTS \"users\" ( "
 				      "\"uid\"	INTEGER NOT NULL UNIQUE, "
 				      "\"username\"	TEXT NOT NULL, "
+                      "\"isused\"	NUMERIC NOT NULL DEFAULT 0, "
 				      "PRIMARY KEY(\"uid\" AUTOINCREMENT) "
 				      ")";
 
@@ -84,11 +85,12 @@ bool mwModel::InitProjectsTable()
 		return false;
 
 	const char* sql = "CREATE TABLE IF NOT EXISTS \"projects\" ( "
-				      "\"uid\"	INTEGER UNIQUE, "
+				      "\"uid\"	INTEGER NOT NULL UNIQUE, "
 		              "\"user_uid\"	INTEGER, "
 				      "\"project_name\"	TEXT, "
-				      "\"project_creation_time\"	INTEGER, "
-				      "\"PRIMARY KEY(\"uid\" AUTOINCREMENT) "
+				      "\"project_creation_time\" INTEGER, "
+                      "\"isused\"	NUMERIC NOT NULL DEFAULT 0, "
+                      "PRIMARY KEY(\"uid\" AUTOINCREMENT) "
 				      ")";
 
 	m_db_handler.ExeQuery(sql);
