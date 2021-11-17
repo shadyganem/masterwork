@@ -12,4 +12,3 @@ public:
 	std::time_t project_cration_time;
 	void StampCreationTime();
 };
-

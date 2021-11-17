@@ -1,23 +1,37 @@
 #include "model/mwDBHandler.h"
 
 
-static int callback(void* NotUsed, int argc, char** argv, char** azColName) 
-{
-	return 0;
-}
-
 mwDBHandler::mwDBHandler()
 {
 	m_db = NULL;
 	is_conn = false;
 }
 
+int mwDBHandler::Sqlite3SelectCallback(void* p_data, int num_fields, char** p_fields, char** p_col_names)
+{
+	Records* records = static_cast<Records*>(p_data);
+	try
+	{
+		Records* records = static_cast<Records*>(p_data);
+		records->emplace_back(p_fields, p_fields + num_fields);
+	}
+	catch (...)
+	{
+		return 1;
+	}
+	return 0;
+}
+
+int mwDBHandler::Sqlite3UpdateCallback(void* p_data, int num_fields, char** p_fields, char** p_col_names)
+{
+	return 0;
+}
+
+
 bool mwDBHandler::CreateDB(const char* path)
 {
 	sqlite3* db;
-	int rc;
-	char* zErrMsg = 0;
-	rc = sqlite3_open(path, &db);
+	int rc = sqlite3_open(path, &db);
 	if (rc)
 		return false;
 	sqlite3_close(db);
@@ -29,8 +43,23 @@ bool mwDBHandler::ExeQuery(const char* sql)
 	if (is_conn == false)
 		return false;
 	int rc;
-	char* zErrMsg = 0;
-	rc = sqlite3_exec(m_db, sql, callback, 0, &zErrMsg);
+	char* errmsg;
+	rc = sqlite3_exec(m_db, sql, Sqlite3UpdateCallback, 0, &errmsg);
+	if (rc != SQLITE_OK)
+	{
+		return false;
+	}
+	return true;
+}
+
+bool mwDBHandler::Select(const char* sql, Records& ret_records)
+{
+	char* errmsg;
+	int rc = sqlite3_exec(m_db, sql, Sqlite3SelectCallback, &ret_records, &errmsg);
+	if (rc != SQLITE_OK) 
+	{
+		return false;
+	}
 	return true;
 }
 

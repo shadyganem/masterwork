@@ -11,9 +11,18 @@ public:
 	~mwTask();
 	void StampCreationTime();
 	void SetProjectId(int id);
-	std::string task_name;
-	std::string task_description;
-	std::time_t task_creation_time;
-	int project_id;
+	int uid;
+	int parent_uid;
+	std::string name;
+	std::string description;
+	int status;
+	int priority;
+	std::time_t start_time;
+	std::time_t end_time;
+	std::time_t deadline;
+	int project_uid;
+	int red;
+	int green;
+	int blue;
 };
 

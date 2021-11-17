@@ -47,11 +47,15 @@ bool mwModel::AddTask(mwTask& task)
 	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 		return false;
 
-	std::string sql = "INSERT INTO tasks(taskname, task_dec, project_uid, creation_time)"
-		              "VALUES (\"" + task.task_name + "\","
-		              "\"" + task.task_description + "\", "
-		              + std::to_string(task.project_id) +  ","
-		              + std::to_string(task.task_creation_time) +
+	std::string sql = "INSERT INTO tasks(name, parent_uid, description, status, priority, start_time, deadline, project_uid)"
+		              "VALUES (\"" + task.name          + "\"  ,"
+		              + std::to_string(task.parent_uid) +     ","
+		              "\"" + task.description           + "\"  ,"
+                      + std::to_string(task.status)     +     ","
+                	  + std::to_string(task.priority)   +	  ","
+		              + std::to_string(task.start_time) +     ","
+                	  + std::to_string(task.deadline)   +     ","
+                	  +std::to_string(task.project_uid) +
 		              "); ";
 	m_db_handler.ExeQuery(sql.c_str());
 
@@ -87,6 +91,12 @@ bool mwModel::SetActiveProject(mwProject& project)
 
 bool mwModel::GetProjectTasks(mwProject& project, std::vector<mwTask>& ret_tasks_vect)
 {
+
+
+	std::vector<std::vector<std::string>> records;
+
+	std::string sql = "SELECT * FROM ";
+	m_db_handler.Select(sql.c_str(), records);
 	return false;
 }
 
@@ -98,7 +108,7 @@ bool mwModel::InitUsersTable()
 	const char* sql = "CREATE TABLE IF NOT EXISTS \"users\" ( "
 				      "\"uid\"	INTEGER NOT NULL UNIQUE, "
 				      "\"username\"	TEXT NOT NULL, "
-                      "\"isused\"	NUMERIC NOT NULL DEFAULT 0, "
+                      "\"is_active\" NUMERIC NOT NULL DEFAULT 0, "
 				      "PRIMARY KEY(\"uid\" AUTOINCREMENT) "
 				      ")";
 
@@ -114,13 +124,13 @@ bool mwModel::InitProjectsTable()
 	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 		return false;
 
-	const char* sql = "CREATE TABLE IF NOT EXISTS \"projects\" ( "
-				      "\"uid\"	INTEGER NOT NULL UNIQUE, "
-		              "\"user_uid\"	INTEGER, "
-				      "\"project_name\"	TEXT, "
-				      "\"project_creation_time\" INTEGER, "
-                      "\"isused\"	NUMERIC NOT NULL DEFAULT 0, "
-                      "PRIMARY KEY(\"uid\" AUTOINCREMENT) "
+	const char* sql = "CREATE TABLE IF NOT EXISTS \"projects\" (    "
+				      "\"uid\"	        INTEGER NOT NULL UNIQUE,    "
+		              "\"user_uid\"	    INTEGER,                    "
+				      "\"name\"	        TEXT,                       "
+				      "\"start_time\"   INTEGER,                    "
+                      "\"is_active\"	NUMERIC NOT NULL DEFAULT 0, "
+                      "PRIMARY KEY(\"uid\" AUTOINCREMENT)           "
 				      ")";
 
 	m_db_handler.ExeQuery(sql);
@@ -135,14 +145,21 @@ bool mwModel::InitTasksTable()
 	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 		return false;
 
-
 	const char* sql =  "CREATE TABLE IF NOT EXISTS \"tasks\" ( "
-					   "\"UID\"	INTEGER NOT NULL UNIQUE, "
-					   "\"taskname\"	TEXT, "
-					   "\"task_dec\"	TEXT, "
-					   "\"creation_time\"	INTEGER, "
-					   "\"project_uid\"	INTEGER, "
-					   "PRIMARY KEY(\"UID\" AUTOINCREMENT)"
+					   "\"uid\"	INTEGER NOT NULL UNIQUE,       "
+                	   "\"parent_uid\"	INTEGER DEFAULT 0,     "
+					   "\"name\"	    TEXT,                  "
+					   "\"description\"	TEXT,                  "
+                	   "\"status\"	    INTEGER DEFAULT 0,     "
+                	   "\"priority\"	INTEGER DEFAULT 2,     "
+					   "\"start_time\"	INTEGER,               "
+					   "\"end_time\"	INTEGER,               "
+		               "\"deadline\"	INTEGER,               "
+					   "\"project_uid\"	INTEGER DEFAULT 0,     "
+                	   "\"red\"	        INTEGER DEFAULT 0,     "
+		               "\"green\"	    INTEGER DEFAULT 0,     "
+		               "\"blue\"	    INTEGER DEFAULT 0,     "
+					   "PRIMARY KEY(\"uid\" AUTOINCREMENT)     "
 					   ")";
 
 	m_db_handler.ExeQuery(sql);

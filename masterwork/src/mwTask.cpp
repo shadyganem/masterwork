@@ -2,8 +2,9 @@
 
 mwTask::mwTask()
 {
-	task_name = "New Task";
-	std::time(&task_creation_time);
+	name = "New Task";
+	std::time(&start_time);
+	project_uid = 0;
 }
 
 mwTask::~mwTask()
@@ -12,17 +13,18 @@ mwTask::~mwTask()
 
 void mwTask::StampCreationTime()
 {
-	std::time(&task_creation_time);
+	std::time(&start_time);
 }
 
 void mwTask::SetProjectId(int id)
 {
-	project_id = id;
+	project_uid = id;
 }
 
-mwTask::mwTask(std::string name, std::string dec)
+mwTask::mwTask(std::string task_name, std::string task_description)
 {
-	task_name = name;
-	task_description = dec;
-	std::time(&task_creation_time);
+	name = task_name;
+	description = task_description;
+	project_uid = 0;
+	std::time(&start_time);
 }

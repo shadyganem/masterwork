@@ -15,3 +15,8 @@ mwProject::mwProject(std::string name)
 mwProject::~mwProject()
 {
 }
+
+void mwProject::StampCreationTime()
+{
+	std::time(&project_cration_time);
+}
