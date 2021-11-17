@@ -39,10 +39,19 @@
     <ClInclude Include="inc\controller\mwController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\model\mwTaskModel.h">
+    <ClInclude Include="inc\model\sqlite3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\model\sqlite3.h">
+    <ClInclude Include="inc\model\mwModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\model\mwUser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\model\mwProject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\model\mwTask.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -68,10 +77,19 @@
     <ClCompile Include="src\mwController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mwTaskModel.cpp">
+    <ClCompile Include="src\sqlite3.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\sqlite3.c">
+    <ClCompile Include="src\mwModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mwUser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mwProject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mwTask.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

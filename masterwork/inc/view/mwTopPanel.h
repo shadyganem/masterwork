@@ -2,6 +2,7 @@
 #include "wx/wx.h"
 #include "wx/srchctrl.h"
 #include "mwDefines.h"
+#include "controller/mwController.h"
 
 class mwTopPanel : public wxPanel
 {
@@ -14,16 +15,16 @@ public:
         const wxString& name = wxASCII_STR(wxPanelNameStr));
     ~mwTopPanel();
 
+
+public:
+    void OnNewTaskButton(wxCommandEvent& event);
+
+    wxButton* m_new_task;
+
 private:
     // any class wishing to process wxWidgets events must use this macro
     DECLARE_EVENT_TABLE()
 
 
-private:
-    void OnNewTaskButton(wxCommandEvent& event);
-
-
-private:
-    wxButton* m_new_task;
 
 };

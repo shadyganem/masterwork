@@ -18,13 +18,13 @@ class mwMainFrame : public wxFrame
 public:
 	mwMainFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
 	~mwMainFrame();
+	
 private:
 	void InitMenuBar();
 	void InitStatusBar();
 	void InitInfoBar();
 	void InitMainPanel();
 	void InitColorScheme();
-	void Refresh();
 	// private method
 	void ShowInfoBarInfoMessage(const wxString& msg);
 	void ShowInfoBarErrorMessage(const wxString& msg);
@@ -55,17 +55,19 @@ private:
 private:
 	// any class wishing to process wxWidgets events must use this macro
 	DECLARE_EVENT_TABLE()
-	//event handlers
+	// event handlers
 	void OnExit(wxCommandEvent& event);
 	void OnProperties(wxCommandEvent& event);
 	void On1SecTimer(wxTimerEvent& event);
 	void OnNewTaskButton(wxCommandEvent& event);
 	void OnSearch(wxCommandEvent& event);
-
+	void OnUpdateUI(wxEvent& event);
+	void OnNotification(wxEvent& event);
 
 private:
 	int m_info_bar_timer_couter;
 	int m_10_sec_check;
+	int m_3_sec_check;
 	bool m_ready_msg;
 };
 

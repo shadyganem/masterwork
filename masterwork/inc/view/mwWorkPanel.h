@@ -16,13 +16,12 @@ public:
                 const wxString& name = wxASCII_STR(wxPanelNameStr));;
 	~mwWorkPanel();
 
-private:
-    DECLARE_EVENT_TABLE()
-
-private:
+public:
     wxToolBar* m_tool_bar;
     wxColor m_tool_bar_bg = wxColor(0, 0, 255);
 
+private:
+    DECLARE_EVENT_TABLE()
 
 };
 

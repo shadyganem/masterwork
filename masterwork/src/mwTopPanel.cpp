@@ -25,5 +25,8 @@ mwTopPanel::~mwTopPanel()
 
 void mwTopPanel::OnNewTaskButton(wxCommandEvent& event)
 {
+	mwController& controller = mwController::Get();
+	//controller.PostUpdateUI();
+
 	event.Skip();
 }

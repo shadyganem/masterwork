@@ -28,10 +28,16 @@
     <ClInclude Include="inc\view\mwWorkPanel.h" />
     <ClInclude Include="inc\view\mwTopPanel.h" />
     <ClInclude Include="inc\controller\mwController.h" />
-    <ClInclude Include="inc\model\mwTaskModel.h" />
+    <ClInclude Include="inc\model\mwModel.h" />
+    <ClInclude Include="inc\model\mwUser.h" />
+    <ClInclude Include="inc\model\mwProject.h" />
+    <ClInclude Include="inc\model\mwTask.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\mwTaskModel.cpp" />
+    <ClCompile Include="src\mwTask.cpp" />
+    <ClCompile Include="src\mwProject.cpp" />
+    <ClCompile Include="src\mwUser.cpp" />
+    <ClCompile Include="src\mwModel.cpp" />
     <ClCompile Include="src\mwController.cpp" />
     <ClCompile Include="src\mwTopPanel.cpp" />
     <ClCompile Include="src\MasterWork.cpp" />

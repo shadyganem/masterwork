@@ -1,15 +1,22 @@
 #include "view/mwMainFrame.h"
 
+wxDEFINE_EVENT(mwUpdateUI, wxCommandEvent);
+wxDEFINE_EVENT(mwNotification, wxCommandEvent);
+
 BEGIN_EVENT_TABLE(mwMainFrame, wxFrame)
 	EVT_MENU(MENU_FILE_EXIT_ID, mwMainFrame::OnExit)
 	EVT_MENU(MENU_WINDOW_PROPERTIES_ID, mwMainFrame::OnProperties)
 	EVT_TIMER(MAIN_1SEC_TIMER_ID, mwMainFrame::On1SecTimer)
 	EVT_SEARCH(MAIN_SEARCH_ID, mwMainFrame::OnSearch)
 	EVT_BUTTON(TOP_PANEL_NEW_TASK_ID, mwMainFrame::OnNewTaskButton)
+	EVT_CUSTOM(mwUpdateUI, MAIN_FRAME_ID, mwMainFrame::OnUpdateUI)
+	EVT_CUSTOM(mwNotification, MAIN_FRAME_ID, mwMainFrame::OnNotification)
 END_EVENT_TABLE()
 
-mwMainFrame::mwMainFrame(const wxString& title, const wxPoint& pos, const wxSize& size) : wxFrame(nullptr, wxID_ANY, title, pos, size)
+mwMainFrame::mwMainFrame(const wxString& title, const wxPoint& pos, const wxSize& size) : wxFrame(nullptr, MAIN_FRAME_ID, title, pos, size)
 {
+	mwController& control = mwController::Get();
+	control.RegisterMainFrame(this);
 	Maximize();
 	this->SetMinSize(wxSize(576, 432));
 	this->SetBackgroundColour(wxColor(30, 30, 30));
@@ -106,10 +113,6 @@ void mwMainFrame::InitColorScheme()
 	m_side_panel_bg = wxColor(37, 37, 38);
 }
 
-void mwMainFrame::Refresh()
-{
-}
-
 void mwMainFrame::ShowInfoBarInfoMessage(const wxString& msg)
 {
 	m_info_bar_timer_couter = 0;
@@ -130,6 +133,7 @@ void mwMainFrame::ShowInfoBarErrorMessage(const wxString& msg)
 
 void mwMainFrame::ShowStutusBarMessage(const wxString& msg)
 {
+	m_3_sec_check = 0;
 	m_status_bar_text->SetLabel(msg);
 }
 
@@ -166,7 +170,7 @@ void mwMainFrame::On1SecTimer(wxTimerEvent& event)
 
 	if (m_10_sec_check == 10)
 	{
-		ShowInfoBarErrorMessage("MasterWork! - By Shady Ganem");
+		controller.SetInfoBarText("MasterWork! - By Shady Ganem");
 		m_10_sec_check = 0;
 	}
 	else
@@ -174,19 +178,38 @@ void mwMainFrame::On1SecTimer(wxTimerEvent& event)
 		m_10_sec_check++;
 	}
 
-	ShowStutusBarMessage(controller.GetStatusBarText());
+	if (m_3_sec_check == 3)
+	{
+		controller.SetStatusBarText("Ready - MasterWork!");
+		m_3_sec_check = 0;
+	}
+	else
+	{
+		m_3_sec_check++;
+	}
 }
 
 void mwMainFrame::OnNewTaskButton(wxCommandEvent& event)
 {
-	ShowInfoBarInfoMessage("New Task!");
-	event.Skip();
+	mwController& controller = mwController::Get();
 }
 
 void mwMainFrame::OnSearch(wxCommandEvent& event)
 {
-	mwController& mw_cotroller = mwController::Get();
+	mwController& controller = mwController::Get();
 	wxString seach_txt = m_search_ctrl->GetLineText(0);
 	ShowInfoBarInfoMessage("Searching: " + m_search_ctrl->GetLineText(0));
 	m_search_ctrl->Clear();
+}
+
+void mwMainFrame::OnUpdateUI(wxEvent& event)
+{
+	mwController& controller = mwController::Get();
+	ShowStutusBarMessage(controller.GetStatusBarText());
+}
+
+void mwMainFrame::OnNotification(wxEvent& event)
+{
+	mwController& controller = mwController::Get();
+	ShowInfoBarInfoMessage(controller.GetInfoBarText());
 }

@@ -12,6 +12,9 @@ public:
                   const wxString& name = wxASCII_STR(wxPanelNameStr));
 	~mwBottomPanel();
 
+public:
+
+
 private:
     // any class wishing to process wxWidgets events must use this macro
     DECLARE_EVENT_TABLE()

@@ -1,8 +1,9 @@
 #pragma once
 
-enum event_id
+enum handler_id
 {
-	MENU_FILE_EXIT_ID = 10000,
+	MAIN_FRAME_ID = 10000,
+	MENU_FILE_EXIT_ID,
 	MENU_FILE_NEW_ID,
 	MENU_WINDOW_PROPERTIES_ID,
 	MAIN_1SEC_TIMER_ID,
@@ -10,3 +11,6 @@ enum event_id
 	TOP_PANEL_SERACH_ID,
 	TOP_PANEL_NEW_TASK_ID
 };
+
+wxDECLARE_EVENT(mwUpdateUI, wxCommandEvent);
+wxDECLARE_EVENT(mwNotification, wxCommandEvent);
