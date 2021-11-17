@@ -7,6 +7,7 @@
 #include "model/mwUser.h"
 
 #include <string>
+#include <vector>
 
 class mwModel
 {
@@ -17,6 +18,12 @@ public:
 	bool AddUser(mwUser& user);
 	bool AddProject(mwProject& project);
 	bool AddTask(mwTask& task);
+	bool GetActiveUser(mwUser& user);
+	bool SetActiveUser(mwUser& user);
+	bool GetAllUsers(std::vector<mwUser>& ret_users_vect);
+	bool GetActiveProject(mwProject& project);
+	bool SetActiveProject(mwProject& project);
+	bool GetProjectTasks(mwProject& project,  std::vector<mwTask>& ret_tasks_vect);
 private:
 	bool InitUsersTable();
 	bool InitProjectsTable();

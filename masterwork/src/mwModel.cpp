@@ -60,6 +60,36 @@ bool mwModel::AddTask(mwTask& task)
 	return true;
 }
 
+bool mwModel::GetActiveUser(mwUser& user)
+{
+	return false;
+}
+
+bool mwModel::SetActiveUser(mwUser& user)
+{
+	return false;
+}
+
+bool mwModel::GetAllUsers(std::vector<mwUser>& ret_users_vect)
+{
+	return false;
+}
+
+bool mwModel::GetActiveProject(mwProject& project)
+{
+	return false;
+}
+
+bool mwModel::SetActiveProject(mwProject& project)
+{
+	return false;
+}
+
+bool mwModel::GetProjectTasks(mwProject& project, std::vector<mwTask>& ret_tasks_vect)
+{
+	return false;
+}
+
 bool mwModel::InitUsersTable()
 {
 	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
