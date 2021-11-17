@@ -45,7 +45,11 @@ void mwController::RegisterMainFrame(wxEvtHandler* mf)
 void mwController::AddTask(std::string name, std::string dec)
 {
 	mwTask task(name, dec);
-	
+	task.StampCreationTime();
+	m_mutex.Lock();
+	m_model.AddTask(task);
+	m_mutex.Unlock();
+	PostUpdateUI(MAIN_FRAME_ID);
 }
 
 void mwController::PostUpdateUI(int windId)

@@ -36,5 +36,7 @@ private:
 	wxString m_info_bar_text;
 	mwModel m_model;
 	wxMutex m_mutex;
+	mwUser m_current_user;
+	mwProject m_current_project;
 };
 
