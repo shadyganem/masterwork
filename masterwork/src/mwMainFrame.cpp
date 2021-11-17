@@ -16,6 +16,7 @@ END_EVENT_TABLE()
 mwMainFrame::mwMainFrame(const wxString& title, const wxPoint& pos, const wxSize& size) : wxFrame(nullptr, MAIN_FRAME_ID, title, pos, size)
 {
 	mwController& control = mwController::Get();
+	control.Init();
 	control.RegisterMainFrame(this);
 	Maximize();
 	this->SetMinSize(wxSize(576, 432));

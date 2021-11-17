@@ -54,6 +54,12 @@
     <ClInclude Include="inc\model\mwTask.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="inc\model\mwDBHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\model\mwModelItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\mwMainFrame.cpp">
@@ -90,6 +96,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\mwTask.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mwDBHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mwModelItem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

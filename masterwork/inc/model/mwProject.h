@@ -1,7 +1,10 @@
 #pragma once
-#include "model/mwModel.h"
+#include "model/mwModelItem.h"
 
-class mwProject : public mwModel
+class mwProject : public mwModelItem
 {
+public:
+	mwProject();
+	~mwProject();
 };
 

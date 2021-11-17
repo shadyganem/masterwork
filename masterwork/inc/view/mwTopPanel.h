@@ -21,6 +21,7 @@ public:
 
     wxButton* m_new_task;
 
+
 private:
     // any class wishing to process wxWidgets events must use this macro
     DECLARE_EVENT_TABLE()

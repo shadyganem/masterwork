@@ -32,8 +32,12 @@
     <ClInclude Include="inc\model\mwUser.h" />
     <ClInclude Include="inc\model\mwProject.h" />
     <ClInclude Include="inc\model\mwTask.h" />
+    <ClInclude Include="inc\model\mwDBHandler.h" />
+    <ClInclude Include="inc\model\mwModelItem.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\mwModelItem.cpp" />
+    <ClCompile Include="src\mwDBHandler.cpp" />
     <ClCompile Include="src\mwTask.cpp" />
     <ClCompile Include="src\mwProject.cpp" />
     <ClCompile Include="src\mwUser.cpp" />

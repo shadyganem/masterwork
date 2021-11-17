@@ -1,9 +1,9 @@
 #pragma once
-#include "model\mwModel.h"
+#include "model\mwModelItem.h"
 
 #include <string>
 
-class mwUser : public mwModel
+class mwUser : public mwModelItem
 {
 public:
 	mwUser();

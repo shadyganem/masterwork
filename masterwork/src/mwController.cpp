@@ -1,5 +1,11 @@
 #include "controller\mwController.h"
 
+void mwController::Init()
+{
+	m_model.SetDbPath("mw.db");
+	m_model.InitModel();
+}
+
 bool mwController::Search(wxString& search_query)
 {
 	return false;
@@ -34,6 +40,12 @@ wxString mwController::GetInfoBarText(void)
 void mwController::RegisterMainFrame(wxEvtHandler* mf)
 {
 	m_main_frame = mf;
+}
+
+void mwController::AddTask(std::string name, std::string dec)
+{
+	mwTask task(name, dec);
+	
 }
 
 void mwController::PostUpdateUI(int windId)

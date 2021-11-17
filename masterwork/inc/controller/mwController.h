@@ -4,6 +4,8 @@
 #include <wx/thread.h>
 #include <wx/event.h>
 #include "mwDefines.h"
+#include "model/mwModel.h"
+#include "model/mwTask.h"
 
 class mwController
 {
@@ -15,12 +17,14 @@ public:
 		return instance;
 	}
 	// mwController interface
+	void Init();
 	bool Search(wxString& search_query);
 	void SetStatusBarText(const wxString& txt);
 	wxString GetStatusBarText(void);
 	void SetInfoBarText(const wxString& txt);
 	wxString GetInfoBarText(void);
 	void RegisterMainFrame(wxEvtHandler* mf);
+	void AddTask(std::string name, std::string dec);
 
 private:
 	mwController() {}
@@ -30,7 +34,7 @@ private:
 	wxVector <wxEvtHandler*> m_events_handlers;
 	wxString m_status_bar_text;
 	wxString m_info_bar_text;
-
+	mwModel m_model;
 	wxMutex m_mutex;
 };
 
