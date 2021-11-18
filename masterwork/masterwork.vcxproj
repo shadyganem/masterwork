@@ -34,8 +34,10 @@
     <ClInclude Include="inc\model\mwTask.h" />
     <ClInclude Include="inc\model\mwDBHandler.h" />
     <ClInclude Include="inc\model\mwModelItem.h" />
+    <ClInclude Include="inc\controller\mwLogger.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\mwLogger.cpp" />
     <ClCompile Include="src\mwModelItem.cpp" />
     <ClCompile Include="src\mwDBHandler.cpp" />
     <ClCompile Include="src\mwTask.cpp" />

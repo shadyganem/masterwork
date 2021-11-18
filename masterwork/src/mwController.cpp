@@ -2,6 +2,7 @@
 
 void mwController::Init()
 {
+	m_logger.Info("Intializing controller");
 	m_model.SetDbPath("mw.db");
 	m_model.InitModel();
 }

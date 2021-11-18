@@ -8,6 +8,8 @@
 
 #include <string>
 #include <vector>
+#include <mutex>
+
 
 class mwModel
 {
@@ -31,5 +33,6 @@ private:
 	std::string m_db_path;
 	mwDBHandler m_db_handler;
 	bool is_initialized;
+	std::mutex m_mutex;
 };
 

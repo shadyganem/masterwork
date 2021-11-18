@@ -111,9 +111,9 @@ bool mwModel::InitUsersTable()
                       "\"is_active\" NUMERIC NOT NULL DEFAULT 0, "
 				      "PRIMARY KEY(\"uid\" AUTOINCREMENT) "
 				      ")";
-
+	m_mutex.lock();
 	m_db_handler.ExeQuery(sql);
-
+	m_mutex.unlock();
 	if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
 		return false;
 	return true;
@@ -132,8 +132,9 @@ bool mwModel::InitProjectsTable()
                       "\"is_active\"	NUMERIC NOT NULL DEFAULT 0, "
                       "PRIMARY KEY(\"uid\" AUTOINCREMENT)           "
 				      ")";
-
+	m_mutex.lock();
 	m_db_handler.ExeQuery(sql);
+	m_mutex.unlock();
 
 	if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
 		return false;
@@ -161,8 +162,9 @@ bool mwModel::InitTasksTable()
 		               "\"blue\"	    INTEGER DEFAULT 0,     "
 					   "PRIMARY KEY(\"uid\" AUTOINCREMENT)     "
 					   ")";
-
+	m_mutex.lock();
 	m_db_handler.ExeQuery(sql);
+	m_mutex.unlock();
 
 	if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
 		return false;

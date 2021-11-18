@@ -6,6 +6,7 @@
 #include "mwDefines.h"
 #include "model/mwModel.h"
 #include "model/mwTask.h"
+#include "controller/mwLogger.h"
 
 class mwController
 {
@@ -38,5 +39,6 @@ private:
 	wxMutex m_mutex;
 	mwUser m_current_user;
 	mwProject m_current_project;
+	mwLogger m_logger;
 };
 
