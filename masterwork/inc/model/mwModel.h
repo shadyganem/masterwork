@@ -30,6 +30,7 @@ private:
 	bool InitUsersTable();
 	bool InitProjectsTable();
 	bool InitTasksTable();
+	bool InitNotificationsTable();
 	std::string m_db_path;
 	mwDBHandler m_db_handler;
 	bool is_initialized;

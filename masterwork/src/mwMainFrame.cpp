@@ -89,6 +89,7 @@ void mwMainFrame::InitStatusBar()
 	mwController& controller = mwController::Get();
 	m_status_bar = CreateStatusBar();
 	m_status_bar->SetBackgroundColour(m_info_bg);
+	m_status_bar->SetStatusText("hello", 4);
 	m_status_bar_text = new wxStaticText(m_status_bar, wxID_ANY, "", wxPoint(5, 5), wxDefaultSize, wxALIGN_LEFT);
 	m_status_bar_text->SetForegroundColour(wxColor(255, 255, 255));
 	controller.SetStatusBarText("Ready - MasterWork");

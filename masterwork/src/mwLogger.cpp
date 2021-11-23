@@ -5,14 +5,29 @@ std::string mwLogger::filepath = "";
 
 mwLogger::mwLogger()
 {
-	std::string full_file_name = this->filepath + "mw.log";
-	m_file.open(full_file_name, std::ofstream::app);
+	try
+	{
+		std::string full_file_name = this->filepath + "mw.log";
+		m_file.open(full_file_name, std::ofstream::app);
+	}
+	catch (...)
+	{
+		;
+	}	
 }
 
 mwLogger::mwLogger(std::string path)
 {
-	std::string full_file_name = this->filepath + "mw.log";
-	m_file.open(full_file_name, std::ofstream::app);
+	filepath = path;
+	try 
+	{
+		std::string full_file_name = this->filepath + "mw.log";
+		m_file.open(full_file_name, std::ofstream::app);
+	}
+	catch (...)
+	{
+		;
+	}
 }
 
 mwLogger::~mwLogger()

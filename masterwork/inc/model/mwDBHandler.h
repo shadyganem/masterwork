@@ -2,6 +2,8 @@
 #include "model/sqlite3.h"
 #include <string>
 #include <vector>
+#include "controller/mwLogger.h"
+#include <utility>
 
 using Record = std::vector<std::string>;
 using Records = std::vector<std::vector<std::string>>;
@@ -22,6 +24,6 @@ private:
 	sqlite3* m_db;
 	std::string m_path;
 	bool is_conn;
-	std::vector<std::vector<std::string>> records;
+	std::vector<std::vector<std::string>> m_records;
 };
 

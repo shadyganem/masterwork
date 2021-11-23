@@ -11,6 +11,7 @@ mwTopPanel::mwTopPanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos, c
 	wxSizer* top_panel_sizer = new wxBoxSizer(wxHORIZONTAL);
 
 
+
 	m_new_task = new wxButton(this, TOP_PANEL_NEW_TASK_ID, "New Task", wxDefaultPosition, wxDefaultSize);
 	m_new_task->SetBackgroundColour(wxColor(61, 61, 61));
 	m_new_task->SetForegroundColour(wxColor(255, 255, 255));

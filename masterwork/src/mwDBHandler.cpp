@@ -24,6 +24,8 @@ int mwDBHandler::Sqlite3SelectCallback(void* p_data, int num_fields, char** p_fi
 
 int mwDBHandler::Sqlite3UpdateCallback(void* p_data, int num_fields, char** p_fields, char** p_col_names)
 {
+	mwLogger logger;
+	logger.Info("callback is called");
 	return 0;
 }
 
@@ -40,6 +42,8 @@ bool mwDBHandler::CreateDB(const char* path)
 
 bool mwDBHandler::ExeQuery(const char* sql)
 {
+	mwLogger logger;
+	logger.Info("at ExeQuery");
 	if (is_conn == false)
 		return false;
 	int rc;

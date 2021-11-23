@@ -35,8 +35,10 @@
     <ClInclude Include="inc\model\mwDBHandler.h" />
     <ClInclude Include="inc\model\mwModelItem.h" />
     <ClInclude Include="inc\controller\mwLogger.h" />
+    <ClInclude Include="inc\model\mwNotification.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\mwNotification.cpp" />
     <ClCompile Include="src\mwLogger.cpp" />
     <ClCompile Include="src\mwModelItem.cpp" />
     <ClCompile Include="src\mwDBHandler.cpp" />

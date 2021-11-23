@@ -20,6 +20,7 @@ bool mwModel::InitModel()
 	InitUsersTable();
 	InitProjectsTable();
 	InitTasksTable();
+	InitNotificationsTable();
 	is_initialized = true;
 	return true;
 }
@@ -91,10 +92,7 @@ bool mwModel::SetActiveProject(mwProject& project)
 
 bool mwModel::GetProjectTasks(mwProject& project, std::vector<mwTask>& ret_tasks_vect)
 {
-
-
 	std::vector<std::vector<std::string>> records;
-
 	std::string sql = "SELECT * FROM ";
 	m_db_handler.Select(sql.c_str(), records);
 	return false;
@@ -102,6 +100,8 @@ bool mwModel::GetProjectTasks(mwProject& project, std::vector<mwTask>& ret_tasks
 
 bool mwModel::InitUsersTable()
 {
+	mwLogger logger;
+	logger.Info("Initialzing users table");
 	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 		return false;
 
@@ -121,6 +121,8 @@ bool mwModel::InitUsersTable()
 
 bool mwModel::InitProjectsTable()
 {
+	mwLogger logger;
+	logger.Info("Initialzing projects table");
 	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 		return false;
 
@@ -143,6 +145,8 @@ bool mwModel::InitProjectsTable()
 
 bool mwModel::InitTasksTable()
 {
+	mwLogger logger;
+	logger.Info("Initialzing tasks table");
 	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 		return false;
 
@@ -166,6 +170,35 @@ bool mwModel::InitTasksTable()
 	m_db_handler.ExeQuery(sql);
 	m_mutex.unlock();
 
+	if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
+		return false;
+	return true;
+}
+
+bool mwModel::InitNotificationsTable()
+{
+	mwLogger logger;
+	logger.Info("Initialzing users table");
+	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
+		return false;
+
+	const char* sql = "CREATE TABLE IF NOT EXISTS \"notifications\" ( "
+						"\"uid\"	INTEGER NOT NULL UNIQUE,       "
+						"\"user_id\"	INTEGER DEFAULT 0,     "
+						"\"text\"	    TEXT,                  "
+						"\"status\"	    INTEGER DEFAULT 0,     "
+						"\"priority\"	INTEGER DEFAULT 2,     "
+						"\"start_time\"	INTEGER,               "
+						"\"end_time\"	INTEGER,               "
+						"\"ttl\"	INTEGER,               "
+						"\"red\"	        INTEGER DEFAULT 0,     "
+						"\"green\"	    INTEGER DEFAULT 0,     "
+						"\"blue\"	    INTEGER DEFAULT 0,     "
+						"PRIMARY KEY(\"uid\" AUTOINCREMENT)     "
+						")";
+	m_mutex.lock();
+	m_db_handler.ExeQuery(sql);
+	m_mutex.unlock();
 	if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
 		return false;
 	return true;
