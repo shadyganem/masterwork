@@ -6,6 +6,7 @@ void mwController::Init()
 	m_logger.Info("Intializing controller");
 	m_model.SetDbPath("mw.db");
 	m_model.InitModel();
+	m_model.GetActiveUser(current_user);
 }
 
 bool mwController::Search(wxString& search_query)

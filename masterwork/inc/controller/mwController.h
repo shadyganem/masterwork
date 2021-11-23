@@ -6,6 +6,7 @@
 #include "mwDefines.h"
 #include "model/mwModel.h"
 #include "model/mwTask.h"
+#include "model/mwUser.h"
 #include "controller/mwLogger.h"
 
 class mwController
@@ -40,5 +41,6 @@ private:
 	mwUser m_current_user;
 	mwProject m_current_project;
 	mwLogger m_logger;
+	mwUser current_user;
 };
 

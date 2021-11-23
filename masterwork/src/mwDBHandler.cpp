@@ -12,7 +12,6 @@ int mwDBHandler::Sqlite3SelectCallback(void* p_data, int num_fields, char** p_fi
 	Records* records = static_cast<Records*>(p_data);
 	try
 	{
-		Records* records = static_cast<Records*>(p_data);
 		records->emplace_back(p_fields, p_fields + num_fields);
 	}
 	catch (...)

@@ -67,7 +67,28 @@ bool mwModel::AddTask(mwTask& task)
 
 bool mwModel::GetActiveUser(mwUser& user)
 {
-	return false;
+	mwLogger logger;
+	logger.Info("Select active user");
+	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
+		return false;
+
+	std::string sql = "SELECT * FROM users "
+		              "WHERE is_active=1 "
+		              "; ";
+	Records records;
+	m_db_handler.Select(sql.c_str(), records);
+	if (records.empty())
+	{
+		m_db_handler.DisConn(this->m_db_path.c_str());
+		return false;
+	}
+	Record row = records[0];
+	user.username = row[1];
+	user.uid = std::stoi(row[0]);
+	user.is_active = std::stoi(row[2]) == 1? true : false;
+	if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
+		return false;
+	return true;
 }
 
 bool mwModel::SetActiveUser(mwUser& user)
@@ -128,7 +149,7 @@ bool mwModel::InitProjectsTable()
 
 	const char* sql = "CREATE TABLE IF NOT EXISTS \"projects\" (    "
 				      "\"uid\"	        INTEGER NOT NULL UNIQUE,    "
-		              "\"user_uid\"	    INTEGER,                    "
+		              "\"user_uid\"	    INTEGER NOT NULL DEFAULT 1,                    "
 				      "\"name\"	        TEXT,                       "
 				      "\"start_time\"   INTEGER,                    "
                       "\"is_active\"	NUMERIC NOT NULL DEFAULT 0, "
@@ -160,7 +181,7 @@ bool mwModel::InitTasksTable()
 					   "\"start_time\"	INTEGER,               "
 					   "\"end_time\"	INTEGER,               "
 		               "\"deadline\"	INTEGER,               "
-					   "\"project_uid\"	INTEGER DEFAULT 0,     "
+					   "\"project_uid\"	INTEGER DEFAULT 1,     "
                 	   "\"red\"	        INTEGER DEFAULT 0,     "
 		               "\"green\"	    INTEGER DEFAULT 0,     "
 		               "\"blue\"	    INTEGER DEFAULT 0,     "

@@ -9,8 +9,8 @@ public:
 	mwUser();
 	~mwUser();
 
-private:
-	std::string m_username;
-	int m_id;
+	int uid;
+	std::string username;
+	bool is_active;
 };
 
