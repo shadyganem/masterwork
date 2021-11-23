@@ -21,6 +21,7 @@ public:
 	// mwController interface
 	void Init();
 	bool Search(wxString& search_query);
+	wxString GetActiveUsername(void);
 	void SetStatusBarText(const wxString& txt);
 	wxString GetStatusBarText(void);
 	void SetInfoBarText(const wxString& txt);
@@ -41,6 +42,6 @@ private:
 	mwUser m_current_user;
 	mwProject m_current_project;
 	mwLogger m_logger;
-	mwUser current_user;
+	mwUser active_user;
 };
 

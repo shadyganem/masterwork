@@ -79,8 +79,11 @@ void mwMainFrame::InitMenuBar()
 	menu_file->Append(MENU_FILE_EXIT_ID, "Exit");
 	wxMenu* menu_window = new wxMenu();
 	menu_window->Append(MENU_WINDOW_PROPERTIES_ID, "Properties");
+	wxMenu* menu_help = new wxMenu();
+	menu_help->Append(MENU_HELP_ABOUT_ID, "About");
 	m_menu_bar->Append(menu_file, "File");
 	m_menu_bar->Append(menu_window, "Window");
+	m_menu_bar->Append(menu_help, "Help");
 	this->SetMenuBar(m_menu_bar);
 }
 
@@ -92,7 +95,8 @@ void mwMainFrame::InitStatusBar()
 	m_status_bar->SetStatusText("hello", 4);
 	m_status_bar_text = new wxStaticText(m_status_bar, wxID_ANY, "", wxPoint(5, 5), wxDefaultSize, wxALIGN_LEFT);
 	m_status_bar_text->SetForegroundColour(wxColor(255, 255, 255));
-	controller.SetStatusBarText("Ready - MasterWork");
+	wxString active_user = controller.GetActiveUsername();
+	controller.SetStatusBarText("Ready - " + active_user);
 }
 
 void mwMainFrame::InitInfoBar()
@@ -185,7 +189,8 @@ void mwMainFrame::On1SecTimer(wxTimerEvent& event)
 
 	if (m_3_sec_check == 3)
 	{
-		controller.SetStatusBarText("Ready - MasterWork!");
+		wxString active_user = controller.GetActiveUsername();
+		controller.SetStatusBarText("Ready - " + active_user);
 		m_3_sec_check = 0;
 	}
 	else

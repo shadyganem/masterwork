@@ -6,12 +6,17 @@ void mwController::Init()
 	m_logger.Info("Intializing controller");
 	m_model.SetDbPath("mw.db");
 	m_model.InitModel();
-	m_model.GetActiveUser(current_user);
+	m_model.GetActiveUser(active_user);
 }
 
 bool mwController::Search(wxString& search_query)
 {
 	return false;
+}
+
+wxString mwController::GetActiveUsername(void)
+{
+	return wxString(this->active_user.username);
 }
 
 void mwController::SetStatusBarText(const wxString& txt)
