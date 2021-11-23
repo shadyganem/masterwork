@@ -127,11 +127,21 @@ bool mwModel::InitUsersTable()
 		return false;
 
 	const char* sql = "CREATE TABLE IF NOT EXISTS \"users\" ( "
-				      "\"uid\"	INTEGER NOT NULL UNIQUE, "
-				      "\"username\"	TEXT NOT NULL, "
-                      "\"is_active\" NUMERIC NOT NULL DEFAULT 0, "
-				      "PRIMARY KEY(\"uid\" AUTOINCREMENT) "
-				      ")";
+					"\"uid\"	INTEGER NOT NULL UNIQUE, "
+					"\"username\"	TEXT NOT NULL, "
+					"\"is_active\" NUMERIC NOT NULL DEFAULT 0, "
+					"PRIMARY KEY(\"uid\" AUTOINCREMENT) "
+					");"
+
+					"INSERT OR IGNORE INTO \"users\" ( "
+		            "\"uid\", "
+					"\"username\", "
+					"\"is_active\") "
+					"VALUES ( "
+		            "\"1\", "
+					"\"Default User\", "
+					"\"1\"); ";
+
 	m_mutex.lock();
 	m_db_handler.ExeQuery(sql);
 	m_mutex.unlock();

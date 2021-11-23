@@ -17,7 +17,7 @@ mwBottomPanel::mwBottomPanel(wxWindow* parent,
 	wxBoxSizer* m_ver_sizer;
 	m_ver_sizer = new wxBoxSizer(wxVERTICAL);
 
-	m_listbook = new wxListbook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLB_DEFAULT | wxTAB_TRAVERSAL);
+	m_listbook = new wxListbook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDEFAULT);
 	m_programming = new wxPanel(m_listbook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
 	m_listbook->AddPage(m_programming, wxT("Programming"), false);
 	m_notification = new wxPanel(m_listbook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
