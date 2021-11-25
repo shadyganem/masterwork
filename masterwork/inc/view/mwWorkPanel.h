@@ -14,6 +14,7 @@
 #include <wx/icon.h>
 #include <wx/notebook.h>
 #include <wx/sizer.h>
+#include "view/mwTaskPanel.h"
 
 
 class mwWorkPanel : public wxPanel
@@ -33,12 +34,14 @@ public:
     wxColor m_tool_bar_bg = wxColor(0, 0, 255);
     wxNotebook* m_notebook;
     wxPanel* m_tasks;
-protected:
+    wxBoxSizer* m_tasks_sizer;
+
 	wxBoxSizer* m_ver_sizer;
 
 	// Virtual event handlers, overide them in your derived class
 	virtual void OnPageChanged(wxNotebookEvent& event);
 	virtual void OnPageChanging(wxNotebookEvent& event);
+    virtual void OnUiUpdate();
 
 
 

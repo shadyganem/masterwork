@@ -1,0 +1,50 @@
+#pragma once
+#include <wx/string.h>
+#include <wx/textctrl.h>
+#include <wx/gdicmn.h>
+#include <wx/font.h>
+#include <wx/colour.h>
+#include <wx/settings.h>
+#include <wx/richtext/richtextctrl.h>
+#include <wx/sizer.h>
+#include <wx/stattext.h>
+#include <wx/spinctrl.h>
+#include <wx/datectrl.h>
+#include <wx/dateevt.h>
+#include <wx/choice.h>
+#include <wx/bitmap.h>
+#include <wx/image.h>
+#include <wx/icon.h>
+#include <wx/bmpbuttn.h>
+#include <wx/button.h>
+#include <wx/panel.h>
+
+class mwTaskPanel : public wxPanel
+{
+private:
+
+protected:
+	wxTextCtrl* m_taskname;
+	wxRichTextCtrl* m_richText1;
+	wxStaticText* m_staticText2;
+	wxSpinCtrl* m_spinCtrl1;
+	wxStaticText* m_staticText4;
+	wxSpinCtrl* m_spinCtrl3;
+	wxStaticText* m_staticText3;
+	wxSpinCtrl* m_spinCtrl2;
+	wxDatePickerCtrl* m_datePicker1;
+	wxChoice* m_choice1;
+	wxBitmapButton* m_delete_task;
+
+	// Virtual event handlers, overide them in your derived class
+	virtual void OnEnterWindow(wxMouseEvent& event) { event.Skip(); }
+	virtual void OnleaveWindow(wxMouseEvent& event) { event.Skip(); }
+	virtual void OnStatusChanged(wxCommandEvent& event) { event.Skip(); }
+	virtual void OnDelete(wxCommandEvent& event) { event.Skip(); }
+
+
+public:
+	mwTaskPanel(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+	~mwTaskPanel();
+
+};
