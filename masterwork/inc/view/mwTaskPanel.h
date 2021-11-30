@@ -23,7 +23,9 @@ class mwTaskPanel : public wxPanel
 {
 private:
 
-protected:
+	wxStaticText* m_staticText5;
+	wxStaticText* m_staticText41;
+	wxButton* m_edit_task;
 	wxTextCtrl* m_taskname;
 	wxRichTextCtrl* m_richText1;
 	wxStaticText* m_staticText2;
@@ -35,16 +37,22 @@ protected:
 	wxDatePickerCtrl* m_datePicker1;
 	wxChoice* m_choice1;
 	wxBitmapButton* m_delete_task;
+	wxBitmapButton* m_save_task;
 
 	// Virtual event handlers, overide them in your derived class
 	virtual void OnEnterWindow(wxMouseEvent& event) { event.Skip(); }
 	virtual void OnleaveWindow(wxMouseEvent& event) { event.Skip(); }
+	virtual void OnEditTask(wxCommandEvent& event);
 	virtual void OnStatusChanged(wxCommandEvent& event) { event.Skip(); }
 	virtual void OnDelete(wxCommandEvent& event) { event.Skip(); }
+	virtual void OnSaveTask(wxCommandEvent& event);
 
 
 public:
-	mwTaskPanel(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+	wxBoxSizer* hor_task_sizer;
+	wxPanel* m_static_view;
+	wxPanel* m_edit_view;
+	mwTaskPanel(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(1025, 100), long style = wxTAB_TRAVERSAL);
 	~mwTaskPanel();
 
 };
