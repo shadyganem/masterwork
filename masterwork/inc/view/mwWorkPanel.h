@@ -30,10 +30,10 @@ public:
 	~mwWorkPanel();
 
 public:
+    wxScrolledWindow* m_tasks_scroll_window;
     wxToolBar* m_tool_bar;
     wxColor m_tool_bar_bg = wxColor(0, 0, 255);
     wxNotebook* m_notebook;
-    wxPanel* m_tasks;
     wxBoxSizer* m_tasks_sizer;
 
 	wxBoxSizer* m_ver_sizer;
