@@ -7,7 +7,7 @@ void mwTaskPanel::OnEditTask(wxCommandEvent& event)
 {
 	m_static_view->Hide();
 	m_edit_view->Show();
-	hor_task_sizer->Layout();
+	ver_task_sizer->Layout();
 	event.Skip();
 }
 
@@ -15,13 +15,13 @@ void mwTaskPanel::OnSaveTask(wxCommandEvent& event)
 {
 	m_edit_view->Hide();
 	m_static_view->Show();
-	hor_task_sizer->Layout();
+	ver_task_sizer->Layout();
 	event.Skip();
 }
 
 mwTaskPanel::mwTaskPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style ) : wxPanel( parent, id, pos, size, style )
 {
-	hor_task_sizer = new wxBoxSizer(wxVERTICAL);
+	ver_task_sizer = new wxBoxSizer(wxVERTICAL);
 
 	m_static_view = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
 	wxBoxSizer* bSizer16;
@@ -51,7 +51,7 @@ mwTaskPanel::mwTaskPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, c
 	m_static_view->SetSizer(bSizer16);
 	m_static_view->Layout();
 	bSizer16->Fit(m_static_view);
-	hor_task_sizer->Add(m_static_view, 1, wxEXPAND | wxALL, 5);
+	ver_task_sizer->Add(m_static_view, 1, wxEXPAND | wxALL, 5);
 
 	m_edit_view = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
 	m_edit_view->Hide();
@@ -145,9 +145,9 @@ mwTaskPanel::mwTaskPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, c
 	m_edit_view->SetSizer(bSizer13);
 	m_edit_view->Layout();
 	bSizer13->Fit(m_edit_view);
-	hor_task_sizer->Add(m_edit_view, 1, wxEXPAND | wxALL, 5);
+	ver_task_sizer->Add(m_edit_view, 1, wxEXPAND | wxALL, 5);
 
-	this->SetSizer(hor_task_sizer);
+	this->SetSizer(ver_task_sizer);
 	this->Layout();
 
 	// Connect Events
