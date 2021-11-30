@@ -64,14 +64,14 @@ void mwWorkPanel::OnUiUpdate()
 	mwTaskPanel* m_task7 = new mwTaskPanel(m_tasks_scroll_window);
 	m_task7->SetBackgroundColour(wxColor(240, 240, 240));
 
-	m_tasks_sizer->Add(m_task, 0, wxEXPAND | wxALL, 5);
-	m_tasks_sizer->Add(m_task1, 0, wxEXPAND | wxALL, 5);
-	m_tasks_sizer->Add(m_task2, 0, wxEXPAND | wxALL, 5);
-	m_tasks_sizer->Add(m_task3, 0, wxEXPAND | wxALL, 5);
-	m_tasks_sizer->Add(m_task4, 0, wxEXPAND | wxALL, 5);
-	m_tasks_sizer->Add(m_task5, 0, wxEXPAND | wxALL, 5);
-	m_tasks_sizer->Add(m_task6, 0, wxEXPAND | wxALL, 5);
-	m_tasks_sizer->Add(m_task7, 0, wxEXPAND | wxALL, 5);
+	m_tasks_sizer->Add(m_task, 0, wxEXPAND | wxALL, 1);
+	m_tasks_sizer->Add(m_task1, 0, wxEXPAND | wxALL, 1);
+	m_tasks_sizer->Add(m_task2, 0, wxEXPAND | wxALL, 1);
+	m_tasks_sizer->Add(m_task3, 0, wxEXPAND | wxALL, 1);
+	m_tasks_sizer->Add(m_task4, 0, wxEXPAND | wxALL, 1);
+	m_tasks_sizer->Add(m_task5, 0, wxEXPAND | wxALL, 1);
+	m_tasks_sizer->Add(m_task6, 0, wxEXPAND | wxALL, 1);
+	m_tasks_sizer->Add(m_task7, 0, wxEXPAND | wxALL, 1);
 
 }
 

@@ -3,6 +3,20 @@
 
 ///////////////////////////////////////////////////////////////////////////
 
+void mwTaskPanel::OnEnterWindow(wxMouseEvent& event)
+{
+	//this->SetBackgroundColour(wxColor(0, 31, 51));
+	this->Refresh();
+	event.Skip();
+}
+
+void mwTaskPanel::OnleaveWindow(wxMouseEvent& event)
+{
+    //this->SetBackgroundColour(wxColor(240, 240, 240));
+	this->Refresh();
+	event.Skip();
+}
+
 void mwTaskPanel::OnEditTask(wxCommandEvent& event)
 {
 	m_static_view->Hide();
