@@ -22,13 +22,19 @@ mwSidePanel::mwSidePanel(wxWindow* parent,
 
 	bSizer21->Add(m_projects_text, 0, wxALL | wxEXPAND, 5);
 
-	m_listCtrl2 = new wxListCtrl(m_panel7, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_ALIGN_LEFT | wxLC_ALIGN_TOP | wxLC_AUTOARRANGE | wxLC_LIST);
-	bSizer21->Add(m_listCtrl2, 1, wxALL | wxEXPAND, 5);
+	m_projects_list = new wxListCtrl(m_panel7, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_LIST);
+	bSizer21->Add(m_projects_list, 1, wxALL | wxEXPAND, 5);
 
 	m_panel7->SetSizer(bSizer21);
 	m_panel7->Layout();
 	bSizer21->Fit(m_panel7);
 	m_panel9 = new wxPanel(m_splitter1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+	wxBoxSizer* bSizer22;
+	bSizer22 = new wxBoxSizer(wxVERTICAL);
+
+	m_panel9->SetSizer(bSizer22);
+	m_panel9->Layout();
+	bSizer22->Fit(m_panel9);
 	m_splitter1->SplitHorizontally(m_panel7, m_panel9, 324);
 	bSizer19->Add(m_splitter1, 1, wxEXPAND, 5);
 

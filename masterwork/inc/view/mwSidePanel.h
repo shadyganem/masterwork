@@ -20,17 +20,15 @@ protected:
 	wxSplitterWindow* m_splitter1;
 	wxPanel* m_panel7;
 	wxStaticText* m_projects_text;
-	wxListCtrl* m_listCtrl2;
 	wxPanel* m_panel9;
 
 public:
-
+	wxListCtrl* m_projects_list;
 	void m_splitter1OnIdle(wxIdleEvent&)
 	{
 		m_splitter1->SetSashPosition(324);
 		m_splitter1->Disconnect(wxEVT_IDLE, wxIdleEventHandler(mwSidePanel::m_splitter1OnIdle), NULL, this);
 	}
-
 
 
 public:
