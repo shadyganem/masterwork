@@ -5,15 +5,19 @@
 
 void mwTaskPanel::OnEnterWindow(wxMouseEvent& event)
 {
-	//this->SetBackgroundColour(wxColor(0, 31, 51));
+	this->SetBackgroundColour(wxColor(0, 31, 51));
 	this->Refresh();
 	event.Skip();
 }
 
 void mwTaskPanel::OnleaveWindow(wxMouseEvent& event)
 {
-    //this->SetBackgroundColour(wxColor(240, 240, 240));
-	this->Refresh();
+	wxRect task_panel_rect = this->GetScreenRect();
+	wxPoint mouse_pos = wxGetMousePosition();
+	if (!task_panel_rect.Contains(mouse_pos)) {
+		this->SetBackgroundColour(wxColor(240, 240, 240));
+		this->Refresh();
+	}	
 	event.Skip();
 }
 
@@ -167,6 +171,10 @@ mwTaskPanel::mwTaskPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, c
 	// Connect Events
 	this->Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(mwTaskPanel::OnEnterWindow));
 	this->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(mwTaskPanel::OnleaveWindow));
+	m_static_view->Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(mwTaskPanel::OnEnterWindow), NULL, this);
+	m_static_view->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(mwTaskPanel::OnleaveWindow), NULL, this);
+	m_edit_view->Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(mwTaskPanel::OnEnterWindow), NULL, this);
+	m_edit_view->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(mwTaskPanel::OnleaveWindow), NULL, this);
 	m_edit_task->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mwTaskPanel::OnEditTask), NULL, this);
 	m_choice1->Connect(wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler(mwTaskPanel::OnStatusChanged), NULL, this);
 	m_delete_task->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mwTaskPanel::OnDelete), NULL, this);
@@ -178,6 +186,10 @@ mwTaskPanel::~mwTaskPanel()
 	// Disconnect Events
 	this->Disconnect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(mwTaskPanel::OnEnterWindow));
 	this->Disconnect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(mwTaskPanel::OnleaveWindow));
+	m_static_view->Disconnect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(mwTaskPanel::OnEnterWindow), NULL, this);
+	m_static_view->Disconnect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(mwTaskPanel::OnleaveWindow), NULL, this);
+	m_edit_view->Disconnect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(mwTaskPanel::OnEnterWindow), NULL, this);
+	m_edit_view->Disconnect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(mwTaskPanel::OnleaveWindow), NULL, this);
 	m_edit_task->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mwTaskPanel::OnEditTask), NULL, this);
 	m_choice1->Disconnect(wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler(mwTaskPanel::OnStatusChanged), NULL, this);
 	m_delete_task->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mwTaskPanel::OnDelete), NULL, this);
