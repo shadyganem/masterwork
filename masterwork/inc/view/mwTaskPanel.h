@@ -54,7 +54,7 @@ public:
 	wxBoxSizer* ver_task_sizer;
 	wxPanel* m_static_view;
 	wxPanel* m_edit_view;
-	mwTaskPanel(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(1025, 100), long style = wxTAB_TRAVERSAL);
+	mwTaskPanel(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(600, 100), long style = wxTAB_TRAVERSAL);
 	~mwTaskPanel();
 
 };
