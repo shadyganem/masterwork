@@ -29,6 +29,11 @@ void mwTaskPanel::OnEditTask(wxCommandEvent& event)
 	event.Skip();
 }
 
+void mwTaskPanel::OnDelete(wxCommandEvent& event)
+{
+	event.Skip();
+}
+
 void mwTaskPanel::OnSaveTask(wxCommandEvent& event)
 {
 	m_edit_view->Hide();
@@ -150,10 +155,19 @@ mwTaskPanel::mwTaskPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, c
 	wxBoxSizer* bSizer15;
 	bSizer15 = new wxBoxSizer(wxHORIZONTAL);
 
-	m_delete_task = new wxBitmapButton(m_edit_view, wxID_ANY, wxBitmap(), wxDefaultPosition, wxSize(25, 25), wxBU_AUTODRAW);
+	wxBitmap delete_bitmap;
+	// TODO: change path to a cross platform solution 
+	delete_bitmap.LoadFile("C:/dev/cpp/masterwork/masterwork/resources/bitmap/delete.bmp", wxBITMAP_TYPE_BMP);
+
+	m_delete_task = new wxBitmapButton(m_edit_view, wxID_ANY, delete_bitmap, wxDefaultPosition, wxSize(25, 25), wxBU_AUTODRAW);
+
 	bSizer15->Add(m_delete_task, 0, wxALL | wxALIGN_CENTER_HORIZONTAL | wxALIGN_CENTER_VERTICAL, 5);
 
-	m_save_task = new wxBitmapButton(m_edit_view, wxID_ANY, wxBitmap(), wxDefaultPosition, wxSize(25, 25), wxBU_AUTODRAW);
+	wxBitmap save_bitmap;
+	// TODO: change path to a cross platform solution 
+	save_bitmap.LoadFile("C:/dev/cpp/masterwork/masterwork/resources/bitmap/save.bmp", wxBITMAP_TYPE_BMP);
+
+	m_save_task = new wxBitmapButton(m_edit_view, wxID_ANY, save_bitmap, wxDefaultPosition, wxSize(25, 25), wxBU_AUTODRAW);
 	bSizer15->Add(m_save_task, 0, wxALL | wxALIGN_CENTER_HORIZONTAL | wxALIGN_CENTER_VERTICAL, 5);
 
 	bSizer8->Add(bSizer15, 1, wxEXPAND | wxALIGN_CENTER_HORIZONTAL, 5);

@@ -24,7 +24,7 @@
 class mwTaskPanel : public wxPanel
 {
 private:
-
+	wxBitmap* m_delete_bitmap;
 	wxStaticText* m_staticText5;
 	wxStaticText* m_staticText41;
 	wxButton* m_edit_task;
@@ -46,7 +46,7 @@ private:
 	virtual void OnleaveWindow(wxMouseEvent& event);
 	virtual void OnEditTask(wxCommandEvent& event);
 	virtual void OnStatusChanged(wxCommandEvent& event) { event.Skip(); }
-	virtual void OnDelete(wxCommandEvent& event) { event.Skip(); }
+	virtual void OnDelete(wxCommandEvent& event);
 	virtual void OnSaveTask(wxCommandEvent& event);
 
 
@@ -56,5 +56,4 @@ public:
 	wxPanel* m_edit_view;
 	mwTaskPanel(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(600, 100), long style = wxTAB_TRAVERSAL);
 	~mwTaskPanel();
-
 };
