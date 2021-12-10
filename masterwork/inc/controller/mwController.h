@@ -8,6 +8,7 @@
 #include "model/mwTask.h"
 #include "model/mwUser.h"
 #include "controller/mwLogger.h"
+#include <vector>
 
 class mwController
 {
@@ -28,6 +29,7 @@ public:
 	wxString GetInfoBarText(void);
 	void RegisterMainFrame(wxEvtHandler* mf);
 	void AddTask(std::string name, std::string dec);
+	void GetPorjectsForActiveUser(std::vector<std::string>& projects);
 
 private:
 	mwController() {}
@@ -39,7 +41,6 @@ private:
 	wxString m_info_bar_text;
 	mwModel m_model;
 	wxMutex m_mutex;
-	mwUser m_current_user;
 	mwProject m_current_project;
 	mwLogger m_logger;
 	mwUser active_user;

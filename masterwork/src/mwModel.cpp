@@ -106,6 +106,45 @@ bool mwModel::GetActiveProject(mwProject& project)
 	return false;
 }
 
+bool mwModel::GetAllProjects(std::vector<mwProject>& prjects_vect, const mwUser& user)
+{
+	try
+	{
+		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
+			return false;
+
+		mwLogger logger;
+		logger.Info("selecting all projects for " + user.username);
+		Records records;
+		Record row;
+		std::string sql = "SELECT * FROM projects WHERE user_uid=" + std::to_string(user.uid) + " ;";
+		m_db_handler.Select(sql.c_str(), records);
+		mwProject proj;
+		if (records.empty())
+		{
+			logger.Warning("No records where found for: " + sql);
+		}
+		for (int i = 0; i < records.size(); i++)
+		{
+			row = records[i];
+			proj.uid = std::stoi(row[0]);
+			proj.user_uid = std::stoi(row[1]);
+			proj.project_name = row[2];
+			proj.project_cration_time = std::stoi(row[3]);
+			proj.is_active = std::stoi(row[4]) == 1 ? true : false;
+			prjects_vect.push_back(proj);
+		}
+		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
+			return false;
+		return true;
+	}
+	catch(...)
+	{
+		m_db_handler.DisConn(this->m_db_path.c_str());
+		return false;
+	}
+}
+
 bool mwModel::SetActiveProject(mwProject& project)
 {
 	return false;

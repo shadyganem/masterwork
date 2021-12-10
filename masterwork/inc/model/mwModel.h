@@ -24,6 +24,7 @@ public:
 	bool SetActiveUser(mwUser& user);
 	bool GetAllUsers(std::vector<mwUser>& ret_users_vect);
 	bool GetActiveProject(mwProject& project);
+	bool GetAllProjects(std::vector<mwProject>& prjects_vect, const mwUser& currnet_user);
 	bool SetActiveProject(mwProject& project);
 	bool GetProjectTasks(mwProject& project,  std::vector<mwTask>& ret_tasks_vect);
 private:

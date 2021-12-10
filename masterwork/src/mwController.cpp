@@ -60,6 +60,19 @@ void mwController::AddTask(std::string name, std::string dec)
 	PostUpdateUI(MAIN_FRAME_ID);
 }
 
+void mwController::GetPorjectsForActiveUser(std::vector<std::string>& projects)
+{
+	mwLogger logger;
+	logger.Info("at GetPorjectsForCurrentUser");
+	std::vector<mwProject> mw_projects;
+	m_model.GetAllProjects(mw_projects, active_user);
+	std::vector<mwProject>::iterator it;
+	for (it = mw_projects.begin(); it != mw_projects.end(); ++it)
+	{
+		projects.push_back(it->project_name);
+	}
+}
+
 void mwController::PostUpdateUI(int windId)
 {
 	wxCommandEvent* event = new wxCommandEvent(mwUpdateUI, windId);

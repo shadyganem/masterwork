@@ -10,20 +10,19 @@
 #include <wx/sizer.h>
 #include <wx/panel.h>
 #include <wx/splitter.h>
+#include "controller/mwController.h"
 
 class mwSidePanel : public wxPanel
 {
+public:
 
-private:
-
-protected:
 	wxSplitterWindow* m_splitter1;
 	wxPanel* m_panel7;
 	wxStaticText* m_projects_text;
 	wxPanel* m_panel9;
 
-public:
-	wxListCtrl* m_projects_list;
+	wxListBox* m_projects_list;
+
 	void m_splitter1OnIdle(wxIdleEvent&)
 	{
 		m_splitter1->SetSashPosition(324);
@@ -31,7 +30,8 @@ public:
 	}
 
 
-public:
+	void UpdateProjecstList();
+
 	mwSidePanel(wxWindow* parent,
                 wxWindowID winid = wxID_ANY,
                 const wxPoint& pos = wxDefaultPosition,

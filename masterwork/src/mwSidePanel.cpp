@@ -1,6 +1,20 @@
 #include "view/mwSidePanel.h"
 
-mwSidePanel::mwSidePanel(wxWindow* parent, 
+void mwSidePanel::UpdateProjecstList()
+{
+	mwController& controller = mwController::Get();
+	std::vector<std::string> projects;
+	controller.GetPorjectsForActiveUser(projects);
+	wxString project_name;
+	for (int i = 0; i < projects.size(); i++)
+	{
+		project_name = projects[i];
+		m_projects_list->InsertItems(1, &project_name, i);
+	}
+	
+}
+
+mwSidePanel::mwSidePanel(wxWindow* parent,
 	                     wxWindowID winid, 
 	                     const wxPoint& pos, 
 	                     const wxSize& size, 
@@ -22,7 +36,7 @@ mwSidePanel::mwSidePanel(wxWindow* parent,
 
 	bSizer21->Add(m_projects_text, 0, wxALL | wxEXPAND, 5);
 
-	m_projects_list = new wxListCtrl(m_panel7, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_LIST);
+	m_projects_list = new wxListBox(m_panel7, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, 0);
 	bSizer21->Add(m_projects_list, 1, wxALL | wxEXPAND, 5);
 
 	m_panel7->SetSizer(bSizer21);
@@ -40,7 +54,7 @@ mwSidePanel::mwSidePanel(wxWindow* parent,
 
 	this->SetSizer(bSizer19);
 	this->Layout();
-
+	this->UpdateProjecstList();
 }
 
 mwSidePanel::~mwSidePanel()
