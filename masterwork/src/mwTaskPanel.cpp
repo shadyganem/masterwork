@@ -5,7 +5,7 @@
 
 void mwTaskPanel::OnEnterWindow(wxMouseEvent& event)
 {
-	this->SetBackgroundColour(wxColor(0, 31, 51));
+	this->SetBackgroundColour(wxColor(153, 180, 209));
 	this->Refresh();
 	event.Skip();
 }
