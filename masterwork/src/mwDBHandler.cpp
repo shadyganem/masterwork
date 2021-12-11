@@ -64,6 +64,20 @@ bool mwDBHandler::Select(const char* sql, Records& ret_records)
 	return true;
 }
 
+bool mwDBHandler::Update(const char* sql)
+{
+	if (is_conn == false)
+		return false;
+	int rc;
+	char* errmsg;
+	rc = sqlite3_exec(m_db, sql, Sqlite3UpdateCallback, 0, &errmsg);
+	if (rc != SQLITE_OK)
+	{
+		return false;
+	}
+	return true;
+}
+
 bool mwDBHandler::CreateNewTable(const char* sql)
 {
 	return false;

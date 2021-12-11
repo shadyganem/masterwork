@@ -10,6 +10,10 @@ void mwController::Init()
 	m_model.GetActiveProject(m_active_project, m_active_user);
 	m_logger.Info("The active user is \"" + this->m_active_user.username + "\"");
 	m_logger.Info("The active project is \"" + this->m_active_project.project_name + "\"");
+	mwProject project;
+	project.uid = 2;
+	project.user_uid = 2;
+	m_model.SetActiveProject(project);
 }
 
 bool mwController::Search(wxString& search_query)
@@ -67,6 +71,7 @@ void mwController::GetProjectsForActiveUser(std::vector<std::string>& projects)
 {
 	mwLogger logger;
 	logger.Info("at GetPorjectsForCurrentUser");
+	m_model.GetActiveUser(m_active_user);
 	std::vector<mwProject> mw_projects;
 	m_model.GetAllProjects(mw_projects, m_active_user);
 	std::vector<mwProject>::iterator it;

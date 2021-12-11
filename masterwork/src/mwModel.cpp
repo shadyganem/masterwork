@@ -67,73 +67,145 @@ bool mwModel::AddTask(mwTask& task)
 
 bool mwModel::GetActiveUser(mwUser& user)
 {
-	mwLogger logger;
-	logger.Info("Select active user");
-	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
-		return false;
+	try
+	{
+		mwLogger logger;
+		logger.Info("Select active user");
+		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
+			return false;
 
-	std::string sql = "SELECT * FROM users "
-		              "WHERE is_active=1 "
-		              "; ";
-	Records records;
-	logger.Info("Executinig query " + sql);
+		std::string sql = "SELECT * FROM users "
+			"WHERE is_active=1 "
+			"; ";
+		Records records;
+		logger.Info("Executinig query " + sql);
 
-	m_db_handler.Select(sql.c_str(), records);
-	if (records.empty())
+		m_db_handler.Select(sql.c_str(), records);
+		if (records.empty())
+		{
+			m_db_handler.DisConn(this->m_db_path.c_str());
+			return false;
+		}
+		Record row = records[0];
+		user.username = row[1];
+		user.uid = std::stoi(row[0]);
+		user.is_active = std::stoi(row[2]) == 1 ? true : false;
+		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
+			return false;
+		return true;
+	}
+	catch (...)
 	{
 		m_db_handler.DisConn(this->m_db_path.c_str());
 		return false;
 	}
-	Record row = records[0];
-	user.username = row[1];
-	user.uid = std::stoi(row[0]);
-	user.is_active = std::stoi(row[2]) == 1? true : false;
-	if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
-		return false;
-	return true;
 }
 
 bool mwModel::SetActiveUser(mwUser& user)
 {
-	return false;
+	try
+	{
+		mwLogger logger;
+		logger.Info("Select active user");
+		this->ConnectDb();
+
+		std::string sql = "UPDATE users "
+					      "SET is_active=0 "
+						  "WHERE is_active=1 "
+						  ";";
+		m_db_handler.Update(sql.c_str());
+
+		sql = "UPDATE users "
+			  "SET is_active=1 "
+			  "WHERE uid=" + std::to_string(user.uid) +
+			  ";";
+
+		logger.Info(sql);
+
+		m_db_handler.Update(sql.c_str());
+		this->DisconnectDb();
+	}
+	catch (...)
+	{
+		this->DisconnectDb();
+		return false;
+	}
 }
 
 bool mwModel::GetAllUsers(std::vector<mwUser>& ret_users_vect)
 {
-	return false;
+	try
+	{
+		this->ConnectDb();
+		mwLogger logger;
+		logger.Info("selecting all users");
+		Records records;
+		Record row;
+		mwUser user;
+		std::string sql = "SELECT * FROM user;";
+		logger.Info("Executinig query " + sql);
+		m_db_handler.Select(sql.c_str(), records);
+		if (records.empty())
+		{
+			logger.Warning("No records where found for: " + sql);
+		}
+		for (int i = 0; i < records.size(); i++)
+		{
+			row = records[i];
+			user.uid = std::stoi(row[0]);
+			user.username = row[1];
+			user.is_active = std::stoi(row[2]) == 1 ? true : false;
+			ret_users_vect.push_back(user);
+		}
+		this->DisconnectDb();
+		return true;
+	}
+	catch (...)
+	{
+		this->DisconnectDb();
+		return false;
+	}
 }
 
 bool mwModel::GetActiveProject(mwProject& project, mwUser& user)
 {
-	mwLogger logger;
-	logger.Info("Select active project");
-	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
-		return false;
-
-	std::string sql = "SELECT * FROM projects " 
-					  "WHERE is_active=1 "
-					  "AND user_uid=" + std::to_string(user.uid) + 
-		              ";";
-	Records records;
-	logger.Info("Executinig query " + sql);
-
-	m_db_handler.Select(sql.c_str(), records);
-	if (records.empty())
+	try
 	{
-		logger.Warning("No records were found for: " + sql);
+		mwLogger logger;
+		logger.Info("Select active project");
+		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
+			return false;
+
+		std::string sql = "SELECT * FROM projects "
+			"WHERE is_active=1 "
+			"AND user_uid=" + std::to_string(user.uid) +
+			";";
+		Records records;
+		logger.Info("Executinig query " + sql);
+
+		m_db_handler.Select(sql.c_str(), records);
+		if (records.empty())
+		{
+			logger.Warning("No records were found for: " + sql);
+			m_db_handler.DisConn(this->m_db_path.c_str());
+			return false;
+		}
+		Record row = records[0];
+
+		project.uid = std::stoi(row[0]);
+		project.user_uid = std::stoi(row[1]);
+		project.project_name = row[2];
+		project.project_cration_time = std::stoi(row[3]);
+		project.is_active = std::stoi(row[4]) == 1 ? true : false;
+		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
+			return false;
+		return true;
+	}
+	catch (...)
+	{
 		m_db_handler.DisConn(this->m_db_path.c_str());
 		return false;
 	}
-	Record row = records[0];
-
-	project.uid = std::stoi(row[0]);
-	project.user_uid = std::stoi(row[1]);
-	project.project_name = row[2];
-	project.project_cration_time = std::stoi(row[3]);
-	project.is_active = std::stoi(row[4]) == 1 ? true : false;
-	if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
-		return false;
-	return true;
 }
 
 bool mwModel::GetAllProjects(std::vector<mwProject>& prjects_vect, const mwUser& user)
@@ -178,7 +250,36 @@ bool mwModel::GetAllProjects(std::vector<mwProject>& prjects_vect, const mwUser&
 
 bool mwModel::SetActiveProject(mwProject& project)
 {
-	return false;
+	try
+	{
+		mwLogger logger;
+		logger.Info("Update active project");
+		this->ConnectDb();
+
+		std::string sql = "UPDATE projects "
+			              "SET is_active=0 "
+			              "WHERE is_active=1 "
+			              "AND user_uid=" + std::to_string(project.user_uid) +
+			              ";";
+
+		m_db_handler.Update(sql.c_str());
+
+		sql = "UPDATE projects "
+			  "SET is_active=1 "
+			  "WHERE uid=" + std::to_string(project.uid) + " "
+			  "AND user_uid= " + std::to_string(project.user_uid) +
+			  ";";
+
+		logger.Info(sql);
+
+		m_db_handler.Update(sql.c_str());
+		this->DisconnectDb();
+	}
+	catch (...)
+	{
+		this->DisconnectDb();
+		return false;
+	}
 }
 
 bool mwModel::GetProjectTasks(mwProject& project, std::vector<mwTask>& ret_tasks_vect)
@@ -187,6 +288,20 @@ bool mwModel::GetProjectTasks(mwProject& project, std::vector<mwTask>& ret_tasks
 	std::string sql = "SELECT * FROM ";
 	m_db_handler.Select(sql.c_str(), records);
 	return false;
+}
+
+bool mwModel::ConnectDb()
+{
+	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
+		return false;
+	return true;
+}
+
+bool mwModel::DisconnectDb()
+{
+	if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
+		return false;
+	return true;
 }
 
 bool mwModel::InitUsersTable()

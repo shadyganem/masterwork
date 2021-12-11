@@ -17,6 +17,7 @@ public:
 	bool CreateDB(const char* path);
 	bool ExeQuery(const char* sql);
 	bool Select(const char* sql, Records& records);
+	bool Update(const char* sql);
 	bool CreateNewTable(const char* sql);
 	bool Conn(const char* path);
 	bool DisConn(const char* path);

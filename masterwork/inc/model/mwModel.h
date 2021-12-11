@@ -28,6 +28,8 @@ public:
 	bool SetActiveProject(mwProject& project);
 	bool GetProjectTasks(mwProject& project,  std::vector<mwTask>& ret_tasks_vect);
 private:
+	bool ConnectDb();
+	bool DisconnectDb();
 	bool InitUsersTable();
 	bool InitProjectsTable();
 	bool InitTasksTable();

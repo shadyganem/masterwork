@@ -23,6 +23,7 @@ public:
 	void Init();
 	bool Search(wxString& search_query);
 	wxString GetActiveUsername(void);
+	bool SetActiveUser(int user_uid);
 	void SetStatusBarText(const wxString& txt);
 	wxString GetStatusBarText(void);
 	void SetInfoBarText(const wxString& txt);
