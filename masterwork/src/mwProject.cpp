@@ -2,21 +2,26 @@
 
 mwProject::mwProject()
 {
-	project_name = "New Project";
-	std::time(&project_cration_time);
+	name = "New Project";
+	std::time(&this->start_time);
 }
 
 mwProject::mwProject(std::string name)
 {
-	this->project_name = name;
-	std::time(&this->project_cration_time);
+	this->name = name;
+	std::time(&this->start_time);
 }
 
 mwProject::~mwProject()
 {
 }
 
+void mwProject::ChangeName(std::string new_name)
+{
+	this->name = new_name;
+}
+
 void mwProject::StampCreationTime()
 {
-	std::time(&project_cration_time);
+	std::time(&this->start_time);
 }

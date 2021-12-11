@@ -27,18 +27,29 @@ bool mwModel::InitModel()
 
 bool mwModel::AddUser(mwUser& user)
 {
-	return false;
+	if (this->ConnectDb() == false)
+		return false;
+	std::string sql = "INSERT INTO users(username, is_active)"
+		              "VALUES (\"" + user.username + "\"  ,"
+		              + std::to_string(user.is_active) +
+		              ");";
+	m_db_handler.ExeQuery(sql.c_str());
+	if (this->DisconnectDb() == false)
+		return false;
+	return true;
 }
 
 bool mwModel::AddProject(mwProject& project)
 {
-	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
+	if (this->ConnectDb() == false)
 		return false;
-
-	std::string sql = "";
+	std::string sql = "INSERT INTO projects(user_uid, name, start_time, is_active)"
+		              "VALUES (\"" + std::to_string(project.user_uid) + "\"  ,"
+		              "\"" + project.name + "\" ,"
+		              + std::to_string(project.start_time) +
+		              ");";
 	m_db_handler.ExeQuery(sql.c_str());
-
-	if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
+	if (this->DisconnectDb() == false)
 		return false;
 	return true;
 }
@@ -177,9 +188,9 @@ bool mwModel::GetActiveProject(mwProject& project, mwUser& user)
 			return false;
 
 		std::string sql = "SELECT * FROM projects "
-			"WHERE is_active=1 "
-			"AND user_uid=" + std::to_string(user.uid) +
-			";";
+			              "WHERE is_active=1 "
+			              "AND user_uid=" + std::to_string(user.uid) +
+			              ";";
 		Records records;
 		logger.Info("Executinig query " + sql);
 
@@ -194,8 +205,8 @@ bool mwModel::GetActiveProject(mwProject& project, mwUser& user)
 
 		project.uid = std::stoi(row[0]);
 		project.user_uid = std::stoi(row[1]);
-		project.project_name = row[2];
-		project.project_cration_time = std::stoi(row[3]);
+		project.name = row[2];
+		project.start_time = std::stoi(row[3]);
 		project.is_active = std::stoi(row[4]) == 1 ? true : false;
 		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
 			return false;
@@ -232,8 +243,8 @@ bool mwModel::GetAllProjects(std::vector<mwProject>& prjects_vect, const mwUser&
 			row = records[i];
 			proj.uid = std::stoi(row[0]);
 			proj.user_uid = std::stoi(row[1]);
-			proj.project_name = row[2];
-			proj.project_cration_time = std::stoi(row[3]);
+			proj.name = row[2];
+			proj.start_time = std::stoi(row[3]);
 			proj.is_active = std::stoi(row[4]) == 1 ? true : false;
 			prjects_vect.push_back(proj);
 		}
@@ -394,7 +405,7 @@ bool mwModel::InitTasksTable()
 bool mwModel::InitNotificationsTable()
 {
 	mwLogger logger;
-	logger.Info("Initialzing users table");
+	logger.Info("Initialzing notifications table");
 	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 		return false;
 

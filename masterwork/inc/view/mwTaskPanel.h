@@ -41,7 +41,6 @@ private:
 	wxBitmapButton* m_delete_task;
 	wxBitmapButton* m_save_task;
 
-	// Virtual event handlers, overide them in your derived class
 	virtual void OnEnterWindow(wxMouseEvent& event);
 	virtual void OnleaveWindow(wxMouseEvent& event);
 	virtual void OnEditTask(wxCommandEvent& event);

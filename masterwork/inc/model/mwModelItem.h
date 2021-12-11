@@ -5,7 +5,8 @@ enum ItemType
 	ANY,
 	USER,
 	PROJECT,
-	TASK
+	TASK,
+	NOTIFICATION
 };
 
 class mwModelItem

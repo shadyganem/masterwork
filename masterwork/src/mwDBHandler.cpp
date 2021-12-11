@@ -1,6 +1,5 @@
 #include "model/mwDBHandler.h"
 
-
 mwDBHandler::mwDBHandler()
 {
 	m_db = NULL;
@@ -27,7 +26,6 @@ int mwDBHandler::Sqlite3UpdateCallback(void* p_data, int num_fields, char** p_fi
 	logger.Info("callback is called");
 	return 0;
 }
-
 
 bool mwDBHandler::CreateDB(const char* path)
 {

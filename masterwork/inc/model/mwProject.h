@@ -8,8 +8,9 @@ public:
 	mwProject();
 	mwProject(std::string name);
 	~mwProject();
-	std::string project_name;
-	std::time_t project_cration_time;
+	void ChangeName(std::string new_name);
+	std::time_t start_time;
+	std::string name;
 	int uid;
 	int user_uid;
 	bool is_active;
