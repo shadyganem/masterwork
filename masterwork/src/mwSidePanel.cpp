@@ -4,14 +4,13 @@ void mwSidePanel::UpdateProjecstList()
 {
 	mwController& controller = mwController::Get();
 	std::vector<std::string> projects;
-	controller.GetPorjectsForActiveUser(projects);
+	controller.GetProjectsForActiveUser(projects);
 	wxString project_name;
 	for (int i = 0; i < projects.size(); i++)
 	{
 		project_name = projects[i];
 		m_projects_list->InsertItems(1, &project_name, i);
 	}
-	
 }
 
 mwSidePanel::mwSidePanel(wxWindow* parent,

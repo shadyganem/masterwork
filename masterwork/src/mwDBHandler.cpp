@@ -41,8 +41,6 @@ bool mwDBHandler::CreateDB(const char* path)
 
 bool mwDBHandler::ExeQuery(const char* sql)
 {
-	mwLogger logger;
-	logger.Info("at ExeQuery");
 	if (is_conn == false)
 		return false;
 	int rc;

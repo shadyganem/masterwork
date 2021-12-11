@@ -76,6 +76,8 @@ bool mwModel::GetActiveUser(mwUser& user)
 		              "WHERE is_active=1 "
 		              "; ";
 	Records records;
+	logger.Info("Executinig query " + sql);
+
 	m_db_handler.Select(sql.c_str(), records);
 	if (records.empty())
 	{
@@ -101,9 +103,37 @@ bool mwModel::GetAllUsers(std::vector<mwUser>& ret_users_vect)
 	return false;
 }
 
-bool mwModel::GetActiveProject(mwProject& project)
+bool mwModel::GetActiveProject(mwProject& project, mwUser& user)
 {
-	return false;
+	mwLogger logger;
+	logger.Info("Select active project");
+	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
+		return false;
+
+	std::string sql = "SELECT * FROM projects " 
+					  "WHERE is_active=1 "
+					  "AND user_uid=" + std::to_string(user.uid) + 
+		              ";";
+	Records records;
+	logger.Info("Executinig query " + sql);
+
+	m_db_handler.Select(sql.c_str(), records);
+	if (records.empty())
+	{
+		logger.Warning("No records were found for: " + sql);
+		m_db_handler.DisConn(this->m_db_path.c_str());
+		return false;
+	}
+	Record row = records[0];
+
+	project.uid = std::stoi(row[0]);
+	project.user_uid = std::stoi(row[1]);
+	project.project_name = row[2];
+	project.project_cration_time = std::stoi(row[3]);
+	project.is_active = std::stoi(row[4]) == 1 ? true : false;
+	if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
+		return false;
+	return true;
 }
 
 bool mwModel::GetAllProjects(std::vector<mwProject>& prjects_vect, const mwUser& user)
@@ -118,6 +148,7 @@ bool mwModel::GetAllProjects(std::vector<mwProject>& prjects_vect, const mwUser&
 		Records records;
 		Record row;
 		std::string sql = "SELECT * FROM projects WHERE user_uid=" + std::to_string(user.uid) + " ;";
+		logger.Info("Executinig query " + sql);
 		m_db_handler.Select(sql.c_str(), records);
 		mwProject proj;
 		if (records.empty())

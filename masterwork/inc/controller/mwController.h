@@ -29,7 +29,7 @@ public:
 	wxString GetInfoBarText(void);
 	void RegisterMainFrame(wxEvtHandler* mf);
 	void AddTask(std::string name, std::string dec);
-	void GetPorjectsForActiveUser(std::vector<std::string>& projects);
+	void GetProjectsForActiveUser(std::vector<std::string>& projects);
 
 private:
 	mwController() {}
@@ -43,6 +43,7 @@ private:
 	wxMutex m_mutex;
 	mwProject m_current_project;
 	mwLogger m_logger;
-	mwUser active_user;
+	mwUser m_active_user;
+	mwProject m_active_project;
 };
 
