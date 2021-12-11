@@ -8,7 +8,8 @@ void mwController::Init()
 	m_model.InitModel();
 	m_model.GetActiveUser(m_active_user);
 	m_model.GetActiveProject(m_active_project, m_active_user);
-	m_logger.Info("active project is \"" + m_active_project.project_name + "\"");
+	m_logger.Info("The active user is \"" + this->m_active_user.username + "\"");
+	m_logger.Info("The active project is \"" + this->m_active_project.project_name + "\"");
 }
 
 bool mwController::Search(wxString& search_query)
@@ -88,4 +89,3 @@ void mwController::PostNotification(int windId)
 	event->SetEventObject(this->m_main_frame);
 	this->m_main_frame->QueueEvent(event);
 }
-
