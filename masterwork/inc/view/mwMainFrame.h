@@ -10,7 +10,7 @@
 #include "mwDefines.h"
 #include "wx/event.h"
 #include "wx/srchctrl.h"
-#include "controller\mwController.h"
+#include "controller/mwController.h"
 
 
 class mwMainFrame : public wxFrame
@@ -30,7 +30,7 @@ private:
 	void ShowInfoBarErrorMessage(const wxString& msg);
 	void ShowStutusBarMessage(const wxString& msg);
 	void SetStatusBarBackgrounColor(const wxColor& color);
-private:
+public:
 	// info contols
 	wxInfoBar* m_info_bar;
 	wxStatusBar* m_status_bar;

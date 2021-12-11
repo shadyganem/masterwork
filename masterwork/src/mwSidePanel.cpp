@@ -3,14 +3,26 @@
 void mwSidePanel::UpdateProjecstList()
 {
 	mwController& controller = mwController::Get();
-	std::vector<std::string> projects;
+	std::vector<mwProject> projects;
 	controller.GetProjectsForActiveUser(projects);
 	wxString project_name;
 	for (int i = 0; i < projects.size(); i++)
 	{
-		project_name = projects[i];
+		m_place_to_project_map[i] = projects[i];
+		project_name = projects[i].name;
 		m_projects_list->InsertItems(1, &project_name, i);
 	}
+}
+
+void mwSidePanel::OnItemSelect(wxCommandEvent& event)
+{
+	mwLogger logger;
+	mwController& controller = mwController::Get();
+	logger.Info("at OnItemSelect");
+	int sel_item;
+	sel_item = this->m_projects_list->GetSelection();
+	logger.Info(std::to_string(sel_item));
+	controller.SetActiveProject(m_place_to_project_map[sel_item]);
 }
 
 mwSidePanel::mwSidePanel(wxWindow* parent,
@@ -54,8 +66,11 @@ mwSidePanel::mwSidePanel(wxWindow* parent,
 	this->SetSizer(bSizer19);
 	this->Layout();
 	this->UpdateProjecstList();
+
+	m_projects_list->Connect(wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler(mwSidePanel::OnItemSelect), NULL, this);
 }
 
 mwSidePanel::~mwSidePanel()
 {
+	m_projects_list->Disconnect(wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler(mwSidePanel::OnItemSelect), NULL, this);
 }

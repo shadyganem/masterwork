@@ -10,9 +10,6 @@ void mwController::Init()
 	m_model.GetActiveProject(m_active_project, m_active_user);
 	m_logger.Info("The active user is \"" + this->m_active_user.username + "\"");
 	m_logger.Info("The active project is \"" + this->m_active_project.name + "\"");
-	mwUser user;
-	user.username = "Shady";
-	m_model.AddUser(user);
 }
 
 bool mwController::Search(wxString& search_query)
@@ -23,6 +20,21 @@ bool mwController::Search(wxString& search_query)
 wxString mwController::GetActiveUsername(void)
 {
 	return wxString(this->m_active_user.username);
+}
+
+void mwController::SetActiveUser(int user_uid)
+{
+	mwUser user;
+	user.uid = user_uid;
+	this->m_model.SetActiveUser(user);
+}
+
+void mwController::SetActiveProject(mwProject& project)
+{
+	m_model.GetActiveUser(m_active_user);
+	this->m_model.SetActiveProject(project);
+	m_model.GetActiveProject(m_active_project, m_active_user);
+	PostUpdateUI(MAIN_FRAME_ID);
 }
 
 void mwController::SetStatusBarText(const wxString& txt)
@@ -78,6 +90,23 @@ void mwController::GetProjectsForActiveUser(std::vector<std::string>& projects)
 	{
 		projects.push_back(it->name);
 	}
+}
+
+void mwController::GetProjectsForActiveUser(std::vector<mwProject>& projects)
+{
+	mwLogger logger;
+	logger.Info("at GetPorjectsForCurrentUser");
+	this->m_model.GetActiveUser(m_active_user);
+	this->m_model.GetAllProjects(projects, m_active_user);
+}
+
+void mwController::GetTasksForActiveProject(std::vector<mwTask>& tasks)
+{
+	mwLogger logger;
+	logger.Info("at GetTasksForActiveProject");
+	m_model.GetActiveUser(m_active_user);
+	m_model.GetActiveProject(m_active_project, m_active_user);
+	this->m_model.GetAllTasks(tasks, m_active_project);
 }
 
 void mwController::PostUpdateUI(int windId)

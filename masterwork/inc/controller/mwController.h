@@ -9,6 +9,7 @@
 #include "model/mwUser.h"
 #include "controller/mwLogger.h"
 #include <vector>
+#include <map>
 
 class mwController
 {
@@ -23,7 +24,8 @@ public:
 	void Init();
 	bool Search(wxString& search_query);
 	wxString GetActiveUsername(void);
-	bool SetActiveUser(int user_uid);
+	void SetActiveUser(int user_uid);
+	void SetActiveProject(mwProject& project);
 	void SetStatusBarText(const wxString& txt);
 	wxString GetStatusBarText(void);
 	void SetInfoBarText(const wxString& txt);
@@ -31,6 +33,8 @@ public:
 	void RegisterMainFrame(wxEvtHandler* mf);
 	void AddTask(std::string name, std::string dec);
 	void GetProjectsForActiveUser(std::vector<std::string>& projects);
+	void GetProjectsForActiveUser(std::vector<mwProject>& projects);
+	void GetTasksForActiveProject(std::vector<mwTask>& tasks);
 
 private:
 	mwController() {}
@@ -46,5 +50,6 @@ private:
 	mwLogger m_logger;
 	mwUser m_active_user;
 	mwProject m_active_project;
+	std::map<int, mwTask> m_seen_tasks;
 };
 

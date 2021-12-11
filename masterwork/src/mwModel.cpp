@@ -301,6 +301,54 @@ bool mwModel::GetProjectTasks(mwProject& project, std::vector<mwTask>& ret_tasks
 	return false;
 }
 
+bool mwModel::GetAllTasks(std::vector<mwTask>& tasks, mwProject& project)
+{
+	try
+	{
+		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
+			return false;
+
+		mwLogger logger;
+		logger.Info("selecting all tasks for " + project.name);
+		Records records;
+		Record row;
+		std::string sql = "SELECT name FROM tasks WHERE project_uid=" + std::to_string(project.uid) + " ;";
+		logger.Info("Executinig query " + sql);
+		m_db_handler.Select(sql.c_str(), records);
+		mwTask task;
+		if (records.empty())
+		{
+			logger.Warning("No records where found for: " + sql);
+		}
+		for (int i = 0; i < records.size(); i++)
+		{
+			row = records[i];
+			task.uid = std::stoi(row[0]);
+			task.parent_uid = std::stoi(row[1]);
+			task.name = row[2];
+			task.description = row[3];
+			task.status = std::stoi(row[4]);
+			task.priority = std::stoi(row[5]);
+			task.start_time = std::stoi(row[6]);
+			task.end_time = std::stoi(row[7]);
+			task.deadline = std::stoi(row[8]);
+			task.project_uid = std::stoi(row[9]);
+			task.red = std::stoi(row[10]);
+			task.green = std::stoi(row[11]);
+			task.blue = std::stoi(row[12]);
+			tasks.push_back(task);
+		}
+		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
+			return false;
+		return true;
+	}
+	catch (...)
+	{
+		m_db_handler.DisConn(this->m_db_path.c_str());
+		return false;
+	}
+}
+
 bool mwModel::ConnectDb()
 {
 	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)

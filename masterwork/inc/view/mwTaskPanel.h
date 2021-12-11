@@ -50,6 +50,8 @@ private:
 
 
 public:
+	int m_uid;
+	int m_parent_uid;
 	wxBoxSizer* ver_task_sizer;
 	wxPanel* m_static_view;
 	wxPanel* m_edit_view;

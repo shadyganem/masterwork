@@ -11,10 +11,14 @@
 #include <wx/panel.h>
 #include <wx/splitter.h>
 #include "controller/mwController.h"
+#include <map>
+#include "model/mwProject.h"
 
 class mwSidePanel : public wxPanel
 {
 public:
+
+	std::map<int, mwProject> m_place_to_project_map;
 
 	wxSplitterWindow* m_splitter1;
 	wxPanel* m_panel7;
@@ -29,8 +33,8 @@ public:
 		m_splitter1->Disconnect(wxEVT_IDLE, wxIdleEventHandler(mwSidePanel::m_splitter1OnIdle), NULL, this);
 	}
 
-
 	void UpdateProjecstList();
+	virtual void OnItemSelect(wxCommandEvent& event);
 
 	mwSidePanel(wxWindow* parent,
                 wxWindowID winid = wxID_ANY,

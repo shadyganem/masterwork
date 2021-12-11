@@ -27,6 +27,8 @@ public:
 	bool GetAllProjects(std::vector<mwProject>& prjects_vect, const mwUser& currnet_user);
 	bool SetActiveProject(mwProject& project);
 	bool GetProjectTasks(mwProject& project,  std::vector<mwTask>& ret_tasks_vect);
+	bool GetAllTasks(std::vector<mwTask>& tasks, mwProject& current_project);
+
 private:
 	bool ConnectDb();
 	bool DisconnectDb();

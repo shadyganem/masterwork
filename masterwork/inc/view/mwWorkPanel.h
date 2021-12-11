@@ -15,6 +15,10 @@
 #include <wx/notebook.h>
 #include <wx/sizer.h>
 #include "view/mwTaskPanel.h"
+#include <model/mwTask.h>
+#include "mwDefines.h"
+#include "wx/event.h"
+
 
 
 class mwWorkPanel : public wxPanel
@@ -30,6 +34,8 @@ public:
 	~mwWorkPanel();
 
 public:
+
+    std::map<mwTaskPanel*, mwTask> m_taskpanel_to_task_map;
     wxScrolledWindow* m_tasks_scroll_window;
     wxToolBar* m_tool_bar;
     wxColor m_tool_bar_bg = wxColor(0, 0, 255);
@@ -41,9 +47,7 @@ public:
 	// Virtual event handlers, overide them in your derived class
 	virtual void OnPageChanged(wxNotebookEvent& event);
 	virtual void OnPageChanging(wxNotebookEvent& event);
-    virtual void OnUiUpdate();
-
-
+    virtual void OnUpdateUI();
 
 private:
     DECLARE_EVENT_TABLE()

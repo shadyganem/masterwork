@@ -8,6 +8,8 @@ mwDBHandler::mwDBHandler()
 
 int mwDBHandler::Sqlite3SelectCallback(void* p_data, int num_fields, char** p_fields, char** p_col_names)
 {
+	mwLogger logger;
+	logger.Info(std::to_string(num_fields));
 	Records* records = static_cast<Records*>(p_data);
 	try
 	{
