@@ -48,7 +48,6 @@ void mwWorkPanel::OnPageChanging(wxNotebookEvent& event)
 
 void mwWorkPanel::OnUpdateUI(wxEvent& event)
 {
-	mwLogger logger;
 	std::map<mwTaskPanel*, int>::iterator it;
 	for (auto const& item : this->m_taskpanel_to_task_map)
 	{

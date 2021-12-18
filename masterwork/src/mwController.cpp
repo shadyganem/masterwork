@@ -101,7 +101,7 @@ void mwController::AddTask(std::string name, std::string dec)
 void mwController::DeleteTask(mwTask& task)
 {
 	mwLogger logger;
-	logger.Info("delting task");
+	logger.Info("deleting task: " + std::to_string(task.uid));
 	m_model.DeleteTask(task);
 	PostUpdateUI(WORK_PANEL_ID);
 }
@@ -139,8 +139,6 @@ void mwController::GetProjectsForActiveUser(std::vector<mwProject>& projects)
 
 void mwController::GetTasksForActiveProject(std::vector<mwTask>& tasks)
 {
-	mwLogger logger;
-	logger.Info("at GetTasksForActiveProject");
 	m_model.GetActiveUser(m_active_user);
 	m_model.GetActiveProject(m_active_project, m_active_user);
 	this->m_model.GetAllTasks(tasks, m_active_project);

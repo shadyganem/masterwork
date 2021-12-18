@@ -49,8 +49,6 @@ void mwTaskPanel::SetTask(mwTask task)
 	m_task = task;
 	m_static_task_name->SetLabelText(m_task.name);
 	m_static_description->SetLabelText(m_task.description);
-	mwLogger logger;
-	logger.Info(m_task.description);
 }
 
 mwTaskPanel::mwTaskPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style ) : wxPanel( parent, id, pos, size, style )
