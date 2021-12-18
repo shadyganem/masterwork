@@ -21,6 +21,7 @@
 #include "model/mwTask.h"
 
 #include "controller/mwLogger.h"
+#include "controller/mwController.h"
 
 class mwTaskPanel : public wxPanel
 {
@@ -42,6 +43,8 @@ public:
 	wxBitmapButton* m_delete_task;
 	wxBitmapButton* m_save_task;
 
+	mwTask m_task;
+
 	virtual void OnEnterWindow(wxMouseEvent& event);
 	virtual void OnleaveWindow(wxMouseEvent& event);
 	virtual void OnEditTask(wxCommandEvent& event);
@@ -50,8 +53,6 @@ public:
 	virtual void OnSaveTask(wxCommandEvent& event);
 	void SetTask(mwTask task);
 
-
-public:
 	int m_uid;
 	int m_parent_uid;
 	wxBoxSizer* ver_task_sizer;

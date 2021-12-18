@@ -33,6 +33,7 @@ public:
 	void RegisterMainFrame(wxEvtHandler* mf);
 	void RegisterEventHandler(int ID, wxEvtHandler* event_handler);
 	void AddTask(std::string name, std::string dec);
+	void DeleteTask(mwTask& task);
 	void AddTask(mwTask task);
 	void GetProjectsForActiveUser(std::vector<std::string>& projects);
 	void GetProjectsForActiveUser(std::vector<mwProject>& projects);

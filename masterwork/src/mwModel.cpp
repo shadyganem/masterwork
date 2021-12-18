@@ -143,6 +143,32 @@ bool mwModel::SetActiveUser(mwUser& user)
 	}
 }
 
+bool mwModel::DeleteTask(mwTask& task)
+{
+	try
+	{
+		mwLogger logger;
+		logger.Info("Delete Task");
+		this->ConnectDb();
+
+		std::string sql = "UPDATE tasks "
+			"SET status= " + std::to_string(TaskStatus::DELETED) + " "
+			"WHERE uid=" + std::to_string(task.uid) + " "
+			";";
+		m_db_handler.Update(sql.c_str());
+
+		logger.Info(sql);
+
+		m_db_handler.Update(sql.c_str());
+		this->DisconnectDb();
+	}
+	catch (...)
+	{
+		this->DisconnectDb();
+		return false;
+	}
+}
+
 bool mwModel::GetAllUsers(std::vector<mwUser>& ret_users_vect)
 {
 	try
@@ -313,7 +339,9 @@ bool mwModel::GetAllTasks(std::vector<mwTask>& tasks, mwProject& project)
 		Records records;
 		Record row;
 		//currnetly the sqlite api can not handle a big nubmer of rows. I will break the query to several quiries as a WA
-		std::string sql = "SELECT * FROM tasks WHERE project_uid=" + std::to_string(project.uid) + " ;";
+		std::string sql = "SELECT * FROM tasks WHERE project_uid=" + std::to_string(project.uid) + 
+						  " AND status=0"
+			              " ;";
 		logger.Info("Executinig query " + sql);
 		m_db_handler.Select(sql.c_str(), records);
 		mwTask task;
@@ -327,6 +355,8 @@ bool mwModel::GetAllTasks(std::vector<mwTask>& tasks, mwProject& project)
 			task.uid = std::stoi(row[0]);
 			task.parent_uid = std::stoi(row[1]);
 			task.name = row[2];
+			task.description = row[3];
+			task.status = std::stoi(row[4]);
 			tasks.push_back(task);
 		}
 		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
@@ -394,7 +424,7 @@ bool mwModel::InitProjectsTable()
 
 	const char* sql = "CREATE TABLE IF NOT EXISTS \"projects\" (    "
 				      "\"uid\"	        INTEGER NOT NULL UNIQUE,    "
-		              "\"user_uid\"	    INTEGER NOT NULL DEFAULT 1,                    "
+		              "\"user_uid\"	    INTEGER NOT NULL DEFAULT 1, "
 				      "\"name\"	        TEXT,                       "
 				      "\"start_time\"   INTEGER,                    "
                       "\"is_active\"	NUMERIC NOT NULL DEFAULT 0, "

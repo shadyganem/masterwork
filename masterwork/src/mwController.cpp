@@ -91,6 +91,14 @@ void mwController::AddTask(std::string name, std::string dec)
 	PostUpdateUI(MAIN_FRAME_ID);
 }
 
+void mwController::DeleteTask(mwTask& task)
+{
+	mwLogger logger;
+	logger.Info("delting task");
+	m_model.DeleteTask(task);
+	PostUpdateUI(WORK_PANEL_ID);
+}
+
 void mwController::AddTask(mwTask task)
 {
 	m_mutex.Lock();

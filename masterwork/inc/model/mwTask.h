@@ -3,6 +3,13 @@
 #include <string>
 #include <ctime>
 
+enum TaskStatus
+{
+	ACTIVE,
+	DONE,
+	DELETED
+};
+
 class mwTask : public mwModelItem
 {
 public:
