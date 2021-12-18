@@ -47,7 +47,7 @@ public:
 	// Virtual event handlers, overide them in your derived class
 	virtual void OnPageChanged(wxNotebookEvent& event);
 	virtual void OnPageChanging(wxNotebookEvent& event);
-    virtual void OnUpdateUI();
+    virtual void OnUpdateUI(wxEvent& event);
 
 private:
     DECLARE_EVENT_TABLE()

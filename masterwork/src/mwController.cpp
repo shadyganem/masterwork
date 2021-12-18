@@ -34,7 +34,7 @@ void mwController::SetActiveProject(mwProject& project)
 	m_model.GetActiveUser(m_active_user);
 	this->m_model.SetActiveProject(project);
 	m_model.GetActiveProject(m_active_project, m_active_user);
-	PostUpdateUI(MAIN_FRAME_ID);
+	PostUpdateUI(WORK_PANEL_ID);
 }
 
 void mwController::SetStatusBarText(const wxString& txt)
@@ -66,6 +66,19 @@ wxString mwController::GetInfoBarText(void)
 void mwController::RegisterMainFrame(wxEvtHandler* mf)
 {
 	m_main_frame = mf;
+}
+
+void mwController::RegisterEventHandler(int id, wxEvtHandler* event_handler)
+{
+	mwLogger logger;
+	if (id != wxID_ANY)
+	{
+		this->m_event_handlers[id] = event_handler;
+	}
+	else
+	{
+		logger.Warning("Can not register event handlers without a unique ID");
+	}
 }
 
 void mwController::AddTask(std::string name, std::string dec)
@@ -109,11 +122,21 @@ void mwController::GetTasksForActiveProject(std::vector<mwTask>& tasks)
 	this->m_model.GetAllTasks(tasks, m_active_project);
 }
 
-void mwController::PostUpdateUI(int windId)
+void mwController::PostUpdateUI(int wind_id)
 {
-	wxCommandEvent* event = new wxCommandEvent(mwUpdateUI, windId);
-	event->SetEventObject(this->m_main_frame);
-	this->m_main_frame->QueueEvent(event);
+	if (this->m_event_handlers.count(wind_id) != 0)
+	{
+		wxEvtHandler* event_handler = this->m_event_handlers[wind_id];
+		wxCommandEvent* event = new wxCommandEvent(mwUpdateUI, wind_id);
+		event->SetEventObject(this->m_main_frame);
+		event_handler->QueueEvent(event);
+	}
+	else
+	{
+		mwLogger logger;
+		logger.Info("No event handler found for WindId = " + std::to_string(wind_id));
+	}
+	
 }
 
 void mwController::PostNotification(int windId)

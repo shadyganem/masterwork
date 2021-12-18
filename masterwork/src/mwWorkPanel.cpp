@@ -2,6 +2,8 @@
 
 
 BEGIN_EVENT_TABLE(mwWorkPanel, wxPanel)
+	EVT_CUSTOM(mwUpdateUI, WORK_PANEL_ID, mwWorkPanel::OnUpdateUI)
+
 END_EVENT_TABLE()
 
 mwWorkPanel::mwWorkPanel(wxWindow* parent, 
@@ -11,6 +13,8 @@ mwWorkPanel::mwWorkPanel(wxWindow* parent,
 	                     long style, 
 	                     const wxString& name) : wxPanel(parent, winid, pos, size, style, name)
 {
+	mwController& controller = mwController::Get();
+	controller.RegisterEventHandler(winid, this);
 	this->SetBackgroundColour(wxColour(37, 37, 38));
 
 	m_ver_sizer = new wxBoxSizer(wxVERTICAL);
@@ -43,7 +47,7 @@ void mwWorkPanel::OnPageChanging(wxNotebookEvent& event)
 	event.Skip();
 }
 
-void mwWorkPanel::OnUpdateUI()
+void mwWorkPanel::OnUpdateUI(wxEvent& event)
 {
 	mwLogger logger;
 	logger.Info("updating worker panel ui");

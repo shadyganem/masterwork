@@ -31,6 +31,7 @@ public:
 	void SetInfoBarText(const wxString& txt);
 	wxString GetInfoBarText(void);
 	void RegisterMainFrame(wxEvtHandler* mf);
+	void RegisterEventHandler(int ID, wxEvtHandler* event_handler);
 	void AddTask(std::string name, std::string dec);
 	void GetProjectsForActiveUser(std::vector<std::string>& projects);
 	void GetProjectsForActiveUser(std::vector<mwProject>& projects);
@@ -42,6 +43,7 @@ private:
 	void PostNotification(int windId);
 	wxEvtHandler* m_main_frame;
 	wxVector <wxEvtHandler*> m_events_handlers;
+	std::map<int, wxEvtHandler*> m_event_handlers;
 	wxString m_status_bar_text;
 	wxString m_info_bar_text;
 	mwModel m_model;

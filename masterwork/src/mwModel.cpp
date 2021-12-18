@@ -312,6 +312,7 @@ bool mwModel::GetAllTasks(std::vector<mwTask>& tasks, mwProject& project)
 		logger.Info("selecting all tasks for " + project.name);
 		Records records;
 		Record row;
+		//currnetly the sqlite api can not handle a big nubmer of rows. I will break the query to several quiries as a WA
 		std::string sql = "SELECT name FROM tasks WHERE project_uid=" + std::to_string(project.uid) + " ;";
 		logger.Info("Executinig query " + sql);
 		m_db_handler.Select(sql.c_str(), records);

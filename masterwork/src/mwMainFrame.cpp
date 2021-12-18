@@ -18,6 +18,7 @@ mwMainFrame::mwMainFrame(const wxString& title, const wxPoint& pos, const wxSize
 	mwController& control = mwController::Get();
 	control.Init();
 	control.RegisterMainFrame(this);
+	control.RegisterEventHandler(MAIN_FRAME_ID, this);
 	Maximize();
 	this->SetMinSize(wxSize(576, 432));
 	this->SetBackgroundColour(wxColor(30, 30, 30));
@@ -41,13 +42,13 @@ mwMainFrame::mwMainFrame(const wxString& title, const wxPoint& pos, const wxSize
 	wxSizer* main_panel_ver_sizer2 = new wxBoxSizer(wxVERTICAL);
 
 	m_search_ctrl = new wxSearchCtrl(m_main_panel, MAIN_SEARCH_ID, wxEmptyString, wxDefaultPosition, wxSize(200, 21));
-	m_top_panel = new mwTopPanel(m_main_panel, wxID_ANY, wxDefaultPosition, wxSize(600, 21));
+	m_top_panel = new mwTopPanel(m_main_panel, TOP_PANEL_ID, wxDefaultPosition, wxSize(600, 21));
 	m_top_panel->SetBackgroundColour(m_side_panel_bg);
-	m_side_panel = new mwSidePanel(m_main_panel, wxID_ANY, wxDefaultPosition, wxSize(200, 200));
+	m_side_panel = new mwSidePanel(m_main_panel, SIDE_PANEL_ID, wxDefaultPosition, wxSize(200, 200));
 	m_side_panel->SetBackgroundColour(m_side_panel_bg);
-	m_bottom_panel = new mwBottomPanel(m_main_panel, wxID_ANY, wxDefaultPosition, wxSize(200, 200));
+	m_bottom_panel = new mwBottomPanel(m_main_panel, BOTTOM_PANEL_ID, wxDefaultPosition, wxSize(200, 200));
 	m_bottom_panel->SetBackgroundColour(m_side_panel_bg);
-	m_work_panel = new mwWorkPanel(m_main_panel, wxID_ANY, wxDefaultPosition, wxSize(200, 200));
+	m_work_panel = new mwWorkPanel(m_main_panel, WORK_PANEL_ID, wxDefaultPosition, wxSize(200, 200));
 	m_work_panel->SetBackgroundColour(m_side_panel_bg);
 
 	main_panel_ver_sizer1->Add(m_search_ctrl, 0, wxEXPAND | wxBOTTOM, 5);
