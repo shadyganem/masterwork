@@ -91,6 +91,15 @@ void mwController::AddTask(std::string name, std::string dec)
 	PostUpdateUI(MAIN_FRAME_ID);
 }
 
+void mwController::AddTask(mwTask task)
+{
+	m_mutex.Lock();
+	m_model.AddTask(task);
+	m_mutex.Unlock();
+	PostUpdateUI(MAIN_FRAME_ID);
+	PostUpdateUI(WORK_PANEL_ID);
+}
+
 void mwController::GetProjectsForActiveUser(std::vector<std::string>& projects)
 {
 	mwLogger logger;

@@ -48,6 +48,7 @@ public:
 	virtual void OnPageChanged(wxNotebookEvent& event);
 	virtual void OnPageChanging(wxNotebookEvent& event);
     virtual void OnUpdateUI(wxEvent& event);
+    virtual void OnAppendTask(wxEvent& event);
 
 private:
     DECLARE_EVENT_TABLE()

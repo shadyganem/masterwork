@@ -19,4 +19,5 @@ enum handler_id
 };
 
 wxDECLARE_EVENT(mwUpdateUI, wxCommandEvent);
+wxDECLARE_EVENT(mwAppendTask, wxCommandEvent);
 wxDECLARE_EVENT(mwNotification, wxCommandEvent);

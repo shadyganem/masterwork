@@ -18,15 +18,16 @@
 #include <wx/bmpbuttn.h>
 #include <wx/button.h>
 #include <wx/panel.h>
+#include "model/mwTask.h"
 
 #include "controller/mwLogger.h"
 
 class mwTaskPanel : public wxPanel
 {
-private:
+public:
 	wxBitmap* m_delete_bitmap;
-	wxStaticText* m_staticText5;
-	wxStaticText* m_staticText41;
+	wxStaticText* m_static_task_name;
+	wxStaticText* m_static_description;
 	wxButton* m_edit_task;
 	wxTextCtrl* m_taskname;
 	wxRichTextCtrl* m_richText1;
@@ -47,6 +48,7 @@ private:
 	virtual void OnStatusChanged(wxCommandEvent& event) { event.Skip(); }
 	virtual void OnDelete(wxCommandEvent& event);
 	virtual void OnSaveTask(wxCommandEvent& event);
+	void SetTask(mwTask task);
 
 
 public:

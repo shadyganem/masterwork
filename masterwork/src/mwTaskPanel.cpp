@@ -42,6 +42,12 @@ void mwTaskPanel::OnSaveTask(wxCommandEvent& event)
 	event.Skip();
 }
 
+void mwTaskPanel::SetTask(mwTask task)
+{
+	m_static_task_name->SetLabelText(task.name);
+	m_static_description->SetLabelText(task.description);
+}
+
 mwTaskPanel::mwTaskPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style ) : wxPanel( parent, id, pos, size, style )
 {
 	ver_task_sizer = new wxBoxSizer(wxVERTICAL);
@@ -53,13 +59,13 @@ mwTaskPanel::mwTaskPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, c
 	wxBoxSizer* bSizer17;
 	bSizer17 = new wxBoxSizer(wxVERTICAL);
 
-	m_staticText5 = new wxStaticText(m_static_view, wxID_ANY, wxT("MyLabel"), wxDefaultPosition, wxDefaultSize, 0);
-	m_staticText5->Wrap(-1);
-	bSizer17->Add(m_staticText5, 0, wxALL, 5);
+	m_static_task_name = new wxStaticText(m_static_view, wxID_ANY, wxT("Task name"), wxDefaultPosition, wxDefaultSize, 0);
+	m_static_task_name->Wrap(-1);
+	bSizer17->Add(m_static_task_name, 0, wxALL, 5);
 
-	m_staticText41 = new wxStaticText(m_static_view, wxID_ANY, wxT("MyLabel"), wxDefaultPosition, wxDefaultSize, 0);
-	m_staticText41->Wrap(-1);
-	bSizer17->Add(m_staticText41, 0, wxALL, 5);
+	m_static_description = new wxStaticText(m_static_view, wxID_ANY, wxT("Task description"), wxDefaultPosition, wxDefaultSize, 0);
+	m_static_description->Wrap(-1);
+	bSizer17->Add(m_static_description, 0, wxALL, 5);
 
 	bSizer16->Add(bSizer17, 1, wxEXPAND, 5);
 

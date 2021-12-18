@@ -3,7 +3,6 @@
 
 BEGIN_EVENT_TABLE(mwWorkPanel, wxPanel)
 	EVT_CUSTOM(mwUpdateUI, WORK_PANEL_ID, mwWorkPanel::OnUpdateUI)
-
 END_EVENT_TABLE()
 
 mwWorkPanel::mwWorkPanel(wxWindow* parent, 
@@ -50,21 +49,31 @@ void mwWorkPanel::OnPageChanging(wxNotebookEvent& event)
 void mwWorkPanel::OnUpdateUI(wxEvent& event)
 {
 	mwLogger logger;
-	logger.Info("updating worker panel ui");
+	std::map<mwTaskPanel*, int>::iterator it;
+	for (auto const& item : this->m_taskpanel_to_task_map)
+	{
+		item.first->Destroy();
+	}
 	std::vector<mwTask> tasks;
 	mwController& controller = mwController::Get();
 	controller.GetTasksForActiveProject(tasks);
-	logger.Info("before carshing");
 	mwTaskPanel* task_panel;
 	m_taskpanel_to_task_map.clear();
 	for (int i = 0; i < tasks.size(); i++)
 	{
 		task_panel = new mwTaskPanel(m_tasks_scroll_window);
+		task_panel->SetTask(tasks[i]);
 		task_panel->SetBackgroundColour(wxColor(240, 240, 240));
 		m_taskpanel_to_task_map[task_panel] = tasks[i];
 		m_tasks_sizer->Add(task_panel, 0, wxEXPAND | wxALL, 1);
 	}
+	wxSize size = m_tasks_scroll_window->GetBestVirtualSize();
+	m_tasks_scroll_window->SetVirtualSize(size);
 	this->m_tasks_sizer->Layout();
+}
+
+void mwWorkPanel::OnAppendTask(wxEvent& event)
+{
 }
 
 mwWorkPanel::~mwWorkPanel()
