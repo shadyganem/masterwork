@@ -10,6 +10,13 @@ enum TaskStatus
 	DELETED
 };
 
+enum TaskPriority
+{
+	LOW,
+	MEDIUM,
+	HIGH
+};
+
 class mwTask : public mwModelItem
 {
 public:

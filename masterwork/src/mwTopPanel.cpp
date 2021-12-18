@@ -28,9 +28,11 @@ void mwTopPanel::OnNewTaskButton(wxCommandEvent& event)
 {
 	mwController& controller = mwController::Get();
 	mwTask task;
-	task.name = "some task";
-	task.description = "This is a very long description of a long task\n very long description\n  a lot of lines";
-	task.project_uid = 1;
+	mwProject proj;
+	controller.GetActiveProject(proj);
+	task.name = "new task";
+	task.description = "This is a new task";
+	task.project_uid = proj.uid;
 	controller.AddTask(task);
 	event.Skip();
 }

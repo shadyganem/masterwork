@@ -22,6 +22,13 @@ wxString mwController::GetActiveUsername(void)
 	return wxString(this->m_active_user.username);
 }
 
+void mwController::GetActiveProject(mwProject& project)
+{
+	m_model.GetActiveUser(m_active_user);
+	m_model.GetActiveProject(m_active_project, m_active_user);
+	project = m_active_project;
+}
+
 void mwController::SetActiveUser(int user_uid)
 {
 	mwUser user;

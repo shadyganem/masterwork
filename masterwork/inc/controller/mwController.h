@@ -24,6 +24,7 @@ public:
 	void Init();
 	bool Search(wxString& search_query);
 	wxString GetActiveUsername(void);
+	void GetActiveProject(mwProject& project);
 	void SetActiveUser(int user_uid);
 	void SetActiveProject(mwProject& project);
 	void SetStatusBarText(const wxString& txt);

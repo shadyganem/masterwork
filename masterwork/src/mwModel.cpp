@@ -357,6 +357,15 @@ bool mwModel::GetAllTasks(std::vector<mwTask>& tasks, mwProject& project)
 			task.name = row[2];
 			task.description = row[3];
 			task.status = std::stoi(row[4]);
+			task.priority = std::stoi(row[5]);
+			task.start_time = std::stoi(row[6]);
+			task.end_time = std::stoi(row[7]);
+			task.deadline = std::stoi(row[8]);
+			task.project_uid = std::stoi(row[9]);
+			task.red = std::stoi(row[10]);
+			task.green = std::stoi(row[11]);
+			task.blue = std::stoi(row[12]);
+
 			tasks.push_back(task);
 		}
 		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
@@ -453,9 +462,9 @@ bool mwModel::InitTasksTable()
 					   "\"description\"	TEXT,                  "
                 	   "\"status\"	    INTEGER DEFAULT 0,     "
                 	   "\"priority\"	INTEGER DEFAULT 2,     "
-					   "\"start_time\"	INTEGER,               "
+					   "\"start_time\"	INTEGER NOT NULL,               "
 					   "\"end_time\"	INTEGER DEFAULT 0,               "
-		               "\"deadline\"	INTEGER,               "
+		               "\"deadline\"	INTEGER DEFAULT 0,               "
 					   "\"project_uid\"	INTEGER DEFAULT 1,     "
                 	   "\"red\"	        INTEGER DEFAULT 0,     "
 		               "\"green\"	    INTEGER DEFAULT 0,     "

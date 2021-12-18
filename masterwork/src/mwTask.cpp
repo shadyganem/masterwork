@@ -5,10 +5,21 @@ mwTask::mwTask()
 	name = "New Task";
 	std::time(&start_time);
 	project_uid = 0;
+	status = TaskStatus::ACTIVE;
+	priority = TaskPriority::MEDIUM;
+	deadline = 0;
+	parent_uid = 0;
 }
 
 mwTask::~mwTask()
 {
+	name = "New Task";
+	std::time(&start_time);
+	project_uid = 0;
+	status = TaskStatus::ACTIVE;
+	priority = TaskPriority::MEDIUM;
+	deadline = 0;
+	parent_uid = 0;
 }
 
 void mwTask::StampCreationTime()
