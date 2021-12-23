@@ -4,6 +4,8 @@
 #include "mwDefines.h"
 #include "controller/mwController.h"
 
+#include "view/mwNewProject.h"
+
 class mwTopPanel : public wxPanel
 {
 public:
@@ -18,8 +20,10 @@ public:
 
 public:
     void OnNewTaskButton(wxCommandEvent& event);
+    void OnNewProjectButton(wxCommandEvent& event);
 
     wxButton* m_new_task;
+    wxButton* m_new_project;
 
 
 private:

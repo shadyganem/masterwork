@@ -34,10 +34,12 @@ public:
 
 
 public:
-    wxListbook* m_listbook;
-    wxPanel* m_programming;
-    wxPanel* m_notification;
+    wxScrolledWindow* m_notification_panel;
+    wxStaticText* m_notifications_text;
+    wxScrolledWindow* m_programming_panel;
 
+    wxListbook* m_listbook;
+    
 private:
     // any class wishing to process wxWidgets events must use this macro
     DECLARE_EVENT_TABLE()

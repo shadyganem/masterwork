@@ -36,6 +36,7 @@ public:
 	void AddTask(std::string name, std::string dec);
 	void DeleteTask(mwTask& task);
 	void AddTask(mwTask task);
+	void AddProject(mwProject& project);
 	void GetProjectsForActiveUser(std::vector<std::string>& projects);
 	void GetProjectsForActiveUser(std::vector<mwProject>& projects);
 	void GetTasksForActiveProject(std::vector<mwTask>& tasks);

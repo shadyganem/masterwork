@@ -2,6 +2,8 @@
 
 BEGIN_EVENT_TABLE(mwTopPanel, wxPanel)
 	EVT_BUTTON(TOP_PANEL_NEW_TASK_ID, mwTopPanel::OnNewTaskButton)
+	EVT_BUTTON(TOP_PANEL_NEW_PROJECT_ID, mwTopPanel::OnNewProjectButton)
+
 END_EVENT_TABLE()
 
 mwTopPanel::mwTopPanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, const wxString& name)
@@ -11,10 +13,9 @@ mwTopPanel::mwTopPanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos, c
 	wxSizer* top_panel_sizer = new wxBoxSizer(wxHORIZONTAL);
 
 
-
+	m_new_project = new wxButton(this, TOP_PANEL_NEW_PROJECT_ID, "New Project", wxDefaultPosition, wxDefaultSize);
 	m_new_task = new wxButton(this, TOP_PANEL_NEW_TASK_ID, "New Task", wxDefaultPosition, wxDefaultSize);
-	m_new_task->SetBackgroundColour(wxColor(61, 61, 61));
-	m_new_task->SetForegroundColour(wxColor(255, 255, 255));
+	buttons_sizer->Add(this->m_new_project, 0, wxRIGHT, 3);
 	buttons_sizer->Add(m_new_task, 0, wxRIGHT, 3);
 	top_panel_sizer->Add(buttons_sizer);
 	SetSizer(top_panel_sizer);
@@ -35,4 +36,9 @@ void mwTopPanel::OnNewTaskButton(wxCommandEvent& event)
 	task.project_uid = proj.uid;
 	controller.AddTask(task);
 	event.Skip();
+}
+
+void mwTopPanel::OnNewProjectButton(wxCommandEvent& event)
+{
+	//mwNewProject* new_project_panel = new mwNewProject(this);
 }
