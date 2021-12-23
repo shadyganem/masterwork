@@ -46,16 +46,14 @@ mwNewProject::~mwNewProject()
 
 void mwNewProject::OnDoneButton(wxCommandEvent& event)
 {
-	mwLogger logger;
 	mwController& controller = mwController::Get();
 	mwProject new_project;
-	wxString project_name = this->m_project_name_textbox->GetLineText(0);
-
-	if (project_name.IsEmpty())
+	new_project.name = this->m_project_name_textbox->GetLineText(0).ToStdString();
+	if (new_project.name == "")
+	{
+		this->Close();
 		return;
-	logger.Info(new_project.name);
-
-	new_project.name = project_name.ToStdString();
+	}
 	controller.AddProject(new_project);
 	this->Close();
 }
