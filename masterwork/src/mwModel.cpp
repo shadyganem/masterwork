@@ -41,13 +41,17 @@ bool mwModel::AddUser(mwUser& user)
 
 bool mwModel::AddProject(mwProject& project)
 {
+	mwLogger logger;
 	if (this->ConnectDb() == false)
 		return false;
-	std::string sql = "INSERT INTO projects(user_uid, name, start_time, is_active)"
+	std::string sql = "INSERT INTO projects(user_uid, name, start_time, is_active) "
 		              "VALUES (\"" + std::to_string(project.user_uid) + "\"  ,"
 		              "\"" + project.name + "\" ,"
-		              + std::to_string(project.start_time) +
+		              + std::to_string(project.start_time) + ", "
+					  + std::to_string(project.is_active) +
 		              ");";
+	logger.Info("Executinig query " + sql);
+
 	m_db_handler.ExeQuery(sql.c_str());
 	if (this->DisconnectDb() == false)
 		return false;

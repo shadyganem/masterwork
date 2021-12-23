@@ -123,6 +123,7 @@ void mwController::AddProject(mwProject& project)
 	m_model.AddProject(project);
 	m_mutex.Unlock();
 	PostUpdateUI(MAIN_FRAME_ID);
+	PostUpdateUI(SIDE_PANEL_ID);
 }
 
 void mwController::GetProjectsForActiveUser(std::vector<std::string>& projects)
@@ -156,19 +157,18 @@ void mwController::GetTasksForActiveProject(std::vector<mwTask>& tasks)
 
 void mwController::PostUpdateUI(int wind_id)
 {
+	mwLogger logger;
 	if (this->m_event_handlers.count(wind_id) != 0)
 	{
 		wxEvtHandler* event_handler = this->m_event_handlers[wind_id];
 		wxCommandEvent* event = new wxCommandEvent(mwUpdateUI, wind_id);
-		event->SetEventObject(this->m_main_frame);
+		event->SetEventObject(event_handler);
 		event_handler->QueueEvent(event);
 	}
 	else
 	{
-		mwLogger logger;
 		logger.Info("No event handler found for WindId = " + std::to_string(wind_id));
 	}
-	
 }
 
 void mwController::PostNotification(int windId)

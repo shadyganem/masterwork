@@ -1,7 +1,18 @@
 #include "view/mwSidePanel.h"
 
+
+BEGIN_EVENT_TABLE(mwSidePanel, wxPanel)
+	EVT_CUSTOM(mwUpdateUI, SIDE_PANEL_ID, mwSidePanel::OnUpdateUI)
+END_EVENT_TABLE()
+
+
 void mwSidePanel::UpdateProjecstList()
 {
+	mwLogger logger;
+
+	
+	m_projects_list->Clear();
+
 	mwController& controller = mwController::Get();
 	std::vector<mwProject> projects;
 	controller.GetProjectsForActiveUser(projects);
@@ -10,15 +21,23 @@ void mwSidePanel::UpdateProjecstList()
 	{
 		m_place_to_project_map[i] = projects[i];
 		project_name = projects[i].name;
+		logger.Info(project_name.ToStdString());
 		m_projects_list->InsertItems(1, &project_name, i);
 	}
+}
+
+void mwSidePanel::OnUpdateUI(wxEvent& event)
+{
+	mwLogger logger;
+	logger.Info("updating side panel");
+	this->UpdateProjecstList();
+	this->Layout();
 }
 
 void mwSidePanel::OnItemSelect(wxCommandEvent& event)
 {
 	mwLogger logger;
 	mwController& controller = mwController::Get();
-	logger.Info("at OnItemSelect");
 	int sel_item;
 	sel_item = this->m_projects_list->GetSelection();
 	logger.Info(std::to_string(sel_item));
@@ -32,6 +51,8 @@ mwSidePanel::mwSidePanel(wxWindow* parent,
 	                     long style, 
 	                     const wxString& name) : wxPanel(parent, winid, pos, size, style, name)
 {
+	mwController& controller = mwController::Get();
+	controller.RegisterEventHandler(SIDE_PANEL_ID, this);
 	wxBoxSizer* bSizer19;
 	bSizer19 = new wxBoxSizer(wxVERTICAL);
 

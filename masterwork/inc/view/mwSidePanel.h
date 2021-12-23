@@ -14,6 +14,8 @@
 #include <map>
 #include "model/mwProject.h"
 
+#include "mwDefines.h"
+
 class mwSidePanel : public wxPanel
 {
 public:
@@ -34,6 +36,7 @@ public:
 	}
 
 	void UpdateProjecstList();
+	void OnUpdateUI(wxEvent& event);
 	virtual void OnItemSelect(wxCommandEvent& event);
 
 	mwSidePanel(wxWindow* parent,
@@ -44,5 +47,9 @@ public:
                 const wxString& name = wxASCII_STR(wxPanelNameStr));
 
     ~mwSidePanel();
+
+private:
+	// any class wishing to process wxWidgets events must use this macro
+	DECLARE_EVENT_TABLE()
 };
 

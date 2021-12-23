@@ -207,7 +207,7 @@ void mwMainFrame::OnNewTaskButton(wxCommandEvent& event)
 void mwMainFrame::OnSearch(wxCommandEvent& event)
 {
 	mwController& controller = mwController::Get();
-	wxString seach_txt = m_search_ctrl->GetLineText(0);
+	wxString search_txt = m_search_ctrl->GetLineText(0);
 	ShowInfoBarInfoMessage("Searching: " + m_search_ctrl->GetLineText(0));
 	m_search_ctrl->Clear();
 }
