@@ -27,14 +27,8 @@ mwTopPanel::~mwTopPanel()
 
 void mwTopPanel::OnNewTaskButton(wxCommandEvent& event)
 {
-	mwController& controller = mwController::Get();
-	mwTask task;
-	mwProject proj;
-	controller.GetActiveProject(proj);
-	task.name = "new task";
-	task.description = "This is a new task";
-	task.project_uid = proj.uid;
-	controller.AddTask(task);
+	mwNewTaskFrame* new_task_frame = new mwNewTaskFrame(this);
+	new_task_frame->Show(true);
 	event.Skip();
 }
 
@@ -42,4 +36,5 @@ void mwTopPanel::OnNewProjectButton(wxCommandEvent& event)
 {
 	mwNewProject* new_project_form = new mwNewProject(this);
 	new_project_form->Show(true);
+	event.Skip();
 }
