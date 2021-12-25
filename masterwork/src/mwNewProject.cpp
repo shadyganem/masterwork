@@ -1,6 +1,6 @@
 #include "view/mwNewProject.h"
 
-mwNewProject::mwNewProject(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style) : wxFrame(parent, id, title, pos, size, style)
+mwNewProjectFrame::mwNewProjectFrame(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style) : wxFrame(parent, id, title, pos, size, style)
 {
 	this->SetSizeHints(wxDefaultSize, wxDefaultSize);
 
@@ -35,16 +35,16 @@ mwNewProject::mwNewProject(wxWindow* parent, wxWindowID id, const wxString& titl
 	this->Layout();
 
 	// Connect Events
-	m_button2->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mwNewProject::OnDoneButton), NULL, this);
+	m_button2->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mwNewProjectFrame::OnDoneButton), NULL, this);
 }
 
-mwNewProject::~mwNewProject()
+mwNewProjectFrame::~mwNewProjectFrame()
 {
 	// Disconnect Events
-	m_button2->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mwNewProject::OnDoneButton), NULL, this);
+	m_button2->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mwNewProjectFrame::OnDoneButton), NULL, this);
 }
 
-void mwNewProject::OnDoneButton(wxCommandEvent& event)
+void mwNewProjectFrame::OnDoneButton(wxCommandEvent& event)
 {
 	mwController& controller = mwController::Get();
 	mwProject new_project;

@@ -34,7 +34,7 @@ void mwTopPanel::OnNewTaskButton(wxCommandEvent& event)
 
 void mwTopPanel::OnNewProjectButton(wxCommandEvent& event)
 {
-	mwNewProject* new_project_form = new mwNewProject(this);
+	mwNewProjectFrame* new_project_form = new mwNewProjectFrame(this);
 	new_project_form->Show(true);
 	event.Skip();
 }
