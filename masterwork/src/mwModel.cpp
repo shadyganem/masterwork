@@ -60,6 +60,7 @@ bool mwModel::AddProject(mwProject& project)
 
 bool mwModel::AddTask(mwTask& task)
 {
+	mwLogger logger;
 	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 		return false;
 
@@ -156,7 +157,7 @@ bool mwModel::DeleteTask(mwTask& task)
 		this->ConnectDb();
 
 		std::string sql = "UPDATE tasks "
-			"SET status= " + std::to_string(TaskStatus::DELETED) + " "
+			"SET status= " + std::to_string(mwTask::TaskStatus::DELETED) + " "
 			"WHERE uid=" + std::to_string(task.uid) + " "
 			";";
 		m_db_handler.Update(sql.c_str());
@@ -343,7 +344,7 @@ bool mwModel::GetAllTasks(std::vector<mwTask>& tasks, mwProject& project)
 		Records records;
 		Record row;
 		std::string sql = "SELECT * FROM tasks WHERE project_uid=" + std::to_string(project.uid) + " "
-						  "AND status=0"
+						  "AND status!=-1"
 			              ";";
 		logger.Info("Executinig query " + sql);
 		m_db_handler.Select(sql.c_str(), records);

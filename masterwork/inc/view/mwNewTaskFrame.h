@@ -30,7 +30,7 @@ protected:
 	wxStaticText* m_task_name_static;
 	wxTextCtrl* m_task_name;
 	wxStaticText* m_task_description_static;
-	wxTextCtrl* m_textCtrl14;
+	wxTextCtrl* m_task_description;
 	wxStaticText* m_priority_static;
 	wxChoice* m_priority_choice;
 	wxStaticText* m_status_static;

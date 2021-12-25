@@ -3,22 +3,29 @@
 #include <string>
 #include <ctime>
 
-enum TaskStatus
-{
-	ACTIVE,
-	DONE,
-	DELETED
-};
-
-enum TaskPriority
-{
-	LOW,
-	MEDIUM,
-	HIGH
-};
 
 class mwTask : public mwModelItem
 {
+public:
+
+	enum TaskStatus
+	{
+		NOTSTARTED,
+		WIP,
+		CANCELED,
+		DONE,
+		BLOCKED,
+		DELETED = -1
+	};
+
+	enum TaskPriority
+	{
+		HIGH,
+		MEDIUM,
+		LOW,
+		SHOWSTOPPER
+	};
+
 public:
 	mwTask(std::string name, std::string dec);
 	mwTask();
@@ -38,5 +45,7 @@ public:
 	int red;
 	int green;
 	int blue;
+
+
 };
 

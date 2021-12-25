@@ -26,8 +26,8 @@ mwNewTaskFrame::mwNewTaskFrame(wxWindow* parent, wxWindowID id, const wxString& 
 	m_task_description_static->Wrap(-1);
 	m_form_sizer->Add(m_task_description_static, 0, wxALL, 5);
 
-	m_textCtrl14 = new wxTextCtrl(m_main_panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
-	m_form_sizer->Add(m_textCtrl14, 0, wxALL | wxEXPAND, 5);
+	m_task_description = new wxTextCtrl(m_main_panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
+	m_form_sizer->Add(m_task_description, 0, wxALL | wxEXPAND, 5);
 
 	wxBoxSizer* bSizer48;
 	bSizer48 = new wxBoxSizer(wxHORIZONTAL);
@@ -114,12 +114,6 @@ void mwNewTaskFrame::OnCancelButton(wxCommandEvent& event)
 
 void mwNewTaskFrame::OnDoneButton(wxCommandEvent& event)
 {
-	/*
-mwTask task;
-
-task.name = "new task";
-task.description = "This is a new task";
-*/
 
 	mwLogger logger;
 	mwController& controller = mwController::Get();
@@ -131,7 +125,50 @@ task.description = "This is a new task";
 
 
 	new_task.name = this->m_task_name->GetLineText(0).ToStdString();
-	new_task.description = "This is a new task";
+	new_task.description = this->m_task_description->GetLineText(0).ToStdString();
+
+	switch (this->m_priority_choice->GetSelection())
+	{
+	case 0:
+		new_task.priority = mwTask::TaskPriority::HIGH;
+		break;
+	case 1:
+		new_task.priority = mwTask::TaskPriority::MEDIUM;
+		break;
+	case 2:
+		new_task.priority = mwTask::TaskPriority::LOW;
+		break;
+	case 3:
+		new_task.priority = mwTask::TaskPriority::SHOWSTOPPER;
+		break;
+	default:
+		logger.Warning("Could not find a valid selection for the priority. Selecting Medium as a default value");
+		new_task.priority = mwTask::TaskPriority::MEDIUM;
+		break;
+	}
+
+	switch (this->m_status_choice->GetSelection())
+	{
+	case 0:
+		new_task.status = mwTask::TaskStatus::NOTSTARTED;
+		break;
+	case 1:
+		new_task.status = mwTask::TaskStatus::WIP;
+		break;
+	case 2:
+		new_task.status = mwTask::TaskStatus::CANCELED;
+		break;
+	case 3:
+		new_task.status = mwTask::TaskStatus::DONE;
+		break;
+	case 4:
+		new_task.status = mwTask::TaskStatus::BLOCKED;
+		break;
+	default:
+		logger.Warning("Could not find a valid selection for the status. Selecting NotStarted as a default value");
+		new_task.status = mwTask::TaskStatus::NOTSTARTED;
+		break;
+	}
 
 
 	controller.AddTask(new_task);
