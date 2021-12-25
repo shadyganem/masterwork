@@ -1,4 +1,4 @@
-#include "view/mwNewProject.h"
+#include "view/mwNewProjectFrame.h"
 
 mwNewProjectFrame::mwNewProjectFrame(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style) : wxFrame(parent, id, title, pos, size, style)
 {
