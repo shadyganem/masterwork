@@ -2,7 +2,6 @@
 
 mwProject::mwProject()
 {
-	this->name = "New Project";
 	this->status = 0;
 	std::time(&this->start_time);
 }

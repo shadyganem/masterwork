@@ -31,7 +31,9 @@ public:
 	bool GetProjectTasks(mwProject& project,  std::vector<mwTask>& ret_tasks_vect);
 	bool GetAllTasks(std::vector<mwTask>& tasks, mwProject& current_project);
 	bool IsTaskFound(mwTask& task);
+	bool IsProjectFound(mwProject& project);
 	bool UpdateTask(mwTask& task);
+	bool UpdateProject(mwProject& project);
 
 private:
 	bool ConnectDb();

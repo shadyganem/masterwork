@@ -456,6 +456,37 @@ bool mwModel::IsTaskFound(mwTask& task)
 	}
 }
 
+bool mwModel::IsProjectFound(mwProject& project)
+{
+	try
+	{
+		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
+			return false;
+
+		mwLogger logger;
+		Records records;
+		bool found = true;
+		std::string sql = "SELECT * FROM projects WHERE uid=" + std::to_string(project.uid) + " "
+			              "AND status!=-1"
+			              ";";
+
+		logger.Info("Executinig query " + sql);
+		m_db_handler.Select(sql.c_str(), records);
+		mwTask task;
+		if (records.empty())
+			found = false;
+
+		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
+			return false;
+		return found;
+	}
+	catch (...)
+	{
+		m_db_handler.DisConn(this->m_db_path.c_str());
+		return false;
+	}
+}
+
 bool mwModel::UpdateTask(mwTask& task)
 {
 	mwLogger logger;
@@ -475,6 +506,34 @@ bool mwModel::UpdateTask(mwTask& task)
 						  "priority=" + std::to_string(task.priority) + ", "
 						  "deadline=" + std::to_string(task.deadline) + " "
 						  "WHERE uid=" + std::to_string(task.uid) + ";";
+
+		logger.Info("Executinig query " + sql);
+
+		m_db_handler.Update(sql.c_str());
+
+		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
+			return false;
+		return true;
+	}
+	catch (...)
+	{
+		logger.Error("Exception occured at bool mwModel::AddTask(mwTask& task)");
+		m_db_handler.DisConn(this->m_db_path.c_str());
+		return false;
+	}
+}
+
+bool mwModel::UpdateProject(mwProject& project)
+{
+	mwLogger logger;
+	try
+	{
+		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
+			return false;
+
+		std::string sql = "UPDATE projects "
+			              "SET name=\"" + project.name + "\" "
+			              "WHERE uid=" + std::to_string(project.uid) + " ;";
 
 		logger.Info("Executinig query " + sql);
 

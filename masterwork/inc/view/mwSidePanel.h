@@ -15,6 +15,7 @@
 #include "model/mwProject.h"
 
 #include "mwDefines.h"
+#include "view/mwNewProjectFrame.h"
 
 class mwSidePanel : public wxPanel
 {

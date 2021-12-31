@@ -63,15 +63,18 @@ void mwSidePanel::OnProjectListMenuClick(wxCommandEvent& evt)
 	mwProject sel_proj;
 	sel_item = this->m_projects_list->GetSelection();
 	sel_proj = this->m_place_to_project_map[sel_item];
+	mwNewProjectFrame* new_project_form = new mwNewProjectFrame(this);
 
-	switch (evt.GetId()) {
-	case ProjectListPopupMenuItems::Rename:
-		logger.Info("renaming " + sel_proj.name);
-		break;
-	case ProjectListPopupMenuItems::Delete:
-		logger.Info("Deleting " + sel_proj.name);
-		controller.DeleteProject(sel_proj);
-		break;
+	switch (evt.GetId()) 
+	{
+		case ProjectListPopupMenuItems::Rename:
+			logger.Info("renaming " + sel_proj.name);
+			new_project_form->SetProject(sel_proj);
+			new_project_form->Show(true);
+			break;
+		case ProjectListPopupMenuItems::Delete:
+			controller.DeleteProject(sel_proj);
+			break;
 	}
 }
 

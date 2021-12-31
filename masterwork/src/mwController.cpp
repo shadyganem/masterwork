@@ -147,7 +147,14 @@ void mwController::AddProject(mwProject& project)
 	project.user_uid = m_active_user.uid;
 	project.is_active = 0;
 	m_mutex.Lock();
-	m_model.AddProject(project);
+	if (m_model.IsProjectFound(project))
+	{
+		m_model.UpdateProject(project);
+	}
+	else
+	{
+		m_model.AddProject(project);
+	}
 	m_mutex.Unlock();
 	PostUpdateUI(SIDE_PANEL_ID);
 }

@@ -44,20 +44,24 @@ mwNewProjectFrame::~mwNewProjectFrame()
 	m_button2->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mwNewProjectFrame::OnDoneButton), NULL, this);
 }
 
+void mwNewProjectFrame::SetProject(mwProject& project)
+{
+	m_project = project;
+	m_project_name_textbox->SetLabel(m_project.name);
+}
+
 void mwNewProjectFrame::OnDoneButton(wxCommandEvent& event)
 {
 	mwLogger logger;
 	logger.EnableDebug();
 	mwController& controller = mwController::Get();
-	mwProject new_project;
 	
-	new_project.name = this->m_project_name_textbox->GetLineText(0).ToStdString();
-	logger.Debug(new_project.name);
-	if (new_project.name == "")
+	m_project.name = this->m_project_name_textbox->GetLineText(0).ToStdString();
+	if (m_project.name == "")
 	{
 		this->Close();
 		return;
 	}
-	controller.AddProject(new_project);
+	controller.AddProject(m_project);
 	this->Close();
 }

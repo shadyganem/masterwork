@@ -110,7 +110,6 @@ void mwNewTaskFrame::SetTask(mwTask& task)
 	m_task = task;
 	m_task_name->SetLabelText(task.name);
 	m_task_description->SetLabelText(task.description);
-
 }
 
 void mwNewTaskFrame::OnCancelButton(wxCommandEvent& event)

@@ -20,7 +20,7 @@
 class mwNewProjectFrame : public wxFrame
 {
 private:
-
+	mwProject m_project;
 protected:
 	wxPanel* m_main_form;
 	wxStaticText* m_project_name_static_name;
@@ -34,5 +34,6 @@ protected:
 public:
 	mwNewProjectFrame(wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("New Project"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(500, 176), long style = wxDEFAULT_FRAME_STYLE | wxFRAME_FLOAT_ON_PARENT | wxTAB_TRAVERSAL);
 	~mwNewProjectFrame();
+	void SetProject(mwProject& project);
 
 };
