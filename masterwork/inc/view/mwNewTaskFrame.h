@@ -51,5 +51,8 @@ public:
 	mwNewTaskFrame(wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("New Task"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(458, 422), long style = wxDEFAULT_FRAME_STYLE | wxFRAME_FLOAT_ON_PARENT | wxTAB_TRAVERSAL);
 	~mwNewTaskFrame();
 
+	void SetTask(mwTask& task);
+	mwTask m_task;
+
 };
 

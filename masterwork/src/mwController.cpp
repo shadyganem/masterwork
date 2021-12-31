@@ -124,10 +124,18 @@ void mwController::DeleteProject(mwProject& project)
 	PostUpdateUI(SIDE_PANEL_ID);
 }
 
-void mwController::AddTask(mwTask task)
+void mwController::AddTask(mwTask& task)
 {
 	m_mutex.Lock();
-	m_model.AddTask(task);
+	if (m_model.IsTaskFound(task))
+	{
+		m_mutex.Lock();
+		m_model.UpdateTask(task);
+	}
+	else
+	{
+		m_model.AddTask(task);
+	}
 	m_mutex.Unlock();
 	PostUpdateUI(MAIN_FRAME_ID);
 	PostUpdateUI(WORK_PANEL_ID);

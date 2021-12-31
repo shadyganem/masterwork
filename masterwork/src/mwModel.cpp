@@ -63,7 +63,7 @@ bool mwModel::AddTask(mwTask& task)
 	mwLogger logger;
 	try
 	{
-		if (task.uid == 0)
+		if (task.project_uid == 0)
 		{
 			throw("Can not add task with UID = 0");
 		}
@@ -420,6 +420,73 @@ bool mwModel::GetAllTasks(std::vector<mwTask>& tasks, mwProject& project)
 	}
 	catch (...)
 	{
+		m_db_handler.DisConn(this->m_db_path.c_str());
+		return false;
+	}
+}
+
+bool mwModel::IsTaskFound(mwTask& task)
+{
+	try
+	{
+		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
+			return false;
+
+		mwLogger logger;
+		Records records;
+		bool found = true;
+		std::string sql = "SELECT * FROM tasks WHERE uid=" + std::to_string(task.uid) + " "
+		                  "AND status!=-1"
+			              ";";
+
+		logger.Info("Executinig query " + sql);
+		m_db_handler.Select(sql.c_str(), records);
+		mwTask task;
+		if (records.empty())
+			found = false;
+
+		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
+			return false;
+		return found;
+	}
+	catch (...)
+	{
+		m_db_handler.DisConn(this->m_db_path.c_str());
+		return false;
+	}
+}
+
+bool mwModel::UpdateTask(mwTask& task)
+{
+	mwLogger logger;
+	try
+	{
+		if (task.project_uid == 0)
+		{
+			throw("Can not add task with project_uid= 0");
+		}
+		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
+			return false;
+
+		std::string sql = "UPDATE tasks "
+						  "SET name=\"" + task.name + "\", "
+						  "description=\"" + task.description + "\", "
+						  "status=" + std::to_string(task.status) + ", "
+						  "priority=" + std::to_string(task.priority) + ", "
+						  "deadline=" + std::to_string(task.deadline) + " "
+						  "WHERE uid=" + std::to_string(task.uid) + ";";
+
+		logger.Info("Executinig query " + sql);
+
+		m_db_handler.Update(sql.c_str());
+
+		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
+			return false;
+		return true;
+	}
+	catch (...)
+	{
+		logger.Error("Exception occured at bool mwModel::AddTask(mwTask& task)");
 		m_db_handler.DisConn(this->m_db_path.c_str());
 		return false;
 	}

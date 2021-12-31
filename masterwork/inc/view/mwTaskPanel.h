@@ -22,26 +22,15 @@
 
 #include "controller/mwLogger.h"
 #include "controller/mwController.h"
+#include "view/mwNewTaskFrame.h"
 
 class mwTaskPanel : public wxPanel
 {
 public:
-	wxBitmap* m_delete_bitmap;
 	wxStaticText* m_static_task_name;
 	wxStaticText* m_static_description;
 	wxButton* m_edit_task;
-	wxTextCtrl* m_taskname;
-	wxRichTextCtrl* m_richText1;
-	wxStaticText* m_staticText2;
-	wxSpinCtrl* m_spinCtrl1;
-	wxStaticText* m_staticText4;
-	wxSpinCtrl* m_spinCtrl3;
-	wxStaticText* m_staticText3;
-	wxSpinCtrl* m_spinCtrl2;
-	wxDatePickerCtrl* m_datePicker1;
-	wxChoice* m_choice1;
-	wxBitmapButton* m_delete_task;
-	wxBitmapButton* m_save_task;
+	wxButton* m_delete_task;
 
 	mwTask m_task;
 
@@ -50,7 +39,6 @@ public:
 	virtual void OnEditTask(wxCommandEvent& event);
 	virtual void OnStatusChanged(wxCommandEvent& event) { event.Skip(); }
 	virtual void OnDelete(wxCommandEvent& event);
-	virtual void OnSaveTask(wxCommandEvent& event);
 	void SetTask(mwTask task);
 
 	int m_uid;
