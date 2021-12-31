@@ -53,6 +53,7 @@ mwTaskPanel::mwTaskPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, c
 	wxBoxSizer* bSizer17 = new wxBoxSizer(wxVERTICAL);
 
 	m_static_task_name = new wxStaticText(m_static_view, wxID_ANY, wxT("Task name"), wxDefaultPosition, wxDefaultSize, 0);
+	m_static_task_name->SetFont(wxFont().Bold());
 	m_static_task_name->Wrap(-1);
 	bSizer17->Add(m_static_task_name, 0, wxALL, 5);
 
