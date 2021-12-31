@@ -2,13 +2,15 @@
 
 mwProject::mwProject()
 {
-	name = "New Project";
+	this->name = "New Project";
+	this->status = 0;
 	std::time(&this->start_time);
 }
 
 mwProject::mwProject(std::string name)
 {
 	this->name = name;
+	this->status = 0;
 	std::time(&this->start_time);
 }
 

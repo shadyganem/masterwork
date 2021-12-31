@@ -121,6 +121,11 @@ void mwNewTaskFrame::OnDoneButton(wxCommandEvent& event)
 	mwTask new_task;
 	mwProject proj;
 	controller.GetActiveProject(proj);
+	if (proj.uid == 0)
+	{
+		this->Close();
+		return;
+	}
 	new_task.project_uid = proj.uid;
 
 

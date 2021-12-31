@@ -26,6 +26,10 @@ void mwController::GetActiveProject(mwProject& project)
 {
 	m_model.GetActiveUser(m_active_user);
 	m_model.GetActiveProject(m_active_project, m_active_user);
+	if (m_active_project.uid == 0)
+		this->m_is_project_selected = false;
+	else
+		this->m_is_project_selected = true;
 	project = m_active_project;
 }
 
@@ -90,6 +94,7 @@ void mwController::RegisterEventHandler(int id, wxEvtHandler* event_handler)
 
 void mwController::AddTask(std::string name, std::string dec)
 {
+
 	mwTask task(name, dec);
 	task.StampCreationTime();
 	m_mutex.Lock();
@@ -103,7 +108,20 @@ void mwController::DeleteTask(mwTask& task)
 	mwLogger logger;
 	logger.Info("deleting task: " + std::to_string(task.uid));
 	m_model.DeleteTask(task);
+	m_model.GetActiveUser(m_active_user);
+	m_model.GetActiveProject(m_active_project, m_active_user);
 	PostUpdateUI(WORK_PANEL_ID);
+}
+
+void mwController::DeleteProject(mwProject& project)
+{
+	mwLogger logger;
+	logger.Info("deleting project: " + std::to_string(project.uid));
+	m_model.DeleteProject(project);
+	m_model.GetActiveUser(m_active_user);
+	m_model.GetActiveProject(m_active_project, m_active_user);
+	PostUpdateUI(WORK_PANEL_ID);
+	PostUpdateUI(SIDE_PANEL_ID);
 }
 
 void mwController::AddTask(mwTask task)
@@ -117,6 +135,7 @@ void mwController::AddTask(mwTask task)
 
 void mwController::AddProject(mwProject& project)
 {
+	m_model.GetActiveUser(m_active_user);
 	project.user_uid = m_active_user.uid;
 	project.is_active = 0;
 	m_mutex.Lock();
@@ -127,8 +146,6 @@ void mwController::AddProject(mwProject& project)
 
 void mwController::GetProjectsForActiveUser(std::vector<std::string>& projects)
 {
-	mwLogger logger;
-	logger.Info("at GetPorjectsForCurrentUser");
 	m_model.GetActiveUser(m_active_user);
 	std::vector<mwProject> mw_projects;
 	m_model.GetAllProjects(mw_projects, m_active_user);
@@ -141,8 +158,6 @@ void mwController::GetProjectsForActiveUser(std::vector<std::string>& projects)
 
 void mwController::GetProjectsForActiveUser(std::vector<mwProject>& projects)
 {
-	mwLogger logger;
-	logger.Info("at GetPorjectsForCurrentUser");
 	this->m_model.GetActiveUser(m_active_user);
 	this->m_model.GetAllProjects(projects, m_active_user);
 }

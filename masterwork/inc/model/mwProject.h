@@ -5,6 +5,13 @@
 class mwProject : public mwModelItem
 {
 public:
+	enum ProjectStatus
+	{
+		DELETED = -1,
+		DEFAULT
+	};
+
+public:
 	mwProject();
 	mwProject(std::string name);
 	~mwProject();
@@ -13,6 +20,7 @@ public:
 	std::string name;
 	int uid;
 	int user_uid;
+	int status;
 	bool is_active;
 	void StampCreationTime();
 };

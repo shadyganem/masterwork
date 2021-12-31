@@ -35,6 +35,7 @@ public:
 	void RegisterEventHandler(int ID, wxEvtHandler* event_handler);
 	void AddTask(std::string name, std::string dec);
 	void DeleteTask(mwTask& task);
+	void DeleteProject(mwProject& project);
 	void AddTask(mwTask task);
 	void AddProject(mwProject& project);
 	void GetProjectsForActiveUser(std::vector<std::string>& projects);
@@ -57,5 +58,6 @@ private:
 	mwUser m_active_user;
 	mwProject m_active_project;
 	std::map<int, mwTask> m_seen_tasks;
+	bool m_is_project_selected;
 };
 

@@ -61,24 +61,38 @@ bool mwModel::AddProject(mwProject& project)
 bool mwModel::AddTask(mwTask& task)
 {
 	mwLogger logger;
-	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
-		return false;
+	try
+	{
+		if (task.uid == 0)
+		{
+			throw("Can not add task with UID = 0");
+		}
+		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
+			return false;
 
-	std::string sql = "INSERT INTO tasks(name, parent_uid, description, status, priority, start_time, deadline, project_uid)"
-		              "VALUES (\"" + task.name          + "\"  ,"
-		              + std::to_string(task.parent_uid) +     ","
-		              "\"" + task.description           + "\"  ,"
-                      + std::to_string(task.status)     +     ","
-                	  + std::to_string(task.priority)   +	  ","
-		              + std::to_string(task.start_time) +     ","
-                	  + std::to_string(task.deadline)   +     ","
-                	  +std::to_string(task.project_uid) +
-		              "); ";
-	m_db_handler.ExeQuery(sql.c_str());
+		std::string sql = "INSERT INTO tasks(name, parent_uid, description, status, priority, start_time, deadline, project_uid)"
+			"VALUES (\"" + task.name + "\"  ,"
+			+ std::to_string(task.parent_uid) + ","
+			"\"" + task.description + "\"  ,"
+			+ std::to_string(task.status) + ","
+			+ std::to_string(task.priority) + ","
+			+ std::to_string(task.start_time) + ","
+			+ std::to_string(task.deadline) + ","
+			+ std::to_string(task.project_uid) +
+			"); ";
+		m_db_handler.ExeQuery(sql.c_str());
 
-	if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
+		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
+			return false;
+		return true;
+
+	}
+	catch (...)
+	{
+		logger.Error("Exception occured at bool mwModel::AddTask(mwTask& task)");
+		m_db_handler.DisConn(this->m_db_path.c_str());
 		return false;
-	return true;
+	}
 }
 
 bool mwModel::GetActiveUser(mwUser& user)
@@ -153,12 +167,38 @@ bool mwModel::DeleteTask(mwTask& task)
 	try
 	{
 		mwLogger logger;
-		logger.Info("Delete Task");
 		this->ConnectDb();
 
 		std::string sql = "UPDATE tasks "
 			"SET status= " + std::to_string(mwTask::TaskStatus::DELETED) + " "
 			"WHERE uid=" + std::to_string(task.uid) + " "
+			";";
+		m_db_handler.Update(sql.c_str());
+
+		logger.Info(sql);
+
+		m_db_handler.Update(sql.c_str());
+		this->DisconnectDb();
+	}
+	catch (...)
+	{
+		this->DisconnectDb();
+		return false;
+	}
+}
+
+bool mwModel::DeleteProject(mwProject& project)
+{
+	try
+	{
+		mwLogger logger;
+		logger.Info("Delete Project" );
+		this->ConnectDb();
+
+		std::string sql = "UPDATE projects "
+			"SET status= " + std::to_string(mwProject::ProjectStatus::DELETED) + ", "
+			"is_active=0 " 
+			"WHERE uid=" + std::to_string(project.uid) + " "
 			";";
 		m_db_handler.Update(sql.c_str());
 
@@ -228,6 +268,7 @@ bool mwModel::GetActiveProject(mwProject& project, mwUser& user)
 		m_db_handler.Select(sql.c_str(), records);
 		if (records.empty())
 		{
+			project.uid = 0;
 			logger.Warning("No records were found for: " + sql);
 			m_db_handler.DisConn(this->m_db_path.c_str());
 			return false;
@@ -252,16 +293,17 @@ bool mwModel::GetActiveProject(mwProject& project, mwUser& user)
 
 bool mwModel::GetAllProjects(std::vector<mwProject>& prjects_vect, const mwUser& user)
 {
+	mwLogger logger;
 	try
 	{
 		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 			return false;
 
-		mwLogger logger;
 		logger.Info("selecting all projects for " + user.username);
 		Records records;
 		Record row;
-		std::string sql = "SELECT * FROM projects WHERE user_uid=" + std::to_string(user.uid) + " ;";
+		std::string sql = "SELECT * FROM projects WHERE user_uid=" + std::to_string(user.uid) + " "
+			              "AND status!=-1 ;";
 		logger.Info("Executinig query " + sql);
 		m_db_handler.Select(sql.c_str(), records);
 		mwProject proj;
@@ -285,6 +327,7 @@ bool mwModel::GetAllProjects(std::vector<mwProject>& prjects_vect, const mwUser&
 	}
 	catch(...)
 	{
+		logger.Error("Exception occured at mwModel::GetAllProjects(std::vector<mwProject>& prjects_vect, const mwUser& user) ");
 		m_db_handler.DisConn(this->m_db_path.c_str());
 		return false;
 	}
@@ -292,9 +335,9 @@ bool mwModel::GetAllProjects(std::vector<mwProject>& prjects_vect, const mwUser&
 
 bool mwModel::SetActiveProject(mwProject& project)
 {
+	mwLogger logger;
 	try
 	{
-		mwLogger logger;
 		logger.Info("Update active project");
 		this->ConnectDb();
 
@@ -439,6 +482,7 @@ bool mwModel::InitProjectsTable()
 		              "\"user_uid\"	    INTEGER NOT NULL DEFAULT 1, "
 				      "\"name\"	        TEXT,                       "
 				      "\"start_time\"   INTEGER,                    "
+                	  "\"status\"       INTEGER NOT NULL DEFAULT 0, "
                       "\"is_active\"	NUMERIC NOT NULL DEFAULT 0, "
                       "PRIMARY KEY(\"uid\" AUTOINCREMENT)           "
 				      ")";

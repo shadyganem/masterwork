@@ -28,7 +28,6 @@ public:
 	wxPanel* m_panel9;
 
 	wxListBox* m_projects_list;
-
 	void m_splitter1OnIdle(wxIdleEvent&)
 	{
 		m_splitter1->SetSashPosition(324);
@@ -38,6 +37,9 @@ public:
 	void UpdateProjecstList();
 	void OnUpdateUI(wxEvent& event);
 	virtual void OnItemSelect(wxCommandEvent& event);
+	virtual void OnProjectListRightUp(wxCommandEvent& event);
+	virtual void OnProjectListMenuClick(wxCommandEvent& evt);
+	bool IsProjectSelected();
 
 	mwSidePanel(wxWindow* parent,
                 wxWindowID winid = wxID_ANY,
@@ -48,6 +50,8 @@ public:
 
     ~mwSidePanel();
 
+private:
+	bool m_is_project_seleted;
 private:
 	// any class wishing to process wxWidgets events must use this macro
 	DECLARE_EVENT_TABLE()

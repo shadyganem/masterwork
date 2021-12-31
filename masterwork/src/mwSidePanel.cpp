@@ -2,17 +2,20 @@
 
 
 BEGIN_EVENT_TABLE(mwSidePanel, wxPanel)
-	EVT_CUSTOM(mwUpdateUI, SIDE_PANEL_ID, mwSidePanel::OnUpdateUI)
+EVT_CUSTOM(mwUpdateUI, SIDE_PANEL_ID, mwSidePanel::OnUpdateUI)
 END_EVENT_TABLE()
 
+static enum ProjectListPopupMenuItems
+{
+	Delete,
+	Rename
+};
 
 void mwSidePanel::UpdateProjecstList()
 {
 	mwLogger logger;
-
-	
 	m_projects_list->Clear();
-
+	m_place_to_project_map.clear();
 	mwController& controller = mwController::Get();
 	std::vector<mwProject> projects;
 	controller.GetProjectsForActiveUser(projects);
@@ -21,7 +24,7 @@ void mwSidePanel::UpdateProjecstList()
 	{
 		m_place_to_project_map[i] = projects[i];
 		project_name = projects[i].name;
-		logger.Info(project_name.ToStdString());
+		logger.Info(projects[i].name);
 		m_projects_list->InsertItems(1, &project_name, i);
 	}
 }
@@ -36,12 +39,50 @@ void mwSidePanel::OnUpdateUI(wxEvent& event)
 
 void mwSidePanel::OnItemSelect(wxCommandEvent& event)
 {
-	mwLogger logger;
 	mwController& controller = mwController::Get();
 	int sel_item;
 	sel_item = this->m_projects_list->GetSelection();
-	logger.Info(std::to_string(sel_item));
 	controller.SetActiveProject(m_place_to_project_map[sel_item]);
+}
+
+void mwSidePanel::OnProjectListRightUp(wxCommandEvent& event)
+{
+	const wxPoint pt = wxGetMousePosition();
+	wxMenu menu;
+	menu.Append(ProjectListPopupMenuItems::Rename, "Rename");
+	menu.Append(ProjectListPopupMenuItems::Delete, "Delete");
+	menu.Connect(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(mwSidePanel::OnProjectListMenuClick), NULL, this);
+	m_projects_list->PopupMenu(&menu);
+}
+
+void mwSidePanel::OnProjectListMenuClick(wxCommandEvent& evt)
+{
+	mwController& controller = mwController::Get();
+	mwLogger logger;
+	int sel_item;
+	mwProject sel_proj;
+	sel_item = this->m_projects_list->GetSelection();
+	sel_proj = this->m_place_to_project_map[sel_item];
+
+	switch (evt.GetId()) {
+	case ProjectListPopupMenuItems::Rename:
+		logger.Info("renaming " + sel_proj.name);
+		break;
+	case ProjectListPopupMenuItems::Delete:
+		logger.Info("Deleting " + sel_proj.name);
+		controller.DeleteProject(sel_proj);
+		break;
+	}
+}
+
+bool mwSidePanel::IsProjectSelected()
+{
+	mwLogger logger;
+	logger.EnableDebug();
+	int sel_item;
+	logger.Debug("this is a debug message");
+	sel_item = this->m_projects_list->GetSelection();
+	return false;
 }
 
 mwSidePanel::mwSidePanel(wxWindow* parent,
@@ -53,6 +94,7 @@ mwSidePanel::mwSidePanel(wxWindow* parent,
 {
 	mwController& controller = mwController::Get();
 	controller.RegisterEventHandler(SIDE_PANEL_ID, this);
+	m_is_project_seleted = false;
 	wxBoxSizer* bSizer19;
 	bSizer19 = new wxBoxSizer(wxVERTICAL);
 
@@ -89,9 +131,12 @@ mwSidePanel::mwSidePanel(wxWindow* parent,
 	this->UpdateProjecstList();
 
 	m_projects_list->Connect(wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler(mwSidePanel::OnItemSelect), NULL, this);
+	m_projects_list->Connect(wxEVT_RIGHT_UP, wxCommandEventHandler(mwSidePanel::OnProjectListRightUp), NULL, this);
+
 }
 
 mwSidePanel::~mwSidePanel()
 {
 	m_projects_list->Disconnect(wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler(mwSidePanel::OnItemSelect), NULL, this);
+	m_projects_list->Disconnect(wxEVT_RIGHT_UP, wxCommandEventHandler(mwSidePanel::OnProjectListRightUp), NULL, this);
 }
