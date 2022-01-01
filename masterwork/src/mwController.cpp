@@ -105,8 +105,6 @@ void mwController::AddTask(std::string name, std::string dec)
 
 void mwController::DeleteTask(mwTask& task)
 {
-	mwLogger logger;
-	logger.Info("deleting task: " + std::to_string(task.uid));
 	m_model.DeleteTask(task);
 	m_model.GetActiveUser(m_active_user);
 	m_model.GetActiveProject(m_active_project, m_active_user);
@@ -115,8 +113,6 @@ void mwController::DeleteTask(mwTask& task)
 
 void mwController::DeleteProject(mwProject& project)
 {
-	mwLogger logger;
-	logger.Info("deleting project: " + std::to_string(project.uid));
 	m_model.DeleteProject(project);
 	m_model.GetActiveUser(m_active_user);
 	m_model.GetActiveProject(m_active_project, m_active_user);
@@ -129,7 +125,6 @@ void mwController::AddTask(mwTask& task)
 	m_mutex.Lock();
 	if (m_model.IsTaskFound(task))
 	{
-		m_mutex.Lock();
 		m_model.UpdateTask(task);
 	}
 	else

@@ -39,8 +39,10 @@
     <ClInclude Include="inc\view\mwTaskPanel.h" />
     <ClInclude Include="inc\view\mwNewProjectFrame.h" />
     <ClInclude Include="inc\view\mwNewTaskFrame.h" />
+    <ClInclude Include="inc\model\mwTime.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\mwTime.cpp" />
     <ClCompile Include="src\mwNewTaskFrame.cpp" />
     <ClCompile Include="src\mwNewProjectFrame.cpp" />
     <ClCompile Include="src\mwTaskPanel.cpp" />

@@ -15,16 +15,19 @@
 #include <wx/button.h>
 #include <wx/panel.h>
 #include <wx/frame.h>
+#include <wx/timectrl.h>
 
 #include "controller/mwLogger.h"
 #include "controller/mwController.h"
 #include "model/mwTask.h"
-
+#include "model/mwTime.h"
 
 class mwNewTaskFrame : public wxFrame
 {
 private:
-
+	void SetTaskPriority();
+	void SetTaskStatus();
+	void SetTaskDeadline();
 protected:
 	wxPanel* m_main_panel;
 	wxStaticText* m_task_name_static;
@@ -36,11 +39,13 @@ protected:
 	wxStaticText* m_status_static;
 	wxChoice* m_status_choice;
 	wxStaticText* m_deadline_static;
-	wxSpinCtrl* m_hour_spin;
-	wxSpinCtrl* m_spinCtrl6;
 	wxDatePickerCtrl* m_datePicker2;
 	wxButton* m_done_button;
 	wxButton* m_cancel_button;
+	wxTimePickerCtrl* m_deadline_timepicker;
+	wxDatePickerCtrl* m_deadline_datepicker;
+
+
 
 	// Virtual event handlers, overide them in your derived class
 	virtual void OnDoneButton(wxCommandEvent& event);

@@ -61,14 +61,12 @@ mwNewTaskFrame::mwNewTaskFrame(wxWindow* parent, wxWindowID id, const wxString& 
 	m_deadline_static->Wrap(-1);
 	bSizer50->Add(m_deadline_static, 0, wxALL, 5);
 
-	m_hour_spin = new wxSpinCtrl(m_main_panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(50, -1), wxSP_ARROW_KEYS, 0, 23, 12);
-	bSizer50->Add(m_hour_spin, 0, wxALL, 5);
+	m_deadline_timepicker = new wxTimePickerCtrl(m_main_panel, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_SHOWCENTURY);
 
-	m_spinCtrl6 = new wxSpinCtrl(m_main_panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(50, -1), wxSP_ARROW_KEYS, 0, 59, 0);
-	bSizer50->Add(m_spinCtrl6, 0, wxALL, 5);
+	bSizer50->Add(m_deadline_timepicker, 0, wxALL, 5);
 
-	m_datePicker2 = new wxDatePickerCtrl(m_main_panel, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT);
-	bSizer50->Add(m_datePicker2, 0, wxALL, 5);
+	m_deadline_datepicker = new wxDatePickerCtrl(m_main_panel, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DROPDOWN);
+	bSizer50->Add(m_deadline_datepicker, 0, wxALL, 5);
 
 	m_form_sizer->Add(bSizer50, 1, wxEXPAND, 5);
 
@@ -107,9 +105,17 @@ mwNewTaskFrame::~mwNewTaskFrame()
 
 void mwNewTaskFrame::SetTask(mwTask& task)
 {
+	mwLogger logger;
+	logger.EnableDebug();
 	m_task = task;
 	m_task_name->SetLabelText(task.name);
 	m_task_description->SetLabelText(task.description);
+	m_priority_choice->Select(m_task.priority);
+	m_status_choice->Select(m_task.status);
+	wxDateTime deadline(task.deadline);
+	m_deadline_datepicker->SetValue(deadline);
+	m_deadline_timepicker->SetValue(deadline);
+	logger.Debug("Due Date " + std::to_string(m_task.deadline));
 }
 
 void mwNewTaskFrame::OnCancelButton(wxCommandEvent& event)
@@ -117,24 +123,9 @@ void mwNewTaskFrame::OnCancelButton(wxCommandEvent& event)
 	this->Close();
 }
 
-void mwNewTaskFrame::OnDoneButton(wxCommandEvent& event)
+void mwNewTaskFrame::SetTaskPriority()
 {
 	mwLogger logger;
-	mwController& controller = mwController::Get();
-
-	mwProject proj;
-	controller.GetActiveProject(proj);
-	if (proj.uid == 0)
-	{
-		logger.Warning("Active project UID is 0");
-		this->Close();
-		return;
-	}
-	m_task.project_uid = proj.uid;
-
-	m_task.name = this->m_task_name->GetLineText(0).ToStdString();
-	m_task.description = this->m_task_description->GetLineText(0).ToStdString();
-
 	switch (this->m_priority_choice->GetSelection())
 	{
 	case 0:
@@ -154,7 +145,11 @@ void mwNewTaskFrame::OnDoneButton(wxCommandEvent& event)
 		m_task.priority = mwTask::TaskPriority::MEDIUM;
 		break;
 	}
+}
 
+void mwNewTaskFrame::SetTaskStatus()
+{
+	mwLogger logger;
 	switch (this->m_status_choice->GetSelection())
 	{
 	case 0:
@@ -177,10 +172,41 @@ void mwNewTaskFrame::OnDoneButton(wxCommandEvent& event)
 		m_task.status = mwTask::TaskStatus::NOTSTARTED;
 		break;
 	}
+}
 
+void mwNewTaskFrame::SetTaskDeadline()
+{
+	mwLogger logger;
+	logger.EnableDebug();
+	int day=0, mon=1, year=2022;
+	int hour=0, min=0, sec=0;
+	m_deadline_timepicker->GetTime(&hour, &min, &sec);
+	wxDateTime date = m_deadline_datepicker->GetValue();
+	day = date.GetDay();
+	mon = date.GetMonth();
+	year = date.GetYear();
+	mw::DateTime deadline(sec, min, hour, day, mon, year);
+	m_task.deadline = deadline.m_time_t;
+}
+
+void mwNewTaskFrame::OnDoneButton(wxCommandEvent& event)
+{
+	mwLogger logger;
+	mwController& controller = mwController::Get();
+	mwProject proj;
+	controller.GetActiveProject(proj);
+	if (proj.uid == 0)
+	{
+		logger.Warning("Active project UID is 0");
+		this->Close();
+		return;
+	}
+	m_task.project_uid = proj.uid;
+	m_task.name = this->m_task_name->GetLineText(0).ToStdString();
+	m_task.description = this->m_task_description->GetLineText(0).ToStdString();
+	this->SetTaskPriority();
+	this->SetTaskStatus();
+	this->SetTaskDeadline();
 	controller.AddTask(m_task);
-
-	
 	this->Close();
-
 }

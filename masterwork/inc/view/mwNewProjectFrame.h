@@ -16,7 +16,6 @@
 #include "model/mwProject.h"
 #include <string>
 
-
 class mwNewProjectFrame : public wxFrame
 {
 private:

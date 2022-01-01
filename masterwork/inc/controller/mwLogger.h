@@ -7,6 +7,10 @@
 #include <mutex>
 #include <ctime>
 
+namespace mw
+{ 
+	//TODO : move mwLogger to mw namespace and remove the mw from the beginning. 
+}
 class mwLogger
 {
 public:
