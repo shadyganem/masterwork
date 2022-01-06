@@ -1,6 +1,7 @@
 #pragma once
 #include "model/mwModelItem.h"
 #include <string>
+#include <sstream>
 #include <ctime>
 
 
@@ -32,6 +33,9 @@ public:
 	~mwTask();
 	void StampCreationTime();
 	void SetProjectId(int id);
+	std::string GetStatus();
+	std::string GetPriority();
+
 	int uid;
 	int parent_uid;
 	std::string name;

@@ -178,7 +178,7 @@ void mwNewTaskFrame::SetTaskDeadline()
 {
 	mwLogger logger;
 	logger.EnableDebug();
-	int day=0, mon=1, year=2022;
+	int day=0, mon=1, year=0;
 	int hour=0, min=0, sec=0;
 	m_deadline_timepicker->GetTime(&hour, &min, &sec);
 	wxDateTime date = m_deadline_datepicker->GetValue();

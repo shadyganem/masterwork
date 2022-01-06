@@ -41,6 +41,13 @@ void mwTaskPanel::SetTask(mwTask task)
 	m_task = task;
 	m_static_task_name->SetLabelText(m_task.name);
 	m_static_description->SetLabelText(m_task.description);
+	m_static_status->SetLabelText("Status: " + m_task.GetStatus());
+	m_static_priority->SetLabelText("Priority: " + m_task.GetPriority());
+	wxDateTime deadline(m_task.deadline);
+	wxString date = deadline.FormatISODate();
+	wxString time = deadline.FormatISOTime();
+	m_static_duedate->SetLabelText("Due Date: " + time.ToStdString() + " " + date.ToStdString());
+
 }
 
 mwTaskPanel::mwTaskPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style ) : wxPanel( parent, id, pos, size, style )
@@ -61,12 +68,28 @@ mwTaskPanel::mwTaskPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, c
 	m_static_description->Wrap(-1);
 	bSizer17->Add(m_static_description, 0, wxALL, 5);
 
-	bSizer16->Add(bSizer17, 1, wxEXPAND, 5);
+	bSizer16->Add(bSizer17, 2, wxEXPAND, 5);
 
-	wxBoxSizer* bSizer18;
-	bSizer18 = new wxBoxSizer(wxVERTICAL);
 
-	bSizer16->Add(bSizer18, 1, wxEXPAND, 5);
+
+	wxGridSizer* m_info_grid_sizer;
+	m_info_grid_sizer = new wxGridSizer(2, 2, 0, 0);
+
+	m_static_status = new wxStaticText(m_static_view, wxID_ANY, wxT("Status: "), wxDefaultPosition, wxDefaultSize, 0);
+	m_static_status->Wrap(-1);
+	m_info_grid_sizer->Add(m_static_status, 0, wxALL, 5);
+
+	m_static_duedate = new wxStaticText(m_static_view, wxID_ANY, wxT("Due date:"), wxDefaultPosition, wxDefaultSize, 0);
+	m_static_duedate->Wrap(-1);
+	m_info_grid_sizer->Add(m_static_duedate, 0, wxALL, 5);
+
+	m_static_priority = new wxStaticText(m_static_view, wxID_ANY, wxT("Priority:"), wxDefaultPosition, wxDefaultSize, 0);
+	m_static_priority->Wrap(-1);
+	m_info_grid_sizer->Add(m_static_priority, 0, wxALL, 5);
+
+
+	bSizer16->Add(m_info_grid_sizer, 1, wxEXPAND, 5);
+
 
 	m_edit_task = new wxButton(m_static_view, wxID_ANY, wxT("Edit"), wxDefaultPosition, wxDefaultSize, 0);
 	bSizer16->Add(m_edit_task, 0, wxALL, 5);

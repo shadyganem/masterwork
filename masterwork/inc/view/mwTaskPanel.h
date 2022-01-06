@@ -24,6 +24,11 @@
 #include "controller/mwController.h"
 #include "view/mwNewTaskFrame.h"
 
+namespace mw
+{
+
+}
+
 class mwTaskPanel : public wxPanel
 {
 public:
@@ -31,8 +36,13 @@ public:
 	wxStaticText* m_static_description;
 	wxButton* m_edit_task;
 	wxButton* m_delete_task;
-
 	mwTask m_task;
+
+	wxStaticText* m_static_status;
+	wxStaticText* m_static_duedate;
+	wxStaticText* m_static_priority;
+	// TODO: added meta data in the DB for last modified time
+	wxStaticText* m_static_lastmodified;
 
 	virtual void OnEnterWindow(wxMouseEvent& event);
 	virtual void OnleaveWindow(wxMouseEvent& event);
@@ -41,11 +51,8 @@ public:
 	virtual void OnDelete(wxCommandEvent& event);
 	void SetTask(mwTask task);
 
-	int m_uid;
-	int m_parent_uid;
 	wxBoxSizer* ver_task_sizer;
 	wxPanel* m_static_view;
-	wxPanel* m_edit_view;
 	mwTaskPanel(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(600, 100), long style = wxTAB_TRAVERSAL);
 	~mwTaskPanel();
 };
