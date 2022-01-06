@@ -318,7 +318,8 @@ bool mwModel::GetAllProjects(std::vector<mwProject>& prjects_vect, const mwUser&
 			proj.user_uid = std::stoi(row[1]);
 			proj.name = row[2];
 			proj.start_time = std::stoi(row[3]);
-			proj.is_active = std::stoi(row[4]) == 1 ? true : false;
+			proj.status = std::stoi(row[4]);
+			proj.is_active = std::stoi(row[5]) == 1 ? true : false;
 			prjects_vect.push_back(proj);
 		}
 		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)

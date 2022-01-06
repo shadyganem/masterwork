@@ -2,7 +2,7 @@
 
 
 BEGIN_EVENT_TABLE(mwSidePanel, wxPanel)
-EVT_CUSTOM(mwUpdateUI, SIDE_PANEL_ID, mwSidePanel::OnUpdateUI)
+	EVT_CUSTOM(mwUpdateUI, SIDE_PANEL_ID, mwSidePanel::OnUpdateUI)
 END_EVENT_TABLE()
 
 static enum ProjectListPopupMenuItems
@@ -24,15 +24,16 @@ void mwSidePanel::UpdateProjecstList()
 	{
 		m_place_to_project_map[i] = projects[i];
 		project_name = projects[i].name;
-		logger.Info(projects[i].name);
 		m_projects_list->InsertItems(1, &project_name, i);
+		if (projects[i].is_active == true)
+		{
+			m_projects_list->SetSelection(i);
+		}
 	}
 }
 
 void mwSidePanel::OnUpdateUI(wxEvent& event)
 {
-	mwLogger logger;
-	logger.Info("updating side panel");
 	this->UpdateProjecstList();
 	this->Layout();
 }
@@ -40,8 +41,7 @@ void mwSidePanel::OnUpdateUI(wxEvent& event)
 void mwSidePanel::OnItemSelect(wxCommandEvent& event)
 {
 	mwController& controller = mwController::Get();
-	int sel_item;
-	sel_item = this->m_projects_list->GetSelection();
+	int sel_item = this->m_projects_list->GetSelection();
 	controller.SetActiveProject(m_place_to_project_map[sel_item]);
 }
 

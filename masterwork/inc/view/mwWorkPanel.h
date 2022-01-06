@@ -19,18 +19,16 @@
 #include "mwDefines.h"
 #include "wx/event.h"
 
-
+namespace mw
+{
+    // move the class into the namespace gradually
+}
 
 class mwWorkPanel : public wxPanel
 {
 public:
     
-	mwWorkPanel(wxWindow* parent,
-                wxWindowID winid = wxID_ANY,
-                const wxPoint& pos = wxDefaultPosition,
-                const wxSize& size = wxDefaultSize,
-                long style = wxTAB_TRAVERSAL | wxNO_BORDER,
-                const wxString& name = wxASCII_STR(wxPanelNameStr));;
+	mwWorkPanel(wxWindow* parent, wxWindowID winid = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL | wxNO_BORDER, const wxString& name = wxASCII_STR(wxPanelNameStr));
 	~mwWorkPanel();
 
 public:
@@ -41,7 +39,6 @@ public:
     wxColor m_tool_bar_bg = wxColor(0, 0, 255);
     wxNotebook* m_notebook;
     wxBoxSizer* m_tasks_sizer;
-
 	wxBoxSizer* m_ver_sizer;
 
 	// Virtual event handlers, overide them in your derived class

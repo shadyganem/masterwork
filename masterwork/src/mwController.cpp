@@ -42,9 +42,9 @@ void mwController::SetActiveUser(int user_uid)
 
 void mwController::SetActiveProject(mwProject& project)
 {
-	m_model.GetActiveUser(m_active_user);
+	this->m_model.GetActiveUser(m_active_user);
 	this->m_model.SetActiveProject(project);
-	m_model.GetActiveProject(m_active_project, m_active_user);
+	this->m_model.GetActiveProject(m_active_project, m_active_user);
 	PostUpdateUI(WORK_PANEL_ID);
 }
 
@@ -177,6 +177,11 @@ void mwController::GetTasksForActiveProject(std::vector<mwTask>& tasks)
 	m_model.GetActiveUser(m_active_user);
 	m_model.GetActiveProject(m_active_project, m_active_user);
 	this->m_model.GetAllTasks(tasks, m_active_project);
+}
+
+void mwController::RequestUpdateUI(int wind_id)
+{
+	this->PostUpdateUI(wind_id);
 }
 
 void mwController::PostUpdateUI(int wind_id)

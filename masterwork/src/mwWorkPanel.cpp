@@ -5,12 +5,7 @@ BEGIN_EVENT_TABLE(mwWorkPanel, wxPanel)
 	EVT_CUSTOM(mwUpdateUI, WORK_PANEL_ID, mwWorkPanel::OnUpdateUI)
 END_EVENT_TABLE()
 
-mwWorkPanel::mwWorkPanel(wxWindow* parent, 
-	                     wxWindowID winid, 
-	                     const wxPoint& pos, 
-	                     const wxSize& size, 
-	                     long style, 
-	                     const wxString& name) : wxPanel(parent, winid, pos, size, style, name)
+mwWorkPanel::mwWorkPanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, const wxString& name) : wxPanel(parent, winid, pos, size, style, name)
 {
 	mwController& controller = mwController::Get();
 	controller.RegisterEventHandler(winid, this);
@@ -34,6 +29,15 @@ mwWorkPanel::mwWorkPanel(wxWindow* parent,
 	// Connect Events
 	m_notebook->Connect(wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, wxNotebookEventHandler(mwWorkPanel::OnPageChanged), NULL, this);
 	m_notebook->Connect(wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGING, wxNotebookEventHandler(mwWorkPanel::OnPageChanging), NULL, this);
+
+	controller.RequestUpdateUI(this->GetId());
+}
+
+mwWorkPanel::~mwWorkPanel()
+{
+	// Disconnect Events
+	m_notebook->Disconnect(wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, wxNotebookEventHandler(mwWorkPanel::OnPageChanged), NULL, this);
+	m_notebook->Disconnect(wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGING, wxNotebookEventHandler(mwWorkPanel::OnPageChanging), NULL, this);
 }
 
 void mwWorkPanel::OnPageChanged(wxNotebookEvent& event)
@@ -74,12 +78,4 @@ void mwWorkPanel::OnUpdateUI(wxEvent& event)
 void mwWorkPanel::OnAppendTask(wxEvent& event)
 {
 }
-
-mwWorkPanel::~mwWorkPanel()
-{
-	// Disconnect Events
-	m_notebook->Disconnect(wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, wxNotebookEventHandler(mwWorkPanel::OnPageChanged), NULL, this);
-	m_notebook->Disconnect(wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGING, wxNotebookEventHandler(mwWorkPanel::OnPageChanging), NULL, this);
-}
-
 
