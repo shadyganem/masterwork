@@ -62,7 +62,7 @@ std::string mwTask::GetStatus()
 std::string mwTask::GetPriority()
 {
 	std::string priority;
-	switch (this->status)
+	switch (this->priority)
 	{
 	case TaskPriority::HIGH:
 		priority = "High";

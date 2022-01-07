@@ -10,7 +10,7 @@ mw::DateTime::DateTime(unsigned int seconds, unsigned int minutes, unsigned int 
 	std::tm time;
 	time.tm_sec = (int)seconds;
 	time.tm_min = (int)minutes;
-	time.tm_hour = (int)hours+1;
+	time.tm_hour = (int)hours;
 	time.tm_mday = (int)day;
 	time.tm_mon = (int)month;
 	time.tm_year = (int)year - 1900;
