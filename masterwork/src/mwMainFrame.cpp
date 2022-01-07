@@ -81,7 +81,7 @@ void mwMainFrame::InitMenuBar()
 	wxMenu* menu_window = new wxMenu();
 	menu_window->Append(MENU_WINDOW_PROPERTIES_ID, "Properties");
 	wxMenu* menu_help = new wxMenu();
-	menu_help->Append(MENU_HELP_ABOUT_ID, "About");
+	menu_help->Append(MENU_HELP_ABOUT_ID, "About MasterWork");
 	m_menu_bar->Append(menu_file, "File");
 	m_menu_bar->Append(menu_window, "Window");
 	m_menu_bar->Append(menu_help, "Help");

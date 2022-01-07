@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="inc\view\AboutFrame.h" />
     <ClInclude Include="inc\MasterWork.h" />
     <ClInclude Include="inc\model\sqlite3.h" />
     <ClInclude Include="inc\view\mwBottomPanel.h" />
@@ -42,6 +43,7 @@
     <ClInclude Include="inc\model\mwTime.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\AboutFrame.cpp" />
     <ClCompile Include="src\mwTime.cpp" />
     <ClCompile Include="src\mwNewTaskFrame.cpp" />
     <ClCompile Include="src\mwNewProjectFrame.cpp" />
