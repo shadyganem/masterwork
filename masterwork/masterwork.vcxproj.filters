@@ -24,7 +24,7 @@
     <ClInclude Include="inc\view\mwSidePanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\view\mwBottomPanel.h">
+    <ClInclude Include="inc\view\BottomPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\view\mwWorkPanel.h">
@@ -75,7 +75,7 @@
     <ClInclude Include="inc\view\mwNewTaskFrame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\model\mwTime.h">
+    <ClInclude Include="inc\model\DateTime.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\view\AboutFrame.h">
@@ -92,7 +92,7 @@
     <ClCompile Include="src\mwSidePanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mwBottomPanel.cpp">
+    <ClCompile Include="src\BottomPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\mwWorkPanel.cpp">
@@ -140,7 +140,7 @@
     <ClCompile Include="src\mwNewTaskFrame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mwTime.cpp">
+    <ClCompile Include="src\DateTime.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\AboutFrame.cpp">

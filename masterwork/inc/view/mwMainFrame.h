@@ -4,7 +4,7 @@
 #include "wx/splitter.h"
 #include <wx/infobar.h>
 #include "mwSidePanel.h"
-#include "mwBottomPanel.h"
+#include "BottomPanel.h"
 #include "mwWorkPanel.h"
 #include "mwTopPanel.h"
 #include "mwDefines.h"
@@ -42,7 +42,7 @@ public:
 	// initialzing panels
 	mwTopPanel* m_top_panel;
 	mwSidePanel* m_side_panel;
-	mwBottomPanel* m_bottom_panel;
+	mw::BottomPanel* m_bottom_panel;
 	mwWorkPanel* m_work_panel;
 	wxTimer* m_1sec_timer;
 

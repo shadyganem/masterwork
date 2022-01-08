@@ -1,18 +1,12 @@
-#include "view/mwBottomPanel.h"
+#include "view/BottomPanel.h"
 
 
-BEGIN_EVENT_TABLE(mwBottomPanel, wxPanel)
+BEGIN_EVENT_TABLE(mw::BottomPanel, wxPanel)
 	
 END_EVENT_TABLE()
 
 
-mwBottomPanel::mwBottomPanel(wxWindow* parent, 
-	                         wxWindowID winid, 
-	                         const wxPoint& pos, 
-	                         const wxSize& size, 
-	                         long style, 
-	                         const wxString& name) 
-	: wxPanel(parent, winid, pos, size, style, name)
+mw::BottomPanel::BottomPanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, const wxString& name) : wxPanel(parent, winid, pos, size, style, name)
 {
 	this->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW));
 	this->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_3DDKSHADOW));
@@ -55,17 +49,17 @@ mwBottomPanel::mwBottomPanel(wxWindow* parent,
 	this->Layout();
 
 	// Connect Events
-	m_listbook->Connect(wxEVT_COMMAND_LISTBOOK_PAGE_CHANGED, wxListbookEventHandler(mwBottomPanel::OnPageChaged), NULL, this);
+	m_listbook->Connect(wxEVT_COMMAND_LISTBOOK_PAGE_CHANGED, wxListbookEventHandler(mw::BottomPanel::OnPageChaged), NULL, this);
 }
 
-mwBottomPanel::~mwBottomPanel()
+mw::BottomPanel::~BottomPanel()
 {
-	m_listbook->Disconnect(wxEVT_COMMAND_LISTBOOK_PAGE_CHANGED, wxListbookEventHandler(mwBottomPanel::OnPageChaged), NULL, this);
-	m_programming_panel->Disconnect(wxEVT_SET_FOCUS, wxFocusEventHandler(mwBottomPanel::OnProgrammingFocus), NULL, this);
-	m_notification_panel->Disconnect(wxEVT_SET_FOCUS, wxFocusEventHandler(mwBottomPanel::OnNotificationsFocus), NULL, this);
+	m_listbook->Disconnect(wxEVT_COMMAND_LISTBOOK_PAGE_CHANGED, wxListbookEventHandler(mw::BottomPanel::OnPageChaged), NULL, this);
+	m_programming_panel->Disconnect(wxEVT_SET_FOCUS, wxFocusEventHandler(mw::BottomPanel::OnProgrammingFocus), NULL, this);
+	m_notification_panel->Disconnect(wxEVT_SET_FOCUS, wxFocusEventHandler(mw::BottomPanel::OnNotificationsFocus), NULL, this);
 }
 
-void mwBottomPanel::OnPageChaged(wxListbookEvent& event)
+void mw::BottomPanel::OnPageChaged(wxListbookEvent& event)
 {
 	mwLogger logger;
 	wxString pagename = m_listbook->GetPageText(m_listbook->GetSelection());
@@ -74,14 +68,14 @@ void mwBottomPanel::OnPageChaged(wxListbookEvent& event)
 	event.Skip();
 }
 
-void mwBottomPanel::OnProgrammingFocus(wxFocusEvent& event)
+void mw::BottomPanel::OnProgrammingFocus(wxFocusEvent& event)
 {
 	mwLogger logger;
 	logger.Info("OnPrgrammingFocus is called");
 	event.Skip();
 }
 
-void mwBottomPanel::OnNotificationsFocus(wxFocusEvent& event)
+void mw::BottomPanel::OnNotificationsFocus(wxFocusEvent& event)
 {
 	event.Skip();
 }

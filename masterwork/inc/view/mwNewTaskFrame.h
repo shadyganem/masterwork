@@ -20,7 +20,7 @@
 #include "controller/mwLogger.h"
 #include "controller/mwController.h"
 #include "model/mwTask.h"
-#include "model/mwTime.h"
+#include "model/DateTime.h"
 
 class mwNewTaskFrame : public wxFrame
 {

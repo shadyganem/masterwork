@@ -22,7 +22,7 @@
     <ClInclude Include="inc\view\AboutFrame.h" />
     <ClInclude Include="inc\MasterWork.h" />
     <ClInclude Include="inc\model\sqlite3.h" />
-    <ClInclude Include="inc\view\mwBottomPanel.h" />
+    <ClInclude Include="inc\view\BottomPanel.h" />
     <ClInclude Include="inc\mwDefines.h" />
     <ClInclude Include="inc\view\mwMainFrame.h" />
     <ClInclude Include="inc\view\mwSidePanel.h" />
@@ -40,11 +40,11 @@
     <ClInclude Include="inc\view\mwTaskPanel.h" />
     <ClInclude Include="inc\view\mwNewProjectFrame.h" />
     <ClInclude Include="inc\view\mwNewTaskFrame.h" />
-    <ClInclude Include="inc\model\mwTime.h" />
+    <ClInclude Include="inc\model\DateTime.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AboutFrame.cpp" />
-    <ClCompile Include="src\mwTime.cpp" />
+    <ClCompile Include="src\DateTime.cpp" />
     <ClCompile Include="src\mwNewTaskFrame.cpp" />
     <ClCompile Include="src\mwNewProjectFrame.cpp" />
     <ClCompile Include="src\mwTaskPanel.cpp" />
@@ -59,7 +59,7 @@
     <ClCompile Include="src\mwController.cpp" />
     <ClCompile Include="src\mwTopPanel.cpp" />
     <ClCompile Include="src\MasterWork.cpp" />
-    <ClCompile Include="src\mwBottomPanel.cpp" />
+    <ClCompile Include="src\BottomPanel.cpp" />
     <ClCompile Include="src\mwMainFrame.cpp" />
     <ClCompile Include="src\mwSidePanel.cpp" />
     <ClCompile Include="src\mwWorkPanel.cpp" />
