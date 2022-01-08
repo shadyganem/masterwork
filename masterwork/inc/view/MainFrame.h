@@ -5,7 +5,7 @@
 #include <wx/infobar.h>
 #include "mwSidePanel.h"
 #include "BottomPanel.h"
-#include "mwWorkPanel.h"
+#include "WorkPanel.h"
 #include "mwTopPanel.h"
 #include "mwDefines.h"
 #include "wx/event.h"
@@ -44,7 +44,7 @@ namespace mw
 		mwTopPanel* m_top_panel;
 		mwSidePanel* m_side_panel;
 		mw::BottomPanel* m_bottom_panel;
-		mwWorkPanel* m_work_panel;
+		WorkPanel* m_work_panel;
 		wxTimer* m_1sec_timer;
 
 		// panels

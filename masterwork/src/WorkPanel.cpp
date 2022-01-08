@@ -1,11 +1,11 @@
-#include "view/mwWorkPanel.h"
+#include "view/WorkPanel.h"
 
 
-BEGIN_EVENT_TABLE(mwWorkPanel, wxPanel)
-	EVT_CUSTOM(mwUpdateUI, WORK_PANEL_ID, mwWorkPanel::OnUpdateUI)
+BEGIN_EVENT_TABLE(mw::WorkPanel, wxPanel)
+	EVT_CUSTOM(mwUpdateUI, WORK_PANEL_ID, mw::WorkPanel::OnUpdateUI)
 END_EVENT_TABLE()
 
-mwWorkPanel::mwWorkPanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, const wxString& name) : wxPanel(parent, winid, pos, size, style, name)
+mw::WorkPanel::WorkPanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, const wxString& name) : wxPanel(parent, winid, pos, size, style, name)
 {
 	mwController& controller = mwController::Get();
 	controller.RegisterEventHandler(winid, this);
@@ -27,32 +27,32 @@ mwWorkPanel::mwWorkPanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos,
 	this->Layout();
 
 	// Connect Events
-	m_notebook->Connect(wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, wxNotebookEventHandler(mwWorkPanel::OnPageChanged), NULL, this);
-	m_notebook->Connect(wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGING, wxNotebookEventHandler(mwWorkPanel::OnPageChanging), NULL, this);
+	m_notebook->Connect(wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, wxNotebookEventHandler(mw::WorkPanel::OnPageChanged), NULL, this);
+	m_notebook->Connect(wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGING, wxNotebookEventHandler(mw::WorkPanel::OnPageChanging), NULL, this);
 
 	controller.RequestUpdateUI(this->GetId());
 }
 
-mwWorkPanel::~mwWorkPanel()
+mw::WorkPanel::~WorkPanel()
 {
 	// Disconnect Events
-	m_notebook->Disconnect(wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, wxNotebookEventHandler(mwWorkPanel::OnPageChanged), NULL, this);
-	m_notebook->Disconnect(wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGING, wxNotebookEventHandler(mwWorkPanel::OnPageChanging), NULL, this);
+	m_notebook->Disconnect(wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, wxNotebookEventHandler(mw::WorkPanel::OnPageChanged), NULL, this);
+	m_notebook->Disconnect(wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGING, wxNotebookEventHandler(mw::WorkPanel::OnPageChanging), NULL, this);
 }
 
-void mwWorkPanel::OnPageChanged(wxNotebookEvent& event)
+void mw::WorkPanel::OnPageChanged(wxNotebookEvent& event)
 {
 	event.Skip();
 }
 
-void mwWorkPanel::OnPageChanging(wxNotebookEvent& event)
+void mw::WorkPanel::OnPageChanging(wxNotebookEvent& event)
 {
 	event.Skip();
 }
 
-void mwWorkPanel::OnUpdateUI(wxEvent& event)
+void mw::WorkPanel::OnUpdateUI(wxEvent& event)
 {
-	std::map<mwTaskPanel*, int>::iterator it;
+	std::map<mw::TaskPanel*, int>::iterator it;
 	for (auto const& item : this->m_taskpanel_to_task_map)
 	{
 		item.first->Destroy();
@@ -60,11 +60,11 @@ void mwWorkPanel::OnUpdateUI(wxEvent& event)
 	std::vector<mwTask> tasks;
 	mwController& controller = mwController::Get();
 	controller.GetTasksForActiveProject(tasks);
-	mwTaskPanel* task_panel;
+	mw::TaskPanel* task_panel;
 	m_taskpanel_to_task_map.clear();
 	for (int i = 0; i < tasks.size(); i++)
 	{
-		task_panel = new mwTaskPanel(m_tasks_scroll_window);
+		task_panel = new mw::TaskPanel(m_tasks_scroll_window);
 		task_panel->SetTask(tasks[i]);
 		task_panel->SetBackgroundColour(wxColor(240, 240, 240));
 		m_taskpanel_to_task_map[task_panel] = tasks[i];
@@ -75,7 +75,7 @@ void mwWorkPanel::OnUpdateUI(wxEvent& event)
 	this->m_tasks_sizer->Layout();
 }
 
-void mwWorkPanel::OnAppendTask(wxEvent& event)
+void mw::WorkPanel::OnAppendTask(wxEvent& event)
 {
 }
 

@@ -1,16 +1,16 @@
-#include "view/mwTaskPanel.h"
+#include "view/TaskPanel.h"
 
 
 ///////////////////////////////////////////////////////////////////////////
 
-void mwTaskPanel::OnEnterWindow(wxMouseEvent& event)
+void mw::TaskPanel::OnEnterWindow(wxMouseEvent& event)
 {
 	this->SetBackgroundColour(wxColor(153, 180, 209));
 	this->Refresh();
 	event.Skip();
 }
 
-void mwTaskPanel::OnleaveWindow(wxMouseEvent& event)
+void mw::TaskPanel::OnleaveWindow(wxMouseEvent& event)
 {
 	wxRect task_panel_rect = this->GetScreenRect();
 	wxPoint mouse_pos = wxGetMousePosition();
@@ -21,7 +21,7 @@ void mwTaskPanel::OnleaveWindow(wxMouseEvent& event)
 	event.Skip();
 }
 
-void mwTaskPanel::OnEditTask(wxCommandEvent& event)
+void mw::TaskPanel::OnEditTask(wxCommandEvent& event)
 {
 	mw::NewTaskFrame* new_task_frame = new mw::NewTaskFrame(this);
 	new_task_frame->SetTask(m_task);
@@ -29,14 +29,14 @@ void mwTaskPanel::OnEditTask(wxCommandEvent& event)
 	event.Skip();
 }
 
-void mwTaskPanel::OnDelete(wxCommandEvent& event)
+void mw:: TaskPanel::OnDelete(wxCommandEvent& event)
 {
 	mwController& controller = mwController::Get();
 	controller.DeleteTask(m_task);
 	event.Skip();
 }
 
-void mwTaskPanel::SetTask(mwTask task)
+void mw::TaskPanel::SetTask(mwTask task)
 {
 	m_task = task;
 	m_static_task_name->SetLabelText(m_task.name);
@@ -50,7 +50,7 @@ void mwTaskPanel::SetTask(mwTask task)
 
 }
 
-mwTaskPanel::mwTaskPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style ) : wxPanel( parent, id, pos, size, style )
+mw::TaskPanel::TaskPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style ) : wxPanel( parent, id, pos, size, style )
 {
 	ver_task_sizer = new wxBoxSizer(wxVERTICAL);
 
@@ -107,21 +107,21 @@ mwTaskPanel::mwTaskPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, c
 	this->Layout();
 
 	// Connect Events
-	this->Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(mwTaskPanel::OnEnterWindow));
-	this->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(mwTaskPanel::OnleaveWindow));
-	m_static_view->Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(mwTaskPanel::OnEnterWindow), NULL, this);
-	m_static_view->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(mwTaskPanel::OnleaveWindow), NULL, this);
-	m_edit_task->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mwTaskPanel::OnEditTask), NULL, this);
-	m_delete_task->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mwTaskPanel::OnDelete), NULL, this);
+	this->Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnEnterWindow));
+	this->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow));
+	m_static_view->Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnEnterWindow), NULL, this);
+	m_static_view->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
+	m_edit_task->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(TaskPanel::OnEditTask), NULL, this);
+	m_delete_task->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(TaskPanel::OnDelete), NULL, this);
 }
 
-mwTaskPanel::~mwTaskPanel()
+mw::TaskPanel::~TaskPanel()
 {
 	// Disconnect Events
-	this->Disconnect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(mwTaskPanel::OnEnterWindow));
-	this->Disconnect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(mwTaskPanel::OnleaveWindow));
-	m_static_view->Disconnect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(mwTaskPanel::OnEnterWindow), NULL, this);
-	m_static_view->Disconnect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(mwTaskPanel::OnleaveWindow), NULL, this);
-	m_edit_task->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mwTaskPanel::OnEditTask), NULL, this);
-	m_delete_task->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mwTaskPanel::OnDelete), NULL, this);
+	this->Disconnect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnEnterWindow));
+	this->Disconnect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow));
+	m_static_view->Disconnect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnEnterWindow), NULL, this);
+	m_static_view->Disconnect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
+	m_edit_task->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(TaskPanel::OnEditTask), NULL, this);
+	m_delete_task->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(TaskPanel::OnDelete), NULL, this);
 }

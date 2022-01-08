@@ -26,7 +26,7 @@
     <ClInclude Include="inc\mwDefines.h" />
     <ClInclude Include="inc\view\MainFrame.h" />
     <ClInclude Include="inc\view\mwSidePanel.h" />
-    <ClInclude Include="inc\view\mwWorkPanel.h" />
+    <ClInclude Include="inc\view\WorkPanel.h" />
     <ClInclude Include="inc\view\mwTopPanel.h" />
     <ClInclude Include="inc\controller\mwController.h" />
     <ClInclude Include="inc\model\mwModel.h" />
@@ -37,7 +37,7 @@
     <ClInclude Include="inc\model\mwModelItem.h" />
     <ClInclude Include="inc\controller\mwLogger.h" />
     <ClInclude Include="inc\model\mwNotification.h" />
-    <ClInclude Include="inc\view\mwTaskPanel.h" />
+    <ClInclude Include="inc\view\TaskPanel.h" />
     <ClInclude Include="inc\view\NewProjectFrame.h" />
     <ClInclude Include="inc\view\NewTaskFrame.h" />
     <ClInclude Include="inc\model\DateTime.h" />
@@ -47,7 +47,7 @@
     <ClCompile Include="src\DateTime.cpp" />
     <ClCompile Include="src\NewTaskFrame.cpp" />
     <ClCompile Include="src\NewProjectFrame.cpp" />
-    <ClCompile Include="src\mwTaskPanel.cpp" />
+    <ClCompile Include="src\TaskPanel.cpp" />
     <ClCompile Include="src\mwNotification.cpp" />
     <ClCompile Include="src\mwLogger.cpp" />
     <ClCompile Include="src\mwModelItem.cpp" />
@@ -62,7 +62,7 @@
     <ClCompile Include="src\BottomPanel.cpp" />
     <ClCompile Include="src\MainFrame.cpp" />
     <ClCompile Include="src\mwSidePanel.cpp" />
-    <ClCompile Include="src\mwWorkPanel.cpp" />
+    <ClCompile Include="src\WorkPanel.cpp" />
     <ClCompile Include="src\sqlite3.c" />
   </ItemGroup>
   <ItemGroup>

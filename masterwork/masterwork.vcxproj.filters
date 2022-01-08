@@ -27,7 +27,7 @@
     <ClInclude Include="inc\view\BottomPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\view\mwWorkPanel.h">
+    <ClInclude Include="inc\view\WorkPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\mwDefines.h">
@@ -66,7 +66,7 @@
     <ClInclude Include="inc\model\mwNotification.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\view\mwTaskPanel.h">
+    <ClInclude Include="inc\view\TaskPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\view\NewProjectFrame.h">
@@ -95,7 +95,7 @@
     <ClCompile Include="src\BottomPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mwWorkPanel.cpp">
+    <ClCompile Include="src\WorkPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\mwTopPanel.cpp">
@@ -131,7 +131,7 @@
     <ClCompile Include="src\mwNotification.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mwTaskPanel.cpp">
+    <ClCompile Include="src\TaskPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\NewProjectFrame.cpp">
