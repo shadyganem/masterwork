@@ -38,7 +38,7 @@
     <ClInclude Include="inc\controller\mwLogger.h" />
     <ClInclude Include="inc\model\mwNotification.h" />
     <ClInclude Include="inc\view\mwTaskPanel.h" />
-    <ClInclude Include="inc\view\mwNewProjectFrame.h" />
+    <ClInclude Include="inc\view\NewProjectFrame.h" />
     <ClInclude Include="inc\view\mwNewTaskFrame.h" />
     <ClInclude Include="inc\model\DateTime.h" />
   </ItemGroup>
@@ -46,7 +46,7 @@
     <ClCompile Include="src\AboutFrame.cpp" />
     <ClCompile Include="src\DateTime.cpp" />
     <ClCompile Include="src\mwNewTaskFrame.cpp" />
-    <ClCompile Include="src\mwNewProjectFrame.cpp" />
+    <ClCompile Include="src\NewProjectFrame.cpp" />
     <ClCompile Include="src\mwTaskPanel.cpp" />
     <ClCompile Include="src\mwNotification.cpp" />
     <ClCompile Include="src\mwLogger.cpp" />

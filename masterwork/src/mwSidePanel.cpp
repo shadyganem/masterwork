@@ -63,7 +63,7 @@ void mwSidePanel::OnProjectListMenuClick(wxCommandEvent& evt)
 	mwProject sel_proj;
 	sel_item = this->m_projects_list->GetSelection();
 	sel_proj = this->m_place_to_project_map[sel_item];
-	mwNewProjectFrame* new_project_form = new mwNewProjectFrame(this);
+	mw::NewProjectFrame* new_project_form = new mw::NewProjectFrame(this);
 
 	switch (evt.GetId()) 
 	{

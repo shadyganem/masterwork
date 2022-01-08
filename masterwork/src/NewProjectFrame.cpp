@@ -1,6 +1,6 @@
-#include "view/mwNewProjectFrame.h"
+#include "view/NewProjectFrame.h"
 
-mwNewProjectFrame::mwNewProjectFrame(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style) : wxFrame(parent, id, title, pos, size, style)
+mw::NewProjectFrame::NewProjectFrame(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style) : wxFrame(parent, id, title, pos, size, style)
 {
 	this->SetSizeHints(wxDefaultSize, wxDefaultSize);
 
@@ -35,22 +35,22 @@ mwNewProjectFrame::mwNewProjectFrame(wxWindow* parent, wxWindowID id, const wxSt
 	this->Layout();
 
 	// Connect Events
-	m_button2->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mwNewProjectFrame::OnDoneButton), NULL, this);
+	m_button2->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(NewProjectFrame::OnDoneButton), NULL, this);
 }
 
-mwNewProjectFrame::~mwNewProjectFrame()
+mw::NewProjectFrame::~NewProjectFrame()
 {
 	// Disconnect Events
-	m_button2->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mwNewProjectFrame::OnDoneButton), NULL, this);
+	m_button2->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(NewProjectFrame::OnDoneButton), NULL, this);
 }
 
-void mwNewProjectFrame::SetProject(mwProject& project)
+void mw::NewProjectFrame::SetProject(mwProject& project)
 {
 	m_project = project;
 	m_project_name_textbox->SetLabel(m_project.name);
 }
 
-void mwNewProjectFrame::OnDoneButton(wxCommandEvent& event)
+void mw::NewProjectFrame::OnDoneButton(wxCommandEvent& event)
 {
 	mwLogger logger;
 	logger.EnableDebug();

@@ -69,7 +69,7 @@
     <ClInclude Include="inc\view\mwTaskPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\view\mwNewProjectFrame.h">
+    <ClInclude Include="inc\view\NewProjectFrame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\view\mwNewTaskFrame.h">
@@ -134,7 +134,7 @@
     <ClCompile Include="src\mwTaskPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mwNewProjectFrame.cpp">
+    <ClCompile Include="src\NewProjectFrame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\mwNewTaskFrame.cpp">
