@@ -11,8 +11,6 @@ mw::TopPanel::TopPanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos, c
 {
 	wxSizer* buttons_sizer = new wxBoxSizer(wxHORIZONTAL);
 	wxSizer* top_panel_sizer = new wxBoxSizer(wxHORIZONTAL);
-
-
 	m_new_project = new wxButton(this, TOP_PANEL_NEW_PROJECT_ID, "New Project", wxDefaultPosition, wxDefaultSize);
 	m_new_task = new wxButton(this, TOP_PANEL_NEW_TASK_ID, "New Task", wxDefaultPosition, wxDefaultSize);
 	buttons_sizer->Add(this->m_new_project, 0, wxRIGHT, 3);
@@ -28,6 +26,7 @@ mw::TopPanel::~TopPanel()
 void mw::TopPanel::OnNewTaskButton(wxCommandEvent& event)
 {
 	mw::NewTaskFrame* new_task_frame = new mw::NewTaskFrame(this);
+	new_task_frame->CenterOnScreen();
 	new_task_frame->Show(true);
 	event.Skip();
 }
@@ -35,7 +34,7 @@ void mw::TopPanel::OnNewTaskButton(wxCommandEvent& event)
 void mw::TopPanel::OnNewProjectButton(wxCommandEvent& event)
 {
 	mw::NewProjectFrame* new_project_form = new mw::NewProjectFrame(this);
-	new_project_form->CenterOnParent();
+	new_project_form->CenterOnScreen();
 	new_project_form->Show(true);
 	event.Skip();
 }

@@ -25,6 +25,7 @@ void mw::TaskPanel::OnEditTask(wxCommandEvent& event)
 {
 	mw::NewTaskFrame* new_task_frame = new mw::NewTaskFrame(this);
 	new_task_frame->SetTask(m_task);
+	new_task_frame->CenterOnScreen();
 	new_task_frame->Show(true);
 	event.Skip();
 }
