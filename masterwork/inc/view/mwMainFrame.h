@@ -11,6 +11,7 @@
 #include "wx/event.h"
 #include "wx/srchctrl.h"
 #include "controller/mwController.h"
+#include "view/AboutFrame.h"
 
 
 class mwMainFrame : public wxFrame
@@ -63,6 +64,7 @@ private:
 	void OnSearch(wxCommandEvent& event);
 	void OnUpdateUI(wxEvent& event);
 	void OnNotification(wxEvent& event);
+	void OnAboutClick(wxCommandEvent& event);
 
 private:
 	int m_info_bar_timer_couter;

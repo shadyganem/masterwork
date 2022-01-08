@@ -1,4 +1,5 @@
 #pragma once
+
 #include <wx/string.h>
 #include <wx/stattext.h>
 #include <wx/gdicmn.h>
@@ -9,30 +10,23 @@
 #include <wx/button.h>
 #include <wx/panel.h>
 #include <wx/frame.h>
+#include "controller/mwLogger.h"
 
 namespace mw
 {
-	class AboutFrame : public wxFrame
-	{
-	private:
+class AboutFrame : public wxFrame
+{
 
-	protected:
-		wxPanel* m_about_panel;
-		wxStaticText* m_staticText26;
-		wxStdDialogButtonSizer* m_buttons;
-		wxButton* m_buttonsOK;
+public:
+	wxPanel* m_about_panel;
+	wxStaticText* m_staticText26;
+	wxButton* m_ok_button;
 
-		// Virtual event handlers, overide them in your derived class
-		virtual void OnOkClick(wxCommandEvent& event) 
-		{ 
-			Close();
-			event.Skip(); 
-		}
+	// Virtual event handlers, overide them in your derived class
+	virtual void OnOkClick(wxCommandEvent& event);
+public:
+	AboutFrame(wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("MasterWork About"), const wxPoint& pos = wxPoint(400, 200), const wxSize& size = wxSize(600, 200), long style = wxFRAME_FLOAT_ON_PARENT | wxTAB_TRAVERSAL);
+	~AboutFrame();
+};
 
-	public:
-		AboutFrame(wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(600, 200), long style = wxFRAME_FLOAT_ON_PARENT | wxTAB_TRAVERSAL);
-		~AboutFrame();
-
-	};
 }
-

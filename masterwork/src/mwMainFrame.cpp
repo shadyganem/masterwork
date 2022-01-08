@@ -6,6 +6,7 @@ wxDEFINE_EVENT(mwNotification, wxCommandEvent);
 BEGIN_EVENT_TABLE(mwMainFrame, wxFrame)
 	EVT_MENU(MENU_FILE_EXIT_ID, mwMainFrame::OnExit)
 	EVT_MENU(MENU_WINDOW_PROPERTIES_ID, mwMainFrame::OnProperties)
+	EVT_MENU(MENU_HELP_ABOUT_ID, mwMainFrame::OnAboutClick)
 	EVT_TIMER(MAIN_1SEC_TIMER_ID, mwMainFrame::On1SecTimer)
 	EVT_SEARCH(MAIN_SEARCH_ID, mwMainFrame::OnSearch)
 	EVT_BUTTON(TOP_PANEL_NEW_TASK_ID, mwMainFrame::OnNewTaskButton)
@@ -222,4 +223,12 @@ void mwMainFrame::OnNotification(wxEvent& event)
 {
 	mwController& controller = mwController::Get();
 	ShowInfoBarInfoMessage(controller.GetInfoBarText());
+}
+
+void mwMainFrame::OnAboutClick(wxCommandEvent& event)
+{
+	mw::AboutFrame* m_about_frame = new mw::AboutFrame(m_main_panel);
+	m_about_frame->CenterOnParent();
+	m_about_frame->Show(true);
+	event.Skip();
 }

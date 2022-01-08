@@ -113,7 +113,7 @@ mwSidePanel::mwSidePanel(wxWindow* parent,
 
 	bSizer21->Add(m_projects_text, 0, wxALL | wxEXPAND, 5);
 
-	m_projects_list = new wxListBox(m_panel7, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, 0);
+	m_projects_list = new wxListBox(m_panel7, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, wxLB_NEEDED_SB);
 	bSizer21->Add(m_projects_list, 1, wxALL | wxEXPAND, 5);
 
 	m_panel7->SetSizer(bSizer21);

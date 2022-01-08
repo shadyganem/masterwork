@@ -1,8 +1,8 @@
 #include "view/AboutFrame.h"
 
-mw::AboutFrame::AboutFrame(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style)
-{
 
+mw::AboutFrame::AboutFrame(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style) : wxFrame(parent, id, title, pos, size, style) 
+{
 	this->SetSizeHints(wxDefaultSize, wxDefaultSize);
 
 	wxBoxSizer* m_main_siizer;
@@ -21,11 +21,13 @@ mw::AboutFrame::AboutFrame(wxWindow* parent, wxWindowID id, const wxString& titl
 
 	bSizer53->Add(bSizer55, 1, wxEXPAND, 5);
 
-	m_buttons = new wxStdDialogButtonSizer();
-	m_buttonsOK = new wxButton(m_about_panel, wxID_OK);
-	m_buttons->AddButton(m_buttonsOK);
-	m_buttons->Realize();
-	bSizer53->Add(m_buttons, 0, wxALL | wxEXPAND, 5);
+	wxBoxSizer* m_buttons_sizer;
+	m_buttons_sizer = new wxBoxSizer(wxVERTICAL);
+
+	m_ok_button = new wxButton(m_about_panel, wxID_ANY, wxT("Ok"), wxDefaultPosition, wxDefaultSize, 0);
+	m_buttons_sizer->Add(m_ok_button, 0, wxALIGN_RIGHT | wxALL, 5);
+
+	bSizer53->Add(m_buttons_sizer, 0, wxEXPAND, 5);
 
 	m_about_panel->SetSizer(bSizer53);
 	m_about_panel->Layout();
@@ -36,11 +38,17 @@ mw::AboutFrame::AboutFrame(wxWindow* parent, wxWindowID id, const wxString& titl
 	this->Layout();
 
 	// Connect Events
-	m_buttonsOK->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(AboutFrame::OnOkClick), NULL, this);
-
+	m_ok_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mw::AboutFrame::OnOkClick), NULL, this);
 }
+
 mw::AboutFrame::~AboutFrame()
 {
 	// Disconnect Events
-	m_buttonsOK->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(AboutFrame::OnOkClick), NULL, this);
+	m_ok_button->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mw::AboutFrame::OnOkClick), NULL, this);
+}
+
+void mw::AboutFrame::OnOkClick(wxCommandEvent& event)
+{
+	Close();
+	event.Skip();
 }
