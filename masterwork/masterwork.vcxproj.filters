@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="inc\view\mwMainFrame.h">
+    <ClInclude Include="inc\view\MainFrame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\MasterWork.h">
@@ -83,7 +83,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\mwMainFrame.cpp">
+    <ClCompile Include="src\MainFrame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\MasterWork.cpp">

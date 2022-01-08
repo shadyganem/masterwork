@@ -13,13 +13,14 @@
 #include "controller/mwController.h"
 #include "view/AboutFrame.h"
 
-
-class mwMainFrame : public wxFrame
+namespace mw
+{
+class MainFrame : public wxFrame
 {
 public:
-	mwMainFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
-	~mwMainFrame();
-	
+	MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
+	~MainFrame();
+
 private:
 	void InitMenuBar();
 	void InitStatusBar();
@@ -72,4 +73,4 @@ private:
 	int m_3_sec_check;
 	bool m_ready_msg;
 };
-
+}

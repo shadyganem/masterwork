@@ -1,20 +1,20 @@
-#include "view/mwMainFrame.h"
+#include "view/MainFrame.h"
 
 wxDEFINE_EVENT(mwUpdateUI, wxCommandEvent);
 wxDEFINE_EVENT(mwNotification, wxCommandEvent);
 
-BEGIN_EVENT_TABLE(mwMainFrame, wxFrame)
-	EVT_MENU(MENU_FILE_EXIT_ID, mwMainFrame::OnExit)
-	EVT_MENU(MENU_WINDOW_PROPERTIES_ID, mwMainFrame::OnProperties)
-	EVT_MENU(MENU_HELP_ABOUT_ID, mwMainFrame::OnAboutClick)
-	EVT_TIMER(MAIN_1SEC_TIMER_ID, mwMainFrame::On1SecTimer)
-	EVT_SEARCH(MAIN_SEARCH_ID, mwMainFrame::OnSearch)
-	EVT_BUTTON(TOP_PANEL_NEW_TASK_ID, mwMainFrame::OnNewTaskButton)
-	EVT_CUSTOM(mwUpdateUI, MAIN_FRAME_ID, mwMainFrame::OnUpdateUI)
-	EVT_CUSTOM(mwNotification, MAIN_FRAME_ID, mwMainFrame::OnNotification)
+BEGIN_EVENT_TABLE(mw::MainFrame, wxFrame)
+	EVT_MENU(MENU_FILE_EXIT_ID, mw::MainFrame::OnExit)
+	EVT_MENU(MENU_WINDOW_PROPERTIES_ID, mw::MainFrame::OnProperties)
+	EVT_MENU(MENU_HELP_ABOUT_ID, mw::MainFrame::OnAboutClick)
+	EVT_TIMER(MAIN_1SEC_TIMER_ID, mw::MainFrame::On1SecTimer)
+	EVT_SEARCH(MAIN_SEARCH_ID, mw::MainFrame::OnSearch)
+	EVT_BUTTON(TOP_PANEL_NEW_TASK_ID, mw::MainFrame::OnNewTaskButton)
+	EVT_CUSTOM(mwUpdateUI, MAIN_FRAME_ID, mw::MainFrame::OnUpdateUI)
+	EVT_CUSTOM(mwNotification, MAIN_FRAME_ID, mw::MainFrame::OnNotification)
 END_EVENT_TABLE()
 
-mwMainFrame::mwMainFrame(const wxString& title, const wxPoint& pos, const wxSize& size) : wxFrame(nullptr, MAIN_FRAME_ID, title, pos, size)
+mw::MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size) : wxFrame(nullptr, MAIN_FRAME_ID, title, pos, size)
 {
 	mwController& control = mwController::Get();
 	control.Init();
@@ -64,11 +64,11 @@ mwMainFrame::mwMainFrame(const wxString& title, const wxPoint& pos, const wxSize
 	m_1sec_timer->Start(1000);
 }
 
-mwMainFrame::~mwMainFrame()
+mw::MainFrame::~MainFrame()
 {
 }
 
-void mwMainFrame::InitMenuBar()
+void mw::MainFrame::InitMenuBar()
 {
 	m_menu_bar = new wxMenuBar();
 	// TODO: find a way to change the menu bar backgournd color. 
@@ -89,7 +89,7 @@ void mwMainFrame::InitMenuBar()
 	this->SetMenuBar(m_menu_bar);
 }
 
-void mwMainFrame::InitStatusBar()
+void mw::MainFrame::InitStatusBar()
 {
 	mwController& controller = mwController::Get();
 	m_status_bar = CreateStatusBar();
@@ -100,7 +100,7 @@ void mwMainFrame::InitStatusBar()
 	controller.SetStatusBarText("Ready - " + active_user);
 }
 
-void mwMainFrame::InitInfoBar()
+void mw::MainFrame::InitInfoBar()
 {
 	m_info_bar = new wxInfoBar(this);
 	m_info_bar->SetBackgroundColour(m_err_bg);
@@ -108,13 +108,13 @@ void mwMainFrame::InitInfoBar()
 	ShowInfoBarInfoMessage("Welcome to MasterWork");
 }
 
-void mwMainFrame::InitMainPanel()
+void mw::MainFrame::InitMainPanel()
 {
 	m_main_panel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(200, 200));
 	m_main_panel->SetBackgroundColour(wxColor(30, 30, 30));
 }
 
-void mwMainFrame::InitColorScheme()
+void mw::MainFrame::InitColorScheme()
 {
 	m_info_bg = wxColor(0, 122, 204);
 	m_err_bg = wxColor(134, 27, 45);
@@ -123,7 +123,7 @@ void mwMainFrame::InitColorScheme()
 	m_side_panel_bg = wxColor(37, 37, 38);
 }
 
-void mwMainFrame::ShowInfoBarInfoMessage(const wxString& msg)
+void mw::MainFrame::ShowInfoBarInfoMessage(const wxString& msg)
 {
 	m_info_bar_timer_couter = 0;
 	m_info_bar->Dismiss();
@@ -132,7 +132,7 @@ void mwMainFrame::ShowInfoBarInfoMessage(const wxString& msg)
 	m_info_bar->ShowMessage(msg);
 }
 
-void mwMainFrame::ShowInfoBarErrorMessage(const wxString& msg)
+void mw::MainFrame::ShowInfoBarErrorMessage(const wxString& msg)
 {
 	m_info_bar_timer_couter = 0;
 	m_info_bar->Dismiss();
@@ -141,31 +141,31 @@ void mwMainFrame::ShowInfoBarErrorMessage(const wxString& msg)
 	m_info_bar->ShowMessage(msg);
 }
 
-void mwMainFrame::ShowStutusBarMessage(const wxString& msg)
+void mw::MainFrame::ShowStutusBarMessage(const wxString& msg)
 {
 	m_3_sec_check = 0;
 	m_status_bar_text->SetLabel(msg);
 }
 
-void mwMainFrame::SetStatusBarBackgrounColor(const wxColor& color)
+void mw::MainFrame::SetStatusBarBackgrounColor(const wxColor& color)
 {
 	m_status_bar->SetBackgroundColour(color);
 }
 
-void mwMainFrame::OnExit(wxCommandEvent& event)
+void mw::MainFrame::OnExit(wxCommandEvent& event)
 {
 	Close();
 	event.Skip();
 }
 
-void mwMainFrame::OnProperties(wxCommandEvent& event)
+void mw::MainFrame::OnProperties(wxCommandEvent& event)
 {
 	ShowInfoBarInfoMessage("Properties");
 	ShowStutusBarMessage("Propeties");
 }
 
 // called every 1 second
-void mwMainFrame::On1SecTimer(wxTimerEvent& event)
+void mw::MainFrame::On1SecTimer(wxTimerEvent& event)
 {
 	mwController& controller = mwController::Get();
 	if (m_info_bar_timer_couter == 2)
@@ -200,12 +200,12 @@ void mwMainFrame::On1SecTimer(wxTimerEvent& event)
 	}
 }
 
-void mwMainFrame::OnNewTaskButton(wxCommandEvent& event)
+void mw::MainFrame::OnNewTaskButton(wxCommandEvent& event)
 {
 	mwController& controller = mwController::Get();
 }
 
-void mwMainFrame::OnSearch(wxCommandEvent& event)
+void mw::MainFrame::OnSearch(wxCommandEvent& event)
 {
 	mwController& controller = mwController::Get();
 	wxString search_txt = m_search_ctrl->GetLineText(0);
@@ -213,19 +213,19 @@ void mwMainFrame::OnSearch(wxCommandEvent& event)
 	m_search_ctrl->Clear();
 }
 
-void mwMainFrame::OnUpdateUI(wxEvent& event)
+void mw::MainFrame::OnUpdateUI(wxEvent& event)
 {
 	mwController& controller = mwController::Get();
 	ShowStutusBarMessage(controller.GetStatusBarText());
 }
 
-void mwMainFrame::OnNotification(wxEvent& event)
+void mw::MainFrame::OnNotification(wxEvent& event)
 {
 	mwController& controller = mwController::Get();
 	ShowInfoBarInfoMessage(controller.GetInfoBarText());
 }
 
-void mwMainFrame::OnAboutClick(wxCommandEvent& event)
+void mw::MainFrame::OnAboutClick(wxCommandEvent& event)
 {
 	mw::AboutFrame* m_about_frame = new mw::AboutFrame(m_main_panel);
 	m_about_frame->CenterOnParent();
