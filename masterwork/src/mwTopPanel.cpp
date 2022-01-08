@@ -27,7 +27,7 @@ mwTopPanel::~mwTopPanel()
 
 void mwTopPanel::OnNewTaskButton(wxCommandEvent& event)
 {
-	mwNewTaskFrame* new_task_frame = new mwNewTaskFrame(this);
+	mw::NewTaskFrame* new_task_frame = new mw::NewTaskFrame(this);
 	new_task_frame->Show(true);
 	event.Skip();
 }

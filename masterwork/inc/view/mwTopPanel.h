@@ -5,7 +5,7 @@
 #include "controller/mwController.h"
 
 #include "view/NewProjectFrame.h"
-#include "view/mwNewTaskFrame.h"
+#include "view/NewTaskFrame.h"
 
 class mwTopPanel : public wxPanel
 {

@@ -1,7 +1,7 @@
-#include "view/mwNewTaskFrame.h"
+#include "view/NewTaskFrame.h"
 
 
-mwNewTaskFrame::mwNewTaskFrame(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style) : wxFrame(parent, id, title, pos, size, style)
+mw::NewTaskFrame::NewTaskFrame(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style) : wxFrame(parent, id, title, pos, size, style)
 {
 	this->SetSizeHints(wxDefaultSize, wxDefaultSize);
 
@@ -92,18 +92,18 @@ mwNewTaskFrame::mwNewTaskFrame(wxWindow* parent, wxWindowID id, const wxString& 
 	this->Layout();
 
 	// Connect Events
-	m_done_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mwNewTaskFrame::OnDoneButton), NULL, this);
-	m_cancel_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mwNewTaskFrame::OnCancelButton), NULL, this);
+	m_done_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(NewTaskFrame::OnDoneButton), NULL, this);
+	m_cancel_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(NewTaskFrame::OnCancelButton), NULL, this);
 }
 
-mwNewTaskFrame::~mwNewTaskFrame()
+mw::NewTaskFrame::~NewTaskFrame()
 {
 	// Disconnect Events
-	m_done_button->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mwNewTaskFrame::OnDoneButton), NULL, this);
-	m_cancel_button->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mwNewTaskFrame::OnCancelButton), NULL, this);
+	m_done_button->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(NewTaskFrame::OnDoneButton), NULL, this);
+	m_cancel_button->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(NewTaskFrame::OnCancelButton), NULL, this);
 }
 
-void mwNewTaskFrame::SetTask(mwTask& task)
+void mw::NewTaskFrame::SetTask(mwTask& task)
 {
 	mwLogger logger;
 	logger.EnableDebug();
@@ -118,12 +118,12 @@ void mwNewTaskFrame::SetTask(mwTask& task)
 	logger.Debug("Due Date " + std::to_string(m_task.deadline));
 }
 
-void mwNewTaskFrame::OnCancelButton(wxCommandEvent& event)
+void mw::NewTaskFrame::OnCancelButton(wxCommandEvent& event)
 {
 	this->Close();
 }
 
-void mwNewTaskFrame::SetTaskPriority()
+void mw::NewTaskFrame::SetTaskPriority()
 {
 	mwLogger logger;
 	switch (this->m_priority_choice->GetSelection())
@@ -147,7 +147,7 @@ void mwNewTaskFrame::SetTaskPriority()
 	}
 }
 
-void mwNewTaskFrame::SetTaskStatus()
+void mw::NewTaskFrame::SetTaskStatus()
 {
 	mwLogger logger;
 	switch (this->m_status_choice->GetSelection())
@@ -174,7 +174,7 @@ void mwNewTaskFrame::SetTaskStatus()
 	}
 }
 
-void mwNewTaskFrame::SetTaskDeadline()
+void mw::NewTaskFrame::SetTaskDeadline()
 {
 	mwLogger logger;
 	logger.EnableDebug();
@@ -189,7 +189,7 @@ void mwNewTaskFrame::SetTaskDeadline()
 	m_task.deadline = deadline.m_time_t;
 }
 
-void mwNewTaskFrame::OnDoneButton(wxCommandEvent& event)
+void mw::NewTaskFrame::OnDoneButton(wxCommandEvent& event)
 {
 	mwLogger logger;
 	mwController& controller = mwController::Get();

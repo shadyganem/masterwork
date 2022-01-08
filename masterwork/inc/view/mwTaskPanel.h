@@ -22,7 +22,7 @@
 
 #include "controller/mwLogger.h"
 #include "controller/mwController.h"
-#include "view/mwNewTaskFrame.h"
+#include "view/NewTaskFrame.h"
 
 namespace mw
 {
