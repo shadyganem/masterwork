@@ -21,7 +21,7 @@
     <ClInclude Include="inc\MasterWork.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\view\mwSidePanel.h">
+    <ClInclude Include="inc\view\SidePanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\view\BottomPanel.h">
@@ -89,7 +89,7 @@
     <ClCompile Include="src\MasterWork.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mwSidePanel.cpp">
+    <ClCompile Include="src\SidePanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\BottomPanel.cpp">

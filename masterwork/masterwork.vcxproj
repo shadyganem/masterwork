@@ -25,7 +25,7 @@
     <ClInclude Include="inc\view\BottomPanel.h" />
     <ClInclude Include="inc\mwDefines.h" />
     <ClInclude Include="inc\view\MainFrame.h" />
-    <ClInclude Include="inc\view\mwSidePanel.h" />
+    <ClInclude Include="inc\view\SidePanel.h" />
     <ClInclude Include="inc\view\WorkPanel.h" />
     <ClInclude Include="inc\view\mwTopPanel.h" />
     <ClInclude Include="inc\controller\mwController.h" />
@@ -61,7 +61,7 @@
     <ClCompile Include="src\MasterWork.cpp" />
     <ClCompile Include="src\BottomPanel.cpp" />
     <ClCompile Include="src\MainFrame.cpp" />
-    <ClCompile Include="src\mwSidePanel.cpp" />
+    <ClCompile Include="src\SidePanel.cpp" />
     <ClCompile Include="src\WorkPanel.cpp" />
     <ClCompile Include="src\sqlite3.c" />
   </ItemGroup>

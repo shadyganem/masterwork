@@ -3,7 +3,7 @@
 #include "wx/wx.h"
 #include "wx/splitter.h"
 #include <wx/infobar.h>
-#include "mwSidePanel.h"
+#include "SidePanel.h"
 #include "BottomPanel.h"
 #include "WorkPanel.h"
 #include "mwTopPanel.h"
@@ -42,7 +42,7 @@ namespace mw
 		wxSearchCtrl* m_search_ctrl;
 		// initialzing panels
 		mwTopPanel* m_top_panel;
-		mwSidePanel* m_side_panel;
+		SidePanel* m_side_panel;
 		mw::BottomPanel* m_bottom_panel;
 		WorkPanel* m_work_panel;
 		wxTimer* m_1sec_timer;

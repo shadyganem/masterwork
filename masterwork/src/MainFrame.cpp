@@ -45,7 +45,7 @@ mw::MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize
 	m_search_ctrl = new wxSearchCtrl(m_main_panel, MAIN_SEARCH_ID, wxEmptyString, wxDefaultPosition, wxSize(200, 21));
 	m_top_panel = new mwTopPanel(m_main_panel, TOP_PANEL_ID, wxDefaultPosition, wxSize(600, 21));
 	m_top_panel->SetBackgroundColour(m_side_panel_bg);
-	m_side_panel = new mwSidePanel(m_main_panel, SIDE_PANEL_ID, wxDefaultPosition, wxSize(200, 200));
+	m_side_panel = new SidePanel(m_main_panel, SIDE_PANEL_ID, wxDefaultPosition, wxSize(200, 200));
 	m_side_panel->SetBackgroundColour(m_side_panel_bg);
 	m_bottom_panel = new mw::BottomPanel(m_main_panel, BOTTOM_PANEL_ID, wxDefaultPosition, wxSize(200, 200));
 	m_bottom_panel->SetBackgroundColour(m_side_panel_bg);

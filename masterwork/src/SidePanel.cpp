@@ -1,8 +1,8 @@
-#include "view/mwSidePanel.h"
+#include "view/SidePanel.h"
 
 
-BEGIN_EVENT_TABLE(mwSidePanel, wxPanel)
-	EVT_CUSTOM(mwUpdateUI, SIDE_PANEL_ID, mwSidePanel::OnUpdateUI)
+BEGIN_EVENT_TABLE(mw::SidePanel, wxPanel)
+	EVT_CUSTOM(mwUpdateUI, SIDE_PANEL_ID, mw::SidePanel::OnUpdateUI)
 END_EVENT_TABLE()
 
 static enum ProjectListPopupMenuItems
@@ -11,7 +11,7 @@ static enum ProjectListPopupMenuItems
 	Rename
 };
 
-void mwSidePanel::UpdateProjecstList()
+void mw::SidePanel::UpdateProjecstList()
 {
 	mwLogger logger;
 	m_projects_list->Clear();
@@ -32,30 +32,30 @@ void mwSidePanel::UpdateProjecstList()
 	}
 }
 
-void mwSidePanel::OnUpdateUI(wxEvent& event)
+void mw::SidePanel::OnUpdateUI(wxEvent& event)
 {
 	this->UpdateProjecstList();
 	this->Layout();
 }
 
-void mwSidePanel::OnItemSelect(wxCommandEvent& event)
+void mw::SidePanel::OnItemSelect(wxCommandEvent& event)
 {
 	mwController& controller = mwController::Get();
 	int sel_item = this->m_projects_list->GetSelection();
 	controller.SetActiveProject(m_place_to_project_map[sel_item]);
 }
 
-void mwSidePanel::OnProjectListRightUp(wxCommandEvent& event)
+void mw::SidePanel::OnProjectListRightUp(wxCommandEvent& event)
 {
 	const wxPoint pt = wxGetMousePosition();
 	wxMenu menu;
 	menu.Append(ProjectListPopupMenuItems::Rename, "Rename");
 	menu.Append(ProjectListPopupMenuItems::Delete, "Delete");
-	menu.Connect(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(mwSidePanel::OnProjectListMenuClick), NULL, this);
+	menu.Connect(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(mw::SidePanel::OnProjectListMenuClick), NULL, this);
 	m_projects_list->PopupMenu(&menu);
 }
 
-void mwSidePanel::OnProjectListMenuClick(wxCommandEvent& evt)
+void mw::SidePanel::OnProjectListMenuClick(wxCommandEvent& evt)
 {
 	mwController& controller = mwController::Get();
 	mwLogger logger;
@@ -78,7 +78,7 @@ void mwSidePanel::OnProjectListMenuClick(wxCommandEvent& evt)
 	}
 }
 
-bool mwSidePanel::IsProjectSelected()
+bool mw::SidePanel::IsProjectSelected()
 {
 	mwLogger logger;
 	logger.EnableDebug();
@@ -88,7 +88,7 @@ bool mwSidePanel::IsProjectSelected()
 	return false;
 }
 
-mwSidePanel::mwSidePanel(wxWindow* parent,
+mw::SidePanel::SidePanel(wxWindow* parent,
 	                     wxWindowID winid, 
 	                     const wxPoint& pos, 
 	                     const wxSize& size, 
@@ -102,7 +102,7 @@ mwSidePanel::mwSidePanel(wxWindow* parent,
 	bSizer19 = new wxBoxSizer(wxVERTICAL);
 
 	m_splitter1 = new wxSplitterWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_3D);
-	m_splitter1->Connect(wxEVT_IDLE, wxIdleEventHandler(mwSidePanel::m_splitter1OnIdle), NULL, this);
+	m_splitter1->Connect(wxEVT_IDLE, wxIdleEventHandler(mw::SidePanel::m_splitter1OnIdle), NULL, this);
 	m_panel7 = new wxPanel(m_splitter1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
 	wxBoxSizer* bSizer21;
 	bSizer21 = new wxBoxSizer(wxVERTICAL);
@@ -133,13 +133,13 @@ mwSidePanel::mwSidePanel(wxWindow* parent,
 	this->Layout();
 	this->UpdateProjecstList();
 
-	m_projects_list->Connect(wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler(mwSidePanel::OnItemSelect), NULL, this);
-	m_projects_list->Connect(wxEVT_RIGHT_UP, wxCommandEventHandler(mwSidePanel::OnProjectListRightUp), NULL, this);
+	m_projects_list->Connect(wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler(mw::SidePanel::OnItemSelect), NULL, this);
+	m_projects_list->Connect(wxEVT_RIGHT_UP, wxCommandEventHandler(mw::SidePanel::OnProjectListRightUp), NULL, this);
 
 }
 
-mwSidePanel::~mwSidePanel()
+mw::SidePanel::~SidePanel()
 {
-	m_projects_list->Disconnect(wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler(mwSidePanel::OnItemSelect), NULL, this);
-	m_projects_list->Disconnect(wxEVT_RIGHT_UP, wxCommandEventHandler(mwSidePanel::OnProjectListRightUp), NULL, this);
+	m_projects_list->Disconnect(wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler(mw::SidePanel::OnItemSelect), NULL, this);
+	m_projects_list->Disconnect(wxEVT_RIGHT_UP, wxCommandEventHandler(mw::SidePanel::OnProjectListRightUp), NULL, this);
 }
