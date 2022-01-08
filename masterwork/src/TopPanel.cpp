@@ -1,12 +1,12 @@
-#include "view/mwTopPanel.h"
+#include "view/TopPanel.h"
 
-BEGIN_EVENT_TABLE(mwTopPanel, wxPanel)
-	EVT_BUTTON(TOP_PANEL_NEW_TASK_ID, mwTopPanel::OnNewTaskButton)
-	EVT_BUTTON(TOP_PANEL_NEW_PROJECT_ID, mwTopPanel::OnNewProjectButton)
+BEGIN_EVENT_TABLE(mw::TopPanel, wxPanel)
+	EVT_BUTTON(TOP_PANEL_NEW_TASK_ID, mw::TopPanel::OnNewTaskButton)
+	EVT_BUTTON(TOP_PANEL_NEW_PROJECT_ID, mw::TopPanel::OnNewProjectButton)
 
 END_EVENT_TABLE()
 
-mwTopPanel::mwTopPanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, const wxString& name)
+mw::TopPanel::TopPanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, const wxString& name)
 	: wxPanel(parent, winid, pos, size, style, name)
 {
 	wxSizer* buttons_sizer = new wxBoxSizer(wxHORIZONTAL);
@@ -21,18 +21,18 @@ mwTopPanel::mwTopPanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos, c
 	SetSizer(top_panel_sizer);
 }
 
-mwTopPanel::~mwTopPanel()
+mw::TopPanel::~TopPanel()
 {
 }
 
-void mwTopPanel::OnNewTaskButton(wxCommandEvent& event)
+void mw::TopPanel::OnNewTaskButton(wxCommandEvent& event)
 {
 	mw::NewTaskFrame* new_task_frame = new mw::NewTaskFrame(this);
 	new_task_frame->Show(true);
 	event.Skip();
 }
 
-void mwTopPanel::OnNewProjectButton(wxCommandEvent& event)
+void mw::TopPanel::OnNewProjectButton(wxCommandEvent& event)
 {
 	mw::NewProjectFrame* new_project_form = new mw::NewProjectFrame(this);
 	new_project_form->CenterOnParent();

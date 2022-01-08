@@ -6,7 +6,7 @@
 #include "SidePanel.h"
 #include "BottomPanel.h"
 #include "WorkPanel.h"
-#include "mwTopPanel.h"
+#include "TopPanel.h"
 #include "mwDefines.h"
 #include "wx/event.h"
 #include "wx/srchctrl.h"
@@ -41,7 +41,7 @@ namespace mw
 		wxStaticText* m_status_bar_text;
 		wxSearchCtrl* m_search_ctrl;
 		// initialzing panels
-		mwTopPanel* m_top_panel;
+		TopPanel* m_top_panel;
 		SidePanel* m_side_panel;
 		mw::BottomPanel* m_bottom_panel;
 		WorkPanel* m_work_panel;

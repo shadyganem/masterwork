@@ -33,7 +33,7 @@
     <ClInclude Include="inc\mwDefines.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\view\mwTopPanel.h">
+    <ClInclude Include="inc\view\TopPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\controller\mwController.h">
@@ -98,7 +98,7 @@
     <ClCompile Include="src\WorkPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mwTopPanel.cpp">
+    <ClCompile Include="src\TopPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\mwController.cpp">
