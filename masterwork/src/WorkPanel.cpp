@@ -54,12 +54,9 @@ void mw::WorkPanel::OnPageChanging(wxNotebookEvent& event)
 
 void mw::WorkPanel::OnTaskScrollWindowLeaveWindow(wxMouseEvent& event)
 {
-	mwLogger logger;
-	logger.EnableDebug();
 	std::map<mw::TaskPanel*, mwTask>::iterator it;
 	for (it = m_taskpanel_to_task_map.begin(); it != m_taskpanel_to_task_map.end(); ++it)
 	{
-		logger.Debug("reseting task " + it->second.name);
 		it->first->ResetBackGround();
 	}
 	event.Skip();
