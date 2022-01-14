@@ -48,6 +48,7 @@ namespace mw
 		virtual void OnStatusChanged(wxCommandEvent& event) { event.Skip(); }
 		virtual void OnDelete(wxCommandEvent& event);
 		void SetTask(mwTask task);
+		void ResetBackGround();
 
 		wxBoxSizer* ver_task_sizer;
 		wxPanel* m_static_view;

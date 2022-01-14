@@ -29,7 +29,7 @@ mw::WorkPanel::WorkPanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos,
 	// Connect Events
 	m_notebook->Connect(wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, wxNotebookEventHandler(mw::WorkPanel::OnPageChanged), NULL, this);
 	m_notebook->Connect(wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGING, wxNotebookEventHandler(mw::WorkPanel::OnPageChanging), NULL, this);
-
+	m_tasks_scroll_window->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(mw::WorkPanel::OnTaskScrollWindowLeaveWindow), NULL, this);
 	controller.RequestUpdateUI(this->GetId());
 }
 
@@ -38,6 +38,8 @@ mw::WorkPanel::~WorkPanel()
 	// Disconnect Events
 	m_notebook->Disconnect(wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, wxNotebookEventHandler(mw::WorkPanel::OnPageChanged), NULL, this);
 	m_notebook->Disconnect(wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGING, wxNotebookEventHandler(mw::WorkPanel::OnPageChanging), NULL, this);
+	m_tasks_scroll_window->Disconnect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(mw::WorkPanel::OnTaskScrollWindowLeaveWindow), NULL, this);
+
 }
 
 void mw::WorkPanel::OnPageChanged(wxNotebookEvent& event)
@@ -47,6 +49,19 @@ void mw::WorkPanel::OnPageChanged(wxNotebookEvent& event)
 
 void mw::WorkPanel::OnPageChanging(wxNotebookEvent& event)
 {
+	event.Skip();
+}
+
+void mw::WorkPanel::OnTaskScrollWindowLeaveWindow(wxMouseEvent& event)
+{
+	mwLogger logger;
+	logger.EnableDebug();
+	std::map<mw::TaskPanel*, mwTask>::iterator it;
+	for (it = m_taskpanel_to_task_map.begin(); it != m_taskpanel_to_task_map.end(); ++it)
+	{
+		logger.Debug("reseting task " + it->second.name);
+		it->first->ResetBackGround();
+	}
 	event.Skip();
 }
 

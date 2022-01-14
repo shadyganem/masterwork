@@ -30,7 +30,7 @@ void mw::TaskPanel::OnEditTask(wxCommandEvent& event)
 	event.Skip();
 }
 
-void mw:: TaskPanel::OnDelete(wxCommandEvent& event)
+void mw::TaskPanel::OnDelete(wxCommandEvent& event)
 {
 	mwController& controller = mwController::Get();
 	controller.DeleteTask(m_task);
@@ -49,6 +49,12 @@ void mw::TaskPanel::SetTask(mwTask task)
 	wxString time = deadline.FormatISOTime();
 	m_static_duedate->SetLabelText("Due Date: " + time.ToStdString() + " " + date.ToStdString());
 
+}
+
+void mw::TaskPanel::ResetBackGround()
+{
+	this->SetBackgroundColour(wxColor(240, 240, 240));
+	this->Refresh();
 }
 
 mw::TaskPanel::TaskPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style ) : wxPanel( parent, id, pos, size, style )
