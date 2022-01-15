@@ -41,8 +41,10 @@
     <ClInclude Include="inc\view\NewProjectFrame.h" />
     <ClInclude Include="inc\view\NewTaskFrame.h" />
     <ClInclude Include="inc\model\DateTime.h" />
+    <ClInclude Include="inc\view\NewUserFrame.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\NewUserFrame.cpp" />
     <ClCompile Include="src\AboutFrame.cpp" />
     <ClCompile Include="src\DateTime.cpp" />
     <ClCompile Include="src\NewTaskFrame.cpp" />

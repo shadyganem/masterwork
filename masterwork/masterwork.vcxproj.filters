@@ -81,6 +81,9 @@
     <ClInclude Include="inc\view\AboutFrame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="inc\view\NewUserFrame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\MainFrame.cpp">
@@ -144,6 +147,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\AboutFrame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NewUserFrame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
