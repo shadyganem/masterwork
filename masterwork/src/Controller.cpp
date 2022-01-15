@@ -35,7 +35,7 @@ void mw::Controller::GetActiveProject(mwProject& project)
 
 void mw::Controller::SetActiveUser(int user_uid)
 {
-	mwUser user;
+	User user;
 	user.uid = user_uid;
 	this->m_model.SetActiveUser(user);
 }
@@ -149,6 +149,22 @@ void mw::Controller::AddProject(mwProject& project)
 	else
 	{
 		m_model.AddProject(project);
+	}
+	m_mutex.Unlock();
+	PostUpdateUI(SIDE_PANEL_ID);
+}
+
+void mw::Controller::AddUser(mw::User& user, bool set_active)
+{
+	m_model.GetActiveUser(m_active_user);
+	m_mutex.Lock();
+	if (m_model.IsUserFound(user))
+	{
+		m_model.UpdateUser(user);
+	}
+	else
+	{
+		m_model.AddUser(user);
 	}
 	m_mutex.Unlock();
 	PostUpdateUI(SIDE_PANEL_ID);

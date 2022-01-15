@@ -6,7 +6,7 @@
 #include "mwDefines.h"
 #include "model/mwModel.h"
 #include "model/mwTask.h"
-#include "model/mwUser.h"
+#include "model/User.h"
 #include "controller/mwLogger.h"
 #include <vector>
 #include <map>
@@ -40,6 +40,7 @@ namespace mw
 		void DeleteProject(mwProject& project);
 		void AddTask(mwTask& task);
 		void AddProject(mwProject& project);
+		void AddUser(mw::User& user, bool set_active=false);
 		void GetProjectsForActiveUser(std::vector<std::string>& projects);
 		void GetProjectsForActiveUser(std::vector<mwProject>& projects);
 		void GetTasksForActiveProject(std::vector<mwTask>& tasks);
@@ -58,7 +59,7 @@ namespace mw
 		wxMutex m_mutex;
 		mwProject m_current_project;
 		mwLogger m_logger;
-		mwUser m_active_user;
+		User m_active_user;
 		mwProject m_active_project;
 		std::map<int, mwTask> m_seen_tasks;
 		bool m_is_project_selected;

@@ -12,6 +12,7 @@
 #include "wx/srchctrl.h"
 #include "controller/Controller.h"
 #include "view/AboutFrame.h"
+#include "view/NewUserFrame.h"
 
 namespace mw
 {
@@ -61,6 +62,7 @@ namespace mw
 		void OnExit(wxCommandEvent& event);
 		void OnProperties(wxCommandEvent& event);
 		void OnNewProject(wxCommandEvent& event);
+		void OnNewUser(wxCommandEvent& event);
 		void On1SecTimer(wxTimerEvent& event);
 		void OnNewTaskButton(wxCommandEvent& event);
 		void OnSearch(wxCommandEvent& event);

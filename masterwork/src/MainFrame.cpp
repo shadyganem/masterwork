@@ -7,6 +7,7 @@ BEGIN_EVENT_TABLE(mw::MainFrame, wxFrame)
 	EVT_MENU(MENU_FILE_EXIT_ID, mw::MainFrame::OnExit)
 	EVT_MENU(MENU_WINDOW_PROPERTIES_ID, mw::MainFrame::OnProperties)
 	EVT_MENU(MENU_FILE_NEW_PROJECT_ID, mw::MainFrame::OnNewProject)
+	EVT_MENU(MENU_FILE_NEW_USER_ID, mw::MainFrame::OnNewUser)
 	EVT_MENU(MENU_HELP_ABOUT_ID, mw::MainFrame::OnAboutClick)
 	EVT_TIMER(MAIN_1SEC_TIMER_ID, mw::MainFrame::On1SecTimer)
 	EVT_SEARCH(MAIN_SEARCH_ID, mw::MainFrame::OnSearch)
@@ -169,6 +170,14 @@ void mw::MainFrame::OnNewProject(wxCommandEvent& event)
 	mw::NewProjectFrame* new_project_form = new mw::NewProjectFrame(this);
 	new_project_form->CenterOnScreen();
 	new_project_form->Show(true);
+	event.Skip();
+}
+
+void mw::MainFrame::OnNewUser(wxCommandEvent& event)
+{
+	mw::NewUserFrame* new_user_frame = new mw::NewUserFrame(this);
+	new_user_frame->CenterOnParent();
+	new_user_frame->Show(true);
 	event.Skip();
 }
 

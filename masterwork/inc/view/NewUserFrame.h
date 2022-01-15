@@ -11,6 +11,8 @@
 #include <wx/button.h>
 #include <wx/panel.h>
 #include <wx/frame.h>
+#include "controller/Controller.h"
+#include "model/User.h"
 
 namespace mw
 {
@@ -31,7 +33,7 @@ namespace mw
 
 	public:
 		wxTextCtrl* m_username_text;
-		NewUserFrame(wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(500, 221), long style = wxDEFAULT_FRAME_STYLE | wxTAB_TRAVERSAL);
+		NewUserFrame(wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("New User"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(500, 221), long style = wxDEFAULT_FRAME_STYLE | wxFRAME_FLOAT_ON_PARENT | wxTAB_TRAVERSAL);
 		~NewUserFrame();
 
 	};

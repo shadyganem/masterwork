@@ -2,11 +2,21 @@
 
 void mw::NewUserFrame::OnDoneButton(wxCommandEvent& event)
 {
+	mw::Controller& controller = mw::Controller::Get();
+	mw::User user;
+	user.username = this->m_username_text->GetLineText(0).ToStdString();
+	if (user.username == "")
+	{
+		this->Close();
+		return;
+	}
+	controller.AddUser(user);
+	this->Close();
 }
 
 void mw::NewUserFrame::OnCancelButton(wxCommandEvent& event)
 {
-	Close();
+	this->Close();
 	event.Skip();
 }
 

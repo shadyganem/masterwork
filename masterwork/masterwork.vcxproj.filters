@@ -45,7 +45,7 @@
     <ClInclude Include="inc\model\mwModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\model\mwUser.h">
+    <ClInclude Include="inc\model\User.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\model\mwProject.h">
@@ -113,7 +113,7 @@
     <ClCompile Include="src\mwModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mwUser.cpp">
+    <ClCompile Include="src\User.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\mwProject.cpp">
