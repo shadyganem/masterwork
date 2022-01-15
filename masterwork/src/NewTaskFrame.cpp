@@ -105,8 +105,6 @@ mw::NewTaskFrame::~NewTaskFrame()
 
 void mw::NewTaskFrame::SetTask(mwTask& task)
 {
-	mwLogger logger;
-	logger.EnableDebug();
 	m_task = task;
 	m_task_name->SetLabelText(task.name);
 	m_task_description->SetLabelText(task.description);
@@ -115,7 +113,6 @@ void mw::NewTaskFrame::SetTask(mwTask& task)
 	wxDateTime deadline(task.deadline);
 	m_deadline_datepicker->SetValue(deadline);
 	m_deadline_timepicker->SetValue(deadline);
-	logger.Debug("Due Date " + std::to_string(m_task.deadline));
 }
 
 void mw::NewTaskFrame::OnCancelButton(wxCommandEvent& event)
@@ -176,8 +173,6 @@ void mw::NewTaskFrame::SetTaskStatus()
 
 void mw::NewTaskFrame::SetTaskDeadline()
 {
-	mwLogger logger;
-	logger.EnableDebug();
 	int day=0, mon=1, year=0;
 	int hour=0, min=0, sec=0;
 	m_deadline_timepicker->GetTime(&hour, &min, &sec);
@@ -192,7 +187,7 @@ void mw::NewTaskFrame::SetTaskDeadline()
 void mw::NewTaskFrame::OnDoneButton(wxCommandEvent& event)
 {
 	mwLogger logger;
-	mwController& controller = mwController::Get();
+	mw::Controller& controller = mw::Controller::Get();
 	mwProject proj;
 	controller.GetActiveProject(proj);
 	if (proj.uid == 0)

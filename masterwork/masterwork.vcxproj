@@ -28,7 +28,7 @@
     <ClInclude Include="inc\view\SidePanel.h" />
     <ClInclude Include="inc\view\WorkPanel.h" />
     <ClInclude Include="inc\view\TopPanel.h" />
-    <ClInclude Include="inc\controller\mwController.h" />
+    <ClInclude Include="inc\controller\Controller.h" />
     <ClInclude Include="inc\model\mwModel.h" />
     <ClInclude Include="inc\model\mwUser.h" />
     <ClInclude Include="inc\model\mwProject.h" />
@@ -56,7 +56,7 @@
     <ClCompile Include="src\mwProject.cpp" />
     <ClCompile Include="src\mwUser.cpp" />
     <ClCompile Include="src\mwModel.cpp" />
-    <ClCompile Include="src\mwController.cpp" />
+    <ClCompile Include="src\Controller.cpp" />
     <ClCompile Include="src\TopPanel.cpp" />
     <ClCompile Include="src\MasterWork.cpp" />
     <ClCompile Include="src\BottomPanel.cpp" />

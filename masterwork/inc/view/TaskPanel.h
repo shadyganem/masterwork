@@ -21,7 +21,7 @@
 #include "model/mwTask.h"
 
 #include "controller/mwLogger.h"
-#include "controller/mwController.h"
+#include "controller/Controller.h"
 #include "view/NewTaskFrame.h"
 
 namespace mw

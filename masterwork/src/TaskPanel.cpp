@@ -32,7 +32,7 @@ void mw::TaskPanel::OnEditTask(wxCommandEvent& event)
 
 void mw::TaskPanel::OnDelete(wxCommandEvent& event)
 {
-	mwController& controller = mwController::Get();
+	mw::Controller& controller = mw::Controller::Get();
 	controller.DeleteTask(m_task);
 	event.Skip();
 }

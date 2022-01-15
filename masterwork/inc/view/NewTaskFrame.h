@@ -18,7 +18,7 @@
 #include <wx/timectrl.h>
 
 #include "controller/mwLogger.h"
-#include "controller/mwController.h"
+#include "controller/Controller.h"
 #include "model/mwTask.h"
 #include "model/DateTime.h"
 

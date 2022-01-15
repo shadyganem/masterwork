@@ -10,7 +10,7 @@
 #include <wx/sizer.h>
 #include <wx/panel.h>
 #include <wx/splitter.h>
-#include "controller/mwController.h"
+#include "controller/Controller.h"
 #include <map>
 #include "model/mwProject.h"
 

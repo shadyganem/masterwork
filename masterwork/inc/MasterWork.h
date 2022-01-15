@@ -11,6 +11,5 @@ public:
 	virtual bool OnInit();
 private:
 	mw::MainFrame* m_main_frame = nullptr;
-	const wxString m_app_name = wxString("MasterWork");
 };
 

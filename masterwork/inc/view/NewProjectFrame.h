@@ -12,7 +12,7 @@
 #include <wx/panel.h>
 #include <wx/frame.h>
 
-#include "controller/mwController.h"
+#include "controller/Controller.h"
 #include "model/mwProject.h"
 #include <string>
 

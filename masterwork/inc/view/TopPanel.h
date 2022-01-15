@@ -2,7 +2,7 @@
 #include "wx/wx.h"
 #include "wx/srchctrl.h"
 #include "mwDefines.h"
-#include "controller/mwController.h"
+#include "controller/Controller.h"
 
 #include "view/NewProjectFrame.h"
 #include "view/NewTaskFrame.h"

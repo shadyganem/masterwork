@@ -17,8 +17,7 @@ END_EVENT_TABLE()
 
 mw::MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size) : wxFrame(nullptr, MAIN_FRAME_ID, title, pos, size)
 {
-	mwController& control = mwController::Get();
-	control.Init();
+	mw::Controller& control = mw::Controller::Get();
 	control.RegisterMainFrame(this);
 	control.RegisterEventHandler(MAIN_FRAME_ID, this);
 	Maximize();
@@ -92,7 +91,7 @@ void mw::MainFrame::InitMenuBar()
 
 void mw::MainFrame::InitStatusBar()
 {
-	mwController& controller = mwController::Get();
+	mw::Controller& controller = mw::Controller::Get();
 	m_status_bar = CreateStatusBar();
 	m_status_bar->SetBackgroundColour(m_info_bg);
 	m_status_bar_text = new wxStaticText(m_status_bar, wxID_ANY, "", wxPoint(5, 5), wxDefaultSize, wxALIGN_LEFT);
@@ -176,7 +175,7 @@ void mw::MainFrame::OnNewProject(wxCommandEvent& event)
 // called every 1 second
 void mw::MainFrame::On1SecTimer(wxTimerEvent& event)
 {
-	mwController& controller = mwController::Get();
+	mw::Controller& controller = mw::Controller::Get();
 	if (m_info_bar_timer_couter == 2)
 	{
 		m_info_bar->Dismiss();
@@ -211,12 +210,12 @@ void mw::MainFrame::On1SecTimer(wxTimerEvent& event)
 
 void mw::MainFrame::OnNewTaskButton(wxCommandEvent& event)
 {
-	mwController& controller = mwController::Get();
+	mw::Controller& controller = mw::Controller::Get();
 }
 
 void mw::MainFrame::OnSearch(wxCommandEvent& event)
 {
-	mwController& controller = mwController::Get();
+	mw::Controller& controller = mw::Controller::Get();
 	wxString search_txt = m_search_ctrl->GetLineText(0);
 	ShowInfoBarInfoMessage("Searching: " + m_search_ctrl->GetLineText(0));
 	m_search_ctrl->Clear();
@@ -224,13 +223,13 @@ void mw::MainFrame::OnSearch(wxCommandEvent& event)
 
 void mw::MainFrame::OnUpdateUI(wxEvent& event)
 {
-	mwController& controller = mwController::Get();
+	mw::Controller& controller = mw::Controller::Get();
 	ShowStutusBarMessage(controller.GetStatusBarText());
 }
 
 void mw::MainFrame::OnNotification(wxEvent& event)
 {
-	mwController& controller = mwController::Get();
+	mw::Controller& controller = mw::Controller::Get();
 	ShowInfoBarInfoMessage(controller.GetInfoBarText());
 }
 

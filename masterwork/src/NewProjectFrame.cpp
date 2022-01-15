@@ -52,9 +52,7 @@ void mw::NewProjectFrame::SetProject(mwProject& project)
 
 void mw::NewProjectFrame::OnDoneButton(wxCommandEvent& event)
 {
-	mwLogger logger;
-	logger.EnableDebug();
-	mwController& controller = mwController::Get();
+	mw::Controller& controller = mw::Controller::Get();
 	
 	m_project.name = this->m_project_name_textbox->GetLineText(0).ToStdString();
 	if (m_project.name == "")

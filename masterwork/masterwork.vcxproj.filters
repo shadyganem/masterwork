@@ -36,7 +36,7 @@
     <ClInclude Include="inc\view\TopPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\controller\mwController.h">
+    <ClInclude Include="inc\controller\Controller.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\model\sqlite3.h">
@@ -101,7 +101,7 @@
     <ClCompile Include="src\TopPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mwController.cpp">
+    <ClCompile Include="src\Controller.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\sqlite3.c">

@@ -1,7 +1,7 @@
 #pragma once
 #include "wx/wx.h"
 #include <wx/toolbar.h>
-#include "controller/mwController.h"
+#include "controller/Controller.h"
 #include "mwDefines.h"
 #include <wx/panel.h>
 #include <wx/gdicmn.h>

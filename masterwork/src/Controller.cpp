@@ -1,6 +1,6 @@
-#include "controller\mwController.h"
+#include "controller\Controller.h"
 
-void mwController::Init()
+void mw::Controller::Init()
 {
 	m_logger.Info("---------------------------------------------------------------------------");
 	m_logger.Info("Intializing controller");
@@ -12,17 +12,17 @@ void mwController::Init()
 	m_logger.Info("The active project is \"" + this->m_active_project.name + "\"");
 }
 
-bool mwController::Search(wxString& search_query)
+bool mw::Controller::Search(wxString& search_query)
 {
 	return false;
 }
 
-wxString mwController::GetActiveUsername(void)
+wxString mw::Controller::GetActiveUsername(void)
 {
 	return wxString(this->m_active_user.username);
 }
 
-void mwController::GetActiveProject(mwProject& project)
+void mw::Controller::GetActiveProject(mwProject& project)
 {
 	m_model.GetActiveUser(m_active_user);
 	m_model.GetActiveProject(m_active_project, m_active_user);
@@ -33,14 +33,14 @@ void mwController::GetActiveProject(mwProject& project)
 	project = m_active_project;
 }
 
-void mwController::SetActiveUser(int user_uid)
+void mw::Controller::SetActiveUser(int user_uid)
 {
 	mwUser user;
 	user.uid = user_uid;
 	this->m_model.SetActiveUser(user);
 }
 
-void mwController::SetActiveProject(mwProject& project)
+void mw::Controller::SetActiveProject(mwProject& project)
 {
 	this->m_model.GetActiveUser(m_active_user);
 	this->m_model.SetActiveProject(project);
@@ -48,7 +48,7 @@ void mwController::SetActiveProject(mwProject& project)
 	PostUpdateUI(WORK_PANEL_ID);
 }
 
-void mwController::SetStatusBarText(const wxString& txt)
+void mw::Controller::SetStatusBarText(const wxString& txt)
 {
 	m_mutex.Lock();
 	m_status_bar_text = txt;
@@ -56,12 +56,12 @@ void mwController::SetStatusBarText(const wxString& txt)
 	PostUpdateUI(MAIN_FRAME_ID);
 }
 
-wxString mwController::GetStatusBarText(void)
+wxString mw::Controller::GetStatusBarText(void)
 {
 	return m_status_bar_text;
 }
 
-void mwController::SetInfoBarText(const wxString& txt)
+void mw::Controller::SetInfoBarText(const wxString& txt)
 {
 	m_mutex.Lock();
 	m_info_bar_text = txt;
@@ -69,17 +69,17 @@ void mwController::SetInfoBarText(const wxString& txt)
 	PostNotification(MAIN_FRAME_ID);
 }
 
-wxString mwController::GetInfoBarText(void)
+wxString mw::Controller::GetInfoBarText(void)
 {
 	return this->m_info_bar_text;
 }
 
-void mwController::RegisterMainFrame(wxEvtHandler* mf)
+void mw::Controller::RegisterMainFrame(wxEvtHandler* mf)
 {
 	m_main_frame = mf;
 }
 
-void mwController::RegisterEventHandler(int id, wxEvtHandler* event_handler)
+void mw::Controller::RegisterEventHandler(int id, wxEvtHandler* event_handler)
 {
 	mwLogger logger;
 	if (id != wxID_ANY)
@@ -92,7 +92,7 @@ void mwController::RegisterEventHandler(int id, wxEvtHandler* event_handler)
 	}
 }
 
-void mwController::AddTask(std::string name, std::string dec)
+void mw::Controller::AddTask(std::string name, std::string dec)
 {
 
 	mwTask task(name, dec);
@@ -103,7 +103,7 @@ void mwController::AddTask(std::string name, std::string dec)
 	PostUpdateUI(MAIN_FRAME_ID);
 }
 
-void mwController::DeleteTask(mwTask& task)
+void mw::Controller::DeleteTask(mwTask& task)
 {
 	m_model.DeleteTask(task);
 	m_model.GetActiveUser(m_active_user);
@@ -111,7 +111,7 @@ void mwController::DeleteTask(mwTask& task)
 	PostUpdateUI(WORK_PANEL_ID);
 }
 
-void mwController::DeleteProject(mwProject& project)
+void mw::Controller::DeleteProject(mwProject& project)
 {
 	m_model.DeleteProject(project);
 	m_model.GetActiveUser(m_active_user);
@@ -120,7 +120,7 @@ void mwController::DeleteProject(mwProject& project)
 	PostUpdateUI(SIDE_PANEL_ID);
 }
 
-void mwController::AddTask(mwTask& task)
+void mw::Controller::AddTask(mwTask& task)
 {
 	m_mutex.Lock();
 	if (m_model.IsTaskFound(task))
@@ -136,7 +136,7 @@ void mwController::AddTask(mwTask& task)
 	PostUpdateUI(WORK_PANEL_ID);
 }
 
-void mwController::AddProject(mwProject& project)
+void mw::Controller::AddProject(mwProject& project)
 {
 	m_model.GetActiveUser(m_active_user);
 	project.user_uid = m_active_user.uid;
@@ -154,7 +154,7 @@ void mwController::AddProject(mwProject& project)
 	PostUpdateUI(SIDE_PANEL_ID);
 }
 
-void mwController::GetProjectsForActiveUser(std::vector<std::string>& projects)
+void mw::Controller::GetProjectsForActiveUser(std::vector<std::string>& projects)
 {
 	m_model.GetActiveUser(m_active_user);
 	std::vector<mwProject> mw_projects;
@@ -166,25 +166,25 @@ void mwController::GetProjectsForActiveUser(std::vector<std::string>& projects)
 	}
 }
 
-void mwController::GetProjectsForActiveUser(std::vector<mwProject>& projects)
+void mw::Controller::GetProjectsForActiveUser(std::vector<mwProject>& projects)
 {
 	this->m_model.GetActiveUser(m_active_user);
 	this->m_model.GetAllProjects(projects, m_active_user);
 }
 
-void mwController::GetTasksForActiveProject(std::vector<mwTask>& tasks)
+void mw::Controller::GetTasksForActiveProject(std::vector<mwTask>& tasks)
 {
 	m_model.GetActiveUser(m_active_user);
 	m_model.GetActiveProject(m_active_project, m_active_user);
 	this->m_model.GetAllTasks(tasks, m_active_project);
 }
 
-void mwController::RequestUpdateUI(int wind_id)
+void mw::Controller::RequestUpdateUI(int wind_id)
 {
 	this->PostUpdateUI(wind_id);
 }
 
-void mwController::PostUpdateUI(int wind_id)
+void mw::Controller::PostUpdateUI(int wind_id)
 {
 	mwLogger logger;
 	if (this->m_event_handlers.count(wind_id) != 0)
@@ -200,7 +200,7 @@ void mwController::PostUpdateUI(int wind_id)
 	}
 }
 
-void mwController::PostNotification(int windId)
+void mw::Controller::PostNotification(int windId)
 {
 	wxCommandEvent* event = new wxCommandEvent(mwNotification, windId);
 	event->SetEventObject(this->m_main_frame);

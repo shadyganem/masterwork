@@ -10,7 +10,7 @@
 #include "mwDefines.h"
 #include "wx/event.h"
 #include "wx/srchctrl.h"
-#include "controller/mwController.h"
+#include "controller/Controller.h"
 #include "view/AboutFrame.h"
 
 namespace mw

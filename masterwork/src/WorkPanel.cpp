@@ -7,7 +7,7 @@ END_EVENT_TABLE()
 
 mw::WorkPanel::WorkPanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, const wxString& name) : wxPanel(parent, winid, pos, size, style, name)
 {
-	mwController& controller = mwController::Get();
+	mw::Controller& controller = mw::Controller::Get();
 	controller.RegisterEventHandler(winid, this);
 	this->SetBackgroundColour(wxColour(37, 37, 38));
 
@@ -70,7 +70,7 @@ void mw::WorkPanel::OnUpdateUI(wxEvent& event)
 		item.first->Destroy();
 	}
 	std::vector<mwTask> tasks;
-	mwController& controller = mwController::Get();
+	mw::Controller& controller = mw::Controller::Get();
 	controller.GetTasksForActiveProject(tasks);
 	mw::TaskPanel* task_panel;
 	m_taskpanel_to_task_map.clear();

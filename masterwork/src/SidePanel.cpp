@@ -16,7 +16,7 @@ void mw::SidePanel::UpdateProjecstList()
 	mwLogger logger;
 	m_projects_list->Clear();
 	m_place_to_project_map.clear();
-	mwController& controller = mwController::Get();
+	mw::Controller& controller = mw::Controller::Get();
 	std::vector<mwProject> projects;
 	controller.GetProjectsForActiveUser(projects);
 	wxString project_name;
@@ -40,7 +40,7 @@ void mw::SidePanel::OnUpdateUI(wxEvent& event)
 
 void mw::SidePanel::OnItemSelect(wxCommandEvent& event)
 {
-	mwController& controller = mwController::Get();
+	mw::Controller& controller = mw::Controller::Get();
 	int sel_item = this->m_projects_list->GetSelection();
 	controller.SetActiveProject(m_place_to_project_map[sel_item]);
 }
@@ -57,7 +57,7 @@ void mw::SidePanel::OnProjectListRightUp(wxCommandEvent& event)
 
 void mw::SidePanel::OnProjectListMenuClick(wxCommandEvent& evt)
 {
-	mwController& controller = mwController::Get();
+	mw::Controller& controller = mw::Controller::Get();
 	mwLogger logger;
 	int sel_item;
 	mwProject sel_proj;
@@ -95,7 +95,7 @@ mw::SidePanel::SidePanel(wxWindow* parent,
 	                     long style, 
 	                     const wxString& name) : wxPanel(parent, winid, pos, size, style, name)
 {
-	mwController& controller = mwController::Get();
+	mw::Controller& controller = mw::Controller::Get();
 	controller.RegisterEventHandler(SIDE_PANEL_ID, this);
 	m_is_project_seleted = false;
 	wxBoxSizer* bSizer19;

@@ -61,17 +61,12 @@ mw::BottomPanel::~BottomPanel()
 
 void mw::BottomPanel::OnPageChaged(wxListbookEvent& event)
 {
-	mwLogger logger;
 	wxString pagename = m_listbook->GetPageText(m_listbook->GetSelection());
-
-	logger.Info("page has been changed to " + pagename.ToStdString());
 	event.Skip();
 }
 
 void mw::BottomPanel::OnProgrammingFocus(wxFocusEvent& event)
 {
-	mwLogger logger;
-	logger.Info("OnPrgrammingFocus is called");
 	event.Skip();
 }
 
