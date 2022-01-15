@@ -60,6 +60,7 @@ namespace mw
 		// event handlers
 		void OnExit(wxCommandEvent& event);
 		void OnProperties(wxCommandEvent& event);
+		void OnNewProject(wxCommandEvent& event);
 		void On1SecTimer(wxTimerEvent& event);
 		void OnNewTaskButton(wxCommandEvent& event);
 		void OnSearch(wxCommandEvent& event);
