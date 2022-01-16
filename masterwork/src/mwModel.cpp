@@ -58,7 +58,7 @@ bool mwModel::AddProject(mwProject& project)
 	return true;
 }
 
-bool mwModel::AddTask(mwTask& task)
+bool mwModel::AddTask(mw::Task& task)
 {
 	mw::Logger logger;
 	try
@@ -162,7 +162,7 @@ bool mwModel::SetActiveUser(mw::User& user)
 	}
 }
 
-bool mwModel::DeleteTask(mwTask& task)
+bool mwModel::DeleteTask(mw::Task& task)
 {
 	try
 	{
@@ -170,7 +170,7 @@ bool mwModel::DeleteTask(mwTask& task)
 		this->ConnectDb();
 
 		std::string sql = "UPDATE tasks "
-			"SET status= " + std::to_string(mwTask::TaskStatus::DELETED) + " "
+			"SET status= " + std::to_string(mw::Task::TaskStatus::DELETED) + " "
 			"WHERE uid=" + std::to_string(task.uid) + " "
 			";";
 		m_db_handler.Update(sql.c_str());
@@ -368,7 +368,7 @@ bool mwModel::SetActiveProject(mwProject& project)
 	}
 }
 
-bool mwModel::GetProjectTasks(mwProject& project, std::vector<mwTask>& ret_tasks_vect)
+bool mwModel::GetProjectTasks(mwProject& project, std::vector<mw::Task>& ret_tasks_vect)
 {
 	std::vector<std::vector<std::string>> records;
 	std::string sql = "SELECT * FROM ";
@@ -376,7 +376,7 @@ bool mwModel::GetProjectTasks(mwProject& project, std::vector<mwTask>& ret_tasks
 	return false;
 }
 
-bool mwModel::GetAllTasks(std::vector<mwTask>& tasks, mwProject& project)
+bool mwModel::GetAllTasks(std::vector<mw::Task>& tasks, mwProject& project)
 {
 	try
 	{
@@ -392,7 +392,7 @@ bool mwModel::GetAllTasks(std::vector<mwTask>& tasks, mwProject& project)
 			              ";";
 		logger.Info("Executinig query " + sql);
 		m_db_handler.Select(sql.c_str(), records);
-		mwTask task;
+		mw::Task task;
 		if (records.empty())
 		{
 			logger.Warning("No records where found for: " + sql);
@@ -426,7 +426,7 @@ bool mwModel::GetAllTasks(std::vector<mwTask>& tasks, mwProject& project)
 	}
 }
 
-bool mwModel::IsTaskFound(mwTask& task)
+bool mwModel::IsTaskFound(mw::Task& task)
 {
 	try
 	{
@@ -442,7 +442,7 @@ bool mwModel::IsTaskFound(mwTask& task)
 
 		logger.Info("Executinig query " + sql);
 		m_db_handler.Select(sql.c_str(), records);
-		mwTask task;
+		mw::Task task;
 		if (records.empty())
 			found = false;
 
@@ -473,7 +473,7 @@ bool mwModel::IsProjectFound(mwProject& project)
 
 		logger.Info("Executinig query " + sql);
 		m_db_handler.Select(sql.c_str(), records);
-		mwTask task;
+		mw::Task task;
 		if (records.empty())
 			found = false;
 
@@ -502,7 +502,7 @@ bool mwModel::IsUserFound(mw::User& user)
 
 		logger.Info("Executinig query " + sql);
 		m_db_handler.Select(sql.c_str(), records);
-		mwTask task;
+		mw::Task task;
 		if (records.empty())
 			found = false;
 
@@ -517,7 +517,7 @@ bool mwModel::IsUserFound(mw::User& user)
 	}
 }
 
-bool mwModel::UpdateTask(mwTask& task)
+bool mwModel::UpdateTask(mw::Task& task)
 {
 	mw::Logger logger;
 	try

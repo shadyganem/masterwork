@@ -5,7 +5,7 @@
 #include <wx/event.h>
 #include "mwDefines.h"
 #include "model/mwModel.h"
-#include "model/mwTask.h"
+#include "model/Task.h"
 #include "model/User.h"
 #include "controller/Logger.h"
 #include <vector>
@@ -36,14 +36,14 @@ namespace mw
 		void RegisterMainFrame(wxEvtHandler* mf);
 		void RegisterEventHandler(int ID, wxEvtHandler* event_handler);
 		void AddTask(std::string name, std::string dec);
-		void DeleteTask(mwTask& task);
+		void DeleteTask(Task& task);
 		void DeleteProject(mwProject& project);
-		void AddTask(mwTask& task);
+		void AddTask(Task& task);
 		void AddProject(mwProject& project);
 		void AddUser(mw::User& user, bool set_active=false);
 		void GetProjectsForActiveUser(std::vector<std::string>& projects);
 		void GetProjectsForActiveUser(std::vector<mwProject>& projects);
-		void GetTasksForActiveProject(std::vector<mwTask>& tasks);
+		void GetTasksForActiveProject(std::vector<Task>& tasks);
 		void RequestUpdateUI(int wind_id);
 
 	private:
@@ -61,7 +61,7 @@ namespace mw
 		Logger m_logger;
 		User m_active_user;
 		mwProject m_active_project;
-		std::map<int, mwTask> m_seen_tasks;
+		std::map<int, Task> m_seen_tasks;
 		bool m_is_project_selected;
 	};
 }

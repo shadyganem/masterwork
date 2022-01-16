@@ -3,9 +3,7 @@
 void mw::Controller::Init()
 {
 	m_logger.Clear();
-	m_logger.SetLogLevel(mw::LogLevel::WARNING);
-	m_logger.Warning("Log Level is set to WARNING");
-	m_logger.Debug("Log Level is set to Debug");
+	m_logger.Disable();
 	m_logger.Info("Intializing controller");
 	m_model.SetDbPath("mw.db");
 	m_model.InitModel();
@@ -98,7 +96,7 @@ void mw::Controller::RegisterEventHandler(int id, wxEvtHandler* event_handler)
 void mw::Controller::AddTask(std::string name, std::string dec)
 {
 
-	mwTask task(name, dec);
+	Task task(name, dec);
 	task.StampCreationTime();
 	m_mutex.Lock();
 	m_model.AddTask(task);
@@ -106,7 +104,7 @@ void mw::Controller::AddTask(std::string name, std::string dec)
 	PostUpdateUI(MAIN_FRAME_ID);
 }
 
-void mw::Controller::DeleteTask(mwTask& task)
+void mw::Controller::DeleteTask(Task& task)
 {
 	m_model.DeleteTask(task);
 	m_model.GetActiveUser(m_active_user);
@@ -123,7 +121,7 @@ void mw::Controller::DeleteProject(mwProject& project)
 	PostUpdateUI(SIDE_PANEL_ID);
 }
 
-void mw::Controller::AddTask(mwTask& task)
+void mw::Controller::AddTask(Task& task)
 {
 	m_mutex.Lock();
 	if (m_model.IsTaskFound(task))
@@ -191,7 +189,7 @@ void mw::Controller::GetProjectsForActiveUser(std::vector<mwProject>& projects)
 	this->m_model.GetAllProjects(projects, m_active_user);
 }
 
-void mw::Controller::GetTasksForActiveProject(std::vector<mwTask>& tasks)
+void mw::Controller::GetTasksForActiveProject(std::vector<Task>& tasks)
 {
 	m_model.GetActiveUser(m_active_user);
 	m_model.GetActiveProject(m_active_project, m_active_user);

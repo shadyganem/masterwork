@@ -1,6 +1,6 @@
-#include "model/mwTask.h"
+#include "model/Task.h"
 
-mwTask::mwTask()
+mw::Task::Task()
 {
 	name = "New Task";
 	std::time(&start_time);
@@ -11,7 +11,7 @@ mwTask::mwTask()
 	parent_uid = 0;
 }
 
-mwTask::~mwTask()
+mw::Task::~Task()
 {
 	name = "New Task";
 	std::time(&start_time);
@@ -22,17 +22,17 @@ mwTask::~mwTask()
 	parent_uid = 0;
 }
 
-void mwTask::StampCreationTime()
+void mw::Task::StampCreationTime()
 {
 	std::time(&start_time);
 }
 
-void mwTask::SetProjectId(int id)
+void mw::Task::SetProjectId(int id)
 {
 	project_uid = id;
 }
 
-std::string mwTask::GetStatus()
+std::string mw::Task::GetStatus()
 {
 	std::string status;
 	switch(this->status)
@@ -59,7 +59,7 @@ std::string mwTask::GetStatus()
 	return status;
 }
 
-std::string mwTask::GetPriority()
+std::string mw::Task::GetPriority()
 {
 	std::string priority;
 	switch (this->priority)
@@ -83,10 +83,11 @@ std::string mwTask::GetPriority()
 	return priority;
 }
 
-mwTask::mwTask(std::string task_name, std::string task_description)
+mw::Task::Task(std::string task_name, std::string task_description)
 {
 	name = task_name;
 	description = task_description;
 	project_uid = 0;
 	std::time(&start_time);
+	std::time(&last_update);
 }

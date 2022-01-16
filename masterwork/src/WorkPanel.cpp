@@ -54,7 +54,7 @@ void mw::WorkPanel::OnPageChanging(wxNotebookEvent& event)
 
 void mw::WorkPanel::OnTaskScrollWindowLeaveWindow(wxMouseEvent& event)
 {
-	std::map<mw::TaskPanel*, mwTask>::iterator it;
+	std::map<mw::TaskPanel*, mw::Task>::iterator it;
 	for (it = m_taskpanel_to_task_map.begin(); it != m_taskpanel_to_task_map.end(); ++it)
 	{
 		it->first->ResetBackGround();
@@ -69,7 +69,7 @@ void mw::WorkPanel::OnUpdateUI(wxEvent& event)
 	{
 		item.first->Destroy();
 	}
-	std::vector<mwTask> tasks;
+	std::vector<mw::Task> tasks;
 	mw::Controller& controller = mw::Controller::Get();
 	controller.GetTasksForActiveProject(tasks);
 	mw::TaskPanel* task_panel;

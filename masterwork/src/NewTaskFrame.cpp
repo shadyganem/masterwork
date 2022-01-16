@@ -103,7 +103,7 @@ mw::NewTaskFrame::~NewTaskFrame()
 	m_cancel_button->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(NewTaskFrame::OnCancelButton), NULL, this);
 }
 
-void mw::NewTaskFrame::SetTask(mwTask& task)
+void mw::NewTaskFrame::SetTask(mw::Task& task)
 {
 	m_task = task;
 	m_task_name->SetLabelText(task.name);
@@ -126,20 +126,20 @@ void mw::NewTaskFrame::SetTaskPriority()
 	switch (this->m_priority_choice->GetSelection())
 	{
 	case 0:
-		m_task.priority = mwTask::TaskPriority::HIGH;
+		m_task.priority = mw::Task::TaskPriority::HIGH;
 		break;
 	case 1:
-		m_task.priority = mwTask::TaskPriority::MEDIUM;
+		m_task.priority = mw::Task::TaskPriority::MEDIUM;
 		break;
 	case 2:
-		m_task.priority = mwTask::TaskPriority::LOW;
+		m_task.priority = mw::Task::TaskPriority::LOW;
 		break;
 	case 3:
-		m_task.priority = mwTask::TaskPriority::SHOWSTOPPER;
+		m_task.priority = mw::Task::TaskPriority::SHOWSTOPPER;
 		break;
 	default:
 		logger.Warning("Could not find a valid selection for the priority. Selecting Medium as a default value");
-		m_task.priority = mwTask::TaskPriority::MEDIUM;
+		m_task.priority = mw::Task::TaskPriority::MEDIUM;
 		break;
 	}
 }
@@ -150,23 +150,23 @@ void mw::NewTaskFrame::SetTaskStatus()
 	switch (this->m_status_choice->GetSelection())
 	{
 	case 0:
-		m_task.status = mwTask::TaskStatus::NOTSTARTED;
+		m_task.status = mw::Task::TaskStatus::NOTSTARTED;
 		break;
 	case 1:
-		m_task.status = mwTask::TaskStatus::WIP;
+		m_task.status = mw::Task::TaskStatus::WIP;
 		break;
 	case 2:
-		m_task.status = mwTask::TaskStatus::CANCELED;
+		m_task.status = mw::Task::TaskStatus::CANCELED;
 		break;
 	case 3:
-		m_task.status = mwTask::TaskStatus::DONE;
+		m_task.status = mw::Task::TaskStatus::DONE;
 		break;
 	case 4:
-		m_task.status = mwTask::TaskStatus::BLOCKED;
+		m_task.status = mw::Task::TaskStatus::BLOCKED;
 		break;
 	default:
 		logger.Warning("Could not find a valid selection for the status. Selecting NotStarted as a default value");
-		m_task.status = mwTask::TaskStatus::NOTSTARTED;
+		m_task.status = mw::Task::TaskStatus::NOTSTARTED;
 		break;
 	}
 }

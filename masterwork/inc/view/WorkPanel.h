@@ -15,7 +15,7 @@
 #include <wx/notebook.h>
 #include <wx/sizer.h>
 #include "view/TaskPanel.h"
-#include <model/mwTask.h>
+#include <model/Task.h>
 #include "mwDefines.h"
 #include "wx/event.h"
 
@@ -30,7 +30,7 @@ namespace mw
 
     public:
 
-        std::map<mw::TaskPanel*, mwTask> m_taskpanel_to_task_map;
+        std::map<mw::TaskPanel*, mw::Task> m_taskpanel_to_task_map;
         wxScrolledWindow* m_tasks_scroll_window;
         wxToolBar* m_tool_bar;
         wxColor m_tool_bar_bg = wxColor(0, 0, 255);

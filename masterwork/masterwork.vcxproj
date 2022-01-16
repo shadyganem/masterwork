@@ -32,7 +32,7 @@
     <ClInclude Include="inc\model\mwModel.h" />
     <ClInclude Include="inc\model\User.h" />
     <ClInclude Include="inc\model\mwProject.h" />
-    <ClInclude Include="inc\model\mwTask.h" />
+    <ClInclude Include="inc\model\Task.h" />
     <ClInclude Include="inc\model\mwDBHandler.h" />
     <ClInclude Include="inc\model\mwModelItem.h" />
     <ClInclude Include="inc\controller\Logger.h" />
@@ -54,7 +54,7 @@
     <ClCompile Include="src\Logger.cpp" />
     <ClCompile Include="src\mwModelItem.cpp" />
     <ClCompile Include="src\mwDBHandler.cpp" />
-    <ClCompile Include="src\mwTask.cpp" />
+    <ClCompile Include="src\Task.cpp" />
     <ClCompile Include="src\mwProject.cpp" />
     <ClCompile Include="src\User.cpp" />
     <ClCompile Include="src\mwModel.cpp" />

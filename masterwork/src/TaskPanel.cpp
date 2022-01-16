@@ -37,7 +37,7 @@ void mw::TaskPanel::OnDelete(wxCommandEvent& event)
 	event.Skip();
 }
 
-void mw::TaskPanel::SetTask(mwTask task)
+void mw::TaskPanel::SetTask(mw::Task task)
 {
 	
 	m_task = task;
@@ -80,7 +80,7 @@ mw::TaskPanel::TaskPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, c
 
 
 	wxGridSizer* m_info_grid_sizer;
-	m_info_grid_sizer = new wxGridSizer(2, 2, 0, 0);
+	m_info_grid_sizer = new wxGridSizer(3, 2, 0, 0);
 
 	m_static_status = new wxStaticText(m_static_view, wxID_ANY, wxT("Status: "), wxDefaultPosition, wxDefaultSize, 0);
 	m_static_status->Wrap(-1);
@@ -94,6 +94,9 @@ mw::TaskPanel::TaskPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, c
 	m_static_priority->Wrap(-1);
 	m_info_grid_sizer->Add(m_static_priority, 0, wxALL, 5);
 
+	m_static_last_modified = new wxStaticText(m_static_view, wxID_ANY, wxT("Last Modified:"), wxDefaultPosition, wxDefaultSize, 0);
+	m_static_last_modified->Wrap(-1);
+	m_info_grid_sizer->Add(m_static_last_modified, 0, wxALL, 5);
 
 	bSizer16->Add(m_info_grid_sizer, 1, wxEXPAND, 5);
 

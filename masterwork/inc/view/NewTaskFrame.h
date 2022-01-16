@@ -19,7 +19,7 @@
 
 #include "controller/Logger.h"
 #include "controller/Controller.h"
-#include "model/mwTask.h"
+#include "model/Task.h"
 #include "model/DateTime.h"
 
 namespace mw
@@ -58,8 +58,8 @@ namespace mw
 		NewTaskFrame(wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("New Task"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(458, 422), long style = wxDEFAULT_FRAME_STYLE | wxFRAME_FLOAT_ON_PARENT | wxTAB_TRAVERSAL);
 		~NewTaskFrame();
 
-		void SetTask(mwTask& task);
-		mwTask m_task;
+		void SetTask(mw::Task& task);
+		mw::Task m_task;
 
 	};
 }

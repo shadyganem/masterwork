@@ -18,7 +18,7 @@
 #include <wx/bmpbuttn.h>
 #include <wx/button.h>
 #include <wx/panel.h>
-#include "model/mwTask.h"
+#include "model/Task.h"
 
 #include "controller/Logger.h"
 #include "controller/Controller.h"
@@ -34,11 +34,12 @@ namespace mw
 		wxStaticText* m_static_description;
 		wxButton* m_edit_task;
 		wxButton* m_delete_task;
-		mwTask m_task;
+		mw::Task m_task;
 
 		wxStaticText* m_static_status;
 		wxStaticText* m_static_duedate;
 		wxStaticText* m_static_priority;
+		wxStaticText* m_static_last_modified;
 		// TODO: added meta data in the DB for last modified time
 		wxStaticText* m_static_lastmodified;
 
@@ -47,7 +48,7 @@ namespace mw
 		virtual void OnEditTask(wxCommandEvent& event);
 		virtual void OnStatusChanged(wxCommandEvent& event) { event.Skip(); }
 		virtual void OnDelete(wxCommandEvent& event);
-		void SetTask(mwTask task);
+		void SetTask(mw::Task task);
 		void ResetBackGround();
 
 		wxBoxSizer* ver_task_sizer;
