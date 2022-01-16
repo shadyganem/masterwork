@@ -60,7 +60,7 @@
     <ClInclude Include="inc\model\mwModelItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\controller\mwLogger.h">
+    <ClInclude Include="inc\controller\Logger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\model\mwNotification.h">
@@ -128,7 +128,7 @@
     <ClCompile Include="src\mwModelItem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mwLogger.cpp">
+    <ClCompile Include="src\Logger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\mwNotification.cpp">

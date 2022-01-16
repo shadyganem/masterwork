@@ -122,7 +122,7 @@ void mw::NewTaskFrame::OnCancelButton(wxCommandEvent& event)
 
 void mw::NewTaskFrame::SetTaskPriority()
 {
-	mwLogger logger;
+	mw::Logger logger;
 	switch (this->m_priority_choice->GetSelection())
 	{
 	case 0:
@@ -146,7 +146,7 @@ void mw::NewTaskFrame::SetTaskPriority()
 
 void mw::NewTaskFrame::SetTaskStatus()
 {
-	mwLogger logger;
+	mw::Logger logger;
 	switch (this->m_status_choice->GetSelection())
 	{
 	case 0:
@@ -186,7 +186,7 @@ void mw::NewTaskFrame::SetTaskDeadline()
 
 void mw::NewTaskFrame::OnDoneButton(wxCommandEvent& event)
 {
-	mwLogger logger;
+	mw::Logger logger;
 	mw::Controller& controller = mw::Controller::Get();
 	mwProject proj;
 	controller.GetActiveProject(proj);

@@ -2,7 +2,7 @@
 #include "model/sqlite3.h"
 #include <string>
 #include <vector>
-#include "controller/mwLogger.h"
+#include "controller/Logger.h"
 #include <utility>
 
 using Record = std::vector<std::string>;

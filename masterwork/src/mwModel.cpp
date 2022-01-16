@@ -41,7 +41,7 @@ bool mwModel::AddUser(mw::User& user)
 
 bool mwModel::AddProject(mwProject& project)
 {
-	mwLogger logger;
+	mw::Logger logger;
 	if (this->ConnectDb() == false)
 		return false;
 	std::string sql = "INSERT INTO projects(user_uid, name, start_time, is_active) "
@@ -60,7 +60,7 @@ bool mwModel::AddProject(mwProject& project)
 
 bool mwModel::AddTask(mwTask& task)
 {
-	mwLogger logger;
+	mw::Logger logger;
 	try
 	{
 		if (task.project_uid == 0)
@@ -99,7 +99,7 @@ bool mwModel::GetActiveUser(mw::User& user)
 {
 	try
 	{
-		mwLogger logger;
+		mw::Logger logger;
 		logger.Info("Select active user");
 		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 			return false;
@@ -135,7 +135,7 @@ bool mwModel::SetActiveUser(mw::User& user)
 {
 	try
 	{
-		mwLogger logger;
+		mw::Logger logger;
 		logger.Info("Select active user");
 		this->ConnectDb();
 
@@ -166,7 +166,7 @@ bool mwModel::DeleteTask(mwTask& task)
 {
 	try
 	{
-		mwLogger logger;
+		mw::Logger logger;
 		this->ConnectDb();
 
 		std::string sql = "UPDATE tasks "
@@ -191,7 +191,7 @@ bool mwModel::DeleteProject(mwProject& project)
 {
 	try
 	{
-		mwLogger logger;
+		mw::Logger logger;
 		logger.Info("Delete Project" );
 		this->ConnectDb();
 
@@ -219,7 +219,7 @@ bool mwModel::GetAllUsers(std::vector<mw::User>& ret_users_vect)
 	try
 	{
 		this->ConnectDb();
-		mwLogger logger;
+		mw::Logger logger;
 		logger.Info("selecting all users");
 		Records records;
 		Record row;
@@ -253,7 +253,7 @@ bool mwModel::GetActiveProject(mwProject& project, mw::User& user)
 {
 	try
 	{
-		mwLogger logger;
+		mw::Logger logger;
 		logger.Info("Select active project");
 		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 			return false;
@@ -293,7 +293,7 @@ bool mwModel::GetActiveProject(mwProject& project, mw::User& user)
 
 bool mwModel::GetAllProjects(std::vector<mwProject>& prjects_vect, const mw::User& user)
 {
-	mwLogger logger;
+	mw::Logger logger;
 	try
 	{
 		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
@@ -336,7 +336,7 @@ bool mwModel::GetAllProjects(std::vector<mwProject>& prjects_vect, const mw::Use
 
 bool mwModel::SetActiveProject(mwProject& project)
 {
-	mwLogger logger;
+	mw::Logger logger;
 	try
 	{
 		logger.Info("Update active project");
@@ -383,7 +383,7 @@ bool mwModel::GetAllTasks(std::vector<mwTask>& tasks, mwProject& project)
 		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 			return false;
 
-		mwLogger logger;
+		mw::Logger logger;
 		logger.Info("selecting all tasks for " + project.name);
 		Records records;
 		Record row;
@@ -433,7 +433,7 @@ bool mwModel::IsTaskFound(mwTask& task)
 		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 			return false;
 
-		mwLogger logger;
+		mw::Logger logger;
 		Records records;
 		bool found = true;
 		std::string sql = "SELECT * FROM tasks WHERE uid=" + std::to_string(task.uid) + " "
@@ -464,7 +464,7 @@ bool mwModel::IsProjectFound(mwProject& project)
 		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 			return false;
 
-		mwLogger logger;
+		mw::Logger logger;
 		Records records;
 		bool found = true;
 		std::string sql = "SELECT * FROM projects WHERE uid=" + std::to_string(project.uid) + " "
@@ -495,7 +495,7 @@ bool mwModel::IsUserFound(mw::User& user)
 		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 			return false;
 
-		mwLogger logger;
+		mw::Logger logger;
 		Records records;
 		bool found = true;
 		std::string sql = "SELECT * FROM users WHERE uid=" + std::to_string(user.uid) + " ;";
@@ -519,7 +519,7 @@ bool mwModel::IsUserFound(mw::User& user)
 
 bool mwModel::UpdateTask(mwTask& task)
 {
-	mwLogger logger;
+	mw::Logger logger;
 	try
 	{
 		if (task.project_uid == 0)
@@ -555,7 +555,7 @@ bool mwModel::UpdateTask(mwTask& task)
 
 bool mwModel::UpdateProject(mwProject& project)
 {
-	mwLogger logger;
+	mw::Logger logger;
 	try
 	{
 		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
@@ -583,7 +583,7 @@ bool mwModel::UpdateProject(mwProject& project)
 
 bool mwModel::UpdateUser(mw::User& user)
 {
-	mwLogger logger;
+	mw::Logger logger;
 	try
 	{
 		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
@@ -625,7 +625,7 @@ bool mwModel::DisconnectDb()
 
 bool mwModel::InitUsersTable()
 {
-	mwLogger logger;
+	mw::Logger logger;
 	logger.Info("Initialzing users table");
 	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 		return false;
@@ -656,7 +656,7 @@ bool mwModel::InitUsersTable()
 
 bool mwModel::InitProjectsTable()
 {
-	mwLogger logger;
+	mw::Logger logger;
 	logger.Info("Initialzing projects table");
 	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 		return false;
@@ -681,7 +681,7 @@ bool mwModel::InitProjectsTable()
 
 bool mwModel::InitTasksTable()
 {
-	mwLogger logger;
+	mw::Logger logger;
 	logger.Info("Initialzing tasks table");
 	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 		return false;
@@ -713,7 +713,7 @@ bool mwModel::InitTasksTable()
 
 bool mwModel::InitNotificationsTable()
 {
-	mwLogger logger;
+	mw::Logger logger;
 	logger.Info("Initialzing notifications table");
 	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 		return false;

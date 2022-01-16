@@ -13,7 +13,7 @@ static enum ProjectListPopupMenuItems
 
 void mw::SidePanel::UpdateProjecstList()
 {
-	mwLogger logger;
+	mw::Logger logger;
 	m_projects_list->Clear();
 	m_place_to_project_map.clear();
 	mw::Controller& controller = mw::Controller::Get();
@@ -58,7 +58,7 @@ void mw::SidePanel::OnProjectListRightUp(wxCommandEvent& event)
 void mw::SidePanel::OnProjectListMenuClick(wxCommandEvent& evt)
 {
 	mw::Controller& controller = mw::Controller::Get();
-	mwLogger logger;
+	mw::Logger logger;
 	int sel_item;
 	mwProject sel_proj;
 	sel_item = this->m_projects_list->GetSelection();
@@ -80,7 +80,7 @@ void mw::SidePanel::OnProjectListMenuClick(wxCommandEvent& evt)
 
 bool mw::SidePanel::IsProjectSelected()
 {
-	mwLogger logger;
+	mw::Logger logger;
 	logger.EnableDebug();
 	int sel_item;
 	logger.Debug("this is a debug message");

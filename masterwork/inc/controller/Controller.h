@@ -7,7 +7,7 @@
 #include "model/mwModel.h"
 #include "model/mwTask.h"
 #include "model/User.h"
-#include "controller/mwLogger.h"
+#include "controller/Logger.h"
 #include <vector>
 #include <map>
 
@@ -58,7 +58,7 @@ namespace mw
 		mwModel m_model;
 		wxMutex m_mutex;
 		mwProject m_current_project;
-		mwLogger m_logger;
+		Logger m_logger;
 		User m_active_user;
 		mwProject m_active_project;
 		std::map<int, mwTask> m_seen_tasks;

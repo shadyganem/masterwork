@@ -10,7 +10,7 @@
 #include <wx/button.h>
 #include <wx/panel.h>
 #include <wx/frame.h>
-#include "controller/mwLogger.h"
+#include "controller/Logger.h"
 
 namespace mw
 {

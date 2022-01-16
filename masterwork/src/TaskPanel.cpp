@@ -39,6 +39,7 @@ void mw::TaskPanel::OnDelete(wxCommandEvent& event)
 
 void mw::TaskPanel::SetTask(mwTask task)
 {
+	
 	m_task = task;
 	m_static_task_name->SetLabelText(m_task.name);
 	m_static_description->SetLabelText(m_task.description);
@@ -48,7 +49,6 @@ void mw::TaskPanel::SetTask(mwTask task)
 	wxString date = deadline.FormatISODate();
 	wxString time = deadline.FormatISOTime();
 	m_static_duedate->SetLabelText("Due Date: " + time.ToStdString() + " " + date.ToStdString());
-
 }
 
 void mw::TaskPanel::ResetBackGround()

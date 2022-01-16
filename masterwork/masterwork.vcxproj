@@ -35,7 +35,7 @@
     <ClInclude Include="inc\model\mwTask.h" />
     <ClInclude Include="inc\model\mwDBHandler.h" />
     <ClInclude Include="inc\model\mwModelItem.h" />
-    <ClInclude Include="inc\controller\mwLogger.h" />
+    <ClInclude Include="inc\controller\Logger.h" />
     <ClInclude Include="inc\model\mwNotification.h" />
     <ClInclude Include="inc\view\TaskPanel.h" />
     <ClInclude Include="inc\view\NewProjectFrame.h" />
@@ -51,7 +51,7 @@
     <ClCompile Include="src\NewProjectFrame.cpp" />
     <ClCompile Include="src\TaskPanel.cpp" />
     <ClCompile Include="src\mwNotification.cpp" />
-    <ClCompile Include="src\mwLogger.cpp" />
+    <ClCompile Include="src\Logger.cpp" />
     <ClCompile Include="src\mwModelItem.cpp" />
     <ClCompile Include="src\mwDBHandler.cpp" />
     <ClCompile Include="src\mwTask.cpp" />

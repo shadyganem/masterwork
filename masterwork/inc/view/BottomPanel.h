@@ -12,7 +12,7 @@
 #include <wx/listbook.h>
 #include <wx/listctrl.h>
 #include <wx/sizer.h>
-#include <controller/mwLogger.h>
+#include <controller/Logger.h>
 
 namespace mw
 {

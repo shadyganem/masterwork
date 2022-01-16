@@ -81,7 +81,7 @@ void mw::Controller::RegisterMainFrame(wxEvtHandler* mf)
 
 void mw::Controller::RegisterEventHandler(int id, wxEvtHandler* event_handler)
 {
-	mwLogger logger;
+	Logger logger;
 	if (id != wxID_ANY)
 	{
 		this->m_event_handlers[id] = event_handler;
@@ -202,7 +202,7 @@ void mw::Controller::RequestUpdateUI(int wind_id)
 
 void mw::Controller::PostUpdateUI(int wind_id)
 {
-	mwLogger logger;
+	Logger logger;
 	if (this->m_event_handlers.count(wind_id) != 0)
 	{
 		wxEvtHandler* event_handler = this->m_event_handlers[wind_id];

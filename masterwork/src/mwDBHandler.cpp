@@ -8,7 +8,7 @@ mwDBHandler::mwDBHandler()
 
 int mwDBHandler::Sqlite3SelectCallback(void* p_data, int num_fields, char** p_fields, char** p_col_names)
 {
-	mwLogger logger;
+	mw::Logger logger;
 	Records* records = static_cast<Records*>(p_data);
 	try
 	{
@@ -23,7 +23,7 @@ int mwDBHandler::Sqlite3SelectCallback(void* p_data, int num_fields, char** p_fi
 
 int mwDBHandler::Sqlite3UpdateCallback(void* p_data, int num_fields, char** p_fields, char** p_col_names)
 {
-	mwLogger logger;
+	mw::Logger logger;
 	logger.Info("callback is called");
 	return 0;
 }

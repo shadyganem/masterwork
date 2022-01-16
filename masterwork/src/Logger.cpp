@@ -1,11 +1,11 @@
-#include "controller/mwLogger.h"
+#include "controller/Logger.h"
 
-std::string mwLogger::filename = "mw.log";
-std::string mwLogger::filepath = "";
-std::mutex mwLogger::m_mutex;
+std::string mw::Logger::filename = "mw.log";
+std::string mw::Logger::filepath = "";
+std::mutex mw::Logger::m_mutex;
 
 
-mwLogger::mwLogger()
+mw::Logger::Logger()
 {
 	try
 	{
@@ -18,7 +18,7 @@ mwLogger::mwLogger()
 	}	
 }
 
-mwLogger::mwLogger(std::string path)
+mw::Logger::Logger(std::string path)
 {
 	filepath = path;
 	try 
@@ -32,28 +32,28 @@ mwLogger::mwLogger(std::string path)
 	}
 }
 
-mwLogger::~mwLogger()
+mw::Logger::~Logger()
 {
 	if (m_file.is_open())
 		m_file.close();
 }
 
-void mwLogger::EnableDebug()
+void mw::Logger::EnableDebug()
 {
 	this->m_debug = true;
 }
 
-void mwLogger::DisableDebug()
+void mw::Logger::DisableDebug()
 {
 	this->m_debug = false;
 }
 
-void mwLogger::SetFilePath(std::string path)
+void mw::Logger::SetFilePath(std::string path)
 {
 	this->filepath = path;
 }
 
-void mwLogger::Info(std::string msg)
+void mw::Logger::Info(std::string msg)
 {
 	std::time_t result = std::time(nullptr);
 	std::string time = std::asctime(std::localtime(&result));
@@ -63,7 +63,7 @@ void mwLogger::Info(std::string msg)
 	m_mutex.unlock();
 }
 
-void mwLogger::Error(std::string msg)
+void mw::Logger::Error(std::string msg)
 {
 	std::time_t result = std::time(nullptr);
 	std::string time = std::asctime(std::localtime(&result));
@@ -73,7 +73,7 @@ void mwLogger::Error(std::string msg)
 	m_mutex.unlock();
 }
 
-void mwLogger::Warning(std::string msg)
+void mw::Logger::Warning(std::string msg)
 {
 	std::time_t result = std::time(nullptr);
 	std::string time = std::asctime(std::localtime(&result));
@@ -83,7 +83,7 @@ void mwLogger::Warning(std::string msg)
 	m_mutex.unlock();
 }
 
-void mwLogger::Debug(std::string msg)
+void mw::Logger::Debug(std::string msg)
 {
 	if (!this->m_debug)
 		return;

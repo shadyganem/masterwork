@@ -20,7 +20,7 @@
 #include <wx/panel.h>
 #include "model/mwTask.h"
 
-#include "controller/mwLogger.h"
+#include "controller/Logger.h"
 #include "controller/Controller.h"
 #include "view/NewTaskFrame.h"
 
