@@ -18,10 +18,6 @@ mw::DateTime::DateTime(int seconds, int minutes, int hours, int day, int month, 
 	this->m_time_t = std::mktime(&time);
 }
 
-mw::DateTime::DateTime(std::string& time_str)
-{
-}
-
 mw::DateTime::~DateTime()
 {
 }

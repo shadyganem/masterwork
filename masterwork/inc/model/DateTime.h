@@ -12,7 +12,6 @@ namespace mw
 	public:
 		DateTime();
 		DateTime(int seconds, int minutes, int hours, int day, int month, int year);
-		DateTime(std::string& time_str);
 		~DateTime();
 		double DiffTime(DateTime& time1, DateTime& time2);
 		std::time_t m_time_t;
