@@ -63,6 +63,7 @@ bool mwModel::AddTask(mw::Task& task)
 	mw::Logger logger;
 	try
 	{
+		task.StampLastUpdateTime();
 		if (task.project_uid == 0)
 		{
 			throw("Can not add task with UID = 0");
@@ -70,7 +71,7 @@ bool mwModel::AddTask(mw::Task& task)
 		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 			return false;
 
-		std::string sql = "INSERT INTO tasks(name, parent_uid, description, status, priority, start_time, deadline, project_uid)"
+		std::string sql = "INSERT INTO tasks(name, parent_uid, description, status, priority, start_time, deadline, project_uid, last_update)"
 			"VALUES (\"" + task.name + "\"  ,"
 			+ std::to_string(task.parent_uid) + ","
 			"\"" + task.description + "\"  ,"
@@ -78,7 +79,8 @@ bool mwModel::AddTask(mw::Task& task)
 			+ std::to_string(task.priority) + ","
 			+ std::to_string(task.start_time) + ","
 			+ std::to_string(task.deadline) + ","
-			+ std::to_string(task.project_uid) +
+			+ std::to_string(task.project_uid) + ", "
+			+ std::to_string(task.last_update) + " "
 			"); ";
 		m_db_handler.ExeQuery(sql.c_str());
 
@@ -166,6 +168,7 @@ bool mwModel::DeleteTask(mw::Task& task)
 {
 	try
 	{
+		task.StampLastUpdateTime();
 		mw::Logger logger;
 		this->ConnectDb();
 
@@ -291,7 +294,7 @@ bool mwModel::GetActiveProject(mwProject& project, mw::User& user)
 	}
 }
 
-bool mwModel::GetAllProjects(std::vector<mwProject>& prjects_vect, const mw::User& user)
+bool mwModel::GetAllProjects(std::vector<mwProject>& projects_vect, const mw::User& user)
 {
 	mw::Logger logger;
 	try
@@ -320,7 +323,7 @@ bool mwModel::GetAllProjects(std::vector<mwProject>& prjects_vect, const mw::Use
 			proj.start_time = std::stoi(row[3]);
 			proj.status = std::stoi(row[4]);
 			proj.is_active = std::stoi(row[5]) == 1 ? true : false;
-			prjects_vect.push_back(proj);
+			projects_vect.push_back(proj);
 		}
 		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
 			return false;
@@ -409,10 +412,11 @@ bool mwModel::GetAllTasks(std::vector<mw::Task>& tasks, mwProject& project)
 			task.start_time = std::stoi(row[6]);
 			task.end_time = std::stoi(row[7]);
 			task.deadline = std::stoi(row[8]);
-			task.project_uid = std::stoi(row[9]);
-			task.red = std::stoi(row[10]);
-			task.green = std::stoi(row[11]);
-			task.blue = std::stoi(row[12]);
+			task.last_update = std::stoi(row[9]);
+			task.project_uid = std::stoi(row[10]);
+			task.red = std::stoi(row[11]);
+			task.green = std::stoi(row[12]);
+			task.blue = std::stoi(row[13]);
 			tasks.push_back(task);
 		}
 		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
@@ -522,6 +526,7 @@ bool mwModel::UpdateTask(mw::Task& task)
 	mw::Logger logger;
 	try
 	{
+		task.StampLastUpdateTime();
 		if (task.project_uid == 0)
 		{
 			throw("Can not add task with project_uid= 0");
@@ -534,7 +539,8 @@ bool mwModel::UpdateTask(mw::Task& task)
 						  "description=\"" + task.description + "\", "
 						  "status=" + std::to_string(task.status) + ", "
 						  "priority=" + std::to_string(task.priority) + ", "
-						  "deadline=" + std::to_string(task.deadline) + " "
+						  "deadline=" + std::to_string(task.deadline) + ", "
+						  "last_update=" + std::to_string(task.last_update) + " "
 						  "WHERE uid=" + std::to_string(task.uid) + ";";
 
 		logger.Info("Executinig query " + sql);
@@ -693,9 +699,10 @@ bool mwModel::InitTasksTable()
 					   "\"description\"	TEXT,                  "
                 	   "\"status\"	    INTEGER DEFAULT 0,     "
                 	   "\"priority\"	INTEGER DEFAULT 2,     "
-					   "\"start_time\"	INTEGER NOT NULL,               "
-					   "\"end_time\"	INTEGER DEFAULT 0,               "
-		               "\"deadline\"	INTEGER DEFAULT 0,               "
+					   "\"start_time\"	INTEGER NOT NULL,      "
+					   "\"end_time\"	INTEGER DEFAULT 0,     "
+		               "\"deadline\"	INTEGER DEFAULT 0,     "
+		               "\"last_update\"	INTEGER DEFAULT 0,     "
 					   "\"project_uid\"	INTEGER DEFAULT 1,     "
                 	   "\"red\"	        INTEGER DEFAULT 0,     "
 		               "\"green\"	    INTEGER DEFAULT 0,     "

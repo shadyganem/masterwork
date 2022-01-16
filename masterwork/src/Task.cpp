@@ -15,6 +15,7 @@ mw::Task::~Task()
 {
 	name = "New Task";
 	std::time(&start_time);
+	std::time(&last_update);
 	project_uid = 0;
 	status = TaskStatus::NOTSTARTED;
 	priority = TaskPriority::MEDIUM;
@@ -25,6 +26,16 @@ mw::Task::~Task()
 void mw::Task::StampCreationTime()
 {
 	std::time(&start_time);
+}
+
+void mw::Task::StampLastUpdateTime()
+{
+	std::time(&last_update);
+}
+
+void mw::Task::StampEndTime()
+{
+	std::time(&end_time);
 }
 
 void mw::Task::SetProjectId(int id)

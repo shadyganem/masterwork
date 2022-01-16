@@ -98,6 +98,7 @@ void mw::Controller::AddTask(std::string name, std::string dec)
 
 	Task task(name, dec);
 	task.StampCreationTime();
+	task.StampLastUpdateTime();
 	m_mutex.Lock();
 	m_model.AddTask(task);
 	m_mutex.Unlock();
@@ -106,6 +107,7 @@ void mw::Controller::AddTask(std::string name, std::string dec)
 
 void mw::Controller::DeleteTask(Task& task)
 {
+	task.StampLastUpdateTime();
 	m_model.DeleteTask(task);
 	m_model.GetActiveUser(m_active_user);
 	m_model.GetActiveProject(m_active_project, m_active_user);

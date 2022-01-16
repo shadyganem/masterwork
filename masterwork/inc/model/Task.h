@@ -34,6 +34,8 @@ namespace mw
 		Task();
 		~Task();
 		void StampCreationTime();
+		void StampLastUpdateTime();
+		void StampEndTime();
 		void SetProjectId(int id);
 		std::string GetStatus();
 		std::string GetPriority();

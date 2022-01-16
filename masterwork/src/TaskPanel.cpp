@@ -49,6 +49,8 @@ void mw::TaskPanel::SetTask(mw::Task task)
 	wxString date = deadline.FormatISODate();
 	wxString time = deadline.FormatISOTime();
 	m_static_duedate->SetLabelText("Due Date: " + time.ToStdString() + " " + date.ToStdString());
+	wxDateTime last_modified(m_task.last_update);
+	m_static_last_modified->SetLabelText("Last Modified: " + last_modified.FormatISOTime().ToStdString() + " " + last_modified.FormatISODate().ToStdString());
 }
 
 void mw::TaskPanel::ResetBackGround()
@@ -75,12 +77,12 @@ mw::TaskPanel::TaskPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, c
 	m_static_description->Wrap(-1);
 	bSizer17->Add(m_static_description, 0, wxALL, 5);
 
-	bSizer16->Add(bSizer17, 2, wxEXPAND, 5);
+	bSizer16->Add(bSizer17, 1, wxEXPAND, 5);
 
 
 
 	wxGridSizer* m_info_grid_sizer;
-	m_info_grid_sizer = new wxGridSizer(3, 2, 0, 0);
+	m_info_grid_sizer = new wxGridSizer(4, 2, 0, 0);
 
 	m_static_status = new wxStaticText(m_static_view, wxID_ANY, wxT("Status: "), wxDefaultPosition, wxDefaultSize, 0);
 	m_static_status->Wrap(-1);
