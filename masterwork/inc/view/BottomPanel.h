@@ -27,7 +27,6 @@ namespace mw
             const wxString& name = wxASCII_STR(wxPanelNameStr));
         ~BottomPanel();
 
-
         // Virtual event handlers, overide them in your derived class
         virtual void OnPageChaged(wxListbookEvent& event);
         virtual void OnProgrammingFocus(wxFocusEvent& event);

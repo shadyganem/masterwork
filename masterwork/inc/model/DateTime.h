@@ -3,6 +3,7 @@
 #include <ctime>
 #include <time.h>
 #include <string>
+#include "controller/Logger.h"
 
 namespace mw
 {
@@ -10,7 +11,7 @@ namespace mw
 	{
 	public:
 		DateTime();
-		DateTime(unsigned int seconds, unsigned int minutes, unsigned int hours, unsigned int day, unsigned int month, unsigned int year);
+		DateTime(int seconds, int minutes, int hours, int day, int month, int year);
 		DateTime(std::string& time_str);
 		~DateTime();
 		double DiffTime(DateTime& time1, DateTime& time2);

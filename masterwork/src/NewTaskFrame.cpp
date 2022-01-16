@@ -173,6 +173,7 @@ void mw::NewTaskFrame::SetTaskStatus()
 
 void mw::NewTaskFrame::SetTaskDeadline()
 {
+	mw::Logger logger;
 	int day=0, mon=1, year=0;
 	int hour=0, min=0, sec=0;
 	m_deadline_timepicker->GetTime(&hour, &min, &sec);
