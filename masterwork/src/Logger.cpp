@@ -1,9 +1,10 @@
 #include "controller/Logger.h"
+#include "..\inc\controller\Logger.h"
 
 std::string mw::Logger::filename = "mw.log";
 std::string mw::Logger::filepath = "";
 std::mutex mw::Logger::m_mutex;
-
+mw::LogLevel mw::Logger::m_log_level = mw::LogLevel::INFO;
 
 mw::Logger::Logger()
 {
@@ -40,12 +41,41 @@ mw::Logger::~Logger()
 
 void mw::Logger::EnableDebug()
 {
-	this->m_debug = true;
+	this->m_log_level = mw::LogLevel::DEBUG;
 }
 
 void mw::Logger::DisableDebug()
 {
-	this->m_debug = false;
+	this->m_debug = mw::LogLevel::DEBUG;
+}
+
+void mw::Logger::Clear()
+{
+	try
+	{
+		bool file_state = m_file.is_open();
+		if (file_state)
+			m_file.close();
+		std::string full_file_name = this->filepath + "mw.log";
+		m_file.open(full_file_name);
+		m_file.close();
+		if(file_state)
+			m_file.open(full_file_name, std::ofstream::app);
+	}
+	catch (...)
+	{
+		;
+	}
+}
+
+void mw::Logger::Disable()
+{
+	m_log_level = mw::LogLevel::DISABLE;
+}
+
+void mw::Logger::SetLogLevel(mw::LogLevel level)
+{
+	m_log_level = level;
 }
 
 void mw::Logger::SetFilePath(std::string path)
@@ -55,6 +85,8 @@ void mw::Logger::SetFilePath(std::string path)
 
 void mw::Logger::Info(std::string msg)
 {
+	if (m_log_level < mw::LogLevel::INFO)
+		return;
 	std::time_t result = std::time(nullptr);
 	std::string time = std::asctime(std::localtime(&result));
 	time.pop_back();
@@ -65,6 +97,8 @@ void mw::Logger::Info(std::string msg)
 
 void mw::Logger::Error(std::string msg)
 {
+	if (m_log_level < mw::LogLevel::WARNING)
+		return;
 	std::time_t result = std::time(nullptr);
 	std::string time = std::asctime(std::localtime(&result));
 	time.pop_back();
@@ -75,6 +109,8 @@ void mw::Logger::Error(std::string msg)
 
 void mw::Logger::Warning(std::string msg)
 {
+	if (m_log_level < mw::LogLevel::WARNING)
+		return;
 	std::time_t result = std::time(nullptr);
 	std::string time = std::asctime(std::localtime(&result));
 	time.pop_back();
@@ -85,7 +121,7 @@ void mw::Logger::Warning(std::string msg)
 
 void mw::Logger::Debug(std::string msg)
 {
-	if (!this->m_debug)
+	if (m_log_level < mw::LogLevel::DEBUG)
 		return;
 	std::time_t result = std::time(nullptr);
 	std::string time = std::asctime(std::localtime(&result));

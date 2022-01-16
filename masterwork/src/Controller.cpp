@@ -2,7 +2,10 @@
 
 void mw::Controller::Init()
 {
-	m_logger.Info("---------------------------------------------------------------------------");
+	m_logger.Clear();
+	m_logger.SetLogLevel(mw::LogLevel::WARNING);
+	m_logger.Warning("Log Level is set to WARNING");
+	m_logger.Debug("Log Level is set to Debug");
 	m_logger.Info("Intializing controller");
 	m_model.SetDbPath("mw.db");
 	m_model.InitModel();

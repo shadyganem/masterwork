@@ -9,6 +9,14 @@
 
 namespace mw
 { 
+	enum LogLevel
+	{
+		DISABLE,
+		INFO,
+		WARNING,
+		DEBUG
+	};
+
 	class Logger
 	{
 	public:
@@ -17,6 +25,9 @@ namespace mw
 		~Logger();
 		void EnableDebug();
 		void DisableDebug();
+		void Clear();
+		void Disable();
+		void SetLogLevel(mw::LogLevel level);
 		void SetFilePath(std::string path);
 		void Info(std::string msg);
 		void Error(std::string msg);
@@ -25,6 +36,7 @@ namespace mw
 		static std::string filename;
 		static std::string filepath;
 		static std::mutex m_mutex;
+		static mw::LogLevel m_log_level;
 	public:
 		std::ofstream m_file;
 
