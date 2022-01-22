@@ -101,7 +101,6 @@ void mw::WorkPanel::OnUpdateUI(wxEvent& event)
 		{
 			task_panel = new mw::TaskPanel(m_tasks_scroll_window);
 			task_panel->SetTask(tasks[i]);
-			task_panel->SetBackgroundColour(wxColor(240, 240, 240));
 			m_taskpanel_to_task_map[task_panel] = tasks[i];
 			m_tasks_sizer->Add(task_panel, 0, wxEXPAND | wxALL, 1);
 		}

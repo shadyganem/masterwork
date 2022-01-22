@@ -90,6 +90,7 @@ void mw::SidePanel::OnProjectListMenuClick(wxCommandEvent& evt)
 		case ProjectListPopupMenuItems::Rename:
 			logger.Info("renaming " + sel_proj.name);
 			new_project_form->SetProject(sel_proj);
+			new_project_form->CenterOnScreen();
 			new_project_form->Show(true);
 			break;
 		case ProjectListPopupMenuItems::Delete:
