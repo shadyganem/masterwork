@@ -17,6 +17,7 @@ mw::TopPanel::TopPanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos, c
 	buttons_sizer->Add(m_new_task, 0, wxRIGHT, 3);
 	top_panel_sizer->Add(buttons_sizer);
 	SetSizer(top_panel_sizer);
+	this->SetTheme();
 }
 
 mw::TopPanel::~TopPanel()
@@ -37,4 +38,14 @@ void mw::TopPanel::OnNewProjectButton(wxCommandEvent& event)
 	new_project_form->CenterOnScreen();
 	new_project_form->Show(true);
 	event.Skip();
+}
+
+void mw::TopPanel::SetTheme(int theme_id)
+{
+	wxColour buttons_green(0, 136, 135);
+	wxColour white(255, 255, 255);
+	m_new_project->SetBackgroundColour(buttons_green);
+	m_new_project->SetForegroundColour(white);
+	m_new_task->SetBackgroundColour(buttons_green);
+	m_new_task->SetForegroundColour(white);
 }

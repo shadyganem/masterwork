@@ -32,8 +32,7 @@ namespace mw
 	public:
 		wxStaticText* m_static_task_name;
 		wxStaticText* m_static_description;
-		wxButton* m_edit_task;
-		wxButton* m_delete_task;
+		wxButton* m_archive_task;
 		mw::Task m_task;
 
 		wxStaticText* m_static_status;
@@ -45,15 +44,20 @@ namespace mw
 
 		virtual void OnEnterWindow(wxMouseEvent& event);
 		virtual void OnleaveWindow(wxMouseEvent& event);
-		virtual void OnEditTask(wxCommandEvent& event);
+		virtual void OnLeftDoubleClick(wxMouseEvent& event);
 		virtual void OnStatusChanged(wxCommandEvent& event) { event.Skip(); }
-		virtual void OnDelete(wxCommandEvent& event);
+		virtual void OnArchive(wxCommandEvent& event);
+
 		void SetTask(mw::Task task);
 		void ResetBackGround();
 
 		wxBoxSizer* ver_task_sizer;
 		wxPanel* m_static_view;
-		TaskPanel(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(600, 100), long style = wxTAB_TRAVERSAL);
+		TaskPanel(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(600, 50), long style = wxTAB_TRAVERSAL);
 		~TaskPanel();
+
+	private:
+		void SetDarkTheme(void);
+		void Highlight();
 	};
 }

@@ -5,8 +5,7 @@
 
 void mw::TaskPanel::OnEnterWindow(wxMouseEvent& event)
 {
-	this->SetBackgroundColour(wxColor(153, 180, 209));
-	this->Refresh();
+	this->Highlight();
 	event.Skip();
 }
 
@@ -15,13 +14,12 @@ void mw::TaskPanel::OnleaveWindow(wxMouseEvent& event)
 	wxRect task_panel_rect = this->GetScreenRect();
 	wxPoint mouse_pos = wxGetMousePosition();
 	if (!task_panel_rect.Contains(mouse_pos)) {
-		this->SetBackgroundColour(wxColor(240, 240, 240));
-		this->Refresh();
+		this->SetDarkTheme();
 	}	
 	event.Skip();
 }
 
-void mw::TaskPanel::OnEditTask(wxCommandEvent& event)
+void mw::TaskPanel::OnLeftDoubleClick(wxMouseEvent& event)
 {
 	mw::NewTaskFrame* new_task_frame = new mw::NewTaskFrame(this);
 	new_task_frame->SetTask(m_task);
@@ -30,7 +28,7 @@ void mw::TaskPanel::OnEditTask(wxCommandEvent& event)
 	event.Skip();
 }
 
-void mw::TaskPanel::OnDelete(wxCommandEvent& event)
+void mw::TaskPanel::OnArchive(wxCommandEvent& event)
 {
 	mw::Controller& controller = mw::Controller::Get();
 	controller.DeleteTask(m_task);
@@ -55,8 +53,7 @@ void mw::TaskPanel::SetTask(mw::Task task)
 
 void mw::TaskPanel::ResetBackGround()
 {
-	this->SetBackgroundColour(wxColor(240, 240, 240));
-	this->Refresh();
+	this->SetDarkTheme();	
 }
 
 mw::TaskPanel::TaskPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style ) : wxPanel( parent, id, pos, size, style )
@@ -66,23 +63,22 @@ mw::TaskPanel::TaskPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, c
 	m_static_view = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
 	wxBoxSizer* bSizer16 = new wxBoxSizer(wxHORIZONTAL);
 
-	wxBoxSizer* bSizer17 = new wxBoxSizer(wxVERTICAL);
+	wxBoxSizer* bSizer17 = new wxBoxSizer(wxHORIZONTAL);
 
 	m_static_task_name = new wxStaticText(m_static_view, wxID_ANY, wxT("Task name"), wxDefaultPosition, wxDefaultSize, 0);
 	m_static_task_name->SetFont(wxFont().Bold());
 	m_static_task_name->Wrap(-1);
-	bSizer17->Add(m_static_task_name, 0, wxALL, 5);
+	bSizer17->Add(m_static_task_name, 1, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
 	m_static_description = new wxStaticText(m_static_view, wxID_ANY, wxT("Task description"), wxDefaultPosition, wxDefaultSize, 0);
 	m_static_description->Wrap(-1);
-	bSizer17->Add(m_static_description, 0, wxALL, 5);
+	m_static_description->Hide();
+	bSizer17->Add(m_static_description, 1, wxALL, 5);
 
 	bSizer16->Add(bSizer17, 1, wxEXPAND, 5);
 
-
-
 	wxGridSizer* m_info_grid_sizer;
-	m_info_grid_sizer = new wxGridSizer(4, 2, 0, 0);
+	m_info_grid_sizer = new wxGridSizer(2, 3, 0, 0);
 
 	m_static_status = new wxStaticText(m_static_view, wxID_ANY, wxT("Status: "), wxDefaultPosition, wxDefaultSize, 0);
 	m_static_status->Wrap(-1);
@@ -100,31 +96,37 @@ mw::TaskPanel::TaskPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, c
 	m_static_last_modified->Wrap(-1);
 	m_info_grid_sizer->Add(m_static_last_modified, 0, wxALL, 5);
 
-	bSizer16->Add(m_info_grid_sizer, 1, wxEXPAND, 5);
+	bSizer16->Add(m_info_grid_sizer, 1, wxEXPAND | wxALIGN_CENTER_VERTICAL, 5);
 
 
-	m_edit_task = new wxButton(m_static_view, wxID_ANY, wxT("Edit"), wxDefaultPosition, wxDefaultSize, 0);
-	bSizer16->Add(m_edit_task, 0, wxALL, 5);
-
-	m_delete_task = new wxButton(m_static_view, wxID_ANY, wxT("Delete"), wxDefaultPosition, wxDefaultSize, 0);
-	bSizer16->Add(m_delete_task, 0, wxALL, 5);
+	m_archive_task = new wxButton(m_static_view, wxID_ANY, wxT("Archive"), wxDefaultPosition, wxDefaultSize, 0);
+	bSizer16->Add(m_archive_task, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
 	m_static_view->SetSizer(bSizer16);
 	m_static_view->Layout();
 	bSizer16->Fit(m_static_view);
-	ver_task_sizer->Add(m_static_view, 1, wxEXPAND | wxALL, 5);
-
+	ver_task_sizer->Add(m_static_view, 1, wxEXPAND | wxALL, 1);
+	
+	this->SetDarkTheme();
 
 	this->SetSizer(ver_task_sizer);
 	this->Layout();
 
+
+
 	// Connect Events
 	this->Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnEnterWindow));
 	this->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow));
+	this->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick));
+	m_static_task_name->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
+	m_static_status->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
+	m_static_duedate->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
+	m_static_priority->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
+	m_static_last_modified->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
+	m_static_view->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
 	m_static_view->Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnEnterWindow), NULL, this);
 	m_static_view->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
-	m_edit_task->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(TaskPanel::OnEditTask), NULL, this);
-	m_delete_task->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(TaskPanel::OnDelete), NULL, this);
+	m_archive_task->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(TaskPanel::OnArchive), NULL, this);
 }
 
 mw::TaskPanel::~TaskPanel()
@@ -132,8 +134,40 @@ mw::TaskPanel::~TaskPanel()
 	// Disconnect Events
 	this->Disconnect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnEnterWindow));
 	this->Disconnect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow));
+	this->Disconnect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick));
+	m_static_task_name->Disconnect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
+	m_static_status->Disconnect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
+	m_static_duedate->Disconnect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
+	m_static_priority->Disconnect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
+	m_static_last_modified->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
+	m_static_view->Disconnect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
 	m_static_view->Disconnect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnEnterWindow), NULL, this);
 	m_static_view->Disconnect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
-	m_edit_task->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(TaskPanel::OnEditTask), NULL, this);
-	m_delete_task->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(TaskPanel::OnDelete), NULL, this);
+	m_archive_task->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(TaskPanel::OnArchive), NULL, this);
+}
+
+void mw::TaskPanel::SetDarkTheme(void)
+{
+	wxColour white(255, 255, 255);
+	wxColour dark(74, 74, 74);
+	wxColour buttons_green(0, 136, 135);
+	this->SetBackgroundColour(dark);
+	m_static_view->SetBackgroundColour(dark);
+	m_static_task_name->SetForegroundColour(white);
+	m_static_status->SetForegroundColour(white);
+	m_static_duedate->SetForegroundColour(white);
+	m_static_priority->SetForegroundColour(white);
+	m_static_last_modified->SetForegroundColour(white);
+	m_archive_task->SetBackgroundColour(buttons_green);
+	m_archive_task->SetForegroundColour(white);
+	this->Refresh();
+
+}
+
+void mw::TaskPanel::Highlight()
+{
+	wxColour highlighted_dark(153, 153, 153);
+	this->SetBackgroundColour(highlighted_dark);
+	m_static_view->SetBackgroundColour(highlighted_dark);
+	this->Refresh();
 }

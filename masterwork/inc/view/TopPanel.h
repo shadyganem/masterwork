@@ -26,6 +26,7 @@ namespace mw
         wxButton* m_new_project;
 
     private:
+        void SetTheme(int theme_id=0);
         // any class wishing to process wxWidgets events must use this macro
         DECLARE_EVENT_TABLE()
     };

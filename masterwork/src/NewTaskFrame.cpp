@@ -19,14 +19,15 @@ mw::NewTaskFrame::NewTaskFrame(wxWindow* parent, wxWindowID id, const wxString& 
 	m_task_name_static->Wrap(-1);
 	m_form_sizer->Add(m_task_name_static, 0, wxALL, 5);
 
-	m_task_name = new wxTextCtrl(m_main_panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
+	m_task_name = new wxTextCtrl(m_main_panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_CAPITALIZE);
+	m_task_name->IsMultiLine();
 	m_form_sizer->Add(m_task_name, 0, wxALL | wxEXPAND, 5);
 
 	m_task_description_static = new wxStaticText(m_main_panel, wxID_ANY, wxT("Task Description"), wxDefaultPosition, wxDefaultSize, 0);
 	m_task_description_static->Wrap(-1);
 	m_form_sizer->Add(m_task_description_static, 0, wxALL, 5);
 
-	m_task_description = new wxTextCtrl(m_main_panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
+	m_task_description = new wxTextCtrl(m_main_panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_CAPITALIZE | wxTE_MULTILINE | wxTE_RICH);
 	m_form_sizer->Add(m_task_description, 0, wxALL | wxEXPAND, 5);
 
 	wxBoxSizer* bSizer48;
