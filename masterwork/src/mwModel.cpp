@@ -227,7 +227,7 @@ bool mwModel::GetAllUsers(std::vector<mw::User>& ret_users_vect)
 		Records records;
 		Record row;
 		mw::User user;
-		std::string sql = "SELECT * FROM user;";
+		std::string sql = "SELECT * FROM users;";
 		logger.Info("Executinig query " + sql);
 		m_db_handler.Select(sql.c_str(), records);
 		if (records.empty())

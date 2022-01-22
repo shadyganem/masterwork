@@ -23,8 +23,20 @@ mw::NewProjectFrame::NewProjectFrame(wxWindow* parent, wxWindowID id, const wxSt
 
 	bSizer23->Add(m_name_sizer, 1, wxEXPAND, 5);
 
+
+
+	wxBoxSizer* m_buttons;
+	m_buttons = new wxBoxSizer(wxHORIZONTAL);
+
+
 	m_button2 = new wxButton(m_main_form, wxID_ANY, wxT("Done"), wxDefaultPosition, wxDefaultSize, 0);
-	bSizer23->Add(m_button2, 0, wxALL | wxEXPAND, 5);
+	m_buttons->Add(m_button2, 0, wxALL, 5);
+
+
+	m_cancel_button = new wxButton(m_main_form, wxID_ANY, wxT("Done"), wxDefaultPosition, wxDefaultSize, 0);
+	m_buttons->Add(m_cancel_button, 0, wxALL, 5);
+
+	bSizer23->Add(m_buttons, 0, wxALIGN_RIGHT, 5);
 
 	m_main_form->SetSizer(bSizer23);
 	m_main_form->Layout();
@@ -36,12 +48,16 @@ mw::NewProjectFrame::NewProjectFrame(wxWindow* parent, wxWindowID id, const wxSt
 
 	// Connect Events
 	m_button2->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(NewProjectFrame::OnDoneButton), NULL, this);
+	m_cancel_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(NewProjectFrame::OnCancelButton), NULL, this);
+
 }
 
 mw::NewProjectFrame::~NewProjectFrame()
 {
 	// Disconnect Events
 	m_button2->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(NewProjectFrame::OnDoneButton), NULL, this);
+	m_cancel_button->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(NewProjectFrame::OnCancelButton), NULL, this);
+
 }
 
 void mw::NewProjectFrame::SetProject(mwProject& project)
@@ -61,5 +77,10 @@ void mw::NewProjectFrame::OnDoneButton(wxCommandEvent& event)
 		return;
 	}
 	controller.AddProject(m_project);
+	this->Close();
+}
+
+void mw::NewProjectFrame::OnCancelButton(wxCommandEvent& event)
+{
 	this->Close();
 }

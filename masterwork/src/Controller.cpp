@@ -41,6 +41,13 @@ void mw::Controller::SetActiveUser(int user_uid)
 	this->m_model.SetActiveUser(user);
 }
 
+void mw::Controller::SetActiveUser(mw::User& user)
+{
+	this->m_model.SetActiveUser(user);
+	PostUpdateUI(WORK_PANEL_ID);
+	PostUpdateUI(SIDE_PANEL_ID);
+}
+
 void mw::Controller::SetActiveProject(mwProject& project)
 {
 	this->m_model.GetActiveUser(m_active_user);
@@ -171,6 +178,11 @@ void mw::Controller::AddUser(mw::User& user, bool set_active)
 	}
 	m_mutex.Unlock();
 	PostUpdateUI(SIDE_PANEL_ID);
+}
+
+void mw::Controller::GetAllUsers(std::vector<mw::User>& users)
+{
+	m_model.GetAllUsers(users);
 }
 
 void mw::Controller::GetProjectsForActiveUser(std::vector<std::string>& projects)

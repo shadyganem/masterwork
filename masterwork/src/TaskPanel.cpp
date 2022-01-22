@@ -105,13 +105,14 @@ mw::TaskPanel::TaskPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, c
 	m_static_view->SetSizer(bSizer16);
 	m_static_view->Layout();
 	bSizer16->Fit(m_static_view);
-	ver_task_sizer->Add(m_static_view, 1, wxEXPAND | wxALL, 1);
+	ver_task_sizer->Add(m_static_view, 1, wxEXPAND | wxALL, 0);
 	
 	this->SetDarkTheme();
 
 	this->SetSizer(ver_task_sizer);
 	this->Layout();
 
+	this->Refresh();
 
 
 	// Connect Events
@@ -161,7 +162,6 @@ void mw::TaskPanel::SetDarkTheme(void)
 	m_archive_task->SetBackgroundColour(buttons_green);
 	m_archive_task->SetForegroundColour(white);
 	this->Refresh();
-
 }
 
 void mw::TaskPanel::Highlight()

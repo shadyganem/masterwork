@@ -31,6 +31,8 @@ namespace mw
     public:
 
         std::map<mw::TaskPanel*, mw::Task> m_taskpanel_to_task_map;
+        std::map<mw::Task, mw::TaskPanel*> m_task_to_taskpanel_map;
+
         wxScrolledWindow* m_tasks_scroll_window;
         wxToolBar* m_tool_bar;
         wxColor m_tool_bar_bg = wxColor(0, 0, 255);

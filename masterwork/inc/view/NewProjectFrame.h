@@ -27,12 +27,15 @@ namespace mw
 		wxStaticText* m_project_name_static_name;
 		wxTextCtrl* m_project_name_textbox;
 		wxButton* m_button2;
+		wxButton* m_cancel_button;
+
 
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnDoneButton(wxCommandEvent& event);
+		virtual void OnCancelButton(wxCommandEvent& event);
 
 	public:
-		NewProjectFrame(wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("New Project"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(500, 176), long style = wxDEFAULT_FRAME_STYLE | wxFRAME_FLOAT_ON_PARENT | wxTAB_TRAVERSAL);
+		NewProjectFrame(wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("New Project"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(450, 176), long style = wxDEFAULT_FRAME_STYLE | wxFRAME_FLOAT_ON_PARENT | wxTAB_TRAVERSAL);
 		~NewProjectFrame();
 		void SetProject(mwProject& project);
 

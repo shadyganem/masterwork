@@ -32,6 +32,11 @@ namespace mw
 		wxStaticText* m_projects_text;
 		wxPanel* m_panel9;
 
+
+		std::map<int, mw::User> m_idx_to_user;
+		
+		wxChoice* m_users_choice;
+
 		wxListBox* m_projects_list;
 		void m_splitter1OnIdle(wxIdleEvent&)
 		{
@@ -39,11 +44,13 @@ namespace mw
 			m_splitter1->Disconnect(wxEVT_IDLE, wxIdleEventHandler(mw::SidePanel::m_splitter1OnIdle), NULL, this);
 		}
 
+		void UpdateUsersList();
 		void UpdateProjecstList();
 		void OnUpdateUI(wxEvent& event);
 		virtual void OnItemSelect(wxCommandEvent& event);
 		virtual void OnProjectListRightUp(wxCommandEvent& event);
 		virtual void OnProjectListMenuClick(wxCommandEvent& evt);
+		virtual void OnUserChange(wxCommandEvent& event);
 		bool IsProjectSelected();
 
 		SidePanel(wxWindow* parent,

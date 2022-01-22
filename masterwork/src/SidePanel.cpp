@@ -11,6 +11,25 @@ static enum ProjectListPopupMenuItems
 	Rename
 };
 
+void mw::SidePanel::UpdateUsersList()
+{
+	mw::Controller& controller = mw::Controller::Get();
+	std::vector<mw::User> users;
+	m_users_choice->Clear();
+	controller.GetAllUsers(users);
+	wxArrayString m_usernames;
+	m_idx_to_user.clear();
+	for (int i = 0; i < users.size(); i++)
+	{
+		m_users_choice->Append(users[i].username);
+		m_idx_to_user[i] = users[i];
+		if (users[i].is_active == true)
+		{
+			m_users_choice->SetSelection(i);
+		}
+	}
+}
+
 void mw::SidePanel::UpdateProjecstList()
 {
 	mw::Logger logger;
@@ -34,6 +53,7 @@ void mw::SidePanel::UpdateProjecstList()
 
 void mw::SidePanel::OnUpdateUI(wxEvent& event)
 {
+	this->UpdateUsersList();
 	this->UpdateProjecstList();
 	this->Layout();
 }
@@ -78,6 +98,13 @@ void mw::SidePanel::OnProjectListMenuClick(wxCommandEvent& evt)
 	}
 }
 
+void mw::SidePanel::OnUserChange(wxCommandEvent& event)
+{
+	mw::Controller& controller = mw::Controller::Get();
+	int idx = m_users_choice->GetSelection();
+	controller.SetActiveUser(m_idx_to_user[idx]);
+}
+
 bool mw::SidePanel::IsProjectSelected()
 {
 	mw::Logger logger;
@@ -88,11 +115,7 @@ bool mw::SidePanel::IsProjectSelected()
 	return false;
 }
 
-mw::SidePanel::SidePanel(wxWindow* parent,
-	                     wxWindowID winid, 
-	                     const wxPoint& pos, 
-	                     const wxSize& size, 
-	                     long style, 
+mw::SidePanel::SidePanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, 
 	                     const wxString& name) : wxPanel(parent, winid, pos, size, style, name)
 {
 	mw::Controller& controller = mw::Controller::Get();
@@ -107,11 +130,12 @@ mw::SidePanel::SidePanel(wxWindow* parent,
 	wxBoxSizer* bSizer21;
 	bSizer21 = new wxBoxSizer(wxVERTICAL);
 
-	m_projects_text = new wxStaticText(m_panel7, wxID_ANY, wxT("Projects"), wxDefaultPosition, wxDefaultSize, 0);
-	m_projects_text->Wrap(-1);
-	m_projects_text->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_APPWORKSPACE));
+	wxArrayString m_usernames;
+	m_users_choice = new wxChoice(m_panel7, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_usernames, 0);
+	m_users_choice->SetSelection(0);
 
-	bSizer21->Add(m_projects_text, 0, wxALL | wxEXPAND, 5);
+	bSizer21->Add(m_users_choice, 0, wxALL | wxEXPAND, 5);
+
 
 	m_projects_list = new wxListBox(m_panel7, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, wxLB_NEEDED_SB);
 	bSizer21->Add(m_projects_list, 1, wxALL | wxEXPAND, 5);
@@ -131,10 +155,12 @@ mw::SidePanel::SidePanel(wxWindow* parent,
 
 	this->SetSizer(bSizer19);
 	this->Layout();
+	this->UpdateUsersList();
 	this->UpdateProjecstList();
 
 	m_projects_list->Connect(wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler(mw::SidePanel::OnItemSelect), NULL, this);
 	m_projects_list->Connect(wxEVT_RIGHT_UP, wxCommandEventHandler(mw::SidePanel::OnProjectListRightUp), NULL, this);
+	m_users_choice->Connect(wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler(mw::SidePanel::OnUserChange), NULL, this);
 
 }
 
@@ -142,4 +168,6 @@ mw::SidePanel::~SidePanel()
 {
 	m_projects_list->Disconnect(wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler(mw::SidePanel::OnItemSelect), NULL, this);
 	m_projects_list->Disconnect(wxEVT_RIGHT_UP, wxCommandEventHandler(mw::SidePanel::OnProjectListRightUp), NULL, this);
+	m_users_choice->Disconnect(wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler(mw::SidePanel::OnUserChange), NULL, this);
+
 }

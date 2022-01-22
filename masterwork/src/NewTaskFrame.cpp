@@ -82,7 +82,7 @@ mw::NewTaskFrame::NewTaskFrame(wxWindow* parent, wxWindowID id, const wxString& 
 	m_cancel_button = new wxButton(m_main_panel, wxID_ANY, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0);
 	bSizer47->Add(m_cancel_button, 0, wxALL, 5);
 
-	m_main_panel_sizer->Add(bSizer47, 1, wxEXPAND, 5);
+	m_main_panel_sizer->Add(bSizer47, 1, wxALIGN_RIGHT, 5);
 
 	m_main_panel->SetSizer(m_main_panel_sizer);
 	m_main_panel->Layout();
