@@ -27,6 +27,7 @@ mw::WorkPanel::WorkPanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos,
 	this->Layout();
 
 	// Connect Events
+	this->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(mw::WorkPanel::OnTaskScrollWindowLeaveWindow));
 	m_notebook->Connect(wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, wxNotebookEventHandler(mw::WorkPanel::OnPageChanged), NULL, this);
 	m_notebook->Connect(wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGING, wxNotebookEventHandler(mw::WorkPanel::OnPageChanging), NULL, this);
 	m_notebook->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(mw::WorkPanel::OnTaskScrollWindowLeaveWindow), NULL, this);
@@ -36,6 +37,7 @@ mw::WorkPanel::WorkPanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos,
 mw::WorkPanel::~WorkPanel()
 {
 	// Disconnect Events
+	this->Disconnect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(mw::WorkPanel::OnTaskScrollWindowLeaveWindow));
 	m_notebook->Disconnect(wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, wxNotebookEventHandler(mw::WorkPanel::OnPageChanged), NULL, this);
 	m_notebook->Disconnect(wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGING, wxNotebookEventHandler(mw::WorkPanel::OnPageChanging), NULL, this);
 	m_notebook->Disconnect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(mw::WorkPanel::OnTaskScrollWindowLeaveWindow), NULL, this);

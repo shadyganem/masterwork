@@ -60,7 +60,6 @@ mw::TaskPanel::TaskPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, c
 {
 	wxBoxSizer* main_sizer = new wxBoxSizer(wxHORIZONTAL);
 
-
 	wxBoxSizer* bSizer17 = new wxBoxSizer(wxHORIZONTAL);
 	m_static_task_name = new wxStaticText(this, wxID_ANY, wxT("Task name"), wxDefaultPosition, wxDefaultSize, 0);
 	m_static_task_name->SetFont(wxFont().Bold());
@@ -73,7 +72,6 @@ mw::TaskPanel::TaskPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, c
 	bSizer17->Add(m_static_description, 1, wxALL, 5);
 
 	main_sizer->Add(bSizer17, 1, wxEXPAND, 5);
-
 
 
 	wxGridSizer* m_info_grid_sizer;
@@ -110,10 +108,22 @@ mw::TaskPanel::TaskPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, c
 	m_static_task_name->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
 	m_static_task_name->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
 	m_static_status->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
+	m_static_status->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
+
 	m_static_duedate->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
+	m_static_duedate->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
+
 	m_static_priority->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
+	m_static_priority->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
+
+
 	m_static_last_modified->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
+	m_static_last_modified->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
+
+
 	m_archive_task->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(TaskPanel::OnArchive), NULL, this);
+	m_archive_task->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
+
 
 }
 
@@ -126,10 +136,19 @@ mw::TaskPanel::~TaskPanel()
 	m_static_task_name->Disconnect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
 	m_static_task_name->Disconnect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
 	m_static_status->Disconnect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
+	m_static_status->Disconnect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
 	m_static_duedate->Disconnect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
+	m_static_duedate->Disconnect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
+
+
 	m_static_priority->Disconnect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
-	m_static_last_modified->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
+	m_static_priority->Disconnect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
+
+	m_static_last_modified->Disconnect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
+	m_static_last_modified->Disconnect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
 	m_archive_task->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(TaskPanel::OnArchive), NULL, this);
+	m_archive_task->Disconnect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
+
 }
 
 void mw::TaskPanel::SetDarkTheme(void)
