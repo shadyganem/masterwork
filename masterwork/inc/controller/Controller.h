@@ -57,7 +57,7 @@ namespace mw
 		std::map<int, wxEvtHandler*> m_event_handlers;
 		wxString m_status_bar_text;
 		wxString m_info_bar_text;
-		mwModel m_model;
+		Model m_model;
 		wxMutex m_mutex;
 		mwProject m_current_project;
 		Logger m_logger;

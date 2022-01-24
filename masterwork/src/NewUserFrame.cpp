@@ -10,7 +10,7 @@ void mw::NewUserFrame::OnDoneButton(wxCommandEvent& event)
 		this->Close();
 		return;
 	}
-	controller.AddUser(user);
+	controller.AddUser(user, true);
 	this->Close();
 }
 

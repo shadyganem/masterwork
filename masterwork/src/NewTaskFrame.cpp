@@ -200,8 +200,16 @@ void mw::NewTaskFrame::OnDoneButton(wxCommandEvent& event)
 		return;
 	}
 	m_task.project_uid = proj.uid;
+	
 	m_task.name = this->m_task_name->GetLineText(0).ToStdString();
-	m_task.description = this->m_task_description->GetLineText(0).ToStdString();
+	int num_of_lines = this->m_task_description->GetNumberOfLines();
+	m_task.description.clear();
+	for (int i = 0; i < num_of_lines; i++)
+	{
+		m_task.description += this->m_task_description->GetLineText(i).ToStdString();
+		m_task.description += "\n";
+	}
+	
 	this->SetTaskPriority();
 	this->SetTaskStatus();
 	this->SetTaskDeadline();

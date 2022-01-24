@@ -8,11 +8,18 @@ namespace mw
 	class User : public mwModelItem
 	{
 	public:
+		enum UserStatus
+		{
+			VALID,
+			DELETED = -1
+
+		};
 		User();
 		User(std::string username);
 		~User();
 
 		int uid;
+		int status;
 		std::string username;
 		bool is_active;
 	};

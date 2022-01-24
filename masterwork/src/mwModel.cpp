@@ -1,17 +1,17 @@
 #include "model/mwModel.h"
 
-mwModel::mwModel()
+Model::Model()
 {
 	m_db_path = "mw.db";
 	is_initialized = false;
 }
 
-void mwModel::SetDbPath(std::string path)
+void Model::SetDbPath(std::string path)
 {
 	m_db_path = path;
 }
 
-bool mwModel::InitModel()
+bool Model::InitModel()
 {
 	if (is_initialized)
 		return true;
@@ -25,40 +25,73 @@ bool mwModel::InitModel()
 	return true;
 }
 
-bool mwModel::AddUser(mw::User& user)
+bool Model::AddUser(mw::User& user)
 {
-	if (this->ConnectDb() == false)
+	try
+	{
+		if (this->ConnectDb() == false)
+			return false;
+		std::string sql = "INSERT INTO users(username, is_active, status)"
+			"VALUES (\"" + user.username + "\" ,"
+			+ std::to_string(user.is_active) + " , "
+			+ std::to_string(user.status) + 
+			" ); ";
+
+		m_db_handler.ExeQuery(sql.c_str());
+
+		sql = "SELECT MAX(uid) AS max_uid from users;";
+		Records records;
+
+		m_db_handler.Select(sql.c_str(), records);
+		if (records.empty())
+		{
+			m_db_handler.DisConn(this->m_db_path.c_str());
+			return false;
+		}
+		Record row = records[0];
+		user.uid = std::stoi(row[0]);
+		if (this->DisconnectDb() == false)
+			return false;
+		return true;
+	}
+	catch (...)
+	{
+		mw::Logger logger;
+		logger.Debug("Exception while adding user");
+		this->DisconnectDb();
 		return false;
-	std::string sql = "INSERT INTO users(username, is_active)"
-		              "VALUES (\"" + user.username + "\"  ,"
-		              + std::to_string(user.is_active) +
-		              ");";
-	m_db_handler.ExeQuery(sql.c_str());
-	if (this->DisconnectDb() == false)
-		return false;
-	return true;
+	}
 }
 
-bool mwModel::AddProject(mwProject& project)
+bool Model::AddProject(mwProject& project)
 {
-	mw::Logger logger;
-	if (this->ConnectDb() == false)
-		return false;
-	std::string sql = "INSERT INTO projects(user_uid, name, start_time, is_active) "
-		              "VALUES (\"" + std::to_string(project.user_uid) + "\"  ,"
-		              "\"" + project.name + "\" ,"
-		              + std::to_string(project.start_time) + ", "
-					  + std::to_string(project.is_active) +
-		              ");";
-	logger.Info("Executinig query " + sql);
+	try
+	{
+		if (this->ConnectDb() == false)
+			return false;
+		std::string sql = "INSERT INTO projects(user_uid, name, start_time, is_active) "
+			"VALUES (\"" + std::to_string(project.user_uid) + "\"  ,"
+			"\"" + project.name + "\" ,"
+			+ std::to_string(project.start_time) + ", "
+			+ std::to_string(project.is_active) +
+			");";
 
-	m_db_handler.ExeQuery(sql.c_str());
-	if (this->DisconnectDb() == false)
+		m_db_handler.ExeQuery(sql.c_str());
+		if (this->DisconnectDb() == false)
+			return false;
+		return true;
+	}
+	catch (...)
+	{
+		mw::Logger logger;
+		logger.Debug("Exception while adding project");
+		this->DisconnectDb();
 		return false;
-	return true;
+	}
+
 }
 
-bool mwModel::AddTask(mw::Task& task)
+bool Model::AddTask(mw::Task& task)
 {
 	mw::Logger logger;
 	try
@@ -97,20 +130,17 @@ bool mwModel::AddTask(mw::Task& task)
 	}
 }
 
-bool mwModel::GetActiveUser(mw::User& user)
+bool Model::GetActiveUser(mw::User& user)
 {
 	try
 	{
-		mw::Logger logger;
-		logger.Info("Select active user");
 		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 			return false;
 
 		std::string sql = "SELECT * FROM users "
-			"WHERE is_active=1 "
-			"; ";
+			              "WHERE is_active=1 "
+			              "; ";
 		Records records;
-		logger.Info("Executinig query " + sql);
 
 		m_db_handler.Select(sql.c_str(), records);
 		if (records.empty())
@@ -119,32 +149,35 @@ bool mwModel::GetActiveUser(mw::User& user)
 			return false;
 		}
 		Record row = records[0];
-		user.username = row[1];
 		user.uid = std::stoi(row[0]);
+		user.username = row[1];
 		user.is_active = std::stoi(row[2]) == 1 ? true : false;
+		user.status = std::stoi(row[3]);
 		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
 			return false;
 		return true;
 	}
 	catch (...)
 	{
+		mw::Logger logger;
 		m_db_handler.DisConn(this->m_db_path.c_str());
 		return false;
 	}
 }
 
-bool mwModel::SetActiveUser(mw::User& user)
+bool Model::SetActiveUser(mw::User& user)
 {
 	try
 	{
 		mw::Logger logger;
-		logger.Info("Select active user");
+		logger.SetLogLevel(mw::LogLevel::DEBUG);
 		this->ConnectDb();
 
 		std::string sql = "UPDATE users "
 					      "SET is_active=0 "
 						  "WHERE is_active=1 "
 						  ";";
+
 		m_db_handler.Update(sql.c_str());
 
 		sql = "UPDATE users "
@@ -152,10 +185,10 @@ bool mwModel::SetActiveUser(mw::User& user)
 			  "WHERE uid=" + std::to_string(user.uid) +
 			  ";";
 
-		logger.Info(sql);
-
 		m_db_handler.Update(sql.c_str());
 		this->DisconnectDb();
+		logger.SetLogLevel(mw::LogLevel::DISABLE);
+
 	}
 	catch (...)
 	{
@@ -164,12 +197,11 @@ bool mwModel::SetActiveUser(mw::User& user)
 	}
 }
 
-bool mwModel::DeleteTask(mw::Task& task)
+bool Model::DeleteTask(mw::Task& task)
 {
 	try
 	{
 		task.StampLastUpdateTime();
-		mw::Logger logger;
 		this->ConnectDb();
 
 		std::string sql = "UPDATE tasks "
@@ -178,8 +210,6 @@ bool mwModel::DeleteTask(mw::Task& task)
 			";";
 		m_db_handler.Update(sql.c_str());
 
-		logger.Info(sql);
-
 		m_db_handler.Update(sql.c_str());
 		this->DisconnectDb();
 	}
@@ -190,7 +220,7 @@ bool mwModel::DeleteTask(mw::Task& task)
 	}
 }
 
-bool mwModel::DeleteProject(mwProject& project)
+bool Model::DeleteProject(mwProject& project)
 {
 	try
 	{
@@ -217,18 +247,16 @@ bool mwModel::DeleteProject(mwProject& project)
 	}
 }
 
-bool mwModel::GetAllUsers(std::vector<mw::User>& ret_users_vect)
+bool Model::GetAllUsers(std::vector<mw::User>& ret_users_vect)
 {
 	try
 	{
 		this->ConnectDb();
 		mw::Logger logger;
-		logger.Info("selecting all users");
 		Records records;
 		Record row;
 		mw::User user;
 		std::string sql = "SELECT * FROM users;";
-		logger.Info("Executinig query " + sql);
 		m_db_handler.Select(sql.c_str(), records);
 		if (records.empty())
 		{
@@ -240,6 +268,7 @@ bool mwModel::GetAllUsers(std::vector<mw::User>& ret_users_vect)
 			user.uid = std::stoi(row[0]);
 			user.username = row[1];
 			user.is_active = std::stoi(row[2]) == 1 ? true : false;
+			user.status = std::stoi(row[3]);
 			ret_users_vect.push_back(user);
 		}
 		this->DisconnectDb();
@@ -252,7 +281,7 @@ bool mwModel::GetAllUsers(std::vector<mw::User>& ret_users_vect)
 	}
 }
 
-bool mwModel::GetActiveProject(mwProject& project, mw::User& user)
+bool Model::GetActiveProject(mwProject& project, mw::User& user)
 {
 	try
 	{
@@ -294,7 +323,7 @@ bool mwModel::GetActiveProject(mwProject& project, mw::User& user)
 	}
 }
 
-bool mwModel::GetAllProjects(std::vector<mwProject>& projects_vect, const mw::User& user)
+bool Model::GetAllProjects(std::vector<mwProject>& projects_vect, const mw::User& user)
 {
 	mw::Logger logger;
 	try
@@ -337,7 +366,7 @@ bool mwModel::GetAllProjects(std::vector<mwProject>& projects_vect, const mw::Us
 	}
 }
 
-bool mwModel::SetActiveProject(mwProject& project)
+bool Model::SetActiveProject(mwProject& project)
 {
 	mw::Logger logger;
 	try
@@ -371,7 +400,7 @@ bool mwModel::SetActiveProject(mwProject& project)
 	}
 }
 
-bool mwModel::GetProjectTasks(mwProject& project, std::vector<mw::Task>& ret_tasks_vect)
+bool Model::GetProjectTasks(mwProject& project, std::vector<mw::Task>& ret_tasks_vect)
 {
 	std::vector<std::vector<std::string>> records;
 	std::string sql = "SELECT * FROM ";
@@ -379,7 +408,7 @@ bool mwModel::GetProjectTasks(mwProject& project, std::vector<mw::Task>& ret_tas
 	return false;
 }
 
-bool mwModel::GetAllTasks(std::vector<mw::Task>& tasks, mwProject& project)
+bool Model::GetAllTasks(std::vector<mw::Task>& tasks, mwProject& project)
 {
 	try
 	{
@@ -430,7 +459,7 @@ bool mwModel::GetAllTasks(std::vector<mw::Task>& tasks, mwProject& project)
 	}
 }
 
-bool mwModel::IsTaskFound(mw::Task& task)
+bool Model::IsTaskFound(mw::Task& task)
 {
 	try
 	{
@@ -461,7 +490,7 @@ bool mwModel::IsTaskFound(mw::Task& task)
 	}
 }
 
-bool mwModel::IsProjectFound(mwProject& project)
+bool Model::IsProjectFound(mwProject& project)
 {
 	try
 	{
@@ -492,7 +521,7 @@ bool mwModel::IsProjectFound(mwProject& project)
 	}
 }
 
-bool mwModel::IsUserFound(mw::User& user)
+bool Model::IsUserFound(mw::User& user)
 {
 	try
 	{
@@ -504,7 +533,6 @@ bool mwModel::IsUserFound(mw::User& user)
 		bool found = true;
 		std::string sql = "SELECT * FROM users WHERE uid=" + std::to_string(user.uid) + " ;";
 
-		logger.Info("Executinig query " + sql);
 		m_db_handler.Select(sql.c_str(), records);
 		mw::Task task;
 		if (records.empty())
@@ -521,7 +549,7 @@ bool mwModel::IsUserFound(mw::User& user)
 	}
 }
 
-bool mwModel::UpdateTask(mw::Task& task)
+bool Model::UpdateTask(mw::Task& task)
 {
 	mw::Logger logger;
 	try
@@ -559,7 +587,7 @@ bool mwModel::UpdateTask(mw::Task& task)
 	}
 }
 
-bool mwModel::UpdateProject(mwProject& project)
+bool Model::UpdateProject(mwProject& project)
 {
 	mw::Logger logger;
 	try
@@ -587,7 +615,7 @@ bool mwModel::UpdateProject(mwProject& project)
 	}
 }
 
-bool mwModel::UpdateUser(mw::User& user)
+bool Model::UpdateUser(mw::User& user)
 {
 	mw::Logger logger;
 	try
@@ -596,7 +624,8 @@ bool mwModel::UpdateUser(mw::User& user)
 			return false;
 
 		std::string sql = "UPDATE users "
-			"SET username=\"" + user.username + "\" "
+			"SET username=\"" + user.username + "\", "
+			"status=\"" + std::to_string(user.status) + "\" "
 			"WHERE uid=" + std::to_string(user.uid) + " ;";
 
 		logger.Info("Executinig query " + sql);
@@ -615,21 +644,21 @@ bool mwModel::UpdateUser(mw::User& user)
 	}
 }
 
-bool mwModel::ConnectDb()
+bool Model::ConnectDb()
 {
 	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 		return false;
 	return true;
 }
 
-bool mwModel::DisconnectDb()
+bool Model::DisconnectDb()
 {
 	if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
 		return false;
 	return true;
 }
 
-bool mwModel::InitUsersTable()
+bool Model::InitUsersTable()
 {
 	mw::Logger logger;
 	logger.Info("Initialzing users table");
@@ -639,18 +668,21 @@ bool mwModel::InitUsersTable()
 	const char* sql = "CREATE TABLE IF NOT EXISTS \"users\" ( "
 					"\"uid\"	INTEGER NOT NULL UNIQUE, "
 					"\"username\"	TEXT NOT NULL, "
-					"\"is_active\" NUMERIC NOT NULL DEFAULT 0, "
+					"\"is_active\"  NUMERIC NOT NULL DEFAULT 0, "
+             		"\"status\"     NUMERIC NOT NULL DEFAULT 0, "
 					"PRIMARY KEY(\"uid\" AUTOINCREMENT) "
-					");"
+					"); "
 
 					"INSERT OR IGNORE INTO \"users\" ( "
 		            "\"uid\", "
 					"\"username\", "
-					"\"is_active\") "
+					"\"is_active\", "
+                    "\"status\" ) "
 					"VALUES ( "
 		            "\"1\", "
 					"\"Default User\", "
-					"\"1\"); ";
+					"\"1\", "
+		            "\"0\" ); ";
 
 	m_mutex.lock();
 	m_db_handler.ExeQuery(sql);
@@ -660,7 +692,7 @@ bool mwModel::InitUsersTable()
 	return true;
 }
 
-bool mwModel::InitProjectsTable()
+bool Model::InitProjectsTable()
 {
 	mw::Logger logger;
 	logger.Info("Initialzing projects table");
@@ -685,7 +717,7 @@ bool mwModel::InitProjectsTable()
 	return true;
 }
 
-bool mwModel::InitTasksTable()
+bool Model::InitTasksTable()
 {
 	mw::Logger logger;
 	logger.Info("Initialzing tasks table");
@@ -718,7 +750,7 @@ bool mwModel::InitTasksTable()
 	return true;
 }
 
-bool mwModel::InitNotificationsTable()
+bool Model::InitNotificationsTable()
 {
 	mw::Logger logger;
 	logger.Info("Initialzing notifications table");

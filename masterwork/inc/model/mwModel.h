@@ -11,10 +11,10 @@
 #include <mutex>
 
 
-class mwModel
+class Model
 {
 public:
-	mwModel();
+	Model();
 	void SetDbPath(std::string path);
 	bool InitModel();
 	bool AddUser(mw::User& user);
