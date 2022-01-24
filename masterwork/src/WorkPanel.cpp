@@ -41,7 +41,6 @@ mw::WorkPanel::~WorkPanel()
 	m_notebook->Disconnect(wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, wxNotebookEventHandler(mw::WorkPanel::OnPageChanged), NULL, this);
 	m_notebook->Disconnect(wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGING, wxNotebookEventHandler(mw::WorkPanel::OnPageChanging), NULL, this);
 	m_notebook->Disconnect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(mw::WorkPanel::OnTaskScrollWindowLeaveWindow), NULL, this);
-
 }
 
 void mw::WorkPanel::OnPageChanged(wxNotebookEvent& event)

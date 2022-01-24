@@ -21,10 +21,29 @@ void mw::TaskPanel::OnleaveWindow(wxMouseEvent& event)
 
 void mw::TaskPanel::OnLeftDoubleClick(wxMouseEvent& event)
 {
-	mw::NewTaskFrame* new_task_frame = new mw::NewTaskFrame(this);
-	new_task_frame->SetTask(m_task);
-	new_task_frame->CenterOnScreen();
-	new_task_frame->Show(true);
+	if (m_new_task_frame == nullptr)
+	{
+		m_new_task_frame = new mw::NewTaskFrame(this);
+		m_new_task_frame->Connect(wxEVT_DESTROY, wxWindowDestroyEventHandler(mw::TaskPanel::OnTaskFrameClose), NULL, this);
+		//when the mouse eneters the panel frame it exists the task panel
+		m_new_task_frame->SetTask(m_task);
+		m_new_task_frame->CenterOnScreen();
+		m_new_task_frame->Show(true);
+	}
+	else
+	{
+		m_new_task_frame->Iconize(false);
+		m_new_task_frame->SetFocus();
+		m_new_task_frame->Raise();
+	}
+	event.Skip();
+}
+
+void mw::TaskPanel::OnTaskFrameClose(wxWindowDestroyEvent& event)
+{
+	m_new_task_frame->Disconnect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
+	m_new_task_frame->Disconnect(wxEVT_DESTROY, wxWindowDestroyEventHandler(mw::TaskPanel::OnTaskFrameClose), NULL, this);
+	m_new_task_frame = nullptr;
 	event.Skip();
 }
 
@@ -109,22 +128,14 @@ mw::TaskPanel::TaskPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, c
 	m_static_task_name->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
 	m_static_status->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
 	m_static_status->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
-
 	m_static_duedate->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
 	m_static_duedate->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
-
 	m_static_priority->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
 	m_static_priority->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
-
-
 	m_static_last_modified->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
 	m_static_last_modified->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
-
-
 	m_archive_task->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(TaskPanel::OnArchive), NULL, this);
 	m_archive_task->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
-
-
 }
 
 mw::TaskPanel::~TaskPanel()

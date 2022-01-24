@@ -39,13 +39,14 @@ namespace mw
 		wxStaticText* m_static_duedate;
 		wxStaticText* m_static_priority;
 		wxStaticText* m_static_last_modified;
+		mw::NewTaskFrame* m_new_task_frame;
 		// TODO: added meta data in the DB for last modified time
 		wxStaticText* m_static_lastmodified;
 
 		virtual void OnEnterWindow(wxMouseEvent& event);
 		virtual void OnleaveWindow(wxMouseEvent& event);
 		virtual void OnLeftDoubleClick(wxMouseEvent& event);
-		virtual void OnStatusChanged(wxCommandEvent& event) { event.Skip(); }
+		virtual void OnTaskFrameClose(wxWindowDestroyEvent& event);
 		virtual void OnArchive(wxCommandEvent& event);
 
 		void SetTask(mw::Task task);

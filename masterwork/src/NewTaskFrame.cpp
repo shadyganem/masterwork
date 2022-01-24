@@ -107,6 +107,7 @@ mw::NewTaskFrame::~NewTaskFrame()
 void mw::NewTaskFrame::SetTask(mw::Task& task)
 {
 	m_task = task;
+	this->SetTitle(task.name);
 	m_task_name->SetLabelText(task.name);
 	m_task_description->SetLabelText(task.description);
 	m_priority_choice->Select(m_task.priority);
