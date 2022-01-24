@@ -29,7 +29,7 @@
     <ClInclude Include="inc\view\WorkPanel.h" />
     <ClInclude Include="inc\view\TopPanel.h" />
     <ClInclude Include="inc\controller\Controller.h" />
-    <ClInclude Include="inc\model\mwModel.h" />
+    <ClInclude Include="inc\model\Model.h" />
     <ClInclude Include="inc\model\User.h" />
     <ClInclude Include="inc\model\mwProject.h" />
     <ClInclude Include="inc\model\Task.h" />
@@ -57,7 +57,7 @@
     <ClCompile Include="src\Task.cpp" />
     <ClCompile Include="src\mwProject.cpp" />
     <ClCompile Include="src\User.cpp" />
-    <ClCompile Include="src\mwModel.cpp" />
+    <ClCompile Include="src\Model.cpp" />
     <ClCompile Include="src\Controller.cpp" />
     <ClCompile Include="src\TopPanel.cpp" />
     <ClCompile Include="src\MasterWork.cpp" />

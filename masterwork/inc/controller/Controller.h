@@ -4,7 +4,7 @@
 #include <wx/thread.h>
 #include <wx/event.h>
 #include "mwDefines.h"
-#include "model/mwModel.h"
+#include "model/Model.h"
 #include "model/Task.h"
 #include "model/User.h"
 #include "controller/Logger.h"

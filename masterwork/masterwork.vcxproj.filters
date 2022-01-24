@@ -42,7 +42,7 @@
     <ClInclude Include="inc\model\sqlite3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\model\mwModel.h">
+    <ClInclude Include="inc\model\Model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\model\User.h">
@@ -110,7 +110,7 @@
     <ClCompile Include="src\sqlite3.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mwModel.cpp">
+    <ClCompile Include="src\Model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\User.cpp">
