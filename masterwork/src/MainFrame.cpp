@@ -33,9 +33,9 @@ mw::MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize
 	m_1sec_timer = new wxTimer(this, MAIN_1SEC_TIMER_ID);
 	InitMenuBar();
 	InitStatusBar();
-	InitInfoBar();
-	InitMainPanel();
-	m_main_ver_sizer->Add(m_info_bar, 0, wxEXPAND | wxRESERVE_SPACE_EVEN_IF_HIDDEN);
+
+	m_main_panel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(200, 200));
+	m_main_panel->SetBackgroundColour(wxColor(30, 30, 30));
 	m_main_ver_sizer->Add(m_main_panel, 1, wxEXPAND);
 
 	// second layer components
@@ -101,20 +101,6 @@ void mw::MainFrame::InitStatusBar()
 	controller.SetStatusBarText("Ready - " + active_user);
 }
 
-void mw::MainFrame::InitInfoBar()
-{
-	m_info_bar = new wxInfoBar(this);
-	m_info_bar->SetBackgroundColour(m_err_bg);
-	m_info_bar->SetForegroundColour(m_white_fg);
-	ShowInfoBarInfoMessage("Welcome to MasterWork");
-}
-
-void mw::MainFrame::InitMainPanel()
-{
-	m_main_panel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(200, 200));
-	m_main_panel->SetBackgroundColour(wxColor(30, 30, 30));
-}
-
 void mw::MainFrame::InitColorScheme()
 {
 	m_info_bg = wxColor(0, 122, 204);
@@ -122,24 +108,6 @@ void mw::MainFrame::InitColorScheme()
 	m_white_fg = wxColor(255, 255, 255);
 	m_tool_bar_bg = wxColor(61, 61, 61);
 	m_side_panel_bg = wxColor(37, 37, 38);
-}
-
-void mw::MainFrame::ShowInfoBarInfoMessage(const wxString& msg)
-{
-	m_info_bar_timer_couter = 0;
-	m_info_bar->Dismiss();
-	m_info_bar->SetBackgroundColour(m_info_bg);
-	m_info_bar->Show();
-	m_info_bar->ShowMessage(msg);
-}
-
-void mw::MainFrame::ShowInfoBarErrorMessage(const wxString& msg)
-{
-	m_info_bar_timer_couter = 0;
-	m_info_bar->Dismiss();
-	m_info_bar->SetBackgroundColour(m_err_bg);
-	m_info_bar->Show();
-	m_info_bar->ShowMessage(msg);
 }
 
 void mw::MainFrame::ShowStutusBarMessage(const wxString& msg)
@@ -161,7 +129,6 @@ void mw::MainFrame::OnExit(wxCommandEvent& event)
 
 void mw::MainFrame::OnProperties(wxCommandEvent& event)
 {
-	ShowInfoBarInfoMessage("Properties");
 	ShowStutusBarMessage("Propeties");
 }
 
@@ -185,16 +152,6 @@ void mw::MainFrame::OnNewUser(wxCommandEvent& event)
 void mw::MainFrame::On1SecTimer(wxTimerEvent& event)
 {
 	mw::Controller& controller = mw::Controller::Get();
-	if (m_info_bar_timer_couter == 2)
-	{
-		m_info_bar->Dismiss();
-		m_info_bar_timer_couter = 0;
-	}
-	else
-	{
-		m_info_bar_timer_couter++;
-	}
-
 	if (m_10_sec_check == 10)
 	{
 		controller.SetInfoBarText("MasterWork! - By Shady Ganem");
@@ -226,7 +183,6 @@ void mw::MainFrame::OnSearch(wxCommandEvent& event)
 {
 	mw::Controller& controller = mw::Controller::Get();
 	wxString search_txt = m_search_ctrl->GetLineText(0);
-	ShowInfoBarInfoMessage("Searching: " + m_search_ctrl->GetLineText(0));
 	m_search_ctrl->Clear();
 }
 
@@ -239,7 +195,6 @@ void mw::MainFrame::OnUpdateUI(wxEvent& event)
 void mw::MainFrame::OnNotification(wxEvent& event)
 {
 	mw::Controller& controller = mw::Controller::Get();
-	ShowInfoBarInfoMessage(controller.GetInfoBarText());
 }
 
 void mw::MainFrame::OnAboutClick(wxCommandEvent& event)

@@ -25,17 +25,12 @@ namespace mw
 	private:
 		void InitMenuBar();
 		void InitStatusBar();
-		void InitInfoBar();
-		void InitMainPanel();
 		void InitColorScheme();
 		// private method
-		void ShowInfoBarInfoMessage(const wxString& msg);
-		void ShowInfoBarErrorMessage(const wxString& msg);
 		void ShowStutusBarMessage(const wxString& msg);
 		void SetStatusBarBackgrounColor(const wxColor& color);
 	public:
 		// info contols
-		wxInfoBar* m_info_bar;
 		wxStatusBar* m_status_bar;
 		wxMenuBar* m_menu_bar;
 		//wxToolBar* m_tool_bar;
