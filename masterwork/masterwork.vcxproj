@@ -42,6 +42,7 @@
     <ClInclude Include="inc\view\NewTaskFrame.h" />
     <ClInclude Include="inc\model\DateTime.h" />
     <ClInclude Include="inc\view\NewUserFrame.h" />
+    <ClInclude Include="inc\view\TaskEditPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\NewUserFrame.cpp" />
@@ -66,6 +67,7 @@
     <ClCompile Include="src\SidePanel.cpp" />
     <ClCompile Include="src\WorkPanel.cpp" />
     <ClCompile Include="src\sqlite3.c" />
+    <ClCompile Include="src\TaskEditPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="resources\style\style.xml" />
