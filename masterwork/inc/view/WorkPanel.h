@@ -39,11 +39,13 @@ namespace mw
         wxNotebook* m_notebook;
         wxBoxSizer* m_tasks_sizer;
         wxBoxSizer* m_ver_sizer;
+        wxButton* m_new_task_button;
 
         // Virtual event handlers, overide them in your derived class
         virtual void OnPageChanged(wxNotebookEvent& event);
         virtual void OnPageChanging(wxNotebookEvent& event);
         virtual void OnTaskScrollWindowLeaveWindow(wxMouseEvent& event);
+        virtual void OnNewTaskButton(wxCommandEvent& event);
         virtual void OnUpdateUI(wxEvent& event);
         virtual void OnAppendTask(wxEvent& event);
 
