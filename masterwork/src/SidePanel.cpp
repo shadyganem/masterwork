@@ -155,6 +155,10 @@ mw::SidePanel::SidePanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos,
 
 	m_projects_list = new wxListBox(m_panel7, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, wxLB_NEEDED_SB);
 	bSizer21->Add(m_projects_list, 1, wxRIGHT | wxLEFT | wxBOTTOM | wxEXPAND, 5);
+	wxColour dark(74, 74, 74);
+
+	m_projects_list->SetBackgroundColour(dark);
+	m_projects_list->SetForegroundColour(wxColour(255, 255, 255));
 
 	m_panel7->SetSizer(bSizer21);
 	m_panel7->Layout();
