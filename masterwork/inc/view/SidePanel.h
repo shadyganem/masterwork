@@ -32,6 +32,8 @@ namespace mw
 		wxStaticText* m_projects_text;
 		wxPanel* m_panel9;
 
+		wxButton* m_new_project_button;
+
 
 		std::map<int, mw::User> m_idx_to_user;
 		
@@ -49,6 +51,7 @@ namespace mw
 		void OnUpdateUI(wxEvent& event);
 		virtual void OnItemSelect(wxCommandEvent& event);
 		virtual void OnProjectListRightUp(wxCommandEvent& event);
+		virtual void OnNewProjectButton(wxCommandEvent& event);
 		virtual void OnProjectListMenuClick(wxCommandEvent& evt);
 		virtual void OnUserChange(wxCommandEvent& event);
 		bool IsProjectSelected();

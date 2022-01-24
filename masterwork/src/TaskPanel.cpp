@@ -58,8 +58,16 @@ void mw::TaskPanel::SetTask(mw::Task task)
 {	
 	m_task = task;
 	m_static_task_name->SetLabelText(m_task.name);
-	m_static_task_name->SetToolTip(m_task.description);
-	m_static_description->SetLabelText(m_task.description);
+
+	if (std::all_of(m_task.description.begin(), m_task.description.end(), isspace))
+	{
+		// if description has only spaces 
+		m_static_task_name->SetToolTip(wxString("No Description"));
+	}
+	else
+	{
+		m_static_task_name->SetToolTip(m_task.description);
+	}
 	m_static_status->SetLabelText("Status: " + m_task.GetStatus());
 	m_static_priority->SetLabelText("Priority: " + m_task.GetPriority());
 	wxDateTime deadline(m_task.deadline);

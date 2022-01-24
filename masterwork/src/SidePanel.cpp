@@ -75,6 +75,14 @@ void mw::SidePanel::OnProjectListRightUp(wxCommandEvent& event)
 	m_projects_list->PopupMenu(&menu);
 }
 
+void mw::SidePanel::OnNewProjectButton(wxCommandEvent& event)
+{
+	mw::NewProjectFrame* new_project_form = new mw::NewProjectFrame(this);
+	new_project_form->CenterOnScreen();
+	new_project_form->Show(true);
+	event.Skip();
+}
+
 void mw::SidePanel::OnProjectListMenuClick(wxCommandEvent& evt)
 {
 	mw::Controller& controller = mw::Controller::Get();
@@ -122,8 +130,7 @@ mw::SidePanel::SidePanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos,
 	mw::Controller& controller = mw::Controller::Get();
 	controller.RegisterEventHandler(SIDE_PANEL_ID, this);
 	m_is_project_seleted = false;
-	wxBoxSizer* bSizer19;
-	bSizer19 = new wxBoxSizer(wxVERTICAL);
+	wxBoxSizer* bSizer19 = new wxBoxSizer(wxVERTICAL);
 
 	m_splitter1 = new wxSplitterWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_3D);
 	m_splitter1->Connect(wxEVT_IDLE, wxIdleEventHandler(mw::SidePanel::m_splitter1OnIdle), NULL, this);
@@ -135,11 +142,19 @@ mw::SidePanel::SidePanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos,
 	m_users_choice = new wxChoice(m_panel7, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_usernames, 0);
 	m_users_choice->SetSelection(0);
 
-	bSizer21->Add(m_users_choice, 0, wxALL | wxEXPAND, 5);
+	bSizer21->Add(m_users_choice, 0, wxRIGHT | wxLEFT | wxTOP | wxEXPAND, 5);
+
+	m_new_project_button = new wxButton(m_panel7, TOP_PANEL_NEW_TASK_ID, "New Project", wxDefaultPosition, wxDefaultSize);
+	m_new_project_button->SetMinSize(wxSize(-1, 20));
+	wxColour buttons_green(0, 136, 135);
+	wxColour white(255, 255, 255);
+	m_new_project_button->SetBackgroundColour(buttons_green);
+	m_new_project_button->SetForegroundColour(white);
+	bSizer21->Add(m_new_project_button, 0, wxALL | wxEXPAND, 5);
 
 
 	m_projects_list = new wxListBox(m_panel7, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, wxLB_NEEDED_SB);
-	bSizer21->Add(m_projects_list, 1, wxALL | wxEXPAND, 5);
+	bSizer21->Add(m_projects_list, 1, wxRIGHT | wxLEFT | wxBOTTOM | wxEXPAND, 5);
 
 	m_panel7->SetSizer(bSizer21);
 	m_panel7->Layout();
@@ -162,6 +177,7 @@ mw::SidePanel::SidePanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos,
 	m_projects_list->Connect(wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler(mw::SidePanel::OnItemSelect), NULL, this);
 	m_projects_list->Connect(wxEVT_RIGHT_UP, wxCommandEventHandler(mw::SidePanel::OnProjectListRightUp), NULL, this);
 	m_users_choice->Connect(wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler(mw::SidePanel::OnUserChange), NULL, this);
+	m_new_project_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mw::SidePanel::OnNewProjectButton), NULL, this);
 
 }
 
@@ -170,5 +186,5 @@ mw::SidePanel::~SidePanel()
 	m_projects_list->Disconnect(wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler(mw::SidePanel::OnItemSelect), NULL, this);
 	m_projects_list->Disconnect(wxEVT_RIGHT_UP, wxCommandEventHandler(mw::SidePanel::OnProjectListRightUp), NULL, this);
 	m_users_choice->Disconnect(wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler(mw::SidePanel::OnUserChange), NULL, this);
-
+	m_new_project_button->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mw::SidePanel::OnNewProjectButton), NULL, this);
 }

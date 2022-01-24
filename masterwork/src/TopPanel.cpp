@@ -11,9 +11,7 @@ mw::TopPanel::TopPanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos, c
 {
 	wxSizer* buttons_sizer = new wxBoxSizer(wxHORIZONTAL);
 	wxSizer* top_panel_sizer = new wxBoxSizer(wxHORIZONTAL);
-	m_new_project = new wxButton(this, TOP_PANEL_NEW_PROJECT_ID, "New Project", wxDefaultPosition, wxDefaultSize);
 	m_new_task = new wxButton(this, TOP_PANEL_NEW_TASK_ID, "New Task", wxDefaultPosition, wxDefaultSize);
-	buttons_sizer->Add(this->m_new_project, 0, wxRIGHT, 3);
 	buttons_sizer->Add(m_new_task, 0, wxRIGHT, 3);
 	top_panel_sizer->Add(buttons_sizer);
 	SetSizer(top_panel_sizer);
@@ -44,8 +42,6 @@ void mw::TopPanel::SetTheme(int theme_id)
 {
 	wxColour buttons_green(0, 136, 135);
 	wxColour white(255, 255, 255);
-	m_new_project->SetBackgroundColour(buttons_green);
-	m_new_project->SetForegroundColour(white);
 	m_new_task->SetBackgroundColour(buttons_green);
 	m_new_task->SetForegroundColour(white);
 }
