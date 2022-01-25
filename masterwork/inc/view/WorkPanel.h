@@ -14,22 +14,22 @@
 #include <wx/icon.h>
 #include <wx/notebook.h>
 #include <wx/sizer.h>
-#include "view/TaskPanel.h"
 #include <model/Task.h>
 #include "mwDefines.h"
 #include "wx/event.h"
+#include "view/TasksWindow.h"
+#include "view/TaskPanel.h"
+
 
 namespace mw
 {
     class WorkPanel : public wxPanel
     {
     public:
-
         WorkPanel(wxWindow* parent, wxWindowID winid = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL | wxNO_BORDER, const wxString& name = wxASCII_STR(wxPanelNameStr));
         ~WorkPanel();
 
     public:
-
         std::map<mw::TaskPanel*, mw::Task> m_taskpanel_to_task_map;
         std::map<mw::Task, mw::TaskPanel*> m_task_to_taskpanel_map;
 
@@ -39,13 +39,10 @@ namespace mw
         wxNotebook* m_notebook;
         wxBoxSizer* m_tasks_sizer;
         wxBoxSizer* m_ver_sizer;
-        wxButton* m_new_task_button;
 
         // Virtual event handlers, overide them in your derived class
         virtual void OnPageChanged(wxNotebookEvent& event);
         virtual void OnPageChanging(wxNotebookEvent& event);
-        virtual void OnTaskScrollWindowLeaveWindow(wxMouseEvent& event);
-        virtual void OnNewTaskButton(wxCommandEvent& event);
         virtual void OnUpdateUI(wxEvent& event);
         virtual void OnAppendTask(wxEvent& event);
 

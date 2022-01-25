@@ -44,7 +44,7 @@ void mw::Controller::SetActiveUser(int user_uid)
 void mw::Controller::SetActiveUser(mw::User& user)
 {
 	this->m_model.SetActiveUser(user);
-	PostUpdateUI(WORK_PANEL_ID);
+	PostUpdateUI(TASKS_WINDOW_ID);
 	PostUpdateUI(SIDE_PANEL_ID);
 }
 
@@ -53,7 +53,7 @@ void mw::Controller::SetActiveProject(mwProject& project)
 	this->m_model.GetActiveUser(m_active_user);
 	this->m_model.SetActiveProject(project);
 	this->m_model.GetActiveProject(m_active_project, m_active_user);
-	PostUpdateUI(WORK_PANEL_ID);
+	PostUpdateUI(TASKS_WINDOW_ID);
 }
 
 void mw::Controller::SetStatusBarText(const wxString& txt)
@@ -118,7 +118,7 @@ void mw::Controller::DeleteTask(Task& task)
 	m_model.DeleteTask(task);
 	m_model.GetActiveUser(m_active_user);
 	m_model.GetActiveProject(m_active_project, m_active_user);
-	PostUpdateUI(WORK_PANEL_ID);
+	PostUpdateUI(TASKS_WINDOW_ID);
 }
 
 void mw::Controller::DeleteProject(mwProject& project)
@@ -126,7 +126,7 @@ void mw::Controller::DeleteProject(mwProject& project)
 	m_model.DeleteProject(project);
 	m_model.GetActiveUser(m_active_user);
 	m_model.GetActiveProject(m_active_project, m_active_user);
-	PostUpdateUI(WORK_PANEL_ID);
+	PostUpdateUI(TASKS_WINDOW_ID);
 	PostUpdateUI(SIDE_PANEL_ID);
 }
 
@@ -143,7 +143,7 @@ void mw::Controller::AddTask(Task& task)
 	}
 	m_mutex.Unlock();
 	PostUpdateUI(MAIN_FRAME_ID);
-	PostUpdateUI(WORK_PANEL_ID);
+	PostUpdateUI(TASKS_WINDOW_ID);
 }
 
 void mw::Controller::AddProject(mwProject& project)
@@ -182,7 +182,7 @@ void mw::Controller::AddUser(mw::User& user, bool set_active)
 	}
 	m_mutex.Unlock();
 	PostUpdateUI(SIDE_PANEL_ID);
-	PostUpdateUI(WORK_PANEL_ID);
+	PostUpdateUI(TASKS_WINDOW_ID);
 
 }
 

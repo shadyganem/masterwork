@@ -83,7 +83,7 @@ void mw::TaskPanel::ResetBackGround()
 	this->SetDarkTheme();	
 }
 
-mw::TaskPanel::TaskPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style ) : wxPanel( parent, id, pos, size, style )
+mw::TaskPanel::TaskPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style ) : wxPanel( parent, id, pos, size, style )
 {
 	wxBoxSizer* main_sizer = new wxBoxSizer(wxHORIZONTAL);
 
