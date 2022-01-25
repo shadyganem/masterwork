@@ -17,6 +17,12 @@ mw::WorkPanel::WorkPanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos,
 	m_tasks_scroll_window = new mw::TasksWindow(m_notebook, TASKS_WINDOW_ID, wxDefaultPosition, wxDefaultSize, wxHSCROLL | wxVSCROLL);
 	m_tasks_scroll_window->SetScrollRate(5, 5);
 	m_notebook->AddPage(m_tasks_scroll_window, wxT("Tasks"), false);
+	m_pageidx_to_pageid_map[0] = TASKS_WINDOW_ID;
+
+	m_archive_scroll_window = new mw::ArchiveWindow(m_notebook, ARCHIVE_WINDOW_ID, wxDefaultPosition, wxDefaultSize, wxHSCROLL | wxVSCROLL);
+	m_archive_scroll_window->SetScrollRate(5, 5);
+	m_notebook->AddPage(m_archive_scroll_window, wxT("Archive"), false);
+	m_pageidx_to_pageid_map[1] = ARCHIVE_WINDOW_ID;
 
 	m_ver_sizer->Add(m_notebook, 1, wxEXPAND | wxALL, 5);
 

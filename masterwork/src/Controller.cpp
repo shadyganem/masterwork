@@ -11,6 +11,7 @@ void mw::Controller::Init()
 	m_model.GetActiveProject(m_active_project, m_active_user);
 	m_logger.Info("The active user is \"" + this->m_active_user.username + "\"");
 	m_logger.Info("The active project is \"" + this->m_active_project.name + "\"");
+	m_active_winid = TASKS_WINDOW_ID;
 }
 
 bool mw::Controller::Search(wxString& search_query)
@@ -45,6 +46,7 @@ void mw::Controller::SetActiveUser(mw::User& user)
 {
 	this->m_model.SetActiveUser(user);
 	PostUpdateUI(TASKS_WINDOW_ID);
+	PostUpdateUI(ARCHIVE_WINDOW_ID);
 	PostUpdateUI(SIDE_PANEL_ID);
 }
 
@@ -54,6 +56,7 @@ void mw::Controller::SetActiveProject(mwProject& project)
 	this->m_model.SetActiveProject(project);
 	this->m_model.GetActiveProject(m_active_project, m_active_user);
 	PostUpdateUI(TASKS_WINDOW_ID);
+	PostUpdateUI(ARCHIVE_WINDOW_ID);
 }
 
 void mw::Controller::SetStatusBarText(const wxString& txt)
@@ -119,6 +122,7 @@ void mw::Controller::DeleteTask(Task& task)
 	m_model.GetActiveUser(m_active_user);
 	m_model.GetActiveProject(m_active_project, m_active_user);
 	PostUpdateUI(TASKS_WINDOW_ID);
+	PostUpdateUI(ARCHIVE_WINDOW_ID);
 }
 
 void mw::Controller::DeleteProject(mwProject& project)
@@ -127,6 +131,7 @@ void mw::Controller::DeleteProject(mwProject& project)
 	m_model.GetActiveUser(m_active_user);
 	m_model.GetActiveProject(m_active_project, m_active_user);
 	PostUpdateUI(TASKS_WINDOW_ID);
+	PostUpdateUI(ARCHIVE_WINDOW_ID);
 	PostUpdateUI(SIDE_PANEL_ID);
 }
 
@@ -144,6 +149,7 @@ void mw::Controller::AddTask(Task& task)
 	m_mutex.Unlock();
 	PostUpdateUI(MAIN_FRAME_ID);
 	PostUpdateUI(TASKS_WINDOW_ID);
+	PostUpdateUI(ARCHIVE_WINDOW_ID);
 }
 
 void mw::Controller::AddProject(mwProject& project)
@@ -183,7 +189,7 @@ void mw::Controller::AddUser(mw::User& user, bool set_active)
 	m_mutex.Unlock();
 	PostUpdateUI(SIDE_PANEL_ID);
 	PostUpdateUI(TASKS_WINDOW_ID);
-
+	PostUpdateUI(ARCHIVE_WINDOW_ID);
 }
 
 void mw::Controller::GetAllUsers(std::vector<mw::User>& users)
@@ -216,9 +222,21 @@ void mw::Controller::GetTasksForActiveProject(std::vector<Task>& tasks)
 	this->m_model.GetAllTasks(tasks, m_active_project);
 }
 
+void mw::Controller::GetArchiveTasksForActiveProject(std::vector<Task>& tasks)
+{
+	m_model.GetActiveUser(m_active_user);
+	m_model.GetActiveProject(m_active_project, m_active_user);
+	this->m_model.GetArchiveAllTasks(tasks, m_active_project);
+}
+
 void mw::Controller::RequestUpdateUI(int wind_id)
 {
 	this->PostUpdateUI(wind_id);
+}
+
+void mw::Controller::SetActiveWindow(int winid)
+{
+	m_active_winid = winid;
 }
 
 void mw::Controller::PostUpdateUI(int wind_id)

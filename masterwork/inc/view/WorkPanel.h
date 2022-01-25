@@ -18,7 +18,9 @@
 #include "mwDefines.h"
 #include "wx/event.h"
 #include "view/TasksWindow.h"
+#include "view/ArchiveWindow.h"
 #include "view/TaskPanel.h"
+#include <string>
 
 
 namespace mw
@@ -30,10 +32,10 @@ namespace mw
         ~WorkPanel();
 
     public:
-        std::map<mw::TaskPanel*, mw::Task> m_taskpanel_to_task_map;
-        std::map<mw::Task, mw::TaskPanel*> m_task_to_taskpanel_map;
+        std::map<int, int> m_pageidx_to_pageid_map;
 
-        wxScrolledWindow* m_tasks_scroll_window;
+        mw::TasksWindow* m_tasks_scroll_window;
+        mw::ArchiveWindow* m_archive_scroll_window;
         wxToolBar* m_tool_bar;
         wxColor m_tool_bar_bg = wxColor(0, 0, 255);
         wxNotebook* m_notebook;

@@ -30,11 +30,6 @@ mw::TasksWindow::~TasksWindow()
 
 void mw::TasksWindow::OnUpdateUI(wxEvent& event)
 {
-	mw::Logger logger;
-	logger.SetLogLevel(mw::LogLevel::DEBUG);
-	logger.Debug("Update UI taskswindow");
-	logger.SetLogLevel(mw::LogLevel::DISABLE);
-
 	m_new_task_button->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mw::TasksWindow::OnNewTaskButton), NULL, this);
 	m_new_task_button->Destroy();
 	m_new_task_button = new wxButton(this, wxID_ANY, "New Task", wxDefaultPosition, wxDefaultSize);

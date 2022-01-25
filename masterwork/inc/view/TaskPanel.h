@@ -51,6 +51,8 @@ namespace mw
 
 		void SetTask(mw::Task task);
 		void ResetBackGround();
+		void HideArchiveButton();
+		void DisableEditing();
 
 		wxBoxSizer* ver_task_sizer;
 		wxPanel* m_static_view;

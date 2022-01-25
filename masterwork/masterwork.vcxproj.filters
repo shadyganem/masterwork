@@ -90,6 +90,9 @@
     <ClInclude Include="inc\view\TasksWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="inc\view\ArchiveWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\MainFrame.cpp">
@@ -162,6 +165,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\TasksWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ArchiveWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

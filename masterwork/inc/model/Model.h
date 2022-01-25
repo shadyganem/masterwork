@@ -30,6 +30,7 @@ public:
 	bool SetActiveProject(mwProject& project);
 	bool GetProjectTasks(mwProject& project,  std::vector<mw::Task>& ret_tasks_vect);
 	bool GetAllTasks(std::vector<mw::Task>& tasks, mwProject& current_project);
+	bool GetArchiveAllTasks(std::vector<mw::Task>& tasks, mwProject& current_project);
 	bool IsTaskFound(mw::Task& task);
 	bool IsProjectFound(mwProject& project);
 	bool IsUserFound(mw::User& user);

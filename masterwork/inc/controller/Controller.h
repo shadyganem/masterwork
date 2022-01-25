@@ -46,7 +46,9 @@ namespace mw
 		void GetProjectsForActiveUser(std::vector<std::string>& projects);
 		void GetProjectsForActiveUser(std::vector<mwProject>& projects);
 		void GetTasksForActiveProject(std::vector<Task>& tasks);
+		void GetArchiveTasksForActiveProject(std::vector<Task>& tasks);
 		void RequestUpdateUI(int wind_id);
+		void SetActiveWindow(int winid);
 
 	private:
 		Controller() {}
@@ -65,5 +67,6 @@ namespace mw
 		mwProject m_active_project;
 		std::map<int, Task> m_seen_tasks;
 		bool m_is_project_selected;
+		int m_active_winid;
 	};
 }
