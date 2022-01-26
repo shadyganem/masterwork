@@ -14,6 +14,7 @@ mw::WorkPanel::WorkPanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos,
 	m_ver_sizer = new wxBoxSizer(wxVERTICAL);
 
 	m_notebook = new wxNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNB_TOP);
+
 	m_tasks_scroll_window = new mw::TasksWindow(m_notebook, TASKS_WINDOW_ID, wxDefaultPosition, wxDefaultSize, wxHSCROLL | wxVSCROLL);
 	m_tasks_scroll_window->SetScrollRate(5, 5);
 	m_notebook->AddPage(m_tasks_scroll_window, wxT("Tasks"), false);
