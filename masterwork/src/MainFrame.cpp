@@ -29,6 +29,7 @@ mw::MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize
 	this->SetSizer(m_main_ver_sizer);
 	m_info_bar_timer_couter = 0;
 	m_10_sec_check = 0;
+	m_num_of_notifications = 0;
 	m_ready_msg;
 	m_1sec_timer = new wxTimer(this, MAIN_1SEC_TIMER_ID);
 	InitMenuBar();
@@ -114,7 +115,7 @@ void mw::MainFrame::InitStatusBar()
 	m_status_bar_text = new wxStaticText(m_status_bar, wxID_ANY, "", wxPoint(5, 5), wxDefaultSize, wxALIGN_LEFT);
 	m_status_bar_text->SetForegroundColour(wxColor(255, 255, 255));
 	statusbar_hor_sizer->Add(m_status_bar_text, 1, wxALL, 5);
-	m_notification_statusbar_button = new wxButton(m_status_bar, wxID_ANY, "0", wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
+	m_notification_statusbar_button = new wxButton(m_status_bar, wxID_ANY, "0", wxDefaultPosition, wxDefaultSize, wxNO_BORDER | wxBU_EXACTFIT);
 	m_notification_statusbar_button->SetBackgroundColour(m_info_bg);
 	m_notification_statusbar_button->SetForegroundColour(wxColor(255, 255, 255));
 	m_notification_statusbar_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mw::MainFrame::OnNotificationStatusbarButton), NULL, this);
@@ -217,6 +218,7 @@ void mw::MainFrame::OnSearch(wxCommandEvent& event)
 void mw::MainFrame::OnUpdateUI(wxEvent& event)
 {
 	mw::Controller& controller = mw::Controller::Get();
+	m_notification_statusbar_button->SetLabelText(std::to_string(m_num_of_notifications));
 	ShowStutusBarMessage(controller.GetStatusBarText());
 }
 

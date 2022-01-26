@@ -10,10 +10,13 @@ mw::TasksWindow::TasksWindow(wxWindow* parent, wxWindowID winid, const wxPoint& 
 	controller.RegisterEventHandler(winid, this);
 	m_tasks_sizer = new wxBoxSizer(wxVERTICAL);
 
-	m_new_task_button = new wxButton(this, wxID_ANY, "New Task", wxDefaultPosition, wxDefaultSize);
+	m_new_task_button = new wxButton(this, wxID_ANY, "New Task", wxDefaultPosition, wxDefaultSize, wxNO_BORDER);
 	m_new_task_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mw::TasksWindow::OnNewTaskButton), NULL, this);
-	m_new_task_button->SetBackgroundColour(wxColour(0, 136, 135));
-	m_new_task_button->SetForegroundColour(wxColour(255, 255, 255));
+	wxColour dark(37, 37, 38);
+	wxColour green(0, 136, 135);
+
+	m_new_task_button->SetBackgroundColour(dark);
+	m_new_task_button->SetForegroundColour(green);
 	m_tasks_sizer->Add(m_new_task_button, 0, wxALIGN_CENTER, 5);
 
 	this->SetSizer(m_tasks_sizer);
@@ -32,10 +35,12 @@ void mw::TasksWindow::OnUpdateUI(wxEvent& event)
 {
 	m_new_task_button->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mw::TasksWindow::OnNewTaskButton), NULL, this);
 	m_new_task_button->Destroy();
-	m_new_task_button = new wxButton(this, wxID_ANY, "New Task", wxDefaultPosition, wxDefaultSize);
+	m_new_task_button = new wxButton(this, wxID_ANY, "New Task", wxDefaultPosition, wxDefaultSize, wxNO_BORDER);
 	m_new_task_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mw::TasksWindow::OnNewTaskButton), NULL, this);
-	m_new_task_button->SetBackgroundColour(wxColour(0, 136, 135));
-	m_new_task_button->SetForegroundColour(wxColour(255, 255, 255));
+	wxColour dark(37, 37, 38);
+	wxColour green(0, 136, 135);
+	m_new_task_button->SetBackgroundColour(dark);
+	m_new_task_button->SetForegroundColour(green);
 
 	std::vector<mw::Task> tasks;
 	mw::Controller& controller = mw::Controller::Get();

@@ -1,5 +1,9 @@
 #include "view/TaskPanel.h"
 
+
+wxBEGIN_EVENT_TABLE(mw::TaskPanel, wxPanel)
+wxEND_EVENT_TABLE()
+
 void mw::TaskPanel::OnEnterWindow(wxMouseEvent& event)
 {
 	this->SetHighlightColours();
@@ -146,10 +150,10 @@ mw::TaskPanel::TaskPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, co
 
 	main_sizer->Add(m_info_grid_sizer, 1, wxEXPAND | wxALIGN_CENTER_VERTICAL, 5);
 
-	m_archive_task = new wxButton(this, wxID_ANY, wxT("Archive"), wxDefaultPosition, wxDefaultSize, 0);
+	m_archive_task = new wxButton(this, wxID_ANY, wxT("Archive"), wxDefaultPosition, wxDefaultSize, wxNO_BORDER);
 	main_sizer->Add(m_archive_task, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
-	m_unarchive_task_button = new wxButton(this, wxID_ANY, wxT("Unarchive"), wxDefaultPosition, wxDefaultSize, 0);
+	m_unarchive_task_button = new wxButton(this, wxID_ANY, wxT("Unarchive"), wxDefaultPosition, wxDefaultSize, wxNO_BORDER);
 	m_unarchive_task_button->Hide();
 	main_sizer->Add(m_unarchive_task_button, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
@@ -157,9 +161,9 @@ mw::TaskPanel::TaskPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, co
 	this->SetDarkTheme();
 
 	// Connect Events
-	this->Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnEnterWindow));
-	this->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow));
-	this->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick));
+	this->Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnEnterWindow), NULL, this);
+	this->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
+	this->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
 	m_static_task_name->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
 	m_static_task_name->Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnEnterWindow), NULL, this);
 	m_static_task_name->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
@@ -229,10 +233,10 @@ void mw::TaskPanel::SetDarkTheme(void)
 	m_static_duedate->SetForegroundColour(white);
 	m_static_priority->SetForegroundColour(white);
 	m_static_last_modified->SetForegroundColour(white);
-	m_archive_task->SetBackgroundColour(buttons_green);
-	m_archive_task->SetForegroundColour(white);
-	m_unarchive_task_button->SetBackgroundColour(buttons_green);
-	m_unarchive_task_button->SetForegroundColour(white);
+	m_archive_task->SetBackgroundColour(dark);
+	m_archive_task->SetForegroundColour(buttons_green);
+	m_unarchive_task_button->SetBackgroundColour(dark);
+	m_unarchive_task_button->SetForegroundColour(buttons_green);
 	this->Refresh();
 }
 

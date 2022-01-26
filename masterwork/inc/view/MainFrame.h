@@ -71,11 +71,12 @@ namespace mw
 		void OnNotificationStatusbarButton(wxCommandEvent& event);
 
 
-		bool m_notification_panel_hidden;
 	private:
 		int m_info_bar_timer_couter;
 		int m_10_sec_check;
 		int m_3_sec_check;
 		bool m_ready_msg;
+		bool m_notification_panel_hidden;
+		int m_num_of_notifications;
 	};
 }
