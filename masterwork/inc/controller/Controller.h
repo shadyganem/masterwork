@@ -38,6 +38,7 @@ namespace mw
 		void RegisterEventHandler(int ID, wxEvtHandler* event_handler);
 		void AddTask(std::string name, std::string dec);
 		void DeleteTask(Task& task);
+		void UnArchiveTask(Task& task);
 		void DeleteProject(mwProject& project);
 		void AddTask(Task& task);
 		void AddProject(mwProject& project);

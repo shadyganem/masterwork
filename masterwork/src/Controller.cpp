@@ -105,7 +105,6 @@ void mw::Controller::RegisterEventHandler(int id, wxEvtHandler* event_handler)
 
 void mw::Controller::AddTask(std::string name, std::string dec)
 {
-
 	Task task(name, dec);
 	task.StampCreationTime();
 	task.StampLastUpdateTime();
@@ -121,6 +120,17 @@ void mw::Controller::DeleteTask(Task& task)
 	m_model.DeleteTask(task);
 	m_model.GetActiveUser(m_active_user);
 	m_model.GetActiveProject(m_active_project, m_active_user);
+	PostUpdateUI(TASKS_WINDOW_ID);
+	PostUpdateUI(ARCHIVE_WINDOW_ID);
+}
+
+void mw::Controller::UnArchiveTask(Task& task)
+{
+	m_mutex.Lock();
+	task.status = mw::Task::TaskStatus::NOTSTARTED;
+	m_model.UpdateTask(task);
+	m_mutex.Unlock();
+	PostUpdateUI(MAIN_FRAME_ID);
 	PostUpdateUI(TASKS_WINDOW_ID);
 	PostUpdateUI(ARCHIVE_WINDOW_ID);
 }

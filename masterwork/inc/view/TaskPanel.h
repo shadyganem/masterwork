@@ -26,13 +26,14 @@
 
 namespace mw
 {
-
 	class TaskPanel : public wxPanel
 	{
 	public:
 		wxStaticText* m_static_task_name;
 		wxStaticText* m_static_description;
 		wxButton* m_archive_task;
+		wxButton* m_unarchive_task_button;
+
 		mw::Task m_task;
 
 		wxStaticText* m_static_status;
@@ -48,10 +49,13 @@ namespace mw
 		virtual void OnLeftDoubleClick(wxMouseEvent& event);
 		virtual void OnTaskFrameClose(wxWindowDestroyEvent& event);
 		virtual void OnArchive(wxCommandEvent& event);
+		virtual void OnUnarchive(wxCommandEvent& event);
+
 
 		void SetTask(mw::Task task);
 		void ResetBackGround();
 		void HideArchiveButton();
+		void ShowUnarchiveButton();
 		void DisableEditing();
 
 		wxBoxSizer* ver_task_sizer;
@@ -61,6 +65,6 @@ namespace mw
 
 	private:
 		void SetDarkTheme(void);
-		void Highlight();
+		void SetHighlightColours();
 	};
 }
