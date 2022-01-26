@@ -23,15 +23,9 @@ mw::ArchiveWindow::~ArchiveWindow()
 
 void mw::ArchiveWindow::OnUpdateUI(wxEvent& event)
 {
-	mw::Logger logger;
-	logger.SetLogLevel(mw::LogLevel::DEBUG);
 	std::vector<mw::Task> tasks;
 	mw::Controller& controller = mw::Controller::Get();
 	controller.GetArchiveTasksForActiveProject(tasks);
-
-
-	logger.SetLogLevel(mw::LogLevel::DISABLE);
-
 	std::map<int, bool> found_tasks;
 	std::map<mw::TaskPanel*, int>::iterator it;
 

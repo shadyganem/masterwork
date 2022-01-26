@@ -56,13 +56,8 @@ void mw::TaskPanel::OnArchive(wxCommandEvent& event)
 
 void mw::TaskPanel::OnUnarchive(wxCommandEvent& event)
 {
-	mw::Logger logger; 
-	logger.SetLogLevel(mw::LogLevel::DEBUG);
-	logger.Debug("OnUnarchive");
 	mw::Controller& controller = mw::Controller::Get();
 	controller.UnArchiveTask(m_task);
-	logger.SetLogLevel(mw::LogLevel::DISABLE);
-
 	event.Skip();
 }
 
