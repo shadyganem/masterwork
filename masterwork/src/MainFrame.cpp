@@ -39,35 +39,48 @@ mw::MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize
 	m_main_ver_sizer->Add(m_main_panel, 1, wxEXPAND);
 
 	// second layer components
-	wxSizer* main_panel_hor_sizer1 = new wxBoxSizer(wxHORIZONTAL);
+	m_main_panel_hor_sizer1 = new wxBoxSizer(wxHORIZONTAL);
 	wxSizer* main_panel_ver_sizer1 = new wxBoxSizer(wxVERTICAL);
 	wxSizer* main_panel_ver_sizer2 = new wxBoxSizer(wxVERTICAL);
+	wxSizer* main_panel_ver_sizer3 = new wxBoxSizer(wxVERTICAL);
+
 
 	m_search_ctrl = new wxSearchCtrl(m_main_panel, MAIN_SEARCH_ID, wxEmptyString, wxDefaultPosition, wxSize(200, 21));
-	m_top_panel = new TopPanel(m_main_panel, TOP_PANEL_ID, wxDefaultPosition, wxSize(600, 21));
+	m_top_panel = new mw::TopPanel(m_main_panel, TOP_PANEL_ID, wxDefaultPosition, wxSize(600, 21));
 	m_top_panel->SetBackgroundColour(m_side_panel_bg);
 	m_top_panel->Hide();
-	m_side_panel = new SidePanel(m_main_panel, SIDE_PANEL_ID, wxDefaultPosition, wxSize(200, 200));
+	m_side_panel = new mw::SidePanel(m_main_panel, SIDE_PANEL_ID, wxDefaultPosition, wxSize(200, 200));
 	m_side_panel->SetBackgroundColour(m_side_panel_bg);
 	m_bottom_panel = new mw::BottomPanel(m_main_panel, BOTTOM_PANEL_ID, wxDefaultPosition, wxSize(200, 200));
 	m_bottom_panel->SetBackgroundColour(m_side_panel_bg);
-	m_work_panel = new WorkPanel(m_main_panel, WORK_PANEL_ID, wxDefaultPosition, wxSize(200, 200));
+	m_work_panel = new mw::WorkPanel(m_main_panel, WORK_PANEL_ID, wxDefaultPosition, wxSize(200, 200));
 	m_work_panel->SetBackgroundColour(m_side_panel_bg);
+
+	m_collapsible_notification_panel = new mw::CollapsibleNotificationsPanel(m_main_panel, COLLAPSIBLE_NOTIFICATIONS_PANEL_ID, wxDefaultPosition, wxSize(200, 200));
+	m_collapsible_notification_panel->SetBackgroundColour(m_side_panel_bg);
+	m_collapsible_notification_panel->Hide();
+	m_notification_panel_hidden = true;
+
+
 
 	main_panel_ver_sizer1->Add(m_search_ctrl, 0, wxEXPAND | wxBOTTOM | wxTOP, 5);
 	main_panel_ver_sizer1->Add(m_side_panel, 1, wxEXPAND, 0);
-	main_panel_hor_sizer1->Add(main_panel_ver_sizer1, 0, wxEXPAND | wxRIGHT, 5);
 	//main_panel_ver_sizer2->Add(m_top_panel, 0, wxEXPAND | wxBOTTOM, 5);
 	main_panel_ver_sizer2->Add(m_work_panel, 3, wxEXPAND | wxBOTTOM, 5);
 	main_panel_ver_sizer2->Add(m_bottom_panel, 1, wxEXPAND, 0);
+	main_panel_ver_sizer3->Add(m_collapsible_notification_panel, 1, wxEXPAND, 5);
 
-	main_panel_hor_sizer1->Add(main_panel_ver_sizer2, 1, wxEXPAND, 0);
-	m_main_panel->SetSizer(main_panel_hor_sizer1);
+	m_main_panel_hor_sizer1->Add(main_panel_ver_sizer1, 0, wxEXPAND | wxRIGHT, 5);
+	m_main_panel_hor_sizer1->Add(main_panel_ver_sizer2, 1, wxEXPAND, 0);
+	m_main_panel_hor_sizer1->Add(main_panel_ver_sizer3, 0, wxEXPAND | wxLEFT, 5);
+	m_main_panel->SetSizer(m_main_panel_hor_sizer1);
 	m_1sec_timer->Start(1000);
 }
 
 mw::MainFrame::~MainFrame()
 {
+	m_notification_statusbar_button->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mw::MainFrame::OnNotificationStatusbarButton), NULL, this);
+
 }
 
 void mw::MainFrame::InitMenuBar()
@@ -93,11 +106,25 @@ void mw::MainFrame::InitMenuBar()
 
 void mw::MainFrame::InitStatusBar()
 {
+	wxBoxSizer* statusbar_ver_sizer = new wxBoxSizer(wxVERTICAL);
+	wxBoxSizer* statusbar_hor_sizer = new wxBoxSizer(wxHORIZONTAL);
 	mw::Controller& controller = mw::Controller::Get();
 	m_status_bar = CreateStatusBar();
 	m_status_bar->SetBackgroundColour(m_info_bg);
 	m_status_bar_text = new wxStaticText(m_status_bar, wxID_ANY, "", wxPoint(5, 5), wxDefaultSize, wxALIGN_LEFT);
 	m_status_bar_text->SetForegroundColour(wxColor(255, 255, 255));
+	statusbar_hor_sizer->Add(m_status_bar_text, 1, wxALL, 5);
+	m_notification_statusbar_button = new wxButton(m_status_bar, wxID_ANY, "0", wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
+	m_notification_statusbar_button->SetBackgroundColour(m_info_bg);
+	m_notification_statusbar_button->SetForegroundColour(wxColor(255, 255, 255));
+	m_notification_statusbar_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mw::MainFrame::OnNotificationStatusbarButton), NULL, this);
+
+	statusbar_ver_sizer->AddStretchSpacer();
+	statusbar_hor_sizer->Add(m_notification_statusbar_button, 0, wxRIGHT | wxALIGN_RIGHT, 10);
+
+	statusbar_ver_sizer->Add(statusbar_hor_sizer, 0, wxALL | wxEXPAND, 0);
+
+	m_status_bar->SetSizer(statusbar_ver_sizer);
 	wxString active_user = controller.GetActiveUsername();
 	controller.SetStatusBarText("Ready - " + active_user);
 }
@@ -204,4 +231,20 @@ void mw::MainFrame::OnAboutClick(wxCommandEvent& event)
 	m_about_frame->CenterOnParent();
 	m_about_frame->Show(true);
 	event.Skip();
+}
+
+void mw::MainFrame::OnNotificationStatusbarButton(wxCommandEvent& event)
+{
+	if (m_notification_panel_hidden == true)
+	{
+		m_collapsible_notification_panel->Show();
+		m_notification_panel_hidden = false;
+	}
+	else
+	{
+		m_collapsible_notification_panel->Hide();
+		m_notification_panel_hidden = true;
+	}
+	this->Refresh();
+	m_main_panel_hor_sizer1->Layout();
 }

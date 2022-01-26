@@ -1,8 +1,5 @@
 #include "view/TaskPanel.h"
 
-
-///////////////////////////////////////////////////////////////////////////
-
 void mw::TaskPanel::OnEnterWindow(wxMouseEvent& event)
 {
 	this->SetHighlightColours();

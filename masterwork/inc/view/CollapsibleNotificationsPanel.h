@@ -4,7 +4,7 @@
 
 namespace mw
 {
-	class CollapsibleNotificationsPanel : wxPanel
+	class CollapsibleNotificationsPanel : public wxPanel
 	{
 	public:
 		CollapsibleNotificationsPanel(wxWindow* parent,
