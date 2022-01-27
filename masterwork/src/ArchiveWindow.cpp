@@ -72,6 +72,14 @@ void mw::ArchiveWindow::OnUpdateUI(wxEvent& event)
 
 void mw::ArchiveWindow::OnTaskScrollWindowLeaveWindow(wxMouseEvent& event)
 {
+	wxRect panel_rect = this->GetScreenRect();
+	wxPoint mouse_pos = wxGetMousePosition();
+	if (panel_rect.Contains(mouse_pos))
+	{
+		event.Skip();
+		return;
+	}
+
 	std::map<mw::TaskPanel*, mw::Task>::iterator it;
 	for (it = m_taskpanel_to_task_map.begin(); it != m_taskpanel_to_task_map.end(); ++it)
 	{

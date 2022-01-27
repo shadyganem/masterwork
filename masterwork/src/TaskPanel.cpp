@@ -14,7 +14,8 @@ void mw::TaskPanel::OnleaveWindow(wxMouseEvent& event)
 {
 	wxRect task_panel_rect = this->GetScreenRect();
 	wxPoint mouse_pos = wxGetMousePosition();
-	if (!task_panel_rect.Contains(mouse_pos)) {
+	if (!task_panel_rect.Contains(mouse_pos)) 
+	{
 		this->SetDarkTheme();
 	}	
 	event.Skip();
@@ -88,7 +89,7 @@ void mw::TaskPanel::SetTask(mw::Task task)
 
 void mw::TaskPanel::ResetBackGround()
 {
-	this->SetDarkTheme();	
+	this->SetDarkTheme();
 }
 
 void mw::TaskPanel::HideArchiveButton()
@@ -150,10 +151,10 @@ mw::TaskPanel::TaskPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, co
 
 	main_sizer->Add(m_info_grid_sizer, 1, wxEXPAND | wxALIGN_CENTER_VERTICAL, 5);
 
-	m_archive_task = new wxButton(this, wxID_ANY, wxT("Archive"), wxDefaultPosition, wxDefaultSize, wxNO_BORDER);
+	m_archive_task = new mw::Button(this, wxID_ANY, wxT("Archive"), wxDefaultPosition, wxDefaultSize, wxNO_BORDER);
 	main_sizer->Add(m_archive_task, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
-	m_unarchive_task_button = new wxButton(this, wxID_ANY, wxT("Unarchive"), wxDefaultPosition, wxDefaultSize, wxNO_BORDER);
+	m_unarchive_task_button = new mw::Button(this, wxID_ANY, wxT("Unarchive"), wxDefaultPosition, wxDefaultSize, wxNO_BORDER);
 	m_unarchive_task_button->Hide();
 	main_sizer->Add(m_unarchive_task_button, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
@@ -161,9 +162,7 @@ mw::TaskPanel::TaskPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, co
 	this->SetDarkTheme();
 
 	// Connect Events
-	this->Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnEnterWindow), NULL, this);
-	this->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
-	this->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
+
 	m_static_task_name->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
 	m_static_task_name->Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnEnterWindow), NULL, this);
 	m_static_task_name->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
@@ -179,17 +178,25 @@ mw::TaskPanel::TaskPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, co
 	m_static_last_modified->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
 	m_static_last_modified->Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnEnterWindow), NULL, this);
 	m_static_last_modified->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
-	m_archive_task->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(TaskPanel::OnArchive), NULL, this);
-	m_archive_task->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
+
 	m_archive_task->Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnEnterWindow), NULL, this);
+	m_archive_task->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
+	m_archive_task->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(TaskPanel::OnArchive), NULL, this);
+
+	m_unarchive_task_button->Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnEnterWindow), NULL, this);
+	m_unarchive_task_button->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
 	m_unarchive_task_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(TaskPanel::OnUnarchive), NULL, this);
+	this->Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(mw::TaskPanel::OnEnterWindow));
+	this->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(mw::TaskPanel::OnleaveWindow));
+	this->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick));
+
 }
 
 mw::TaskPanel::~TaskPanel()
 {
 	// Disconnect Events
-	this->Disconnect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnEnterWindow));
-	this->Disconnect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow));
+	this->Disconnect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(mw::TaskPanel::OnEnterWindow));
+	this->Disconnect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(mw::TaskPanel::OnleaveWindow));
 	this->Disconnect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick));
 	m_static_task_name->Disconnect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
 	m_static_task_name->Disconnect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
@@ -217,8 +224,6 @@ mw::TaskPanel::~TaskPanel()
 	m_static_last_modified->Disconnect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnEnterWindow), NULL, this);
 
 	m_archive_task->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(TaskPanel::OnArchive), NULL, this);
-	m_archive_task->Disconnect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
-	m_archive_task->Disconnect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnEnterWindow), NULL, this);
 	m_unarchive_task_button->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(TaskPanel::OnUnarchive), NULL, this);
 }
 
@@ -242,7 +247,9 @@ void mw::TaskPanel::SetDarkTheme(void)
 
 void mw::TaskPanel::SetHighlightColours()
 {
-	wxColour highlighted_dark(153, 153, 153);
-	this->SetBackgroundColour(highlighted_dark);
+	this->SetBackgroundColour(wxColour(153, 153, 153));
+	this->SetBackgroundColour(this->GetBackgroundColour());
+	m_archive_task->SetBackgroundColour(wxColour(153, 153, 153));
+	m_unarchive_task_button->SetBackgroundColour(wxColour(153, 153, 153));
 	this->Refresh();
 }

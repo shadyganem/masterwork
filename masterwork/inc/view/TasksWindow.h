@@ -6,6 +6,7 @@
 #include "mwDefines.h"
 #include "model/Task.h"
 #include <map>
+#include "view/Button.h"
 
 namespace mw
 {

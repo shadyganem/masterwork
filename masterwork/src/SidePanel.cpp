@@ -144,13 +144,14 @@ mw::SidePanel::SidePanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos,
 
 	bSizer21->Add(m_users_choice, 0, wxRIGHT | wxLEFT | wxTOP | wxEXPAND, 5);
 
-	m_new_project_button = new wxButton(m_panel7, TOP_PANEL_NEW_TASK_ID, "New Project", wxDefaultPosition, wxDefaultSize);
+	m_new_project_button = new mw::Button(m_panel7, TOP_PANEL_NEW_TASK_ID, "New Project", wxDefaultPosition, wxDefaultSize);
 	m_new_project_button->SetMinSize(wxSize(-1, 20));
 	wxColour buttons_green(0, 136, 135);
-	wxColour white(255, 255, 255);
-	m_new_project_button->SetBackgroundColour(buttons_green);
-	m_new_project_button->SetForegroundColour(white);
-	bSizer21->Add(m_new_project_button, 0, wxALL | wxEXPAND, 5);
+	wxColour dark_panel(37, 37, 38);
+	m_panel7->SetBackgroundColour(dark_panel);
+	m_new_project_button->SetBackgroundColour(dark_panel);
+	m_new_project_button->SetForegroundColour(buttons_green);
+	bSizer21->Add(m_new_project_button, 0, wxALIGN_CENTER_HORIZONTAL | wxALL , 5);
 
 
 	m_projects_list = new wxListBox(m_panel7, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, wxLB_NEEDED_SB);

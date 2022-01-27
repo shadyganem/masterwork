@@ -16,6 +16,7 @@
 
 #include "mwDefines.h"
 #include "view/NewProjectFrame.h"
+#include "view/Button.h"
 
 
 namespace mw

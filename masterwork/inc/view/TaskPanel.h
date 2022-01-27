@@ -23,6 +23,7 @@
 #include "controller/Logger.h"
 #include "controller/Controller.h"
 #include "view/NewTaskFrame.h"
+#include "view/Button.h"
 
 namespace mw
 {

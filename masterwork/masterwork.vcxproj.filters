@@ -87,13 +87,16 @@
     <ClInclude Include="inc\view\TaskEditPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\view\TasksWindow.h">
+    <ClInclude Include="inc\view\CollapsibleNotificationsPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\view\ArchiveWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\view\CollapsibleNotificationsPanel.h">
+    <ClInclude Include="inc\view\TasksWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\view\Button.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -167,13 +170,16 @@
     <ClCompile Include="src\TaskEditPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TasksWindow.cpp">
+    <ClCompile Include="src\CollapsibleNotificationsPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ArchiveWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\CollapsibleNotificationsPanel.cpp">
+    <ClCompile Include="src\TasksWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -19,13 +19,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="inc\view\Button.h" />
     <ClInclude Include="inc\view\AboutFrame.h" />
     <ClInclude Include="inc\MasterWork.h" />
     <ClInclude Include="inc\model\sqlite3.h" />
+    <ClInclude Include="inc\view\ArchiveWindow.h" />
     <ClInclude Include="inc\view\BottomPanel.h" />
     <ClInclude Include="inc\mwDefines.h" />
+    <ClInclude Include="inc\view\CollapsibleNotificationsPanel.h" />
     <ClInclude Include="inc\view\MainFrame.h" />
     <ClInclude Include="inc\view\SidePanel.h" />
+    <ClInclude Include="inc\view\TasksWindow.h" />
     <ClInclude Include="inc\view\WorkPanel.h" />
     <ClInclude Include="inc\view\TopPanel.h" />
     <ClInclude Include="inc\controller\Controller.h" />
@@ -45,6 +49,9 @@
     <ClInclude Include="inc\view\TaskEditPanel.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Button.cpp" />
+    <ClCompile Include="src\ArchiveWindow.cpp" />
+    <ClCompile Include="src\CollapsibleNotificationsPanel.cpp" />
     <ClCompile Include="src\NewUserFrame.cpp" />
     <ClCompile Include="src\AboutFrame.cpp" />
     <ClCompile Include="src\DateTime.cpp" />
@@ -57,6 +64,7 @@
     <ClCompile Include="src\mwDBHandler.cpp" />
     <ClCompile Include="src\Task.cpp" />
     <ClCompile Include="src\mwProject.cpp" />
+    <ClCompile Include="src\TasksWindow.cpp" />
     <ClCompile Include="src\User.cpp" />
     <ClCompile Include="src\Model.cpp" />
     <ClCompile Include="src\Controller.cpp" />
