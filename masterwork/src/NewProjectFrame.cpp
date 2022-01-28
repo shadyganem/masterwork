@@ -33,7 +33,7 @@ mw::NewProjectFrame::NewProjectFrame(wxWindow* parent, wxWindowID id, const wxSt
 	m_buttons->Add(m_button2, 0, wxALL, 5);
 
 
-	m_cancel_button = new wxButton(m_main_form, wxID_ANY, wxT("Done"), wxDefaultPosition, wxDefaultSize, 0);
+	m_cancel_button = new wxButton(m_main_form, wxID_ANY, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0);
 	m_buttons->Add(m_cancel_button, 0, wxALL, 5);
 
 	bSizer23->Add(m_buttons, 0, wxALIGN_RIGHT, 5);
