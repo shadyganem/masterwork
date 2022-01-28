@@ -1,23 +1,23 @@
 #include "model/mwNotification.h"
 
-mwNotification::mwNotification()
+mw::Notification::Notification()
 {
 	uid = 0;
 	user_uid = 0;
 	text = "";
-	status = mwNotification::Unread;
+	status = mw::NotificationStatus::UNREAD;
 }
 
-mwNotification::~mwNotification()
+mw::Notification::~Notification()
 {
 }
 
-void mwNotification::SetUid(int id)
+void mw::Notification::SetUid(int id)
 {
 	uid = id;
 }
 
-int mwNotification::GetStatus()
+int mw::Notification::GetStatus()
 {
 	return this->status;
 }
