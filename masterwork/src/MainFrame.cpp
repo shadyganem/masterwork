@@ -89,10 +89,13 @@ void mw::MainFrame::InitMenuBar()
 	m_menu_bar = new wxMenuBar();
 	// TODO: find a way to change the menu bar backgournd color. 
 	wxMenu* menu_file = new wxMenu();
+	
+	wxMenu* file_export = new wxMenu();
 	wxMenu* file_new = new wxMenu(); 
 	file_new->Append(MENU_FILE_NEW_PROJECT_ID, "Project");
 	file_new->Append(MENU_FILE_NEW_USER_ID, "User");
 	menu_file->AppendSubMenu(file_new, "New");
+	menu_file->Append(wxID_ANY, "Export");
 	menu_file->AppendSeparator();
 	menu_file->Append(MENU_FILE_EXIT_ID, "Exit");
 	wxMenu* menu_window = new wxMenu();
