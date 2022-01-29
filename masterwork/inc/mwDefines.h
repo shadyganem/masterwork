@@ -1,5 +1,7 @@
 #pragma once
 
+#define MW_VERSION "1.0.0 Beta"
+
 enum handler_id
 {
 	MAIN_FRAME_ID = 10000,

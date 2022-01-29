@@ -11,6 +11,7 @@
 #include <wx/panel.h>
 #include <wx/frame.h>
 #include "controller/Logger.h"
+#include "mwDefines.h"
 
 namespace mw
 {

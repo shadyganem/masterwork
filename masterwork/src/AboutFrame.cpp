@@ -15,7 +15,7 @@ mw::AboutFrame::AboutFrame(wxWindow* parent, wxWindowID id, const wxString& titl
 	wxBoxSizer* bSizer55;
 	bSizer55 = new wxBoxSizer(wxVERTICAL);
 
-	m_staticText26 = new wxStaticText(m_about_panel, wxID_ANY, wxT("MasterWork® Version 1.0.0\n\nMasterWork® all right reserved.\nThis computer program is protected by copyright law and international treaties. "), wxDefaultPosition, wxDefaultSize, 0);
+	m_staticText26 = new wxStaticText(m_about_panel, wxID_ANY, wxT("MasterWork® Version " MW_VERSION "\n\nMasterWork® all right reserved.\nThis computer program is protected by copyright law and international treaties. "), wxDefaultPosition, wxDefaultSize, 0);
 	m_staticText26->Wrap(-1);
 	bSizer55->Add(m_staticText26, 1, wxALL | wxEXPAND, 5);
 
