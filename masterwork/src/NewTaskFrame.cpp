@@ -202,6 +202,19 @@ void mw::NewTaskFrame::OnDoneButton(wxCommandEvent& event)
 	m_task.project_uid = proj.uid;
 	
 	m_task.name = this->m_task_name->GetLineText(0).ToStdString();
+
+
+	if (m_task.name.find_first_not_of(" ") == std::string::npos)
+	{
+		m_task.name = "New Task";
+	}
+
+	size_t start = m_task.name.find_first_not_of(" ");
+	m_task.name = m_task.name.substr(start);
+	size_t end = m_task.name.find_last_not_of(" ");
+	m_task.name = m_task.name.substr(0, end + 1);
+
+
 	int num_of_lines = this->m_task_description->GetNumberOfLines();
 	m_task.description.clear();
 	for (int i = 0; i < num_of_lines; i++)
