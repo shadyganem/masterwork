@@ -77,6 +77,19 @@ bool Model::AddProject(mwProject& project)
 			");";
 
 		m_db_handler.ExeQuery(sql.c_str());
+
+		sql = "SELECT MAX(uid) AS max_uid from projects;";
+		Records records;
+
+		m_db_handler.Select(sql.c_str(), records);
+		if (records.empty())
+		{
+			m_db_handler.DisConn(this->m_db_path.c_str());
+			return false;
+		}
+		Record row = records[0];
+		project.uid = std::stoi(row[0]);
+
 		if (this->DisconnectDb() == false)
 			return false;
 		return true;

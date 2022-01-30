@@ -29,8 +29,6 @@ namespace mw
 		wxButton* m_button2;
 		wxButton* m_cancel_button;
 
-
-		// Virtual event handlers, overide them in your derived class
 		virtual void OnDoneButton(wxCommandEvent& event);
 		virtual void OnCancelButton(wxCommandEvent& event);
 

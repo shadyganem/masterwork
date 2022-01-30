@@ -28,8 +28,8 @@ namespace mw
 		wxString GetActiveUsername(void);
 		void GetActiveProject(mwProject& project);
 		void SetActiveUser(int user_uid);
-		void SetActiveUser(mw::User& user);
-		void SetActiveProject(mwProject& project);
+		void SetActiveUser(mw::User& user, bool post_update_ui = true);
+		void SetActiveProject(mwProject& project, bool post_update_ui = true);
 		void SetStatusBarText(const wxString& txt);
 		wxString GetStatusBarText(void);
 		void SetInfoBarText(const wxString& txt);
@@ -41,8 +41,8 @@ namespace mw
 		void UnArchiveTask(Task& task);
 		void DeleteProject(mwProject& project);
 		void AddTask(Task& task);
-		void AddProject(mwProject& project);
-		void AddUser(mw::User& user, bool set_active=false);
+		void AddProject(mwProject& project, bool post_update_ui = true);
+		void AddUser(mw::User& user, bool set_active=false, bool post_update_ui = true);
 		void GetAllUsers(std::vector<mw::User>& users);
 		void GetProjectsForActiveUser(std::vector<std::string>& projects);
 		void GetProjectsForActiveUser(std::vector<mwProject>& projects);

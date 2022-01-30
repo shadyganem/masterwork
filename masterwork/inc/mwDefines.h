@@ -1,6 +1,6 @@
 #pragma once
 
-#define MW_VERSION "1.0.0 Beta"
+#define MW_VERSION "1.0.1 Beta"
 
 enum handler_id
 {

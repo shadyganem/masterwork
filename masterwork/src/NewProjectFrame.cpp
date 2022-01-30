@@ -85,7 +85,7 @@ void mw::NewProjectFrame::OnDoneButton(wxCommandEvent& event)
 	
 	
 	m_project.name = proj_name;
-	controller.AddProject(m_project);
+	controller.AddProject(m_project, false);
 	controller.SetActiveProject(m_project);
 	this->Close();
 }

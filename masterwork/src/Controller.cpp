@@ -42,24 +42,30 @@ void mw::Controller::SetActiveUser(int user_uid)
 	this->m_model.SetActiveUser(user);
 }
 
-void mw::Controller::SetActiveUser(mw::User& user)
+void mw::Controller::SetActiveUser(mw::User& user, bool post_update_ui)
 {
 	this->m_model.SetActiveUser(user);
-	PostUpdateUI(TASKS_WINDOW_ID);
-	PostUpdateUI(ARCHIVE_WINDOW_ID);
-	PostUpdateUI(SIDE_PANEL_ID);
+	if (post_update_ui)
+	{
+		PostUpdateUI(TASKS_WINDOW_ID);
+		PostUpdateUI(ARCHIVE_WINDOW_ID);
+		PostUpdateUI(SIDE_PANEL_ID);
+	}
 }
 
-void mw::Controller::SetActiveProject(mwProject& project)
+void mw::Controller::SetActiveProject(mwProject& project, bool post_update_ui)
 {
 	this->m_mutex.Lock();
 	this->m_model.GetActiveUser(m_active_user);
 	this->m_model.SetActiveProject(project);
 	this->m_model.GetActiveProject(m_active_project, m_active_user);
 	this->m_mutex.Unlock();
-	PostUpdateUI(SIDE_PANEL_ID);
-	PostUpdateUI(TASKS_WINDOW_ID);
-	PostUpdateUI(ARCHIVE_WINDOW_ID);
+	if (post_update_ui)
+	{
+		PostUpdateUI(SIDE_PANEL_ID);
+		PostUpdateUI(TASKS_WINDOW_ID);
+		PostUpdateUI(ARCHIVE_WINDOW_ID);
+	}
 }
 
 void mw::Controller::SetStatusBarText(const wxString& txt)
@@ -165,7 +171,7 @@ void mw::Controller::AddTask(Task& task)
 	PostUpdateUI(ARCHIVE_WINDOW_ID);
 }
 
-void mw::Controller::AddProject(mwProject& project)
+void mw::Controller::AddProject(mwProject& project, bool post_update_ui)
 {
 	m_model.GetActiveUser(m_active_user);
 	project.user_uid = m_active_user.uid;
@@ -180,10 +186,13 @@ void mw::Controller::AddProject(mwProject& project)
 		m_model.AddProject(project);
 	}
 	m_mutex.Unlock();
-	PostUpdateUI(SIDE_PANEL_ID);
+	if (post_update_ui)
+	{
+		PostUpdateUI(SIDE_PANEL_ID);
+	}
 }
 
-void mw::Controller::AddUser(mw::User& user, bool set_active)
+void mw::Controller::AddUser(mw::User& user, bool set_active, bool post_update_ui)
 {
 	m_mutex.Lock();
 	if (m_model.IsUserFound(user))
@@ -196,13 +205,16 @@ void mw::Controller::AddUser(mw::User& user, bool set_active)
 	}
 	if (set_active == true)
 	{
-		this->SetActiveUser(user);
+		this->SetActiveUser(user, false);
 		this->m_model.UpdateUser(m_active_user);
 	}
 	m_mutex.Unlock();
-	PostUpdateUI(SIDE_PANEL_ID);
-	PostUpdateUI(TASKS_WINDOW_ID);
-	PostUpdateUI(ARCHIVE_WINDOW_ID);
+	if (post_update_ui)
+	{
+		PostUpdateUI(SIDE_PANEL_ID);
+		PostUpdateUI(TASKS_WINDOW_ID);
+		PostUpdateUI(ARCHIVE_WINDOW_ID);
+	}
 }
 
 void mw::Controller::GetAllUsers(std::vector<mw::User>& users)
