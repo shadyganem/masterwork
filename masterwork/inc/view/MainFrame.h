@@ -44,7 +44,7 @@ namespace mw
 		WorkPanel* m_work_panel;
 		CollapsibleNotificationsPanel* m_collapsible_notification_panel;
 		wxTimer* m_1sec_timer;
-		wxButton* m_notification_statusbar_button;
+		mw::Button* m_notification_statusbar_button;
 		wxBoxSizer* m_main_panel_hor_sizer1;
 
 		// panels

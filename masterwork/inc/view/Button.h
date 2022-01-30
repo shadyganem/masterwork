@@ -19,7 +19,7 @@ namespace mw
 
         virtual void OnEnterWindow(wxMouseEvent& event);
         virtual void OnLeaveWindow(wxMouseEvent& event);
-        
+        void SetHoverColour(wxColour colour);
         wxColour m_hover_colour;
         wxColour m_background_colour;
         wxColour m_forground_colour;

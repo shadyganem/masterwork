@@ -118,7 +118,9 @@ void mw::MainFrame::InitStatusBar()
 	m_status_bar_text = new wxStaticText(m_status_bar, wxID_ANY, "", wxPoint(5, 5), wxDefaultSize, wxALIGN_LEFT);
 	m_status_bar_text->SetForegroundColour(wxColor(255, 255, 255));
 	statusbar_hor_sizer->Add(m_status_bar_text, 1, wxALL, 5);
-	m_notification_statusbar_button = new wxButton(m_status_bar, wxID_ANY, "0", wxDefaultPosition, wxDefaultSize, wxNO_BORDER | wxBU_EXACTFIT);
+	
+	m_notification_statusbar_button = new mw::Button(m_status_bar, wxID_ANY, "0", wxDefaultPosition, wxDefaultSize, wxNO_BORDER | wxBU_EXACTFIT);
+	m_notification_statusbar_button->SetHoverColour(wxColour(238, 211, 105));
 	m_notification_statusbar_button->SetBackgroundColour(m_info_bg);
 	m_notification_statusbar_button->SetForegroundColour(wxColor(255, 255, 255));
 	m_notification_statusbar_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mw::MainFrame::OnNotificationStatusbarButton), NULL, this);
