@@ -99,12 +99,6 @@
     <ClInclude Include="inc\view\Button.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\view\NotificationPanel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\view\NotificationsWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\MainFrame.cpp">
@@ -186,12 +180,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Button.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\NotificationPanel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\NotificationsWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

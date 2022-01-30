@@ -371,7 +371,6 @@ bool Model::SetActiveProject(mwProject& project)
 	mw::Logger logger;
 	try
 	{
-		logger.Info("Update active project");
 		this->ConnectDb();
 
 		std::string sql = "UPDATE projects "
@@ -387,8 +386,6 @@ bool Model::SetActiveProject(mwProject& project)
 			  "WHERE uid=" + std::to_string(project.uid) + " "
 			  "AND user_uid= " + std::to_string(project.user_uid) +
 			  ";";
-
-		logger.Info(sql);
 
 		m_db_handler.Update(sql.c_str());
 		this->DisconnectDb();

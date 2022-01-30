@@ -52,9 +52,12 @@ void mw::Controller::SetActiveUser(mw::User& user)
 
 void mw::Controller::SetActiveProject(mwProject& project)
 {
+	this->m_mutex.Lock();
 	this->m_model.GetActiveUser(m_active_user);
 	this->m_model.SetActiveProject(project);
 	this->m_model.GetActiveProject(m_active_project, m_active_user);
+	this->m_mutex.Unlock();
+	PostUpdateUI(SIDE_PANEL_ID);
 	PostUpdateUI(TASKS_WINDOW_ID);
 	PostUpdateUI(ARCHIVE_WINDOW_ID);
 }

@@ -69,14 +69,24 @@ void mw::NewProjectFrame::SetProject(mwProject& project)
 void mw::NewProjectFrame::OnDoneButton(wxCommandEvent& event)
 {
 	mw::Controller& controller = mw::Controller::Get();
-	
-	m_project.name = this->m_project_name_textbox->GetLineText(0).ToStdString();
-	if (m_project.name == "")
+	std::string proj_name; 
+	proj_name = this->m_project_name_textbox->GetLineText(0).ToStdString();
+
+	if (proj_name.find_first_not_of(" ") == std::string::npos)
 	{
 		this->Close();
 		return;
 	}
+	
+	size_t start = proj_name.find_first_not_of(" ");
+	proj_name = proj_name.substr(start);
+	size_t end = proj_name.find_last_not_of(" ");
+	proj_name = proj_name.substr(0, end + 1);
+	
+	
+	m_project.name = proj_name;
 	controller.AddProject(m_project);
+	controller.SetActiveProject(m_project);
 	this->Close();
 }
 
