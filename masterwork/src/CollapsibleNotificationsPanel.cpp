@@ -19,12 +19,12 @@ mw::CollapsibleNotificationsPanel::CollapsibleNotificationsPanel(wxWindow* paren
 	wxFont font = m_static_title->GetFont();
 	m_static_title->SetFont(font.Scale(1.5));
 
-	m_main_sizer->Add(m_static_title, 1, wxALIGN_CENTER | wxALL, 5);
+	m_main_sizer->Add(m_static_title, 0, wxALIGN_CENTER | wxTOP , 5);
 
-	m_notifications_window = new mw::NotificationsWindow(this, NOTIFICATIONS_WINDOW_ID);
+	m_notifications_window = new mw::NotificationsWindow(this, NOTIFICATIONS_WINDOW_ID, wxDefaultPosition, wxDefaultSize, wxVSCROLL);
+	m_notifications_window->SetScrollRate(5, 5);
 
-	m_notifications_window->SetSizer(m_notifications_sizer);
-	m_main_sizer->Add(m_notifications_window, 1, wxALL | wxEXPAND, 5);
+	m_main_sizer->Add(m_notifications_window, 1, wxALL | wxEXPAND, 0);
 	this->SetSizer(m_main_sizer);
 }
 

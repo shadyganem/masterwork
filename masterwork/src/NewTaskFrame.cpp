@@ -192,15 +192,6 @@ void mw::NewTaskFrame::OnDoneButton(wxCommandEvent& event)
 	mw::Logger logger;
 	mw::Controller& controller = mw::Controller::Get();
 
-	mw::Notification notification;
-
-
-	notification.text = "test notifications";
-	controller.AddNotification(notification);
-
-
-
-
 	mwProject proj;
 	controller.GetActiveProject(proj);
 	if (proj.uid == 0)

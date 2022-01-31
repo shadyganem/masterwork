@@ -9,7 +9,7 @@ namespace mw
 	class NotificationPanel : public wxPanel
 	{
 	public:
-		NotificationPanel(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(198, 50), long style = wxTAB_TRAVERSAL);
+		NotificationPanel(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(150, 50), long style = wxTAB_TRAVERSAL);
 		~NotificationPanel();
 		virtual void OnDismiss(wxCommandEvent& event);
 		virtual void SetNotification(mw::Notification& notification);
@@ -18,6 +18,7 @@ namespace mw
 		mw::Notification m_notification;
 		mw::Button* m_dismiss_button;
 		wxStaticText* m_static_notification;
+		void SetTheme();
 
 
 	};

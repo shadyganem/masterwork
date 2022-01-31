@@ -51,6 +51,8 @@ void mw::Controller::SetActiveUser(mw::User& user, bool post_update_ui)
 		PostUpdateUI(TASKS_WINDOW_ID);
 		PostUpdateUI(ARCHIVE_WINDOW_ID);
 		PostUpdateUI(SIDE_PANEL_ID);
+		PostUpdateUI(NOTIFICATIONS_WINDOW_ID);
+		PostUpdateUI(MAIN_FRAME_ID);
 	}
 }
 
@@ -229,6 +231,8 @@ void mw::Controller::AddUser(mw::User& user, bool set_active, bool post_update_u
 		PostUpdateUI(SIDE_PANEL_ID);
 		PostUpdateUI(TASKS_WINDOW_ID);
 		PostUpdateUI(ARCHIVE_WINDOW_ID);
+		PostUpdateUI(NOTIFICATIONS_WINDOW_ID);
+		PostUpdateUI(MAIN_FRAME_ID);
 	}
 }
 

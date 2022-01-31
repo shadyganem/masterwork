@@ -146,7 +146,6 @@ bool Model::AddTask(mw::Task& task)
 bool Model::AddNotification(mw::Notification& notification)
 {
 	mw::Logger logger;
-	logger.SetLogLevel(mw::LogLevel::DEBUG);
 	try
 	{
 		notification.StampLastUpdateTime();
@@ -157,8 +156,7 @@ bool Model::AddNotification(mw::Notification& notification)
 		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 			return false;
 
-		logger.Debug("I am here");
-		std::string sql = "INSERT INTO notifications(user_id, text, status, priority, repeat, start_time, end_time, last_update, ttl, color) "
+		std::string sql = "INSERT INTO notifications(user_uid, text, status, priority, repeat, start_time, end_time, last_update, ttl, color) "
 			              "VALUES (\"" + std::to_string(notification.user_uid) + "\"  ,"
 			              "\"" + notification.text + "\","
 			              + std::to_string(notification.status)      + ", "
@@ -172,7 +170,6 @@ bool Model::AddNotification(mw::Notification& notification)
 			              "); ";
 		m_db_handler.ExeQuery(sql.c_str());
 
-		logger.SetLogLevel(mw::LogLevel::DISABLE);
 
 
 		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
@@ -959,7 +956,7 @@ bool Model::InitNotificationsTable()
 
 	const char* sql = "CREATE TABLE IF NOT EXISTS \"notifications\" (      "
 						"\"uid\"	        INTEGER NOT NULL UNIQUE,       "
-						"\"user_id\"	    INTEGER NOT NULL DEFAULT 1,    "
+						"\"user_uid\"	    INTEGER NOT NULL DEFAULT 1,    "
 						"\"text\"	        TEXT,                          "
 						"\"status\"	        INTEGER NOT NULL DEFAULT 0,    "
 						"\"priority\"	    INTEGER NOT NULL DEFAULT 2,    "

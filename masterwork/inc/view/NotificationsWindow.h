@@ -23,6 +23,7 @@ namespace mw
 		void Clear();
 		virtual void OnUpdateUI(wxEvent& event);
 
+		wxBoxSizer* m_notifications_sizer;
 		std::map<mw::NotificationPanel*, mw::Notification> m_notif_panel_to_notif_map;
 
 	private:
