@@ -28,6 +28,8 @@
     <ClInclude Include="inc\mwDefines.h" />
     <ClInclude Include="inc\view\CollapsibleNotificationsPanel.h" />
     <ClInclude Include="inc\view\MainFrame.h" />
+    <ClInclude Include="inc\view\NotificationPanel.h" />
+    <ClInclude Include="inc\view\NotificationsWindow.h" />
     <ClInclude Include="inc\view\SidePanel.h" />
     <ClInclude Include="inc\view\TasksWindow.h" />
     <ClInclude Include="inc\view\WorkPanel.h" />
@@ -40,7 +42,7 @@
     <ClInclude Include="inc\model\mwDBHandler.h" />
     <ClInclude Include="inc\model\mwModelItem.h" />
     <ClInclude Include="inc\controller\Logger.h" />
-    <ClInclude Include="inc\model\mwNotification.h" />
+    <ClInclude Include="inc\model\Notification.h" />
     <ClInclude Include="inc\view\TaskPanel.h" />
     <ClInclude Include="inc\view\NewProjectFrame.h" />
     <ClInclude Include="inc\view\NewTaskFrame.h" />
@@ -57,6 +59,8 @@
     <ClCompile Include="src\DateTime.cpp" />
     <ClCompile Include="src\NewTaskFrame.cpp" />
     <ClCompile Include="src\NewProjectFrame.cpp" />
+    <ClCompile Include="src\NotificationPanel.cpp" />
+    <ClCompile Include="src\NotificationsWindow.cpp" />
     <ClCompile Include="src\TaskPanel.cpp" />
     <ClCompile Include="src\mwNotification.cpp" />
     <ClCompile Include="src\Logger.cpp" />

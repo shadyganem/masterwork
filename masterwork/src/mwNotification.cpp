@@ -1,4 +1,4 @@
-#include "model/mwNotification.h"
+#include "model/Notification.h"
 
 mw::Notification::Notification()
 {
@@ -10,6 +10,10 @@ mw::Notification::Notification()
 
 mw::Notification::~Notification()
 {
+	uid = 0;
+	user_uid = 0;
+	text = "";
+	status = mw::NotificationStatus::UNREAD;
 }
 
 void mw::Notification::SetUid(int id)

@@ -33,9 +33,6 @@ mw::BottomPanel::BottomPanel(wxWindow* parent, wxWindowID winid, const wxPoint& 
 	m_notification_panel->Layout();
 	m_notifications_top_sizer->Fit(m_notification_panel);
 	m_listbook->AddPage(m_notification_panel, wxT("notifications"), true);
-	m_programming_panel = new wxScrolledWindow(m_listbook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL | wxVSCROLL);
-	m_programming_panel->SetScrollRate(5, 5);
-	m_listbook->AddPage(m_programming_panel, wxT("programming"), false);
 #ifndef __WXGTK__ // Small icon style not supported in GTK
 	wxListView* m_listbookListView = m_listbook->GetListView();
 	long m_listbookFlags = m_listbookListView->GetWindowStyleFlag();
@@ -55,7 +52,6 @@ mw::BottomPanel::BottomPanel(wxWindow* parent, wxWindowID winid, const wxPoint& 
 mw::BottomPanel::~BottomPanel()
 {
 	m_listbook->Disconnect(wxEVT_COMMAND_LISTBOOK_PAGE_CHANGED, wxListbookEventHandler(mw::BottomPanel::OnPageChaged), NULL, this);
-	m_programming_panel->Disconnect(wxEVT_SET_FOCUS, wxFocusEventHandler(mw::BottomPanel::OnProgrammingFocus), NULL, this);
 	m_notification_panel->Disconnect(wxEVT_SET_FOCUS, wxFocusEventHandler(mw::BottomPanel::OnNotificationsFocus), NULL, this);
 }
 
