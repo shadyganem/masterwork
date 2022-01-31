@@ -35,5 +35,4 @@ mw::CollapsibleNotificationsPanel::~CollapsibleNotificationsPanel()
 void mw::CollapsibleNotificationsPanel::OnUpdateUI(wxEvent& event)
 {
 	mw::Controller& controller = mw::Controller::Get();
-
 }

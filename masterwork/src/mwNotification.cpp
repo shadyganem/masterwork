@@ -5,10 +5,14 @@ mw::Notification::Notification()
 	uid = 0;
 	user_uid = 0;
 	text = "";
+	repeat = 1;
 	status = mw::NotificationStatus::UNREAD;
 	std::time(&this->start_time);
 	std::time(&this->last_update);
+	end_time = 0;
+	ttl = 2592000;
 	color = -1;
+	priority = 0;
 }
 
 mw::Notification::~Notification()

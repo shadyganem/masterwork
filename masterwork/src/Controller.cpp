@@ -11,6 +11,7 @@ void mw::Controller::Init()
 	m_model.GetActiveProject(m_active_project, m_active_user);
 	m_logger.Info("The active user is \"" + this->m_active_user.username + "\"");
 	m_logger.Info("The active project is \"" + this->m_active_project.name + "\"");
+	m_num_of_notifications = 0;
 	m_active_winid = TASKS_WINDOW_ID;
 }
 
@@ -192,6 +193,20 @@ void mw::Controller::AddProject(mwProject& project, bool post_update_ui)
 	}
 }
 
+void mw::Controller::AddNotification(mw::Notification& notification, bool post_update_ui)
+{
+	m_model.GetActiveUser(m_active_user);
+	notification.user_uid = m_active_user.uid;
+	m_mutex.Lock();
+	m_model.AddNotification(notification);
+	m_mutex.Unlock();
+	if (post_update_ui)
+	{
+		PostUpdateUI(MAIN_FRAME_ID);
+		PostUpdateUI(NOTIFICATIONS_WINDOW_ID);
+	}
+}
+
 void mw::Controller::AddUser(mw::User& user, bool set_active, bool post_update_ui)
 {
 	m_mutex.Lock();
@@ -268,6 +283,18 @@ void mw::Controller::RequestUpdateUI(int wind_id)
 void mw::Controller::SetActiveWindow(int winid)
 {
 	m_active_winid = winid;
+}
+
+int mw::Controller::GetNumOfNotifications(int& num, bool poll)
+{
+	if (poll)
+	{
+		std::vector<mw::Notification> vect;
+		this->GetNotificationsForActiveUser(vect);
+		m_num_of_notifications = vect.size();
+	}
+	num = m_num_of_notifications;
+	return num;
 }
 
 void mw::Controller::PostUpdateUI(int wind_id)

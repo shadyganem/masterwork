@@ -3,6 +3,7 @@
 void mw::NewUserFrame::OnDoneButton(wxCommandEvent& event)
 {
 	mw::Controller& controller = mw::Controller::Get();
+
 	mw::User user;
 	user.username = this->m_username_text->GetLineText(0).ToStdString();
 	if (user.username == "")

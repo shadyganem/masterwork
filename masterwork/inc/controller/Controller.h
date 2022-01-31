@@ -42,6 +42,7 @@ namespace mw
 		void DeleteProject(mwProject& project);
 		void AddTask(Task& task);
 		void AddProject(mwProject& project, bool post_update_ui = true);
+		void AddNotification(mw::Notification& notification, bool post_update_ui = true);
 		void AddUser(mw::User& user, bool set_active=false, bool post_update_ui = true);
 		void GetAllUsers(std::vector<mw::User>& users);
 		void GetProjectsForActiveUser(std::vector<std::string>& projects);
@@ -51,6 +52,7 @@ namespace mw
 		void GetArchiveTasksForActiveProject(std::vector<Task>& tasks);
 		void RequestUpdateUI(int wind_id);
 		void SetActiveWindow(int winid);
+		int GetNumOfNotifications(int& num, bool poll=true);
 
 	private:
 		Controller() {}
@@ -70,5 +72,6 @@ namespace mw
 		std::map<int, Task> m_seen_tasks;
 		bool m_is_project_selected;
 		int m_active_winid;
+		int m_num_of_notifications;
 	};
 }

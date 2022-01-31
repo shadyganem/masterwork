@@ -77,6 +77,5 @@ namespace mw
 		int m_3_sec_check;
 		bool m_ready_msg;
 		bool m_notification_panel_hidden;
-		int m_num_of_notifications;
 	};
 }

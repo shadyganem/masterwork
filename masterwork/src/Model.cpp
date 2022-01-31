@@ -146,8 +146,10 @@ bool Model::AddTask(mw::Task& task)
 bool Model::AddNotification(mw::Notification& notification)
 {
 	mw::Logger logger;
+	logger.SetLogLevel(mw::LogLevel::DEBUG);
 	try
 	{
+		notification.StampLastUpdateTime();
 		if (notification.user_uid == 0)
 		{
 			throw("Can not add Notification with user UID = 0");
@@ -155,20 +157,23 @@ bool Model::AddNotification(mw::Notification& notification)
 		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 			return false;
 
-		std::string sql = "INSERT INTO tasks(user_id, text, status, priority, repeat, start_time, end_time, last_update, ttl, color)"
-			"VALUES (\"" + std::to_string(notification.user_uid) + "\"  ,"
-			+ notification.text + ","
-			+ std::to_string(notification.status)     + ", "
-			+ std::to_string(notification.priority) + ", "
-			+ std::to_string(notification.repeat) + ", "
-			+ std::to_string(notification.start_time) + ", "
-			+ std::to_string(notification.end_time) + ", "
-			+ std::to_string(notification.last_update) + ", "
-			+ std::to_string(notification.ttl) + ", "
-			+ std::to_string(notification.color) + " "
-
-			"); ";
+		logger.Debug("I am here");
+		std::string sql = "INSERT INTO notifications(user_id, text, status, priority, repeat, start_time, end_time, last_update, ttl, color) "
+			              "VALUES (\"" + std::to_string(notification.user_uid) + "\"  ,"
+			              "\"" + notification.text + "\","
+			              + std::to_string(notification.status)      + ", "
+			              + std::to_string(notification.priority)    + ", "
+			              + std::to_string(notification.repeat)      +   ", "
+			              + std::to_string(notification.start_time)  + ", "
+			              + std::to_string(notification.end_time)    + ", "
+			              + std::to_string(notification.last_update) + ", "
+			              + std::to_string(notification.ttl)         + ", "
+			              + std::to_string(notification.color)       + " "
+			              "); ";
 		m_db_handler.ExeQuery(sql.c_str());
+
+		logger.SetLogLevel(mw::LogLevel::DISABLE);
+
 
 		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
 			return false;
@@ -804,6 +809,8 @@ bool Model::UpdateNotification(mw::Notification& notification)
 	mw::Logger logger;
 	try
 	{
+		notification.StampLastUpdateTime();
+
 		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 			return false;
 
