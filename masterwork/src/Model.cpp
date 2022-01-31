@@ -143,6 +143,46 @@ bool Model::AddTask(mw::Task& task)
 	}
 }
 
+bool Model::AddNotification(mw::Notification& notification)
+{
+	mw::Logger logger;
+	try
+	{
+		if (notification.user_uid == 0)
+		{
+			throw("Can not add Notification with user UID = 0");
+		}
+		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
+			return false;
+
+		std::string sql = "INSERT INTO tasks(user_id, text, status, priority, repeat, start_time, end_time, last_update, ttl, color)"
+			"VALUES (\"" + std::to_string(notification.user_uid) + "\"  ,"
+			+ notification.text + ","
+			+ std::to_string(notification.status)     + ", "
+			+ std::to_string(notification.priority) + ", "
+			+ std::to_string(notification.repeat) + ", "
+			+ std::to_string(notification.start_time) + ", "
+			+ std::to_string(notification.end_time) + ", "
+			+ std::to_string(notification.last_update) + ", "
+			+ std::to_string(notification.ttl) + ", "
+			+ std::to_string(notification.color) + " "
+
+			"); ";
+		m_db_handler.ExeQuery(sql.c_str());
+
+		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
+			return false;
+		return true;
+
+	}
+	catch (...)
+	{
+		logger.Error("Exception occured at bool mw::Model::AddNotification(mw::Notification& notification)");
+		m_db_handler.DisConn(this->m_db_path.c_str());
+		return false;
+	}
+}
+
 bool Model::GetActiveUser(mw::User& user)
 {
 	try
@@ -372,6 +412,60 @@ bool Model::GetAllProjects(std::vector<mwProject>& projects_vect, const mw::User
 		return true;
 	}
 	catch(...)
+	{
+		logger.Error("Exception occured at mwModel::GetAllProjects(std::vector<mwProject>& prjects_vect, const mwUser& user) ");
+		m_db_handler.DisConn(this->m_db_path.c_str());
+		return false;
+	}
+}
+
+bool Model::GetAllNotifications(std::vector<mw::Notification>& notifications_vect, const mw::User& currnet_user)
+{
+	mw::Logger logger;
+	try
+	{
+		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
+			return false;
+
+		Records records;
+		Record row;
+
+
+		std::string sql = "SELECT * FROM notifications WHERE user_uid=" + std::to_string(currnet_user.uid) + " "
+			"AND repeat>0 ;";
+
+
+		m_db_handler.Select(sql.c_str(), records);
+
+		mw::Notification notification;
+
+		if (records.empty())
+		{
+			logger.Warning("No records where found for: " + sql);
+		}
+
+		for (int i = 0; i < records.size(); i++)
+		{
+			row = records[i];
+			notification.uid = std::stoi(row[0]);
+			notification.user_uid = std::stoi(row[1]);
+			notification.text = row[2];
+			notification.status = (mw::NotificationStatus)std::stoi(row[3]);
+			notification.priority = std::stoi(row[4]);
+			notification.repeat = std::stoi(row[5]);
+			notification.start_time = std::stoi(row[6]);
+			notification.end_time = std::stoi(row[7]);
+			notification.last_update = std::stoi(row[8]);
+			notification.ttl = std::stoi(row[9]);
+			notification.color = std::stoi(row[9]);
+
+			notifications_vect.push_back(notification);
+		}
+		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
+			return false;
+		return true;
+	}
+	catch (...)
 	{
 		logger.Error("Exception occured at mwModel::GetAllProjects(std::vector<mwProject>& prjects_vect, const mwUser& user) ");
 		m_db_handler.DisConn(this->m_db_path.c_str());
@@ -705,6 +799,44 @@ bool Model::UpdateUser(mw::User& user)
 	}
 }
 
+bool Model::UpdateNotification(mw::Notification& notification)
+{
+	mw::Logger logger;
+	try
+	{
+		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
+			return false;
+
+		std::string sql = "UPDATE notifications "
+			"SET text=\"" + notification.text + "\", "
+			"status=\"" + std::to_string(notification.status) + "\" "
+			"priority=\"" + std::to_string(notification.priority) + "\" "
+
+			"repeat=\"" + std::to_string(notification.repeat) + "\" "
+			"end_time=\"" + std::to_string(notification.end_time) + "\" "
+			"last_update=\"" + std::to_string(notification.last_update) + "\" "
+
+			"ttl=\"" + std::to_string(notification.ttl) + "\" "
+			"color=\"" + std::to_string(notification.color) + "\" "
+
+			"WHERE uid=" + std::to_string(notification.uid) + " ;";
+
+		logger.Info("Executinig query " + sql);
+
+		m_db_handler.Update(sql.c_str());
+
+		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
+			return false;
+		return true;
+	}
+	catch (...)
+	{
+		logger.Error("Exception occured at bool mwModel::AddTask(mwTask& task)");
+		m_db_handler.DisConn(this->m_db_path.c_str());
+		return false;
+	}
+}
+
 bool Model::ConnectDb()
 {
 	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
@@ -818,19 +950,19 @@ bool Model::InitNotificationsTable()
 	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 		return false;
 
-	const char* sql = "CREATE TABLE IF NOT EXISTS \"notifications\" ( "
-						"\"uid\"	INTEGER NOT NULL UNIQUE,       "
-						"\"user_id\"	INTEGER DEFAULT 0,     "
-						"\"text\"	    TEXT,                  "
-						"\"status\"	    INTEGER DEFAULT 0,     "
-						"\"priority\"	INTEGER DEFAULT 2,     "
-						"\"start_time\"	INTEGER,               "
-						"\"end_time\"	INTEGER,               "
-						"\"ttl\"	INTEGER,               "
-						"\"red\"	        INTEGER DEFAULT 0,     "
-						"\"green\"	    INTEGER DEFAULT 0,     "
-						"\"blue\"	    INTEGER DEFAULT 0,     "
-						"PRIMARY KEY(\"uid\" AUTOINCREMENT)     "
+	const char* sql = "CREATE TABLE IF NOT EXISTS \"notifications\" (      "
+						"\"uid\"	        INTEGER NOT NULL UNIQUE,       "
+						"\"user_id\"	    INTEGER NOT NULL DEFAULT 1,    "
+						"\"text\"	        TEXT,                          "
+						"\"status\"	        INTEGER NOT NULL DEFAULT 0,    "
+						"\"priority\"	    INTEGER NOT NULL DEFAULT 2,    "
+		                "\"repeat\"	        INTEGER NOT NULL DEFAULT 1,    "
+						"\"start_time\"	    INTEGER NOT NULL,              "
+						"\"end_time\"	    INTEGER NOT NULL DEFAULT 0,    "
+                 		"\"last_update\"	INTEGER NOT NULL DEFAULT 0,    "
+						"\"ttl\"	        INTEGER NOT NULL DEFAULT 0,    "
+						"\"color\"	        INTEGER DEFAULT -1,            "
+						"PRIMARY KEY(\"uid\" AUTOINCREMENT)                "
 						")";
 	m_mutex.lock();
 	m_db_handler.ExeQuery(sql);

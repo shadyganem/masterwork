@@ -4,6 +4,7 @@
 #include "model/mwDBHandler.h"
 #include "model/Task.h"
 #include "model/mwProject.h"
+#include "model/Notification.h"
 #include "model/User.h"
 
 #include <string>
@@ -20,6 +21,7 @@ public:
 	bool AddUser(mw::User& user);
 	bool AddProject(mwProject& project);
 	bool AddTask(mw::Task& task);
+	bool AddNotification(mw::Notification& notification);
 	bool GetActiveUser(mw::User& user);
 	bool SetActiveUser(mw::User& user);
 	bool DeleteTask(mw::Task& task);
@@ -27,6 +29,7 @@ public:
 	bool GetAllUsers(std::vector<mw::User>& ret_users_vect);
 	bool GetActiveProject(mwProject& project, mw::User& user);
 	bool GetAllProjects(std::vector<mwProject>& prjects_vect, const mw::User& currnet_user);
+	bool GetAllNotifications(std::vector<mw::Notification>& notifications_vect, const mw::User& currnet_user);
 	bool SetActiveProject(mwProject& project);
 	bool GetProjectTasks(mwProject& project,  std::vector<mw::Task>& ret_tasks_vect);
 	bool GetAllTasks(std::vector<mw::Task>& tasks, mwProject& current_project);
@@ -37,6 +40,8 @@ public:
 	bool UpdateTask(mw::Task& task);
 	bool UpdateProject(mwProject& project);
 	bool UpdateUser(mw::User& user);
+	bool UpdateNotification(mw::Notification& notification);
+
 
 private:
 	bool ConnectDb();
