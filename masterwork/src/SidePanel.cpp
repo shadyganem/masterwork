@@ -55,7 +55,6 @@ void mw::SidePanel::OnUpdateUI(wxEvent& event)
 {
 	this->UpdateUsersList();
 	this->UpdateProjecstList();
-	this->Layout();
 }
 
 void mw::SidePanel::OnItemSelect(wxCommandEvent& event)

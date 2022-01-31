@@ -48,11 +48,11 @@ void mw::Controller::SetActiveUser(mw::User& user, bool post_update_ui)
 	this->m_model.SetActiveUser(user);
 	if (post_update_ui)
 	{
+		PostUpdateUI(MAIN_FRAME_ID);
+		PostUpdateUI(SIDE_PANEL_ID);
 		PostUpdateUI(TASKS_WINDOW_ID);
 		PostUpdateUI(ARCHIVE_WINDOW_ID);
-		PostUpdateUI(SIDE_PANEL_ID);
 		PostUpdateUI(NOTIFICATIONS_WINDOW_ID);
-		PostUpdateUI(MAIN_FRAME_ID);
 	}
 }
 

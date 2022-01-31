@@ -44,9 +44,10 @@ void mw::NotificationPanel::SetNotification(mw::Notification& notification)
 
 void mw::NotificationPanel::SetTheme()
 {
+	wxColour green(0, 136, 135);
 	this->SetBackgroundColour(wxColor(74, 74, 74));
 	m_dismiss_button->SetBackgroundColour(wxColor(74, 74, 74));
-	m_dismiss_button->SetForegroundColour(wxColor(255, 255, 255));
+	m_dismiss_button->SetForegroundColour(green);
 	m_static_notification->SetBackgroundColour(wxColor(74, 74, 74));
 	m_static_notification->SetForegroundColour(wxColor(255, 255, 255));
 

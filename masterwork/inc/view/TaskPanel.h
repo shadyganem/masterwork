@@ -61,7 +61,7 @@ namespace mw
 
 		wxBoxSizer* ver_task_sizer;
 		wxPanel* m_static_view;
-		TaskPanel(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(600, 50), long style = wxTAB_TRAVERSAL);
+		TaskPanel(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(0, 50), long style = wxTAB_TRAVERSAL);
 		~TaskPanel();
 
 	private:

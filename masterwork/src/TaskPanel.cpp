@@ -160,6 +160,7 @@ mw::TaskPanel::TaskPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, co
 
 	this->SetSizer(main_sizer);
 	this->SetDarkTheme();
+	this->SetMinSize(wxSize(600, 50));
 
 	// Connect Events
 

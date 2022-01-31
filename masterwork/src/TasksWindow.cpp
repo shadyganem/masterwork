@@ -25,8 +25,7 @@ mw::TasksWindow::TasksWindow(wxWindow* parent, wxWindowID winid, const wxPoint& 
 	this->SetSizer(m_tasks_sizer);
 
 	this->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(mw::TasksWindow::OnTaskScrollWindowLeaveWindow), NULL, this);
-
-	controller.RequestUpdateUI(this->GetId());
+	controller.RequestUpdateUI(winid);
 }
 
 mw::TasksWindow::~TasksWindow()
@@ -51,24 +50,24 @@ void mw::TasksWindow::OnUpdateUI(wxEvent& event)
 
 	std::map<int, bool> found_tasks;
 	std::map<mw::TaskPanel*, int>::iterator it;
-
-	for (auto const& item : this->m_taskpanel_to_task_map)
+	std::map<mw::TaskPanel*, mw::Task>::iterator item;
+	for (item = m_taskpanel_to_task_map.begin(); item != m_taskpanel_to_task_map.end(); item++)
 	{
 		bool task_found = false;
 		for (int i = 0; i < tasks.size(); i++)
 		{
-			if (item.second.uid == tasks[i].uid)
+			if (item->second.uid == tasks[i].uid)
 			{
 				task_found = true;
-				item.first->SetTask(tasks[i]);
-				found_tasks[item.second.uid] = true;
+				item->first->SetTask(tasks[i]);
+				found_tasks[item->second.uid] = true;
 				break;
 			}
 		}
 		if (!task_found)
 		{
-			item.first->Destroy();
-			m_taskpanel_to_task_map.erase(item.first);
+			item->first->Destroy();
+			m_taskpanel_to_task_map.erase(item->first);
 		}
 	}
 
@@ -81,15 +80,13 @@ void mw::TasksWindow::OnUpdateUI(wxEvent& event)
 			task_panel = new mw::TaskPanel(this);
 			task_panel->SetTask(tasks[i]);
 			m_taskpanel_to_task_map[task_panel] = tasks[i];
-			m_tasks_sizer->Add(task_panel, 0, wxEXPAND | wxALL, 1);
+			this->m_tasks_sizer->Add(task_panel, 0, wxEXPAND | wxALL, 1);
 		}
 	}
 	m_tasks_sizer->Add(m_new_task_button, 0, wxALIGN_CENTER, 5);
 	wxSize size = this->GetBestVirtualSize();
 	this->SetVirtualSize(size);
 	this->m_tasks_sizer->Layout();
-	this->Refresh();
-
 }
 
 void mw::TasksWindow::OnNewTaskButton(wxCommandEvent& event)
