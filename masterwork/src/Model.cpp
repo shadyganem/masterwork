@@ -958,6 +958,7 @@ bool Model::InitNotificationsTable()
 						"\"uid\"	        INTEGER NOT NULL UNIQUE,       "
 						"\"user_uid\"	    INTEGER NOT NULL DEFAULT 1,    "
 						"\"text\"	        TEXT,                          "
+		                "\"details\"	    TEXT,                          "
 						"\"status\"	        INTEGER NOT NULL DEFAULT 0,    "
 						"\"priority\"	    INTEGER NOT NULL DEFAULT 2,    "
 		                "\"repeat\"	        INTEGER NOT NULL DEFAULT 1,    "

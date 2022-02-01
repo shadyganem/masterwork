@@ -26,6 +26,7 @@ namespace mw
 		int uid;
 		int user_uid;
 		std::string text;
+		std::string details;
 		NotificationStatus status;
 		int repeat;
 		int priority;

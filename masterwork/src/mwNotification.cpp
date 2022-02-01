@@ -5,6 +5,7 @@ mw::Notification::Notification()
 	uid = 0;
 	user_uid = 0;
 	text = "";
+	details = "";
 	repeat = 1;
 	status = mw::NotificationStatus::UNREAD;
 	std::time(&this->start_time);
