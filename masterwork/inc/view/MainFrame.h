@@ -75,6 +75,7 @@ namespace mw
 		int m_info_bar_timer_couter;
 		int m_10_sec_check;
 		int m_3_sec_check;
+		int m_1_min_counter;
 		bool m_ready_msg;
 		bool m_notification_panel_hidden;
 	};

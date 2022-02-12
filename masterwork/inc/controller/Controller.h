@@ -10,6 +10,7 @@
 #include "controller/Logger.h"
 #include <vector>
 #include <map>
+#include "controller/NotificationFactory.h"
 
 namespace mw
 {
@@ -26,10 +27,10 @@ namespace mw
 		void Init();
 		bool Search(wxString& search_query);
 		wxString GetActiveUsername(void);
-		void GetActiveProject(mwProject& project);
+		void GetActiveProject(Project& project);
 		void SetActiveUser(int user_uid);
 		void SetActiveUser(mw::User& user, bool post_update_ui = true);
-		void SetActiveProject(mwProject& project, bool post_update_ui = true);
+		void SetActiveProject(Project& project, bool post_update_ui = true);
 		void SetStatusBarText(const wxString& txt);
 		wxString GetStatusBarText(void);
 		void SetInfoBarText(const wxString& txt);
@@ -39,20 +40,21 @@ namespace mw
 		void AddTask(std::string name, std::string dec);
 		void DeleteTask(Task& task);
 		void UnArchiveTask(Task& task);
-		void DeleteProject(mwProject& project);
+		void DeleteProject(Project& project);
 		void AddTask(Task& task);
-		void AddProject(mwProject& project, bool post_update_ui = true);
+		void AddProject(Project& project, bool post_update_ui = true);
 		void AddNotification(mw::Notification& notification, bool post_update_ui = true);
 		void AddUser(mw::User& user, bool set_active=false, bool post_update_ui = true);
 		void GetAllUsers(std::vector<mw::User>& users);
 		void GetProjectsForActiveUser(std::vector<std::string>& projects);
-		void GetProjectsForActiveUser(std::vector<mwProject>& projects);
+		void GetProjectsForActiveUser(std::vector<Project>& projects);
 		void GetNotificationsForActiveUser(std::vector<mw::Notification>& notifications);
 		void GetTasksForActiveProject(std::vector<Task>& tasks);
 		void GetArchiveTasksForActiveProject(std::vector<Task>& tasks);
 		void RequestUpdateUI(int wind_id);
 		void SetActiveWindow(int winid);
 		int GetNumOfNotifications(int& num, bool poll=true);
+		void UpdateNotifications();
 
 	private:
 		Controller() {}
@@ -65,10 +67,10 @@ namespace mw
 		wxString m_info_bar_text;
 		Model m_model;
 		wxMutex m_mutex;
-		mwProject m_current_project;
+		Project m_current_project;
 		Logger m_logger;
 		User m_active_user;
-		mwProject m_active_project;
+		Project m_active_project;
 		std::map<int, Task> m_seen_tasks;
 		bool m_is_project_selected;
 		int m_active_winid;

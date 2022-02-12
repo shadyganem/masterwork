@@ -25,6 +25,7 @@ namespace mw
 
 		int uid;
 		int user_uid;
+		int task_uid;
 		std::string text;
 		std::string details;
 		NotificationStatus status;

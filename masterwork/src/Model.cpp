@@ -63,7 +63,7 @@ bool Model::AddUser(mw::User& user)
 	}
 }
 
-bool Model::AddProject(mwProject& project)
+bool Model::AddProject(mw::Project& project)
 {
 	try
 	{
@@ -275,7 +275,7 @@ bool Model::DeleteTask(mw::Task& task)
 	}
 }
 
-bool Model::DeleteProject(mwProject& project)
+bool Model::DeleteProject(mw::Project& project)
 {
 	try
 	{
@@ -284,7 +284,7 @@ bool Model::DeleteProject(mwProject& project)
 		this->ConnectDb();
 
 		std::string sql = "UPDATE projects "
-			"SET status= " + std::to_string(mwProject::ProjectStatus::DELETED) + ", "
+			"SET status= " + std::to_string(mw::Project::ProjectStatus::DELETED) + ", "
 			"is_active=0 " 
 			"WHERE uid=" + std::to_string(project.uid) + " "
 			";";
@@ -336,7 +336,7 @@ bool Model::GetAllUsers(std::vector<mw::User>& ret_users_vect)
 	}
 }
 
-bool Model::GetActiveProject(mwProject& project, mw::User& user)
+bool Model::GetActiveProject(mw::Project& project, mw::User& user)
 {
 	try
 	{
@@ -378,7 +378,7 @@ bool Model::GetActiveProject(mwProject& project, mw::User& user)
 	}
 }
 
-bool Model::GetAllProjects(std::vector<mwProject>& projects_vect, const mw::User& user)
+bool Model::GetAllProjects(std::vector<mw::Project>& projects_vect, const mw::User& user)
 {
 	mw::Logger logger;
 	try
@@ -393,7 +393,7 @@ bool Model::GetAllProjects(std::vector<mwProject>& projects_vect, const mw::User
 			              "AND status!=-1 ;";
 		logger.Info("Executinig query " + sql);
 		m_db_handler.Select(sql.c_str(), records);
-		mwProject proj;
+		mw::Project proj;
 		if (records.empty())
 		{
 			logger.Warning("No records where found for: " + sql);
@@ -475,7 +475,7 @@ bool Model::GetAllNotifications(std::vector<mw::Notification>& notifications_vec
 	}
 }
 
-bool Model::SetActiveProject(mwProject& project)
+bool Model::SetActiveProject(mw::Project& project)
 {
 	mw::Logger logger;
 	try
@@ -506,7 +506,7 @@ bool Model::SetActiveProject(mwProject& project)
 	}
 }
 
-bool Model::GetProjectTasks(mwProject& project, std::vector<mw::Task>& ret_tasks_vect)
+bool Model::GetProjectTasks(mw::Project& project, std::vector<mw::Task>& ret_tasks_vect)
 {
 	std::vector<std::vector<std::string>> records;
 	std::string sql = "SELECT * FROM ";
@@ -514,7 +514,7 @@ bool Model::GetProjectTasks(mwProject& project, std::vector<mw::Task>& ret_tasks
 	return false;
 }
 
-bool Model::GetAllTasks(std::vector<mw::Task>& tasks, mwProject& project)
+bool Model::GetAllTasks(std::vector<mw::Task>& tasks, mw::Project& project)
 {
 	try
 	{
@@ -565,7 +565,7 @@ bool Model::GetAllTasks(std::vector<mw::Task>& tasks, mwProject& project)
 	}
 }
 
-bool Model::GetArchiveAllTasks(std::vector<mw::Task>& tasks, mwProject& project)
+bool Model::GetArchiveAllTasks(std::vector<mw::Task>& tasks, mw::Project& project)
 {
 	try
 	{
@@ -647,7 +647,7 @@ bool Model::IsTaskFound(mw::Task& task)
 	}
 }
 
-bool Model::IsProjectFound(mwProject& project)
+bool Model::IsProjectFound(mw::Project& project)
 {
 	try
 	{
@@ -744,7 +744,7 @@ bool Model::UpdateTask(mw::Task& task)
 	}
 }
 
-bool Model::UpdateProject(mwProject& project)
+bool Model::UpdateProject(mw::Project& project)
 {
 	mw::Logger logger;
 	try

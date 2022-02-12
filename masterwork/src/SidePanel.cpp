@@ -36,7 +36,7 @@ void mw::SidePanel::UpdateProjecstList()
 	m_projects_list->Clear();
 	m_place_to_project_map.clear();
 	mw::Controller& controller = mw::Controller::Get();
-	std::vector<mwProject> projects;
+	std::vector<mw::Project> projects;
 	controller.GetProjectsForActiveUser(projects);
 	wxString project_name;
 	for (int i = 0; i < projects.size(); i++)
@@ -87,7 +87,7 @@ void mw::SidePanel::OnProjectListMenuClick(wxCommandEvent& evt)
 	mw::Controller& controller = mw::Controller::Get();
 	mw::Logger logger;
 	int sel_item;
-	mwProject sel_proj;
+	mw::Project sel_proj;
 	sel_item = this->m_projects_list->GetSelection();
 	sel_proj = this->m_place_to_project_map[sel_item];
 	mw::NewProjectFrame* new_project_form = new mw::NewProjectFrame(this);

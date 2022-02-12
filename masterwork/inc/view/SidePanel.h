@@ -12,7 +12,7 @@
 #include <wx/splitter.h>
 #include "controller/Controller.h"
 #include <map>
-#include "model/mwProject.h"
+#include "model/Project.h"
 
 #include "mwDefines.h"
 #include "view/NewProjectFrame.h"
@@ -26,7 +26,7 @@ namespace mw
 	{
 	public:
 
-		std::map<int, mwProject> m_place_to_project_map;
+		std::map<int, mw::Project> m_place_to_project_map;
 
 		wxSplitterWindow* m_splitter1;
 		wxPanel* m_panel7;

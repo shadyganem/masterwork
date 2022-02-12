@@ -37,7 +37,7 @@
     <ClInclude Include="inc\controller\Controller.h" />
     <ClInclude Include="inc\model\Model.h" />
     <ClInclude Include="inc\model\User.h" />
-    <ClInclude Include="inc\model\mwProject.h" />
+    <ClInclude Include="inc\model\Project.h" />
     <ClInclude Include="inc\model\Task.h" />
     <ClInclude Include="inc\model\mwDBHandler.h" />
     <ClInclude Include="inc\model\mwModelItem.h" />
@@ -49,8 +49,10 @@
     <ClInclude Include="inc\model\DateTime.h" />
     <ClInclude Include="inc\view\NewUserFrame.h" />
     <ClInclude Include="inc\view\TaskEditPanel.h" />
+    <ClInclude Include="inc\controller\NotificationFactory.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\NotificationFactory.cpp" />
     <ClCompile Include="src\Button.cpp" />
     <ClCompile Include="src\ArchiveWindow.cpp" />
     <ClCompile Include="src\CollapsibleNotificationsPanel.cpp" />
@@ -67,7 +69,7 @@
     <ClCompile Include="src\mwModelItem.cpp" />
     <ClCompile Include="src\mwDBHandler.cpp" />
     <ClCompile Include="src\Task.cpp" />
-    <ClCompile Include="src\mwProject.cpp" />
+    <ClCompile Include="src\Project.cpp" />
     <ClCompile Include="src\TasksWindow.cpp" />
     <ClCompile Include="src\User.cpp" />
     <ClCompile Include="src\Model.cpp" />

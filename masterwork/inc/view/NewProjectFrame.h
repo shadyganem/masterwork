@@ -13,7 +13,7 @@
 #include <wx/frame.h>
 
 #include "controller/Controller.h"
-#include "model/mwProject.h"
+#include "model/Project.h"
 #include <string>
 
 namespace mw
@@ -21,7 +21,7 @@ namespace mw
 	class NewProjectFrame : public wxFrame
 	{
 	private:
-		mwProject m_project;
+		mw::Project m_project;
 	protected:
 		wxPanel* m_main_form;
 		wxStaticText* m_project_name_static_name;
@@ -35,7 +35,7 @@ namespace mw
 	public:
 		NewProjectFrame(wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("New Project"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(450, 176), long style = wxDEFAULT_FRAME_STYLE | wxFRAME_FLOAT_ON_PARENT | wxTAB_TRAVERSAL);
 		~NewProjectFrame();
-		void SetProject(mwProject& project);
+		void SetProject(mw::Project& project);
 
 	};
 }

@@ -192,7 +192,7 @@ void mw::NewTaskFrame::OnDoneButton(wxCommandEvent& event)
 	mw::Logger logger;
 	mw::Controller& controller = mw::Controller::Get();
 
-	mwProject proj;
+	mw::Project proj;
 	controller.GetActiveProject(proj);
 	if (proj.uid == 0)
 	{

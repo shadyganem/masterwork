@@ -25,7 +25,7 @@ wxString mw::Controller::GetActiveUsername(void)
 	return wxString(this->m_active_user.username);
 }
 
-void mw::Controller::GetActiveProject(mwProject& project)
+void mw::Controller::GetActiveProject(Project& project)
 {
 	m_model.GetActiveUser(m_active_user);
 	m_model.GetActiveProject(m_active_project, m_active_user);
@@ -56,7 +56,7 @@ void mw::Controller::SetActiveUser(mw::User& user, bool post_update_ui)
 	}
 }
 
-void mw::Controller::SetActiveProject(mwProject& project, bool post_update_ui)
+void mw::Controller::SetActiveProject(Project& project, bool post_update_ui)
 {
 	this->m_mutex.Lock();
 	this->m_model.GetActiveUser(m_active_user);
@@ -147,7 +147,7 @@ void mw::Controller::UnArchiveTask(Task& task)
 	PostUpdateUI(ARCHIVE_WINDOW_ID);
 }
 
-void mw::Controller::DeleteProject(mwProject& project)
+void mw::Controller::DeleteProject(Project& project)
 {
 	m_model.DeleteProject(project);
 	m_model.GetActiveUser(m_active_user);
@@ -174,7 +174,7 @@ void mw::Controller::AddTask(Task& task)
 	PostUpdateUI(ARCHIVE_WINDOW_ID);
 }
 
-void mw::Controller::AddProject(mwProject& project, bool post_update_ui)
+void mw::Controller::AddProject(Project& project, bool post_update_ui)
 {
 	m_model.GetActiveUser(m_active_user);
 	project.user_uid = m_active_user.uid;
@@ -244,16 +244,16 @@ void mw::Controller::GetAllUsers(std::vector<mw::User>& users)
 void mw::Controller::GetProjectsForActiveUser(std::vector<std::string>& projects)
 {
 	m_model.GetActiveUser(m_active_user);
-	std::vector<mwProject> mw_projects;
+	std::vector<Project> mw_projects;
 	m_model.GetAllProjects(mw_projects, m_active_user);
-	std::vector<mwProject>::iterator it;
+	std::vector<Project>::iterator it;
 	for (it = mw_projects.begin(); it != mw_projects.end(); ++it)
 	{
 		projects.push_back(it->name);
 	}
 }
 
-void mw::Controller::GetProjectsForActiveUser(std::vector<mwProject>& projects)
+void mw::Controller::GetProjectsForActiveUser(std::vector<Project>& projects)
 {
 	this->m_model.GetActiveUser(m_active_user);
 	this->m_model.GetAllProjects(projects, m_active_user);
@@ -299,6 +299,41 @@ int mw::Controller::GetNumOfNotifications(int& num, bool poll)
 	}
 	num = m_num_of_notifications;
 	return num;
+}
+
+void mw::Controller::UpdateNotifications()
+{
+	try
+	{
+		NotificationFactory notifications_maker;
+		std::vector<mw::Project> projects;
+		std::vector<mw::Task> tasks;
+		std::vector<mw::Notification> notifications;
+		m_model.GetActiveUser(m_active_user);
+		m_model.GetAllProjects(projects, m_active_user);
+		for (int i = 0; i < projects.size(); i++)
+		{
+			tasks.clear();
+			m_model.GetAllTasks(tasks, projects[i]);
+			notifications_maker.SetTasks(tasks);
+			notifications_maker.GetNotifications(notifications);
+		}
+		bool update_ui = false;
+		for (int i = 0; i < notifications.size(); i++)
+		{
+			if (i == notifications.size() - 1)
+			{
+				update_ui = true;
+			}
+			this->AddNotification(notifications[i], update_ui);
+		}
+	}
+	catch (...)
+	{
+		;
+	}
+	
+	
 }
 
 void mw::Controller::PostUpdateUI(int wind_id)

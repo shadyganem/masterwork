@@ -48,7 +48,7 @@
     <ClInclude Include="inc\model\User.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\model\mwProject.h">
+    <ClInclude Include="inc\model\Project.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\model\Task.h">
@@ -105,6 +105,9 @@
     <ClInclude Include="inc\view\NotificationsWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="inc\controller\NotificationFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\MainFrame.cpp">
@@ -137,7 +140,7 @@
     <ClCompile Include="src\User.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mwProject.cpp">
+    <ClCompile Include="src\Project.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Task.cpp">
@@ -192,6 +195,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\NotificationsWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NotificationFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

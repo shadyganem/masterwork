@@ -205,6 +205,18 @@ void mw::MainFrame::On1SecTimer(wxTimerEvent& event)
 	{
 		m_3_sec_check++;
 	}
+
+
+	// check notifications for all projects every one minute
+	if (m_1_min_counter == 59)
+	{
+		m_1_min_counter = 0;
+		controller.UpdateNotifications();
+	}
+	else
+	{
+		m_1_min_counter++;
+	}
 }
 
 void mw::MainFrame::OnNewTaskButton(wxCommandEvent& event)

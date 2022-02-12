@@ -60,7 +60,7 @@ mw::NewProjectFrame::~NewProjectFrame()
 
 }
 
-void mw::NewProjectFrame::SetProject(mwProject& project)
+void mw::NewProjectFrame::SetProject(mw::Project& project)
 {
 	m_project = project;
 	m_project_name_textbox->SetLabel(m_project.name);
