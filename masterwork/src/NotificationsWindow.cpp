@@ -48,6 +48,8 @@ void mw::NotificationsWindow::OnUpdateUI(wxEvent& event)
 		m_notifications_sizer->Add(panel, 0, wxEXPAND | wxALL, 1);
 
 		m_notif_panel_to_notif_map[panel] = notif_vect[i];
+		this->m_notifications_sizer->Layout();
+
 	}
 	this->m_notifications_sizer->Layout();
 	wxSize size = this->GetBestVirtualSize();

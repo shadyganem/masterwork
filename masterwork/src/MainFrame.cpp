@@ -208,14 +208,14 @@ void mw::MainFrame::On1SecTimer(wxTimerEvent& event)
 
 
 	// check notifications for all projects every one minute
-	if (m_1_min_counter == 59)
+	if (m_30_sec_counter == 29)
 	{
-		m_1_min_counter = 0;
+		m_30_sec_counter = 0;
 		controller.UpdateNotifications();
 	}
 	else
 	{
-		m_1_min_counter++;
+		m_30_sec_counter++;
 	}
 }
 

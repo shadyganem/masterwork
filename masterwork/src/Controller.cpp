@@ -305,7 +305,9 @@ void mw::Controller::UpdateNotifications()
 {
 	try
 	{
-		NotificationFactory notifications_maker;
+		m_status_bar_text = "Updating Notifications";
+		this->PostUpdateUI(MAIN_FRAME_ID);
+			
 		std::vector<mw::Project> projects;
 		std::vector<mw::Task> tasks;
 		std::vector<mw::Notification> notifications;
@@ -315,8 +317,7 @@ void mw::Controller::UpdateNotifications()
 		{
 			tasks.clear();
 			m_model.GetAllTasks(tasks, projects[i]);
-			notifications_maker.SetTasks(tasks);
-			notifications_maker.GetNotifications(notifications);
+			NotificationFactory::GetNotifications(notifications, tasks);
 		}
 		bool update_ui = false;
 		for (int i = 0; i < notifications.size(); i++)
@@ -327,6 +328,7 @@ void mw::Controller::UpdateNotifications()
 			}
 			this->AddNotification(notifications[i], update_ui);
 		}
+	
 	}
 	catch (...)
 	{

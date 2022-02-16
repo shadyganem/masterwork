@@ -149,6 +149,7 @@ bool Model::AddNotification(mw::Notification& notification)
 	try
 	{
 		notification.StampLastUpdateTime();
+		notification.Hash();
 		if (notification.user_uid == 0)
 		{
 			throw("Can not add Notification with user UID = 0");
@@ -156,9 +157,24 @@ bool Model::AddNotification(mw::Notification& notification)
 		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 			return false;
 
-		std::string sql = "INSERT INTO notifications(user_uid, text, status, priority, repeat, start_time, end_time, last_update, ttl, color) "
-			              "VALUES (\"" + std::to_string(notification.user_uid) + "\"  ,"
+		Records records;
+
+
+		std::string sql = "SELECT * FROM notifications WHERE hash=" + std::to_string(notification.hash) + " ;";
+
+		m_db_handler.Select(sql.c_str(), records);
+
+
+		if (records.size() > 0)
+		{
+			return true;
+		}
+
+		sql = "INSERT INTO notifications(user_uid,hash, text, details, status, priority, repeat, start_time, end_time, last_update, ttl, color) "
+			              "VALUES (\"" + std::to_string(notification.user_uid) + "\" , "
+			              + std::to_string(notification.hash) + ", "
 			              "\"" + notification.text + "\","
+                          "\"" + notification.details + "\","
 			              + std::to_string(notification.status)      + ", "
 			              + std::to_string(notification.priority)    + ", "
 			              + std::to_string(notification.repeat)      +   ", "
@@ -169,7 +185,6 @@ bool Model::AddNotification(mw::Notification& notification)
 			              + std::to_string(notification.color)       + " "
 			              "); ";
 		m_db_handler.ExeQuery(sql.c_str());
-
 
 
 		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
@@ -451,15 +466,17 @@ bool Model::GetAllNotifications(std::vector<mw::Notification>& notifications_vec
 			row = records[i];
 			notification.uid = std::stoi(row[0]);
 			notification.user_uid = std::stoi(row[1]);
-			notification.text = row[2];
-			notification.status = (mw::NotificationStatus)std::stoi(row[3]);
-			notification.priority = std::stoi(row[4]);
-			notification.repeat = std::stoi(row[5]);
-			notification.start_time = std::stoi(row[6]);
-			notification.end_time = std::stoi(row[7]);
-			notification.last_update = std::stoi(row[8]);
-			notification.ttl = std::stoi(row[9]);
-			notification.color = std::stoi(row[9]);
+			notification.hash = std::stoull(row[2]);
+			notification.text = row[3];
+			notification.details = row[4];
+			notification.status = (mw::NotificationStatus)std::stoi(row[5]);
+			notification.priority = std::stoi(row[6]);
+			notification.repeat = std::stoi(row[7]);
+			notification.start_time = std::stoi(row[8]);
+			notification.end_time = std::stoi(row[9]);
+			notification.last_update = std::stoi(row[10]);
+			notification.ttl = std::stoi(row[11]);
+			notification.color = std::stoi(row[12]);
 
 			notifications_vect.push_back(notification);
 		}
@@ -813,6 +830,7 @@ bool Model::UpdateNotification(mw::Notification& notification)
 
 		std::string sql = "UPDATE notifications "
 			"SET text=\"" + notification.text + "\", "
+			"details=\"" + notification.details +"\", "
 			"status=\"" + std::to_string(notification.status) + "\" "
 			"priority=\"" + std::to_string(notification.priority) + "\" "
 
@@ -957,8 +975,9 @@ bool Model::InitNotificationsTable()
 	const char* sql = "CREATE TABLE IF NOT EXISTS \"notifications\" (      "
 						"\"uid\"	        INTEGER NOT NULL UNIQUE,       "
 						"\"user_uid\"	    INTEGER NOT NULL DEFAULT 1,    "
+						"\"hash\"	        BIGINT NOT NULL DEFAULT 0,    "
 						"\"text\"	        TEXT,                          "
-		                "\"details\"	    TEXT,                          "
+		                "\"details\"	    TEXT NOT NULL ,    "
 						"\"status\"	        INTEGER NOT NULL DEFAULT 0,    "
 						"\"priority\"	    INTEGER NOT NULL DEFAULT 2,    "
 		                "\"repeat\"	        INTEGER NOT NULL DEFAULT 1,    "

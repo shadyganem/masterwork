@@ -11,6 +11,7 @@
 #include <vector>
 #include <map>
 #include "controller/NotificationFactory.h"
+#include <thread>
 
 namespace mw
 {

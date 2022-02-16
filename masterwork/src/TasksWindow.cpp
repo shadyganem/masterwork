@@ -81,6 +81,7 @@ void mw::TasksWindow::OnUpdateUI(wxEvent& event)
 			task_panel->SetTask(tasks[i]);
 			m_taskpanel_to_task_map[task_panel] = tasks[i];
 			this->m_tasks_sizer->Add(task_panel, 0, wxEXPAND | wxALL, 1);
+			this->m_tasks_sizer->Layout();
 		}
 	}
 	m_tasks_sizer->Add(m_new_task_button, 0, wxALIGN_CENTER, 5);

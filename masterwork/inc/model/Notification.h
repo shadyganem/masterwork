@@ -2,6 +2,8 @@
 #include "model/mwModelItem.h"
 #include <string>
 #include <ctime>
+#include <functional>
+
 
 namespace mw
 {
@@ -19,11 +21,15 @@ namespace mw
 		void SetUid(int uid);
 		int GetStatus();
 		int GetUid();
+		void SetHashToken(int token);
 		void StampLastUpdateTime();
 		void UpdateTimeToLive();
+		void Hash();
+		void Hash(time_t any);
 
 
 		int uid;
+		unsigned long long hash;
 		int user_uid;
 		int task_uid;
 		std::string text;
@@ -36,6 +42,9 @@ namespace mw
 		time_t last_update;
 		int ttl;
 		int color;
+
+	private:
+		int hash_token;
 	};
 }
 
