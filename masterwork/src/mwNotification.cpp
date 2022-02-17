@@ -67,5 +67,10 @@ void mw::Notification::Hash(time_t any)
 	this->hash = hasher(hash_str);
 }
 
+void mw::Notification::DecrementRepeat()
+{
+	repeat--;
+}
+
 
 

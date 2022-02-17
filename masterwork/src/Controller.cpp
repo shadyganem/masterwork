@@ -115,17 +115,6 @@ void mw::Controller::RegisterEventHandler(int id, wxEvtHandler* event_handler)
 	}
 }
 
-void mw::Controller::AddTask(std::string name, std::string dec)
-{
-	Task task(name, dec);
-	task.StampCreationTime();
-	task.StampLastUpdateTime();
-	m_mutex.Lock();
-	m_model.AddTask(task);
-	m_mutex.Unlock();
-	PostUpdateUI(MAIN_FRAME_ID);
-}
-
 void mw::Controller::DeleteTask(Task& task)
 {
 	task.StampLastUpdateTime();
@@ -236,6 +225,17 @@ void mw::Controller::AddUser(mw::User& user, bool set_active, bool post_update_u
 	}
 }
 
+void mw::Controller::UpdateNotification(mw::Notification& notification, bool post_update_ui)
+{
+	m_mutex.Lock();
+	m_model.UpdateNotification(notification);
+	m_mutex.Unlock();
+	if (post_update_ui)
+	{
+		this->PostUpdateUI(NOTIFICATIONS_WINDOW_ID);
+	}
+}
+
 void mw::Controller::GetAllUsers(std::vector<mw::User>& users)
 {
 	m_model.GetAllUsers(users);
@@ -305,6 +305,10 @@ void mw::Controller::UpdateNotifications()
 {
 	try
 	{
+		mw::Logger logger;
+		logger.SetLogLevel(mw::LogLevel::DEBUG);
+		logger.Debug("updating notificaitons");
+		logger.SetLogLevel(mw::LogLevel::DISABLE);
 		m_status_bar_text = "Updating Notifications";
 		this->PostUpdateUI(MAIN_FRAME_ID);
 			
@@ -328,14 +332,11 @@ void mw::Controller::UpdateNotifications()
 			}
 			this->AddNotification(notifications[i], update_ui);
 		}
-	
 	}
 	catch (...)
 	{
 		;
 	}
-	
-	
 }
 
 void mw::Controller::PostUpdateUI(int wind_id)

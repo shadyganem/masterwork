@@ -820,7 +820,6 @@ bool Model::UpdateUser(mw::User& user)
 
 bool Model::UpdateNotification(mw::Notification& notification)
 {
-	mw::Logger logger;
 	try
 	{
 		notification.StampLastUpdateTime();
@@ -831,19 +830,15 @@ bool Model::UpdateNotification(mw::Notification& notification)
 		std::string sql = "UPDATE notifications "
 			"SET text=\"" + notification.text + "\", "
 			"details=\"" + notification.details +"\", "
-			"status=\"" + std::to_string(notification.status) + "\" "
-			"priority=\"" + std::to_string(notification.priority) + "\" "
-
-			"repeat=\"" + std::to_string(notification.repeat) + "\" "
-			"end_time=\"" + std::to_string(notification.end_time) + "\" "
-			"last_update=\"" + std::to_string(notification.last_update) + "\" "
-
-			"ttl=\"" + std::to_string(notification.ttl) + "\" "
+			"status=\"" + std::to_string(notification.status) + "\", "
+			"priority=\"" + std::to_string(notification.priority) + "\", "
+			"repeat=\"" + std::to_string(notification.repeat) + "\", "
+			"end_time=\"" + std::to_string(notification.end_time) + "\", "
+			"last_update=\"" + std::to_string(notification.last_update) + "\", "
+			"ttl=\"" + std::to_string(notification.ttl) + "\", "
 			"color=\"" + std::to_string(notification.color) + "\" "
 
 			"WHERE uid=" + std::to_string(notification.uid) + " ;";
-
-		logger.Info("Executinig query " + sql);
 
 		m_db_handler.Update(sql.c_str());
 
@@ -853,6 +848,7 @@ bool Model::UpdateNotification(mw::Notification& notification)
 	}
 	catch (...)
 	{
+		mw::Logger logger;
 		logger.Error("Exception occured at bool mwModel::AddTask(mwTask& task)");
 		m_db_handler.DisConn(this->m_db_path.c_str());
 		return false;

@@ -38,7 +38,6 @@ namespace mw
 		wxString GetInfoBarText(void);
 		void RegisterMainFrame(wxEvtHandler* mf);
 		void RegisterEventHandler(int ID, wxEvtHandler* event_handler);
-		void AddTask(std::string name, std::string dec);
 		void DeleteTask(Task& task);
 		void UnArchiveTask(Task& task);
 		void DeleteProject(Project& project);
@@ -46,6 +45,7 @@ namespace mw
 		void AddProject(Project& project, bool post_update_ui = true);
 		void AddNotification(mw::Notification& notification, bool post_update_ui = true);
 		void AddUser(mw::User& user, bool set_active=false, bool post_update_ui = true);
+		void UpdateNotification(mw::Notification& notification, bool post_update_ui = true);
 		void GetAllUsers(std::vector<mw::User>& users);
 		void GetProjectsForActiveUser(std::vector<std::string>& projects);
 		void GetProjectsForActiveUser(std::vector<Project>& projects);

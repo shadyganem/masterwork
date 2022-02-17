@@ -67,7 +67,7 @@ void mw::NotificationFactory::GetNotifications(std::vector<mw::Notification>& no
 			{
 				notification.task_uid = tasks[i].uid;
 				notification.text = "Due in 15: " + tasks[i].name;
-				notification.SetHashToken(tasks[i].start_time);
+				notification.SetHashToken(tasks[i].deadline);
 				notifications.push_back(notification);
 			}
 		}
@@ -77,7 +77,7 @@ void mw::NotificationFactory::GetNotifications(std::vector<mw::Notification>& no
 			{
 				notification.task_uid = tasks[i].uid;
 				notification.text = "Update Required: " + tasks[i].name;
-				notification.SetHashToken(tasks[i].start_time);
+				notification.SetHashToken(tasks[i].deadline);
 				notifications.push_back(notification);
 			}
 		}

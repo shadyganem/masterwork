@@ -26,6 +26,7 @@ namespace mw
 		void UpdateTimeToLive();
 		void Hash();
 		void Hash(time_t any);
+		void DecrementRepeat();
 
 
 		int uid;

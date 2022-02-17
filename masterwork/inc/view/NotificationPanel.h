@@ -3,6 +3,7 @@
 #include "wx/wx.h"
 #include "view/Button.h"
 #include "model/Notification.h"
+#include "controller/Controller.h"
 
 namespace mw
 {
