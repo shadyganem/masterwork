@@ -2,7 +2,7 @@
 
 #define MW_VERSION "1.1.0"
 
-enum handler_id
+enum UI_COMPONENTS_ID
 {
 	MAIN_FRAME_ID = 10000,
 	SIDE_PANEL_ID,

@@ -62,11 +62,11 @@ void mw::ArchiveWindow::OnUpdateUI(wxEvent& event)
 			task_panel->SetTask(tasks[i]);
 			m_taskpanel_to_task_map[task_panel] = tasks[i];
 			m_tasks_sizer->Add(task_panel, 0, wxEXPAND | wxALL, 1);
+			this->m_tasks_sizer->Layout();
 		}
 	}
 	wxSize size = this->GetBestVirtualSize();
 	this->SetVirtualSize(size);
-	this->m_tasks_sizer->Layout();
 	this->Refresh();
 }
 
