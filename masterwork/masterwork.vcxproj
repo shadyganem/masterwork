@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="inc\view\GroupPane.h" />
     <ClInclude Include="inc\view\Button.h" />
     <ClInclude Include="inc\view\AboutFrame.h" />
     <ClInclude Include="inc\MasterWork.h" />
@@ -52,6 +53,7 @@
     <ClInclude Include="inc\controller\NotificationFactory.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\GroupPane.cpp" />
     <ClCompile Include="src\NotificationFactory.cpp" />
     <ClCompile Include="src\Button.cpp" />
     <ClCompile Include="src\ArchiveWindow.cpp" />
