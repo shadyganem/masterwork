@@ -9,6 +9,7 @@
 #include "view/Button.h"
 #include<chrono>
 
+#include "view/CollapsibleGroupPane.h"
 
 namespace mw
 {

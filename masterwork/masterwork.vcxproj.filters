@@ -108,7 +108,7 @@
     <ClInclude Include="inc\controller\NotificationFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\view\GroupPane.h">
+    <ClInclude Include="inc\view\CollapsibleGroupPane.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -203,7 +203,7 @@
     <ClCompile Include="src\NotificationFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\GroupPane.cpp">
+    <ClCompile Include="src\CollapsibleGroupPane.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
