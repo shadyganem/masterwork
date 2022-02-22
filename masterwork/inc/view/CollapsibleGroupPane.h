@@ -11,6 +11,7 @@ namespace mw
 	public:
 		CollapsibleGroupPane(wxWindow* parent, wxWindowID id, const wxString& label, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxCP_DEFAULT_STYLE, const wxValidator& validator = wxDefaultValidator, const wxString& name = wxCollapsiblePaneNameStr);
 		~CollapsibleGroupPane();
-
+		wxWindow* m_window;
+		wxBoxSizer* m_main_sizer;
 	};
 }
