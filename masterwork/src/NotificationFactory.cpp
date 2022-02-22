@@ -77,7 +77,7 @@ void mw::NotificationFactory::GetNotifications(std::vector<mw::Notification>& no
 			{
 				notification.task_uid = tasks[i].uid;
 				notification.text = "Update Required: " + tasks[i].name;
-				notification.SetHashToken(tasks[i].deadline);
+				notification.SetHashToken(tasks[i].last_update);
 				notifications.push_back(notification);
 			}
 		}
