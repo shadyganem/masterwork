@@ -52,6 +52,7 @@
     <ClInclude Include="inc\view\NewUserFrame.h" />
     <ClInclude Include="inc\view\TaskEditPanel.h" />
     <ClInclude Include="inc\controller\NotificationFactory.h" />
+    <ClInclude Include="inc\controller\StagehandThread.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Exceptions.cpp" />
@@ -86,6 +87,7 @@
     <ClCompile Include="src\WorkPanel.cpp" />
     <ClCompile Include="src\sqlite3.c" />
     <ClCompile Include="src\TaskEditPanel.cpp" />
+    <ClCompile Include="src\StagehandThread.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="resources\style\style.xml" />

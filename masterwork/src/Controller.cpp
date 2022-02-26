@@ -325,9 +325,6 @@ void mw::Controller::UpdateNotifications()
 	try
 	{
 		mw::Logger logger;
-		logger.SetLogLevel(mw::LogLevel::DEBUG);
-		logger.Debug("updating notificaitons");
-		logger.SetLogLevel(mw::LogLevel::DISABLE);
 		m_status_bar_text = "Updating Notifications";
 		this->PostUpdateUI(MAIN_FRAME_ID);
 			

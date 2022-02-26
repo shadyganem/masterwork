@@ -77,6 +77,8 @@ mw::MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize
 	m_main_panel_hor_sizer1->Add(main_panel_ver_sizer3, 0, wxEXPAND | wxLEFT, 5);
 	m_main_panel->SetSizer(m_main_panel_hor_sizer1);
 	m_1sec_timer->Start(1000);
+
+	this->InitStagehandThread();
 }
 
 mw::MainFrame::~MainFrame()
@@ -146,6 +148,61 @@ void mw::MainFrame::InitColorScheme()
 	m_side_panel_bg = wxColor(37, 37, 38);
 }
 
+void mw::MainFrame::InitStagehandThread()
+{
+	// Starting the stagehand thread
+	mw::Logger logger;
+	logger.SetLogLevel(mw::LogLevel::DEBUG);
+	m_stagehand_thread = new StagehandThread();
+	if (m_stagehand_thread->Run() != wxTHREAD_NO_ERROR)
+	{
+		logger.Error("Can't create the thread!");
+		delete m_stagehand_thread;
+		m_stagehand_thread = NULL;
+	}
+}
+
+void mw::MainFrame::PauseStagehandThread()
+{
+	mw::Logger logger;
+	if (m_stagehand_thread)         // does the thread still exist?
+	{
+
+		if (m_stagehand_thread->Pause() != wxTHREAD_NO_ERROR)
+			logger.Error("Can't pause Stagehand thread!");
+	}
+}
+
+void mw::MainFrame::ResumeStagehandThread()
+{
+	mw::Logger logger;
+	if (m_stagehand_thread)         // does the thread still exist?
+	{
+		if (m_stagehand_thread->Resume() != wxTHREAD_NO_ERROR)
+			logger.Error("Can't Resume Stagehand thread!");
+	}
+}
+
+void mw::MainFrame::TerminateStagehandThread()
+{
+	// ending the stagehand thread
+
+	mw::Logger logger;
+
+	if (m_stagehand_thread)         // does the thread still exist?
+	{
+		if (m_stagehand_thread->Delete() != wxTHREAD_NO_ERROR)
+			logger.Error("Can't delete Stagehand thread!");
+	}
+    
+	while (1)
+	{
+		if (!m_stagehand_thread) 
+			break;
+		wxThread::This()->Sleep(1);
+	}
+}
+
 void mw::MainFrame::ShowStutusBarMessage(const wxString& msg)
 {
 	m_3_sec_check = 0;
@@ -159,6 +216,10 @@ void mw::MainFrame::SetStatusBarBackgrounColor(const wxColor& color)
 
 void mw::MainFrame::OnExit(wxCommandEvent& event)
 {
+	mw::Controller& controller = mw::Controller::Get();
+	controller.SetStatusBarText("Cleaning Up...");
+	this->TerminateStagehandThread();
+
 	Close();
 	event.Skip();
 }

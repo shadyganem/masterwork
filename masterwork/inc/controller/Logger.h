@@ -6,6 +6,7 @@
 #include <fstream>
 #include <mutex>
 #include <ctime>
+#include "wx/thread.h"
 
 namespace mw
 { 
@@ -42,7 +43,7 @@ namespace mw
 
 	private:
 		bool m_debug;
-
+		int m_thread_id;
 	};
 }
 

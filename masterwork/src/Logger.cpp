@@ -12,6 +12,7 @@ mw::Logger::Logger()
 	{
 		std::string full_file_name = this->filepath + "mw.log";
 		m_file.open(full_file_name, std::ofstream::app);
+		m_thread_id = wxThread::GetCurrentId();
 	}
 	catch (...)
 	{
@@ -26,6 +27,7 @@ mw::Logger::Logger(std::string path)
 	{
 		std::string full_file_name = this->filepath + "mw.log";
 		m_file.open(full_file_name, std::ofstream::app);
+		m_thread_id = wxThread::GetCurrentId();
 	}
 	catch (...)
 	{
@@ -91,7 +93,7 @@ void mw::Logger::Info(std::string msg)
 	std::string time = std::asctime(std::localtime(&result));
 	time.pop_back();
 	m_mutex.lock();
-	m_file << "[INFO]:" << time << " - " << msg << std::endl;
+	m_file << "[INFO]::" << m_thread_id << "::" << time << " - " << msg << std::endl;
 	m_mutex.unlock();
 }
 
@@ -103,7 +105,7 @@ void mw::Logger::Error(std::string msg)
 	std::string time = std::asctime(std::localtime(&result));
 	time.pop_back();
 	m_mutex.lock();
-	m_file << "[Error]:" << time << " - " << msg << std::endl;
+	m_file << "[Error]::" << m_thread_id << "::" << time << " - " << msg << std::endl;
 	m_mutex.unlock();
 }
 
@@ -115,7 +117,7 @@ void mw::Logger::Warning(std::string msg)
 	std::string time = std::asctime(std::localtime(&result));
 	time.pop_back();
 	m_mutex.lock();
-	m_file << "[Warning]:" << time << " - " << msg << std::endl;
+	m_file << "[Warning]::" << m_thread_id << "::" << time << " - " << msg << std::endl;
 	m_mutex.unlock();
 }
 
@@ -127,6 +129,6 @@ void mw::Logger::Debug(std::string msg)
 	std::string time = std::asctime(std::localtime(&result));
 	time.pop_back();
 	m_mutex.lock();
-	m_file << "[Debug]:" << time << " - " << msg << std::endl;
+	m_file << "[Debug]::" << m_thread_id << "::" << time << " - " << msg << std::endl;
 	m_mutex.unlock();
 }

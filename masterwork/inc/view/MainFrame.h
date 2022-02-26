@@ -15,6 +15,8 @@
 #include "view/NewUserFrame.h"
 #include "view/CollapsibleNotificationsPanel.h"
 
+#include "controller/StagehandThread.h"
+
 namespace mw
 {
 	class MainFrame : public wxFrame
@@ -27,6 +29,10 @@ namespace mw
 		void InitMenuBar();
 		void InitStatusBar();
 		void InitColorScheme();
+		void InitStagehandThread();
+		void PauseStagehandThread();
+		void ResumeStagehandThread();
+		void TerminateStagehandThread();
 		// private method
 		void ShowStutusBarMessage(const wxString& msg);
 		void SetStatusBarBackgrounColor(const wxColor& color);
@@ -55,6 +61,7 @@ namespace mw
 		wxColor m_tool_bar_bg = wxColor(61, 61, 61);
 		wxColor m_side_panel_bg = wxColor(37, 37, 38);
 	private:
+		mw::StagehandThread* m_stagehand_thread;
 		// any class wishing to process wxWidgets events must use this macro
 		DECLARE_EVENT_TABLE()
 		// event handlers
@@ -79,5 +86,9 @@ namespace mw
 		int m_30_sec_counter;
 		bool m_ready_msg;
 		bool m_notification_panel_hidden;
+
+		wxCriticalSection m_stagehand_thread_CS;    // protects the m_stagehand_thread pointer
+
+
 	};
 }
