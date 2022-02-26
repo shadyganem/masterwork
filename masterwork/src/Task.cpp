@@ -9,6 +9,7 @@ mw::Task::Task()
 	priority = TaskPriority::MEDIUM;
 	deadline = 0;
 	parent_uid = 0;
+	this->notification_enabled = true;
 }
 
 mw::Task::~Task()
@@ -101,4 +102,5 @@ mw::Task::Task(std::string task_name, std::string task_description)
 	project_uid = 0;
 	std::time(&start_time);
 	std::time(&last_update);
+	this->notification_enabled = true;
 }

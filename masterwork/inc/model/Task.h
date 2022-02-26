@@ -54,6 +54,7 @@ namespace mw
 		int red;
 		int green;
 		int blue;
+		bool notification_enabled;
 
 	};
 }

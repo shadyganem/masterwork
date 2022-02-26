@@ -15,33 +15,48 @@ mw::NewTaskFrame::NewTaskFrame(wxWindow* parent, wxWindowID id, const wxString& 
 	wxBoxSizer* m_form_sizer;
 	m_form_sizer = new wxBoxSizer(wxVERTICAL);
 
+	wxBoxSizer* bSizer40;
+	bSizer40 = new wxBoxSizer(wxHORIZONTAL);
+
 	m_task_name_static = new wxStaticText(m_main_panel, wxID_ANY, wxT("Task Name"), wxDefaultPosition, wxDefaultSize, 0);
 	m_task_name_static->Wrap(-1);
-	m_form_sizer->Add(m_task_name_static, 0, wxALL, 5);
+	bSizer40->Add(m_task_name_static, 0, wxALL, 5);
 
 	m_task_name = new wxTextCtrl(m_main_panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_CAPITALIZE);
-	m_task_name->IsMultiLine();
-	m_form_sizer->Add(m_task_name, 0, wxALL | wxEXPAND, 5);
+	bSizer40->Add(m_task_name, 1, wxALL, 5);
+
+	m_form_sizer->Add(bSizer40, 0, wxEXPAND, 5);
 
 	m_task_description_static = new wxStaticText(m_main_panel, wxID_ANY, wxT("Task Description"), wxDefaultPosition, wxDefaultSize, 0);
 	m_task_description_static->Wrap(-1);
 	m_form_sizer->Add(m_task_description_static, 0, wxALL, 5);
 
 	m_task_description = new wxTextCtrl(m_main_panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_CAPITALIZE | wxTE_MULTILINE | wxTE_RICH);
-	m_form_sizer->Add(m_task_description, 0, wxALL | wxEXPAND, 5);
+	m_task_description->SetMaxLength(500);
+	m_form_sizer->Add(m_task_description, 1, wxALL | wxEXPAND, 5);
 
-	wxBoxSizer* bSizer48;
-	bSizer48 = new wxBoxSizer(wxHORIZONTAL);
+	wxFlexGridSizer* fgSizer1;
+	fgSizer1 = new wxFlexGridSizer(3, 2, 0, 0);
+	fgSizer1->SetFlexibleDirection(wxBOTH);
+	fgSizer1->SetNonFlexibleGrowMode(wxFLEX_GROWMODE_SPECIFIED);
+
+	wxBoxSizer* m_priority_sizer;
+	m_priority_sizer = new wxBoxSizer(wxHORIZONTAL);
 
 	m_priority_static = new wxStaticText(m_main_panel, wxID_ANY, wxT("Priority"), wxDefaultPosition, wxDefaultSize, 0);
 	m_priority_static->Wrap(-1);
-	bSizer48->Add(m_priority_static, 0, wxALL, 5);
+	m_priority_sizer->Add(m_priority_static, 1, wxALL | wxEXPAND, 5);
 
 	wxString m_priority_choiceChoices[] = { wxT("High"), wxT("Medium"), wxT("Low"), wxT("ShowStopper") };
 	int m_priority_choiceNChoices = sizeof(m_priority_choiceChoices) / sizeof(wxString);
 	m_priority_choice = new wxChoice(m_main_panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_priority_choiceNChoices, m_priority_choiceChoices, 0);
-	m_priority_choice->SetSelection(0);
-	bSizer48->Add(m_priority_choice, 0, wxALL, 5);
+	m_priority_choice->SetSelection(1);
+	m_priority_sizer->Add(m_priority_choice, 0, wxALL, 5);
+
+	fgSizer1->Add(m_priority_sizer, 0, 0, 5);
+
+	wxBoxSizer* bSizer48;
+	bSizer48 = new wxBoxSizer(wxHORIZONTAL);
 
 	m_status_static = new wxStaticText(m_main_panel, wxID_ANY, wxT("Status"), wxDefaultPosition, wxDefaultSize, 0);
 	m_status_static->Wrap(-1);
@@ -53,7 +68,7 @@ mw::NewTaskFrame::NewTaskFrame(wxWindow* parent, wxWindowID id, const wxString& 
 	m_status_choice->SetSelection(0);
 	bSizer48->Add(m_status_choice, 0, wxALL, 5);
 
-	m_form_sizer->Add(bSizer48, 0, wxEXPAND, 5);
+	fgSizer1->Add(bSizer48, 1, 0, 5);
 
 	wxBoxSizer* bSizer50;
 	bSizer50 = new wxBoxSizer(wxHORIZONTAL);
@@ -63,13 +78,19 @@ mw::NewTaskFrame::NewTaskFrame(wxWindow* parent, wxWindowID id, const wxString& 
 	bSizer50->Add(m_deadline_static, 0, wxALL, 5);
 
 	m_deadline_timepicker = new wxTimePickerCtrl(m_main_panel, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_SHOWCENTURY);
-
 	bSizer50->Add(m_deadline_timepicker, 0, wxALL, 5);
 
-	m_deadline_datepicker = new wxDatePickerCtrl(m_main_panel, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DROPDOWN);
+
+	m_deadline_datepicker = new wxDatePickerCtrl(m_main_panel, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT);
 	bSizer50->Add(m_deadline_datepicker, 0, wxALL, 5);
 
-	m_form_sizer->Add(bSizer50, 1, wxEXPAND, 5);
+	fgSizer1->Add(bSizer50, 0, wxEXPAND, 5);
+
+	m_enable_notifications = new wxCheckBox(m_main_panel, wxID_ANY, wxT("Enable Notifications"), wxDefaultPosition, wxDefaultSize, 0);
+	m_enable_notifications->Set3StateValue(wxCheckBoxState::wxCHK_CHECKED);
+	fgSizer1->Add(m_enable_notifications, 0, wxALL, 5);
+
+	m_form_sizer->Add(fgSizer1, 1, wxEXPAND, 5);
 
 	m_main_panel_sizer->Add(m_form_sizer, 10, wxEXPAND, 5);
 
@@ -82,7 +103,7 @@ mw::NewTaskFrame::NewTaskFrame(wxWindow* parent, wxWindowID id, const wxString& 
 	m_cancel_button = new wxButton(m_main_panel, wxID_ANY, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0);
 	bSizer47->Add(m_cancel_button, 0, wxALL, 5);
 
-	m_main_panel_sizer->Add(bSizer47, 1, wxALIGN_RIGHT, 5);
+	m_main_panel_sizer->Add(bSizer47, 0, wxALIGN_RIGHT, 5);
 
 	m_main_panel->SetSizer(m_main_panel_sizer);
 	m_main_panel->Layout();
@@ -91,6 +112,9 @@ mw::NewTaskFrame::NewTaskFrame(wxWindow* parent, wxWindowID id, const wxString& 
 
 	this->SetSizer(m_top_sizer);
 	this->Layout();
+
+
+
 
 	// Connect Events
 	m_done_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(NewTaskFrame::OnDoneButton), NULL, this);
@@ -115,6 +139,9 @@ void mw::NewTaskFrame::SetTask(mw::Task& task)
 	wxDateTime deadline(task.deadline);
 	m_deadline_datepicker->SetValue(deadline);
 	m_deadline_timepicker->SetValue(deadline);
+
+	wxCheckBoxState checkbox_state = (task.notification_enabled == true) ? wxCheckBoxState::wxCHK_CHECKED : wxCheckBoxState::wxCHK_UNCHECKED;
+	m_enable_notifications->Set3StateValue(checkbox_state);
 }
 
 void mw::NewTaskFrame::OnCancelButton(wxCommandEvent& event)
@@ -223,6 +250,9 @@ void mw::NewTaskFrame::OnDoneButton(wxCommandEvent& event)
 		m_task.description += this->m_task_description->GetLineText(i).ToStdString();
 		m_task.description += "\n";
 	}
+
+
+	m_task.notification_enabled = (m_enable_notifications->IsChecked() == true) ? true : false;
 	
 	this->SetTaskPriority();
 	this->SetTaskStatus();

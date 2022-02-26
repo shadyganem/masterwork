@@ -31,7 +31,6 @@ public:
 	bool GetAllProjects(std::vector<mw::Project>& prjects_vect, const mw::User& currnet_user);
 	bool GetAllNotifications(std::vector<mw::Notification>& notifications_vect, const mw::User& currnet_user);
 	bool SetActiveProject(mw::Project& project);
-	bool GetProjectTasks(mw::Project& project,  std::vector<mw::Task>& ret_tasks_vect);
 	bool GetAllTasks(std::vector<mw::Task>& tasks, mw::Project& current_project);
 	bool GetArchiveAllTasks(std::vector<mw::Task>& tasks, mw::Project& current_project);
 	bool IsTaskFound(mw::Task& task);

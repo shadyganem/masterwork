@@ -122,10 +122,10 @@ mw::TaskPanel::TaskPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, co
 	m_static_task_name->Wrap(-1);
 	bSizer17->Add(m_static_task_name, 1, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
-	m_static_description = new wxStaticText(this, wxID_ANY, wxT("Task description"), wxDefaultPosition, wxDefaultSize, 0);
-	m_static_description->Wrap(-1);
-	m_static_description->Hide();
-	bSizer17->Add(m_static_description, 1, wxALL, 5);
+	//m_static_description = new wxStaticText(this, wxID_ANY, wxT("Task description"), wxDefaultPosition, wxDefaultSize, 0);
+	//m_static_description->Wrap(-1);
+	//m_static_description->Hide();
+	//bSizer17->Add(m_static_description, 1, wxALL, 5);
 
 	main_sizer->Add(bSizer17, 1, wxEXPAND, 5);
 

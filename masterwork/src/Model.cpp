@@ -117,7 +117,9 @@ bool Model::AddTask(mw::Task& task)
 		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 			return false;
 
-		std::string sql = "INSERT INTO tasks(name, parent_uid, description, status, priority, start_time, deadline, project_uid, last_update)"
+		int noti_en; 
+		noti_en = (task.notification_enabled == true) ? 1 : 0;
+		std::string sql = "INSERT INTO tasks(name, parent_uid, description, status, priority, start_time, deadline, project_uid, last_update, notification_enabled)"
 			"VALUES (\"" + task.name + "\"  ,"
 			+ std::to_string(task.parent_uid) + ","
 			"\"" + task.description + "\"  ,"
@@ -126,7 +128,8 @@ bool Model::AddTask(mw::Task& task)
 			+ std::to_string(task.start_time) + ","
 			+ std::to_string(task.deadline) + ","
 			+ std::to_string(task.project_uid) + ", "
-			+ std::to_string(task.last_update) + " "
+			+ std::to_string(task.last_update) + ", "
+			+ std::to_string(noti_en) + " "
 			"); ";
 		m_db_handler.ExeQuery(sql.c_str());
 
@@ -523,14 +526,6 @@ bool Model::SetActiveProject(mw::Project& project)
 	}
 }
 
-bool Model::GetProjectTasks(mw::Project& project, std::vector<mw::Task>& ret_tasks_vect)
-{
-	std::vector<std::vector<std::string>> records;
-	std::string sql = "SELECT * FROM ";
-	m_db_handler.Select(sql.c_str(), records);
-	return false;
-}
-
 bool Model::GetAllTasks(std::vector<mw::Task>& tasks, mw::Project& project)
 {
 	try
@@ -569,6 +564,7 @@ bool Model::GetAllTasks(std::vector<mw::Task>& tasks, mw::Project& project)
 			task.red = std::stoi(row[11]);
 			task.green = std::stoi(row[12]);
 			task.blue = std::stoi(row[13]);
+			task.notification_enabled = (std::stoi(row[14]) == 1) ? true : false;
 			tasks.push_back(task);
 		}
 		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
@@ -736,13 +732,15 @@ bool Model::UpdateTask(mw::Task& task)
 		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 			return false;
 
+		int noti_en = task.notification_enabled == true ? 1 : 0;
 		std::string sql = "UPDATE tasks "
 						  "SET name=\"" + task.name + "\", "
 						  "description=\"" + task.description + "\", "
 						  "status=" + std::to_string(task.status) + ", "
 						  "priority=" + std::to_string(task.priority) + ", "
 						  "deadline=" + std::to_string(task.deadline) + ", "
-						  "last_update=" + std::to_string(task.last_update) + " "
+						  "last_update=" + std::to_string(task.last_update) + ", "
+						  "notification_enabled=" + std::to_string(noti_en) + " "
 						  "WHERE uid=" + std::to_string(task.uid) + ";";
 
 		logger.Info("Executinig query " + sql);
@@ -858,7 +856,7 @@ bool Model::UpdateNotification(mw::Notification& notification)
 bool Model::ConnectDb()
 {
 	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
-		return false;
+		throw "Failed to connect to DB ";
 	return true;
 }
 
@@ -935,22 +933,23 @@ bool Model::InitTasksTable()
 	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 		return false;
 
-	const char* sql =  "CREATE TABLE IF NOT EXISTS \"tasks\" ( "
-					   "\"uid\"	INTEGER NOT NULL UNIQUE,       "
-                	   "\"parent_uid\"	INTEGER DEFAULT 0,     "
-					   "\"name\"	    TEXT,                  "
-					   "\"description\"	TEXT,                  "
-                	   "\"status\"	    INTEGER DEFAULT 0,     "
-                	   "\"priority\"	INTEGER DEFAULT 2,     "
-					   "\"start_time\"	INTEGER NOT NULL,      "
-					   "\"end_time\"	INTEGER DEFAULT 0,     "
-		               "\"deadline\"	INTEGER DEFAULT 0,     "
-		               "\"last_update\"	INTEGER DEFAULT 0,     "
-					   "\"project_uid\"	INTEGER DEFAULT 1,     "
-                	   "\"red\"	        INTEGER DEFAULT 0,     "
-		               "\"green\"	    INTEGER DEFAULT 0,     "
-		               "\"blue\"	    INTEGER DEFAULT 0,     "
-					   "PRIMARY KEY(\"uid\" AUTOINCREMENT)     "
+	const char* sql =  "CREATE TABLE IF NOT EXISTS \"tasks\" (      "
+					   "\"uid\"	INTEGER NOT NULL UNIQUE,            "
+                	   "\"parent_uid\"	INTEGER DEFAULT 0,          "
+					   "\"name\"	    TEXT,                       "
+					   "\"description\"	TEXT,                       "
+                	   "\"status\"	    INTEGER DEFAULT 0,          "
+                	   "\"priority\"	INTEGER DEFAULT 2,          "
+					   "\"start_time\"	INTEGER NOT NULL,           "
+					   "\"end_time\"	INTEGER DEFAULT 0,          "
+		               "\"deadline\"	INTEGER DEFAULT 0,          "
+		               "\"last_update\"	INTEGER DEFAULT 0,          "
+					   "\"project_uid\"	INTEGER DEFAULT 1,          "
+                	   "\"red\"	        INTEGER DEFAULT 0,          "
+		               "\"green\"	    INTEGER DEFAULT 0,          "
+		               "\"blue\"	    INTEGER DEFAULT 0,          "
+					   "\"notification_enabled\" BOLLEAN DEFAULT 1, "
+					   "PRIMARY KEY(\"uid\" AUTOINCREMENT)          "
 					   ")";
 	m_mutex.lock();
 	m_db_handler.ExeQuery(sql);

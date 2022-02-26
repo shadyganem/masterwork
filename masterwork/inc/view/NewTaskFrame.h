@@ -46,6 +46,8 @@ namespace mw
 		wxButton* m_cancel_button;
 		wxTimePickerCtrl* m_deadline_timepicker;
 		wxDatePickerCtrl* m_deadline_datepicker;
+		wxCheckBox* m_enable_notifications;
+
 
 
 
