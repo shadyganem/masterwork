@@ -10,7 +10,6 @@ wxThread::ExitCode mw::StagehandThread::Entry()
 	while (!TestDestroy())
 	{
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-		logger.Debug("from stagehand thread");
 	}
 
 	return (wxThread::ExitCode)0;
