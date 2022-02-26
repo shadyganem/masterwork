@@ -27,6 +27,17 @@
 
 namespace mw
 {
+	enum TaskPanelView
+	{
+		DEFAULT,
+		ARCHIVE
+	};
+
+	enum TaskPanelMenuItems
+	{
+		Delete
+	};
+
 	class TaskPanel : public wxPanel
 	{
 	public:
@@ -48,6 +59,8 @@ namespace mw
 		virtual void OnEnterWindow(wxMouseEvent& event);
 		virtual void OnleaveWindow(wxMouseEvent& event);
 		virtual void OnLeftDoubleClick(wxMouseEvent& event);
+		virtual void OnRightUp(wxMouseEvent& event);
+		virtual void OnTaskMenuClick(wxCommandEvent& event);
 		virtual void OnTaskFrameClose(wxWindowDestroyEvent& event);
 		virtual void OnArchive(wxCommandEvent& event);
 		virtual void OnUnarchive(wxCommandEvent& event);
@@ -55,9 +68,9 @@ namespace mw
 
 		void SetTask(mw::Task task);
 		void ResetBackGround();
-		void HideArchiveButton();
-		void ShowUnarchiveButton();
 		void DisableEditing();
+		void EnableEditing();
+		void SetView(mw::TaskPanelView view);
 
 		wxBoxSizer* ver_task_sizer;
 		wxPanel* m_static_view;

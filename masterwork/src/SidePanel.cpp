@@ -85,7 +85,6 @@ void mw::SidePanel::OnNewProjectButton(wxCommandEvent& event)
 void mw::SidePanel::OnProjectListMenuClick(wxCommandEvent& evt)
 {
 	mw::Controller& controller = mw::Controller::Get();
-	mw::Logger logger;
 	int sel_item;
 	mw::Project sel_proj;
 	sel_item = this->m_projects_list->GetSelection();
@@ -95,7 +94,6 @@ void mw::SidePanel::OnProjectListMenuClick(wxCommandEvent& evt)
 	switch (evt.GetId()) 
 	{
 		case ProjectListPopupMenuItems::Rename:
-			logger.Info("renaming " + sel_proj.name);
 			new_project_form->SetProject(sel_proj);
 			new_project_form->CenterOnScreen();
 			new_project_form->Show(true);

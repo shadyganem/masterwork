@@ -39,6 +39,7 @@ namespace mw
 		void RegisterMainFrame(wxEvtHandler* mf);
 		void RegisterEventHandler(int ID, wxEvtHandler* event_handler);
 		void DeleteTask(Task& task);
+		void ArchiveTask(Task& task);
 		void UnArchiveTask(Task& task);
 		void DeleteProject(Project& project);
 		void AddTask(Task& task);

@@ -277,13 +277,33 @@ bool Model::DeleteTask(mw::Task& task)
 		task.StampLastUpdateTime();
 		this->ConnectDb();
 
+		std::string sql = "DELETE FROM tasks WHERE uid=" + std::to_string(task.uid) + " ;";
+
+		m_db_handler.ExeQuery(sql.c_str());
+
+		this->DisconnectDb();
+	}
+	catch (...)
+	{
+		this->DisconnectDb();
+		return false;
+	}
+}
+
+bool Model::ArchiveTask(mw::Task& task)
+{
+	try
+	{
+		task.StampLastUpdateTime();
+		this->ConnectDb();
+
 		std::string sql = "UPDATE tasks "
 			"SET status= " + std::to_string(mw::Task::TaskStatus::DELETED) + " "
 			"WHERE uid=" + std::to_string(task.uid) + " "
 			";";
-		m_db_handler.Update(sql.c_str());
 
 		m_db_handler.Update(sql.c_str());
+
 		this->DisconnectDb();
 	}
 	catch (...)

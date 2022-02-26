@@ -56,9 +56,7 @@ void mw::ArchiveWindow::OnUpdateUI(wxEvent& event)
 		if (!found_tasks.count(tasks[i].uid))
 		{
 			task_panel = new mw::TaskPanel(this);
-			task_panel->HideArchiveButton();
-			task_panel->ShowUnarchiveButton();
-			task_panel->DisableEditing();
+			task_panel->SetView(mw::TaskPanelView::ARCHIVE);
 			task_panel->SetTask(tasks[i]);
 			m_taskpanel_to_task_map[task_panel] = tasks[i];
 			m_tasks_sizer->Add(task_panel, 0, wxEXPAND | wxALL, 1);

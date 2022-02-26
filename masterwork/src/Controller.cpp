@@ -119,8 +119,14 @@ void mw::Controller::DeleteTask(Task& task)
 {
 	task.StampLastUpdateTime();
 	m_model.DeleteTask(task);
-	m_model.GetActiveUser(m_active_user);
-	m_model.GetActiveProject(m_active_project, m_active_user);
+	PostUpdateUI(TASKS_WINDOW_ID);
+	PostUpdateUI(ARCHIVE_WINDOW_ID);
+}
+
+void mw::Controller::ArchiveTask(Task& task)
+{
+	task.StampLastUpdateTime();
+	m_model.ArchiveTask(task);
 	PostUpdateUI(TASKS_WINDOW_ID);
 	PostUpdateUI(ARCHIVE_WINDOW_ID);
 }
