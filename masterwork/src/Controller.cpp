@@ -281,7 +281,20 @@ void mw::Controller::GetArchiveTasksForActiveProject(std::vector<Task>& tasks)
 
 void mw::Controller::RequestUpdateUI(int wind_id)
 {
-	this->PostUpdateUI(wind_id);
+	mw::Logger logger;
+	
+	if (wind_id == -2)
+	{		
+		std::map<int, wxEvtHandler*>::iterator it;
+		for (it = m_event_handlers.begin(); it != m_event_handlers.end(); it++)
+		{
+			this->PostUpdateUI(it->first);
+		}
+	}
+	else
+	{
+		this->PostUpdateUI(wind_id);
+	}
 }
 
 void mw::Controller::SetActiveWindow(int winid)

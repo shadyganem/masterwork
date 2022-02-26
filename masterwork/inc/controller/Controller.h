@@ -52,7 +52,7 @@ namespace mw
 		void GetNotificationsForActiveUser(std::vector<mw::Notification>& notifications);
 		void GetTasksForActiveProject(std::vector<Task>& tasks);
 		void GetArchiveTasksForActiveProject(std::vector<Task>& tasks);
-		void RequestUpdateUI(int wind_id);
+		void RequestUpdateUI(int wind_id=-2);
 		void SetActiveWindow(int winid);
 		int GetNumOfNotifications(int& num, bool poll=true);
 		void UpdateNotifications();

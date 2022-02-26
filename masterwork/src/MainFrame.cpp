@@ -9,6 +9,7 @@ BEGIN_EVENT_TABLE(mw::MainFrame, wxFrame)
 	EVT_MENU(MENU_FILE_NEW_PROJECT_ID, mw::MainFrame::OnNewProject)
 	EVT_MENU(MENU_FILE_NEW_USER_ID, mw::MainFrame::OnNewUser)
 	EVT_MENU(MENU_HELP_ABOUT_ID, mw::MainFrame::OnAboutClick)
+	EVT_MENU(MENU_WINDOW_REFRESH_ID, mw::MainFrame::OnRefresh)
 	EVT_TIMER(MAIN_1SEC_TIMER_ID, mw::MainFrame::On1SecTimer)
 	EVT_SEARCH(MAIN_SEARCH_ID, mw::MainFrame::OnSearch)
 	EVT_BUTTON(TOP_PANEL_NEW_TASK_ID, mw::MainFrame::OnNewTaskButton)
@@ -100,6 +101,7 @@ void mw::MainFrame::InitMenuBar()
 	menu_file->Append(MENU_FILE_EXIT_ID, "Exit");
 	wxMenu* menu_window = new wxMenu();
 	menu_window->Append(MENU_WINDOW_PROPERTIES_ID, "Properties");
+	menu_window->Append(MENU_WINDOW_REFRESH_ID, "Refresh");
 	wxMenu* menu_help = new wxMenu();
 	menu_help->Append(MENU_HELP_ABOUT_ID, "About MasterWork");
 	m_menu_bar->Append(menu_file, "File");
@@ -164,6 +166,12 @@ void mw::MainFrame::OnExit(wxCommandEvent& event)
 void mw::MainFrame::OnProperties(wxCommandEvent& event)
 {
 	ShowStutusBarMessage("Propeties");
+}
+
+void mw::MainFrame::OnRefresh(wxCommandEvent& event)
+{
+	mw::Controller& controller = mw::Controller::Get();
+	controller.RequestUpdateUI();
 }
 
 void mw::MainFrame::OnNewProject(wxCommandEvent& event)
