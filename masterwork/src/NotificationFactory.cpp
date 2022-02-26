@@ -61,24 +61,27 @@ void mw::NotificationFactory::GetNotifications(std::vector<mw::Notification>& no
 
 	for (int i = 0; i < tasks.size(); i++)
 	{
-		if (search_flag & SEARCH_FLAG::DUE_IN_15 == SEARCH_FLAG::DUE_IN_15)
+		if (tasks[i].notification_enabled == true)
 		{
-			if ((tasks[i].deadline < ((int)now.m_time_t + 900)) && (tasks[i].deadline >= now.m_time_t))
+			if (search_flag & SEARCH_FLAG::DUE_IN_15 == SEARCH_FLAG::DUE_IN_15)
 			{
-				notification.task_uid = tasks[i].uid;
-				notification.text = "Due in 15: " + tasks[i].name;
-				notification.SetHashToken(tasks[i].deadline);
-				notifications.push_back(notification);
+				if ((tasks[i].deadline < ((int)now.m_time_t + 900)) && (tasks[i].deadline >= now.m_time_t))
+				{
+					notification.task_uid = tasks[i].uid;
+					notification.text = "Due in 15: " + tasks[i].name;
+					notification.SetHashToken(tasks[i].deadline);
+					notifications.push_back(notification);
+				}
 			}
-		}
-		if (search_flag & SEARCH_FLAG::IGNORED == SEARCH_FLAG::IGNORED)
-		{
-			if (tasks[i].last_update < now.m_time_t - 432000)
+			if (search_flag & SEARCH_FLAG::IGNORED == SEARCH_FLAG::IGNORED)
 			{
-				notification.task_uid = tasks[i].uid;
-				notification.text = "Update Required: " + tasks[i].name;
-				notification.SetHashToken(tasks[i].last_update);
-				notifications.push_back(notification);
+				if (tasks[i].last_update < now.m_time_t - 432000)
+				{
+					notification.task_uid = tasks[i].uid;
+					notification.text = "Update Required: " + tasks[i].name;
+					notification.SetHashToken(tasks[i].last_update);
+					notifications.push_back(notification);
+				}
 			}
 		}
 	}
