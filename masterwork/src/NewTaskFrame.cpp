@@ -77,7 +77,7 @@ mw::NewTaskFrame::NewTaskFrame(wxWindow* parent, wxWindowID id, const wxString& 
 	m_deadline_static->Wrap(-1);
 	bSizer50->Add(m_deadline_static, 0, wxALL, 5);
 
-	m_deadline_timepicker = new wxTimePickerCtrl(m_main_panel, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_SHOWCENTURY);
+	m_deadline_timepicker = new wxTimePickerCtrl(m_main_panel, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxTP_DEFAULT);
 	wxDateTime now(std::time(0));
 	m_deadline_timepicker->SetTime(now.GetHour() + 1, 0, 0);
 	bSizer50->Add(m_deadline_timepicker, 0, wxALL, 5);
