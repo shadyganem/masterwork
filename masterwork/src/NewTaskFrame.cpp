@@ -83,7 +83,7 @@ mw::NewTaskFrame::NewTaskFrame(wxWindow* parent, wxWindowID id, const wxString& 
 	bSizer50->Add(m_deadline_timepicker, 0, wxALL, 5);
 
 
-	m_deadline_datepicker = new wxDatePickerCtrl(m_main_panel, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT);
+	m_deadline_datepicker = new wxDatePickerCtrl(m_main_panel, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DROPDOWN);
 	bSizer50->Add(m_deadline_datepicker, 0, wxALL, 5);
 
 	fgSizer1->Add(bSizer50, 0, wxEXPAND, 5);
