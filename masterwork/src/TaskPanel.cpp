@@ -14,8 +14,9 @@ void mw::TaskPanel::OnEnterWindow(wxMouseEvent& event)
 void mw::TaskPanel::OnleaveWindow(wxMouseEvent& event)
 {
 	wxRect task_panel_rect = this->GetScreenRect();
+	
 	wxPoint mouse_pos = wxGetMousePosition();
-	if (!task_panel_rect.Contains(mouse_pos)) 
+	if (!task_panel_rect.Contains(mouse_pos))
 	{
 		this->SetDarkTheme();
 	}	
@@ -89,6 +90,40 @@ void mw::TaskPanel::OnUnarchive(wxCommandEvent& event)
 	mw::Controller& controller = mw::Controller::Get();
 	controller.UnArchiveTask(m_task);
 	event.Skip();
+}
+
+void mw::TaskPanel::BindEnterWindow(wxWindow* componenet)
+{
+	if (componenet)
+	{
+		componenet->Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnEnterWindow), (wxObject*)NULL,this);
+
+		wxWindowListNode* pclNode = componenet->GetChildren().GetFirst();
+		while (pclNode)
+		{
+			wxWindow* pclChild = pclNode->GetData();
+			this->BindEnterWindow(pclChild);
+
+			pclNode = pclNode->GetNext();
+		}
+	}
+}
+
+void mw::TaskPanel::BindLeaveWindow(wxWindow* componenet)
+{
+	if (componenet)
+	{
+		componenet->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), (wxObject*)NULL, this);
+
+		wxWindowListNode* pclNode = componenet->GetChildren().GetFirst();
+		while (pclNode)
+		{
+			wxWindow* pclChild = pclNode->GetData();
+			this->BindEnterWindow(pclChild);
+
+			pclNode = pclNode->GetNext();
+		}
+	}
 }
 
 void mw::TaskPanel::SetTask(mw::Task task)
@@ -211,46 +246,33 @@ mw::TaskPanel::TaskPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, co
 
 	// Connect Events
 
+
+	this->BindEnterWindow(this);
+	this->BindLeaveWindow(this);
 	m_static_task_name->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
-	m_static_task_name->Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnEnterWindow), NULL, this);
-	m_static_task_name->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
 	m_static_task_name->Connect(wxEVT_RIGHT_UP, wxMouseEventHandler(TaskPanel::OnRightUp), NULL, this);
 
 
 	m_static_status->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
-	m_static_status->Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnEnterWindow), NULL, this);
-	m_static_status->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
 	m_static_status->Connect(wxEVT_RIGHT_UP, wxMouseEventHandler(TaskPanel::OnRightUp), NULL, this);
 
 
 	m_static_duedate->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
-	m_static_duedate->Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnEnterWindow), NULL, this);
-	m_static_duedate->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
 	m_static_duedate->Connect(wxEVT_RIGHT_UP, wxMouseEventHandler(TaskPanel::OnRightUp), NULL, this);
 
 
 	m_static_priority->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
-	m_static_priority->Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnEnterWindow), NULL, this);
-	m_static_priority->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
 	m_static_priority->Connect(wxEVT_RIGHT_UP, wxMouseEventHandler(TaskPanel::OnRightUp), NULL, this);
 
 
 	m_static_last_modified->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
-	m_static_last_modified->Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnEnterWindow), NULL, this);
-	m_static_last_modified->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
 	m_static_last_modified->Connect(wxEVT_RIGHT_UP, wxMouseEventHandler(TaskPanel::OnRightUp), NULL, this);
 
 
-	m_archive_task->Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnEnterWindow), NULL, this);
-	m_archive_task->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
 	m_archive_task->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(TaskPanel::OnArchive), NULL, this);
 
-	m_unarchive_task_button->Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnEnterWindow), NULL, this);
-	m_unarchive_task_button->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
 	m_unarchive_task_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(TaskPanel::OnUnarchive), NULL, this);
 
-	this->Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(mw::TaskPanel::OnEnterWindow));
-	this->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(mw::TaskPanel::OnleaveWindow));
 	this->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick));
 	this->Connect(wxEVT_RIGHT_UP, wxMouseEventHandler(TaskPanel::OnRightUp));
 }
@@ -290,6 +312,18 @@ mw::TaskPanel::~TaskPanel()
 
 	m_archive_task->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(TaskPanel::OnArchive), NULL, this);
 	m_unarchive_task_button->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(TaskPanel::OnUnarchive), NULL, this);
+}
+
+bool mw::TaskPanel::IsOnTop()
+{
+	bool is_on_top = true;
+
+	is_on_top = m_static_task_name->IsTopLevel() && is_on_top;
+	is_on_top = m_static_status->IsTopLevel() && is_on_top;
+	is_on_top = m_static_duedate->IsTopLevel() && is_on_top;
+	is_on_top = m_static_priority->IsTopLevel() && is_on_top;
+	is_on_top = m_static_last_modified->IsTopLevel() && is_on_top;
+	return is_on_top;
 }
 
 void mw::TaskPanel::SetDarkTheme(void)

@@ -64,6 +64,8 @@ namespace mw
 		virtual void OnTaskFrameClose(wxWindowDestroyEvent& event);
 		virtual void OnArchive(wxCommandEvent& event);
 		virtual void OnUnarchive(wxCommandEvent& event);
+		virtual void BindEnterWindow(wxWindow* componenet);
+		virtual void BindLeaveWindow(wxWindow* componenet);
 
 
 		void SetTask(mw::Task task);
@@ -78,6 +80,7 @@ namespace mw
 		~TaskPanel();
 
 	private:
+		bool IsOnTop();
 		void SetDarkTheme(void);
 		void SetHighlightColours();
 		// any class wishing to process wxWidgets events must use this macro
