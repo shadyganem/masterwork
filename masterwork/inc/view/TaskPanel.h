@@ -35,7 +35,9 @@ namespace mw
 
 	enum TaskPanelMenuItems
 	{
-		Delete
+		Delete, 
+		Archive,
+		Unarchive
 	};
 
 	class TaskPanel : public wxPanel
@@ -43,18 +45,14 @@ namespace mw
 	public:
 		wxStaticText* m_static_task_name;
 		wxStaticText* m_static_description;
-		wxButton* m_archive_task;
-		wxButton* m_unarchive_task_button;
-
 		mw::Task m_task;
-
 		wxStaticText* m_static_status;
 		wxStaticText* m_static_duedate;
 		wxStaticText* m_static_priority;
 		wxStaticText* m_static_last_modified;
 		mw::NewTaskFrame* m_new_task_frame;
-		// TODO: added meta data in the DB for last modified time
 		wxStaticText* m_static_lastmodified;
+		mw::TaskPanelView m_view_state;
 
 		virtual void OnEnterWindow(wxMouseEvent& event);
 		virtual void OnleaveWindow(wxMouseEvent& event);
@@ -62,11 +60,8 @@ namespace mw
 		virtual void OnRightUp(wxMouseEvent& event);
 		virtual void OnTaskMenuClick(wxCommandEvent& event);
 		virtual void OnTaskFrameClose(wxWindowDestroyEvent& event);
-		virtual void OnArchive(wxCommandEvent& event);
-		virtual void OnUnarchive(wxCommandEvent& event);
 		virtual void BindEnterWindow(wxWindow* componenet);
 		virtual void BindLeaveWindow(wxWindow* componenet);
-
 
 		void SetTask(mw::Task task);
 		void ResetBackGround();

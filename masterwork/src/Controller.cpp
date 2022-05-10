@@ -126,7 +126,13 @@ void mw::Controller::DeleteTask(Task& task)
 void mw::Controller::ArchiveTask(Task& task)
 {
 	task.StampLastUpdateTime();
-	m_model.ArchiveTask(task);
+	m_mutex.Lock();
+	if (!m_model.ArchiveTask(task))
+	{
+		m_mutex.Unlock();
+		return;
+	}
+	m_mutex.Unlock();
 	PostUpdateUI(TASKS_WINDOW_ID);
 	PostUpdateUI(ARCHIVE_WINDOW_ID);
 }
@@ -137,7 +143,6 @@ void mw::Controller::UnArchiveTask(Task& task)
 	task.status = mw::Task::TaskStatus::NOTSTARTED;
 	m_model.UpdateTask(task);
 	m_mutex.Unlock();
-	PostUpdateUI(MAIN_FRAME_ID);
 	PostUpdateUI(TASKS_WINDOW_ID);
 	PostUpdateUI(ARCHIVE_WINDOW_ID);
 }

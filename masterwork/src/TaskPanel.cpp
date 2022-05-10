@@ -50,7 +50,15 @@ void mw::TaskPanel::OnRightUp(wxMouseEvent& event)
 	logger.Debug("OnRighUp");
 	wxMenu menu;
 	menu.Append(TaskPanelMenuItems::Delete, "Delete");
-
+	if (this->m_view_state == mw::TaskPanelView::DEFAULT)
+	{
+		menu.Append(TaskPanelMenuItems::Archive, "Archive");
+	}
+	else
+	{
+		menu.Append(TaskPanelMenuItems::Unarchive, "Unrchive");
+	}
+	
 	menu.Connect(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(mw::TaskPanel::OnTaskMenuClick), NULL, this);
 	this->PopupMenu(&menu);
 	logger.SetLogLevel(mw::LogLevel::DISABLE);
@@ -65,9 +73,16 @@ void mw::TaskPanel::OnTaskMenuClick(wxCommandEvent& event)
 	case TaskPanelMenuItems::Delete:
 		controller.DeleteTask(m_task);
 		break;
+	case TaskPanelMenuItems::Archive:
+		controller.ArchiveTask(m_task);
+		break;
+	case TaskPanelMenuItems::Unarchive:
+		controller.UnArchiveTask(m_task);
+		break;
 	default:
 		break;
 	}
+	event.Skip();
 }
 
 void mw::TaskPanel::OnTaskFrameClose(wxWindowDestroyEvent& event)
@@ -75,20 +90,6 @@ void mw::TaskPanel::OnTaskFrameClose(wxWindowDestroyEvent& event)
 	m_new_task_frame->Disconnect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
 	m_new_task_frame->Disconnect(wxEVT_DESTROY, wxWindowDestroyEventHandler(mw::TaskPanel::OnTaskFrameClose), NULL, this);
 	m_new_task_frame = nullptr;
-	event.Skip();
-}
-
-void mw::TaskPanel::OnArchive(wxCommandEvent& event)
-{
-	mw::Controller& controller = mw::Controller::Get();
-	controller.ArchiveTask(m_task);
-	event.Skip();
-}
-
-void mw::TaskPanel::OnUnarchive(wxCommandEvent& event)
-{
-	mw::Controller& controller = mw::Controller::Get();
-	controller.UnArchiveTask(m_task);
 	event.Skip();
 }
 
@@ -180,14 +181,12 @@ void mw::TaskPanel::SetView(mw::TaskPanelView view)
 	switch (view)
 	{
 	case TaskPanelView::DEFAULT:
+		this->m_view_state = mw::TaskPanelView::DEFAULT;
 		this->EnableEditing();
-		this->m_unarchive_task_button->Hide();
-		this->m_archive_task->Show();
 		break;
 	case TaskPanelView::ARCHIVE:
+		this->m_view_state = mw::TaskPanelView::ARCHIVE;
 		this->DisableEditing();
-		m_archive_task->Hide();
-		m_unarchive_task_button->Show();
 		break;
 	default:
 		break;
@@ -204,16 +203,10 @@ mw::TaskPanel::TaskPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, co
 	m_static_task_name->Wrap(-1);
 	bSizer17->Add(m_static_task_name, 1, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
-	//m_static_description = new wxStaticText(this, wxID_ANY, wxT("Task description"), wxDefaultPosition, wxDefaultSize, 0);
-	//m_static_description->Wrap(-1);
-	//m_static_description->Hide();
-	//bSizer17->Add(m_static_description, 1, wxALL, 5);
-
 	main_sizer->Add(bSizer17, 1, wxEXPAND, 5);
 
-
 	wxGridSizer* m_info_grid_sizer;
-	m_info_grid_sizer = new wxGridSizer(2, 3, 0, 0);
+	m_info_grid_sizer = new wxGridSizer(2, 4, 0, 0);
 
 	m_static_status = new wxStaticText(this, wxID_ANY, wxT("Status: "), wxDefaultPosition, wxDefaultSize, 0);
 	m_static_status->Wrap(-1);
@@ -233,25 +226,16 @@ mw::TaskPanel::TaskPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, co
 
 	main_sizer->Add(m_info_grid_sizer, 1, wxEXPAND | wxALIGN_CENTER_VERTICAL, 5);
 
-	m_archive_task = new mw::Button(this, wxID_ANY, wxT("Archive"), wxDefaultPosition, wxDefaultSize, wxNO_BORDER);
-	main_sizer->Add(m_archive_task, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-
-	m_unarchive_task_button = new mw::Button(this, wxID_ANY, wxT("Unarchive"), wxDefaultPosition, wxDefaultSize, wxNO_BORDER);
-	m_unarchive_task_button->Hide();
-	main_sizer->Add(m_unarchive_task_button, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-
 	this->SetSizer(main_sizer);
 	this->SetDarkTheme();
 	this->SetMinSize(wxSize(600, 50));
 
 	// Connect Events
 
-
 	this->BindEnterWindow(this);
 	this->BindLeaveWindow(this);
 	m_static_task_name->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
 	m_static_task_name->Connect(wxEVT_RIGHT_UP, wxMouseEventHandler(TaskPanel::OnRightUp), NULL, this);
-
 
 	m_static_status->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
 	m_static_status->Connect(wxEVT_RIGHT_UP, wxMouseEventHandler(TaskPanel::OnRightUp), NULL, this);
@@ -268,10 +252,6 @@ mw::TaskPanel::TaskPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, co
 	m_static_last_modified->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
 	m_static_last_modified->Connect(wxEVT_RIGHT_UP, wxMouseEventHandler(TaskPanel::OnRightUp), NULL, this);
 
-
-	m_archive_task->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(TaskPanel::OnArchive), NULL, this);
-
-	m_unarchive_task_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(TaskPanel::OnUnarchive), NULL, this);
 
 	this->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick));
 	this->Connect(wxEVT_RIGHT_UP, wxMouseEventHandler(TaskPanel::OnRightUp));
@@ -310,8 +290,6 @@ mw::TaskPanel::~TaskPanel()
 	m_static_last_modified->Disconnect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
 	m_static_last_modified->Disconnect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnEnterWindow), NULL, this);
 
-	m_archive_task->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(TaskPanel::OnArchive), NULL, this);
-	m_unarchive_task_button->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(TaskPanel::OnUnarchive), NULL, this);
 }
 
 bool mw::TaskPanel::IsOnTop()
@@ -337,10 +315,6 @@ void mw::TaskPanel::SetDarkTheme(void)
 	m_static_duedate->SetForegroundColour(white);
 	m_static_priority->SetForegroundColour(white);
 	m_static_last_modified->SetForegroundColour(white);
-	m_archive_task->SetBackgroundColour(dark);
-	m_archive_task->SetForegroundColour(buttons_green);
-	m_unarchive_task_button->SetBackgroundColour(dark);
-	m_unarchive_task_button->SetForegroundColour(buttons_green);
 	this->Refresh();
 }
 
@@ -348,7 +322,5 @@ void mw::TaskPanel::SetHighlightColours()
 {
 	this->SetBackgroundColour(wxColour(153, 153, 153));
 	this->SetBackgroundColour(this->GetBackgroundColour());
-	m_archive_task->SetBackgroundColour(wxColour(153, 153, 153));
-	m_unarchive_task_button->SetBackgroundColour(wxColour(153, 153, 153));
 	this->Refresh();
 }
