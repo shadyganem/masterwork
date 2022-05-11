@@ -242,8 +242,6 @@ bool Model::SetActiveUser(mw::User& user)
 {
 	try
 	{
-		mw::Logger logger;
-		logger.SetLogLevel(mw::LogLevel::DEBUG);
 		this->ConnectDb();
 
 		std::string sql = "UPDATE users "
@@ -260,7 +258,6 @@ bool Model::SetActiveUser(mw::User& user)
 
 		m_db_handler.Update(sql.c_str());
 		this->DisconnectDb();
-		logger.SetLogLevel(mw::LogLevel::DISABLE);
 
 	}
 	catch (...)

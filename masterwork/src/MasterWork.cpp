@@ -1,10 +1,16 @@
 #include "MasterWork.h"
-
 wxIMPLEMENT_APP(MasterWork);
 
 // Application Entry Point
 bool MasterWork::OnInit()
 {
+	wxSingleInstanceChecker* m_checker = new wxSingleInstanceChecker;
+	if (m_checker->IsAnotherRunning())
+	{
+		delete m_checker; // OnExit() won't be called if we return false
+		m_checker = NULL;
+		return false;
+	}
 	mw::Controller& controller = mw::Controller::Get();
 
 	controller.Init();

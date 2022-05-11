@@ -113,10 +113,7 @@ void mw::SidePanel::OnUserChange(wxCommandEvent& event)
 
 bool mw::SidePanel::IsProjectSelected()
 {
-	mw::Logger logger;
-	logger.EnableDebug();
 	int sel_item;
-	logger.Debug("this is a debug message");
 	sel_item = this->m_projects_list->GetSelection();
 	return false;
 }

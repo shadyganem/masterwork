@@ -32,12 +32,9 @@ mw::NotificationPanel::~NotificationPanel()
 
 void mw::NotificationPanel::OnDismiss(wxCommandEvent& event)
 {
-	mw::Logger logger;
-	logger.SetLogLevel(mw::LogLevel::DEBUG);
 	mw::Controller &controller = mw::Controller::Get();
 	m_notification.DecrementRepeat();
 	controller.UpdateNotification(m_notification);
-	logger.SetLogLevel(mw::LogLevel::DISABLE);
 }
 
 void mw::NotificationPanel::SetNotification(mw::Notification& notification)

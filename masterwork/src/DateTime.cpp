@@ -7,7 +7,6 @@ mw::DateTime::DateTime()
 
 mw::DateTime::DateTime(int seconds, int minutes, int hours, int day, int month, int year)
 {
-	mw::Logger logger;
 	std::tm time;
 	time.tm_sec = seconds;
 	time.tm_min = minutes;

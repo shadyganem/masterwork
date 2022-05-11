@@ -292,8 +292,6 @@ void mw::Controller::GetArchiveTasksForActiveProject(std::vector<Task>& tasks)
 
 void mw::Controller::RequestUpdateUI(int wind_id)
 {
-	mw::Logger logger;
-	
 	if (wind_id == -2)
 	{		
 		std::map<int, wxEvtHandler*>::iterator it;
@@ -329,7 +327,6 @@ void mw::Controller::UpdateNotifications()
 {
 	try
 	{
-		mw::Logger logger;
 		m_status_bar_text = "Updating Notifications";
 		this->PostUpdateUI(MAIN_FRAME_ID);
 			

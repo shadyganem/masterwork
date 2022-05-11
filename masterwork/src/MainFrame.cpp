@@ -150,13 +150,9 @@ void mw::MainFrame::InitColorScheme()
 
 void mw::MainFrame::InitStagehandThread()
 {
-	// Starting the stagehand thread
-	mw::Logger logger;
-	logger.SetLogLevel(mw::LogLevel::DEBUG);
 	m_stagehand_thread = new StagehandThread();
 	if (m_stagehand_thread->Run() != wxTHREAD_NO_ERROR)
 	{
-		logger.Error("Can't create the thread!");
 		delete m_stagehand_thread;
 		m_stagehand_thread = NULL;
 	}

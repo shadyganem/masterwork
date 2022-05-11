@@ -45,9 +45,6 @@ void mw::TaskPanel::OnLeftDoubleClick(wxMouseEvent& event)
 
 void mw::TaskPanel::OnRightUp(wxMouseEvent& event)
 {
-	mw::Logger logger;
-	logger.SetLogLevel(mw::LogLevel::DEBUG);
-	logger.Debug("OnRighUp");
 	wxMenu menu;
 	menu.Append(TaskPanelMenuItems::Delete, "Delete");
 	if (this->m_view_state == mw::TaskPanelView::DEFAULT)
@@ -61,7 +58,6 @@ void mw::TaskPanel::OnRightUp(wxMouseEvent& event)
 	
 	menu.Connect(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(mw::TaskPanel::OnTaskMenuClick), NULL, this);
 	this->PopupMenu(&menu);
-	logger.SetLogLevel(mw::LogLevel::DISABLE);
 }
 
 void mw::TaskPanel::OnTaskMenuClick(wxCommandEvent& event)
