@@ -12,4 +12,3 @@ public:
 private:
 	mw::MainFrame* m_main_frame = nullptr;
 };
-

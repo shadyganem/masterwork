@@ -52,6 +52,7 @@ void mw::TasksWindow::OnUpdateUI(wxEvent& event)
 	std::map<int, bool> found_tasks;
 	std::map<mw::TaskPanel*, int>::iterator it;
 	std::map<mw::TaskPanel*, mw::Task>::iterator item;
+	std::vector<mw::TaskPanel*> unwanted_task_panels;
 	for (item = m_taskpanel_to_task_map.begin(); item != m_taskpanel_to_task_map.end(); item++)
 	{
 		bool task_found = false;
@@ -67,9 +68,14 @@ void mw::TasksWindow::OnUpdateUI(wxEvent& event)
 		}
 		if (!task_found)
 		{
-			item->first->Destroy();
-			m_taskpanel_to_task_map.erase(item->first);
+			unwanted_task_panels.push_back(item->first);
 		}
+	}
+
+	for (int i = 0; i < unwanted_task_panels.size(); i++)
+	{
+		unwanted_task_panels[i]->Destroy();
+		m_taskpanel_to_task_map.erase(unwanted_task_panels[i]);
 	}
 
 	mw::TaskPanel* task_panel;
