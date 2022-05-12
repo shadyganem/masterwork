@@ -63,11 +63,13 @@ void mw::TaskPanel::OnRightUp(wxMouseEvent& event)
 void mw::TaskPanel::OnTaskMenuClick(wxCommandEvent& event)
 {
 	mw::Controller& controller = mw::Controller::Get();
-
+	int answer = 0;
 	switch (event.GetId())
 	{
 	case TaskPanelMenuItems::Delete:
-		controller.DeleteTask(m_task);
+		answer = wxMessageBox("Are you sure you want to permanently delete this task?", "Confirm", wxYES_NO, this);
+		if (answer == wxYES)
+			controller.DeleteTask(m_task);
 		break;
 	case TaskPanelMenuItems::Archive:
 		controller.ArchiveTask(m_task);
