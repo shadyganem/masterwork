@@ -35,7 +35,6 @@ namespace mw
 		std::map<mw::TaskPanel*, mw::Task> m_taskpanel_to_task_map;
 		std::map<mw::Task, mw::TaskPanel*> m_task_to_taskpanel_map;
 		wxBoxSizer* m_tasks_sizer;
-		mw::CollapsibleGroupPane* m_collapsible_group_pane;
 
 	private:
 		DECLARE_EVENT_TABLE()
