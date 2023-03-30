@@ -13,8 +13,6 @@
 #include "controller/Controller.h"
 #include "view/AboutFrame.h"
 #include "view/NewUserFrame.h"
-#include "view/CollapsibleNotificationsPanel.h"
-
 #include "controller/StagehandThread.h"
 
 namespace mw
@@ -48,9 +46,7 @@ namespace mw
 		SidePanel* m_side_panel;
 		mw::BottomPanel* m_bottom_panel;
 		WorkPanel* m_work_panel;
-		CollapsibleNotificationsPanel* m_collapsible_notification_panel;
 		wxTimer* m_1sec_timer;
-		mw::Button* m_notification_statusbar_button;
 		wxBoxSizer* m_main_panel_hor_sizer1;
 
 		// panels
@@ -76,7 +72,6 @@ namespace mw
 		void OnUpdateUI(wxEvent& event);
 		void OnNotification(wxEvent& event);
 		void OnAboutClick(wxCommandEvent& event);
-		void OnNotificationStatusbarButton(wxCommandEvent& event);
 
 
 	private:
@@ -85,7 +80,6 @@ namespace mw
 		int m_3_sec_check;
 		int m_30_sec_counter;
 		bool m_ready_msg;
-		bool m_notification_panel_hidden;
 
 		wxCriticalSection m_stagehand_thread_CS;    // protects the m_stagehand_thread pointer
 

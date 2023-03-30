@@ -58,10 +58,7 @@ mw::MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize
 	m_work_panel = new mw::WorkPanel(m_main_panel, WORK_PANEL_ID, wxDefaultPosition, wxSize(200, 200));
 	m_work_panel->SetBackgroundColour(m_side_panel_bg);
 
-	m_collapsible_notification_panel = new mw::CollapsibleNotificationsPanel(m_main_panel, COLLAPSIBLE_NOTIFICATIONS_PANEL_ID, wxDefaultPosition, wxSize(200, 200));
-	m_collapsible_notification_panel->SetBackgroundColour(m_side_panel_bg);
-	m_collapsible_notification_panel->Hide();
-	m_notification_panel_hidden = true;
+	
 
 
 
@@ -70,7 +67,6 @@ mw::MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize
 	//main_panel_ver_sizer2->Add(m_top_panel, 0, wxEXPAND | wxBOTTOM, 5);
 	main_panel_ver_sizer2->Add(m_work_panel, 3, wxEXPAND | wxBOTTOM, 5);
 	main_panel_ver_sizer2->Add(m_bottom_panel, 1, wxEXPAND, 0);
-	main_panel_ver_sizer3->Add(m_collapsible_notification_panel, 1, wxEXPAND, 5);
 
 	m_main_panel_hor_sizer1->Add(main_panel_ver_sizer1, 0, wxEXPAND | wxRIGHT, 5);
 	m_main_panel_hor_sizer1->Add(main_panel_ver_sizer2, 1, wxEXPAND, 0);
@@ -83,8 +79,6 @@ mw::MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize
 
 mw::MainFrame::~MainFrame()
 {
-	m_notification_statusbar_button->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mw::MainFrame::OnNotificationStatusbarButton), NULL, this);
-
 }
 
 void mw::MainFrame::InitMenuBar()
@@ -122,15 +116,10 @@ void mw::MainFrame::InitStatusBar()
 	m_status_bar_text = new wxStaticText(m_status_bar, wxID_ANY, "", wxPoint(5, 5), wxDefaultSize, wxALIGN_LEFT);
 	m_status_bar_text->SetForegroundColour(wxColor(255, 255, 255));
 	statusbar_hor_sizer->Add(m_status_bar_text, 1, wxALL, 5);
-	
-	m_notification_statusbar_button = new mw::Button(m_status_bar, wxID_ANY, "0", wxDefaultPosition, wxDefaultSize, wxNO_BORDER | wxBU_EXACTFIT);
-	m_notification_statusbar_button->SetHoverColour(wxColour(238, 211, 105));
-	m_notification_statusbar_button->SetBackgroundColour(m_info_bg);
-	m_notification_statusbar_button->SetForegroundColour(wxColor(255, 255, 255));
-	m_notification_statusbar_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mw::MainFrame::OnNotificationStatusbarButton), NULL, this);
+		
 
 	statusbar_ver_sizer->AddStretchSpacer();
-	statusbar_hor_sizer->Add(m_notification_statusbar_button, 0, wxRIGHT | wxALIGN_RIGHT, 10);
+	
 
 	statusbar_ver_sizer->Add(statusbar_hor_sizer, 0, wxALL | wxEXPAND, 0);
 
@@ -302,7 +291,6 @@ void mw::MainFrame::OnUpdateUI(wxEvent& event)
 	mw::Controller& controller = mw::Controller::Get();
 	int num_of_notifications;
 	controller.GetNumOfNotifications(num_of_notifications);
-	m_notification_statusbar_button->SetLabelText(std::to_string(num_of_notifications));
 	ShowStutusBarMessage(controller.GetStatusBarText());
 }
 
@@ -317,20 +305,4 @@ void mw::MainFrame::OnAboutClick(wxCommandEvent& event)
 	m_about_frame->CenterOnParent();
 	m_about_frame->Show(true);
 	event.Skip();
-}
-
-void mw::MainFrame::OnNotificationStatusbarButton(wxCommandEvent& event)
-{
-	if (m_notification_panel_hidden == true)
-	{
-		m_collapsible_notification_panel->Show();
-		m_notification_panel_hidden = false;
-	}
-	else
-	{
-		m_collapsible_notification_panel->Hide();
-		m_notification_panel_hidden = true;
-	}
-	this->Refresh();
-	m_main_panel_hor_sizer1->Layout();
 }

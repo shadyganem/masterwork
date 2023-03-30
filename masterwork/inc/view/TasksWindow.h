@@ -8,6 +8,7 @@
 #include <map>
 #include "view/Button.h"
 #include<chrono>
+#include <wx/notifmsg.h>
 
 #include "view/CollapsibleGroupPane.h"
 

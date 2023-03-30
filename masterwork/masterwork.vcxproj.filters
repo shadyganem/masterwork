@@ -87,9 +87,6 @@
     <ClInclude Include="inc\view\TaskEditPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\view\CollapsibleNotificationsPanel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="inc\view\ArchiveWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -97,12 +94,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\view\Button.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\view\NotificationPanel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\view\NotificationsWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\controller\NotificationFactory.h">
@@ -188,9 +179,6 @@
     <ClCompile Include="src\TaskEditPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\CollapsibleNotificationsPanel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\ArchiveWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -198,12 +186,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Button.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\NotificationPanel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\NotificationsWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\NotificationFactory.cpp">

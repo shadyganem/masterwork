@@ -28,10 +28,7 @@
     <ClInclude Include="inc\view\ArchiveWindow.h" />
     <ClInclude Include="inc\view\BottomPanel.h" />
     <ClInclude Include="inc\mwDefines.h" />
-    <ClInclude Include="inc\view\CollapsibleNotificationsPanel.h" />
     <ClInclude Include="inc\view\MainFrame.h" />
-    <ClInclude Include="inc\view\NotificationPanel.h" />
-    <ClInclude Include="inc\view\NotificationsWindow.h" />
     <ClInclude Include="inc\view\SidePanel.h" />
     <ClInclude Include="inc\view\TasksWindow.h" />
     <ClInclude Include="inc\view\WorkPanel.h" />
@@ -60,14 +57,11 @@
     <ClCompile Include="src\NotificationFactory.cpp" />
     <ClCompile Include="src\Button.cpp" />
     <ClCompile Include="src\ArchiveWindow.cpp" />
-    <ClCompile Include="src\CollapsibleNotificationsPanel.cpp" />
     <ClCompile Include="src\NewUserFrame.cpp" />
     <ClCompile Include="src\AboutFrame.cpp" />
     <ClCompile Include="src\DateTime.cpp" />
     <ClCompile Include="src\NewTaskFrame.cpp" />
     <ClCompile Include="src\NewProjectFrame.cpp" />
-    <ClCompile Include="src\NotificationPanel.cpp" />
-    <ClCompile Include="src\NotificationsWindow.cpp" />
     <ClCompile Include="src\TaskPanel.cpp" />
     <ClCompile Include="src\mwNotification.cpp" />
     <ClCompile Include="src\Logger.cpp" />
@@ -195,6 +189,10 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(WXWIN)\lib\vc_lib</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command> Xcopy "$(SolutionDir)..\masterwork\assets\" "$(SolutionDir)bin\$(Platform)\$(Configuration)\assets\" /s /y</Command>
+      <Message>post build copy</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
