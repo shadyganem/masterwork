@@ -74,7 +74,6 @@ mw::MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize
 	m_main_panel->SetSizer(m_main_panel_hor_sizer1);
 	m_1sec_timer->Start(1000);
 
-	this->InitStagehandThread();
 }
 
 mw::MainFrame::~MainFrame()
