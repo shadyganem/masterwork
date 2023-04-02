@@ -14,6 +14,11 @@
 #include "view/AboutFrame.h"
 #include "view/NewUserFrame.h"
 #include "controller/StagehandThread.h"
+#include <wx/notifmsg.h>
+#include <wx/icon.h>
+#include <wx/artprov.h>
+#include "controller/NotificationThread.h"
+
 
 namespace mw
 {
@@ -47,6 +52,7 @@ namespace mw
 		mw::BottomPanel* m_bottom_panel;
 		WorkPanel* m_work_panel;
 		wxTimer* m_1sec_timer;
+		wxTimer* m_notification_timer;
 		wxBoxSizer* m_main_panel_hor_sizer1;
 
 		// panels
@@ -67,10 +73,11 @@ namespace mw
 		void OnNewProject(wxCommandEvent& event);
 		void OnNewUser(wxCommandEvent& event);
 		void On1SecTimer(wxTimerEvent& event);
+		void OnNotificationTimer(wxTimerEvent& event);
+		void OnNotificationThread(wxThreadEvent& even);
 		void OnNewTaskButton(wxCommandEvent& event);
 		void OnSearch(wxCommandEvent& event);
 		void OnUpdateUI(wxEvent& event);
-		void OnNotification(wxEvent& event);
 		void OnAboutClick(wxCommandEvent& event);
 
 

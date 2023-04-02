@@ -50,8 +50,10 @@
     <ClInclude Include="inc\view\TaskEditPanel.h" />
     <ClInclude Include="inc\controller\NotificationFactory.h" />
     <ClInclude Include="inc\controller\StagehandThread.h" />
+    <ClInclude Include="inc\controller\NotificationThread.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\NotificationThread.cpp" />
     <ClCompile Include="src\Exceptions.cpp" />
     <ClCompile Include="src\CollapsibleGroupPane.cpp" />
     <ClCompile Include="src\NotificationFactory.cpp" />

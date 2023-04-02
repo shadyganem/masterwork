@@ -14,7 +14,6 @@ BEGIN_EVENT_TABLE(mw::MainFrame, wxFrame)
 	EVT_SEARCH(MAIN_SEARCH_ID, mw::MainFrame::OnSearch)
 	EVT_BUTTON(TOP_PANEL_NEW_TASK_ID, mw::MainFrame::OnNewTaskButton)
 	EVT_CUSTOM(mwUpdateUI, MAIN_FRAME_ID, mw::MainFrame::OnUpdateUI)
-	EVT_CUSTOM(mwNotification, MAIN_FRAME_ID, mw::MainFrame::OnNotification)
 END_EVENT_TABLE()
 
 mw::MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size) : wxFrame(nullptr, MAIN_FRAME_ID, title, pos, size)
@@ -32,6 +31,7 @@ mw::MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize
 	m_10_sec_check = 0;
 	m_ready_msg;
 	m_1sec_timer = new wxTimer(this, MAIN_1SEC_TIMER_ID);
+	m_notification_timer = new wxTimer(this, MAIN_NOTIFICATION_TIMER_ID);
 	InitMenuBar();
 	InitStatusBar();
 
@@ -72,12 +72,19 @@ mw::MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize
 	m_main_panel_hor_sizer1->Add(main_panel_ver_sizer2, 1, wxEXPAND, 0);
 	m_main_panel_hor_sizer1->Add(main_panel_ver_sizer3, 0, wxEXPAND | wxLEFT, 5);
 	m_main_panel->SetSizer(m_main_panel_hor_sizer1);
+
+	Connect(m_notification_timer->GetId(), wxEVT_TIMER, wxTimerEventHandler(mw::MainFrame::OnNotificationTimer));
+	Connect(wxID_ANY, wxEVT_THREAD, wxThreadEventHandler(mw::MainFrame::OnNotificationThread));
 	m_1sec_timer->Start(1000);
+
+
+	m_notification_timer->StartOnce(30000);
 
 }
 
 mw::MainFrame::~MainFrame()
 {
+	Disconnect(m_notification_timer->GetId(), wxEVT_TIMER, wxTimerEventHandler(mw::MainFrame::OnNotificationTimer));
 }
 
 void mw::MainFrame::InitMenuBar()
@@ -265,13 +272,29 @@ void mw::MainFrame::On1SecTimer(wxTimerEvent& event)
 	if (m_30_sec_counter == 29)
 	{
 		m_30_sec_counter = 0;
-		controller.UpdateNotifications();
 	}
 	else
 	{
 		m_30_sec_counter++;
 	}
 }
+
+void mw::MainFrame::OnNotificationTimer(wxTimerEvent& event)
+{
+	mw::NotificationThread* notification_thread = new mw::NotificationThread(this);
+	notification_thread->Create();
+	notification_thread->Run();
+
+}
+
+void mw::MainFrame::OnNotificationThread(wxThreadEvent& even)
+{
+
+	mw::Controller& conroller = mw::Controller::Get();
+	m_notification_timer->StartOnce(30000);
+}
+
+
 
 void mw::MainFrame::OnNewTaskButton(wxCommandEvent& event)
 {
@@ -291,11 +314,6 @@ void mw::MainFrame::OnUpdateUI(wxEvent& event)
 	int num_of_notifications;
 	controller.GetNumOfNotifications(num_of_notifications);
 	ShowStutusBarMessage(controller.GetStatusBarText());
-}
-
-void mw::MainFrame::OnNotification(wxEvent& event)
-{
-	mw::Controller& controller = mw::Controller::Get();
 }
 
 void mw::MainFrame::OnAboutClick(wxCommandEvent& event)

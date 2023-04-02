@@ -52,7 +52,6 @@ void mw::Controller::SetActiveUser(mw::User& user, bool post_update_ui)
 		PostUpdateUI(SIDE_PANEL_ID);
 		PostUpdateUI(TASKS_WINDOW_ID);
 		PostUpdateUI(ARCHIVE_WINDOW_ID);
-		PostUpdateUI(NOTIFICATIONS_WINDOW_ID);
 	}
 }
 
@@ -205,7 +204,6 @@ void mw::Controller::AddNotification(mw::Notification& notification, bool post_u
 	if (post_update_ui)
 	{
 		PostUpdateUI(MAIN_FRAME_ID);
-		PostUpdateUI(NOTIFICATIONS_WINDOW_ID);
 	}
 }
 
@@ -231,7 +229,6 @@ void mw::Controller::AddUser(mw::User& user, bool set_active, bool post_update_u
 		PostUpdateUI(SIDE_PANEL_ID);
 		PostUpdateUI(TASKS_WINDOW_ID);
 		PostUpdateUI(ARCHIVE_WINDOW_ID);
-		PostUpdateUI(NOTIFICATIONS_WINDOW_ID);
 		PostUpdateUI(MAIN_FRAME_ID);
 	}
 }
@@ -243,7 +240,6 @@ void mw::Controller::UpdateNotification(mw::Notification& notification, bool pos
 	m_mutex.Unlock();
 	if (post_update_ui)
 	{
-		this->PostUpdateUI(NOTIFICATIONS_WINDOW_ID);
 	}
 }
 
