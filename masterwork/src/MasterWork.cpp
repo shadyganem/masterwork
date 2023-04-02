@@ -7,7 +7,7 @@ bool MasterWork::OnInit()
 	wxSingleInstanceChecker* m_checker = new wxSingleInstanceChecker;
 	if (m_checker->IsAnotherRunning())
 	{
-		delete m_checker; // OnExit() won't be called if we return false
+		delete m_checker; // OnExit() won't be called if we return false therefore it is important to delete the checker object.
 		m_checker = NULL;
 		return false;
 	}
