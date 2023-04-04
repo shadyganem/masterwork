@@ -281,6 +281,7 @@ void mw::MainFrame::On1SecTimer(wxTimerEvent& event)
 
 void mw::MainFrame::OnNotificationTimer(wxTimerEvent& event)
 {
+	ShowStutusBarMessage("Checking For Notifications...");
 	mw::NotificationThread* notification_thread = new mw::NotificationThread(this);
 	notification_thread->Create();
 	notification_thread->Run();
