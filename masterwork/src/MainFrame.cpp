@@ -289,7 +289,7 @@ void mw::MainFrame::OnNotificationTimer(wxTimerEvent& event)
 
 void mw::MainFrame::OnNotificationThread(wxThreadEvent& even)
 {
-
+	// push notifications to the user
 	mw::Controller& conroller = mw::Controller::Get();
 	m_notification_timer->StartOnce(30000);
 }
