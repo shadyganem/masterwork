@@ -284,7 +284,6 @@ void mw::MainFrame::OnNotificationTimer(wxTimerEvent& event)
 	mw::NotificationThread* notification_thread = new mw::NotificationThread(this);
 	notification_thread->Create();
 	notification_thread->Run();
-
 }
 
 void mw::MainFrame::OnNotificationThread(wxThreadEvent& even)

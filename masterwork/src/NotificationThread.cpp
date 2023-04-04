@@ -9,8 +9,12 @@ mw::NotificationThread::NotificationThread(wxEvtHandler* parent): wxThread(wxTHR
 void* mw::NotificationThread::Entry()
 {
     // This will run in a seperate thread. 
-
     mw::Controller& controller = mw::Controller::Get();
+    std::vector<Task> tasks; 
+    controller.GetTasksForActiveProject(tasks);
+
+
+
     wxThreadEvent* event = new wxThreadEvent(wxEVT_THREAD, NOTIFICATION_THREAD_EVENT_ID);
     m_parent->QueueEvent(event);
     return NULL;
