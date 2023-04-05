@@ -51,8 +51,10 @@
     <ClInclude Include="inc\controller\NotificationFactory.h" />
     <ClInclude Include="inc\controller\StagehandThread.h" />
     <ClInclude Include="inc\controller\NotificationThread.h" />
+    <ClInclude Include="inc\view\RemindersWindow.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\RemindersWindow.cpp" />
     <ClCompile Include="src\NotificationThread.cpp" />
     <ClCompile Include="src\Exceptions.cpp" />
     <ClCompile Include="src\CollapsibleGroupPane.cpp" />

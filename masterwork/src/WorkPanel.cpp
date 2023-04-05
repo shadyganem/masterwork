@@ -25,6 +25,12 @@ mw::WorkPanel::WorkPanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos,
 	m_notebook->AddPage(m_archive_scroll_window, wxT("Archive"), false);
 	m_pageidx_to_pageid_map[1] = ARCHIVE_WINDOW_ID;
 
+	m_reminders_scroll_window = new mw::RemindersWindow(m_notebook, REMINDERS_WINDOW_ID, wxDefaultPosition, wxDefaultSize, wxHSCROLL | wxVSCROLL);
+	m_reminders_scroll_window->SetScrollRate(5, 5);
+	m_notebook->AddPage(m_reminders_scroll_window, wxT("Reminders"), false);
+	m_pageidx_to_pageid_map[2] = REMINDERS_WINDOW_ID;
+
+
 	m_ver_sizer->Add(m_notebook, 1, wxEXPAND | wxALL, 5);
 
 	this->SetSizer(m_ver_sizer);

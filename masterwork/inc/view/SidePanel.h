@@ -41,6 +41,7 @@ namespace mw
 		wxChoice* m_users_choice;
 
 		wxListBox* m_projects_list;
+		wxListCtrl* m_projects_list_ctrl;
 		void m_splitter1OnIdle(wxIdleEvent&)
 		{
 			m_splitter1->SetSashPosition(324);
@@ -55,6 +56,9 @@ namespace mw
 		virtual void OnNewProjectButton(wxCommandEvent& event);
 		virtual void OnProjectListMenuClick(wxCommandEvent& evt);
 		virtual void OnUserChange(wxCommandEvent& event);
+		virtual void OnProjectSelected(wxListEvent& event);
+		virtual void OnBeginLabelEdit(wxListEvent& event);
+		virtual void OnEndLabelEdit(wxListEvent& event);
 		bool IsProjectSelected();
 
 		SidePanel(wxWindow* parent,

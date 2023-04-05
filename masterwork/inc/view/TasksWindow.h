@@ -10,7 +10,6 @@
 #include<chrono>
 #include <wx/notifmsg.h>
 
-#include "view/CollapsibleGroupPane.h"
 
 namespace mw
 {

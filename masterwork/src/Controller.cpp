@@ -52,6 +52,7 @@ void mw::Controller::SetActiveUser(mw::User& user, bool post_update_ui)
 		PostUpdateUI(SIDE_PANEL_ID);
 		PostUpdateUI(TASKS_WINDOW_ID);
 		PostUpdateUI(ARCHIVE_WINDOW_ID);
+		PostUpdateUI(REMINDERS_WINDOW_ID);
 	}
 }
 
@@ -67,6 +68,7 @@ void mw::Controller::SetActiveProject(Project& project, bool post_update_ui)
 		PostUpdateUI(SIDE_PANEL_ID);
 		PostUpdateUI(TASKS_WINDOW_ID);
 		PostUpdateUI(ARCHIVE_WINDOW_ID);
+		PostUpdateUI(REMINDERS_WINDOW_ID);
 	}
 }
 
@@ -120,6 +122,7 @@ void mw::Controller::DeleteTask(Task& task)
 	m_model.DeleteTask(task);
 	PostUpdateUI(TASKS_WINDOW_ID);
 	PostUpdateUI(ARCHIVE_WINDOW_ID);
+	PostUpdateUI(REMINDERS_WINDOW_ID);
 }
 
 void mw::Controller::ArchiveTask(Task& task)
@@ -134,6 +137,7 @@ void mw::Controller::ArchiveTask(Task& task)
 	m_mutex.Unlock();
 	PostUpdateUI(TASKS_WINDOW_ID);
 	PostUpdateUI(ARCHIVE_WINDOW_ID);
+	PostUpdateUI(REMINDERS_WINDOW_ID);
 }
 
 void mw::Controller::UnArchiveTask(Task& task)
@@ -144,6 +148,7 @@ void mw::Controller::UnArchiveTask(Task& task)
 	m_mutex.Unlock();
 	PostUpdateUI(TASKS_WINDOW_ID);
 	PostUpdateUI(ARCHIVE_WINDOW_ID);
+	PostUpdateUI(REMINDERS_WINDOW_ID);
 }
 
 void mw::Controller::DeleteProject(Project& project)
@@ -153,6 +158,7 @@ void mw::Controller::DeleteProject(Project& project)
 	m_model.GetActiveProject(m_active_project, m_active_user);
 	PostUpdateUI(TASKS_WINDOW_ID);
 	PostUpdateUI(ARCHIVE_WINDOW_ID);
+	PostUpdateUI(REMINDERS_WINDOW_ID);
 	PostUpdateUI(SIDE_PANEL_ID);
 }
 
@@ -171,6 +177,7 @@ void mw::Controller::AddTask(Task& task)
 	PostUpdateUI(MAIN_FRAME_ID);
 	PostUpdateUI(TASKS_WINDOW_ID);
 	PostUpdateUI(ARCHIVE_WINDOW_ID);
+	PostUpdateUI(REMINDERS_WINDOW_ID);
 }
 
 void mw::Controller::AddProject(Project& project, bool post_update_ui)
@@ -230,6 +237,7 @@ void mw::Controller::AddUser(mw::User& user, bool set_active, bool post_update_u
 		PostUpdateUI(TASKS_WINDOW_ID);
 		PostUpdateUI(ARCHIVE_WINDOW_ID);
 		PostUpdateUI(MAIN_FRAME_ID);
+		PostUpdateUI(REMINDERS_WINDOW_ID);
 	}
 }
 
