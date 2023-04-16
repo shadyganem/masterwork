@@ -652,6 +652,9 @@ bool Model::GetArchiveAllTasks(std::vector<mw::Task>& tasks, mw::Project& curren
 	{
 		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 			return false;
+		auto current_epoch_time = std::chrono::duration_cast<std::chrono::seconds>(
+			std::chrono::system_clock::now().time_since_epoch()
+			).count();
 
 		mw::Logger logger;
 		logger.Info("selecting all tasks for " + current_project.name);
@@ -659,7 +662,7 @@ bool Model::GetArchiveAllTasks(std::vector<mw::Task>& tasks, mw::Project& curren
 		Record row;
 		std::string sql = "SELECT * FROM tasks WHERE project_uid=" + std::to_string(current_project.uid) + " "
 			"AND status=-1" + " "
-			"AND last_update >= UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL " + std::to_string(num_of_days) + " DAY))"
+			"AND last_update >= " + std::to_string(current_epoch_time - num_of_days*24*60*60) + " " 
 			";";
 		logger.Info("Executinig query " + sql);
 		m_db_handler.Select(sql.c_str(), records);
