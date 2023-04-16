@@ -659,7 +659,7 @@ bool Model::GetArchiveAllTasks(std::vector<mw::Task>& tasks, mw::Project& curren
 		Record row;
 		std::string sql = "SELECT * FROM tasks WHERE project_uid=" + std::to_string(current_project.uid) + " "
 			"AND status=-1" + " "
-			"AND start_time >= UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL " + std::to_string(num_of_days) + " DAY))"
+			"AND last_update >= UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL " + std::to_string(num_of_days) + " DAY))"
 			";";
 		logger.Info("Executinig query " + sql);
 		m_db_handler.Select(sql.c_str(), records);
