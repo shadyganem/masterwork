@@ -291,7 +291,7 @@ void mw::Controller::GetArchiveTasksForActiveProject(std::vector<Task>& tasks)
 {
 	m_model.GetActiveUser(m_active_user);
 	m_model.GetActiveProject(m_active_project, m_active_user);
-	this->m_model.GetArchiveAllTasks(tasks, m_active_project);
+	this->m_model.GetArchiveAllTasks(tasks, m_active_project, 90);
 }
 
 void mw::Controller::RequestUpdateUI(int wind_id)

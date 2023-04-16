@@ -13,7 +13,7 @@
 #include "controller/Controller.h"
 #include <map>
 #include "model/Project.h"
-
+#include <wx/editlbox.h>
 #include "mwDefines.h"
 #include "view/NewProjectFrame.h"
 #include "view/Button.h"
@@ -42,6 +42,7 @@ namespace mw
 
 		wxListBox* m_projects_list;
 		wxListCtrl* m_projects_list_ctrl;
+		wxEditableListBox* m_projects_list_box;
 		void m_splitter1OnIdle(wxIdleEvent&)
 		{
 			m_splitter1->SetSashPosition(324);

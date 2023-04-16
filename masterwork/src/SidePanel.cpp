@@ -180,6 +180,9 @@ mw::SidePanel::SidePanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos,
 	wxColour dark(74, 74, 74);
 
 
+	//projects list instantiation 
+		
+
 	m_projects_list_ctrl = new wxListCtrl(m_panel7, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_NO_HEADER | wxLC_REPORT | wxLC_EDIT_LABELS);
 	
 

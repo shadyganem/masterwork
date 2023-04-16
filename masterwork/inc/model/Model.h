@@ -34,6 +34,7 @@ public:
 	bool SetActiveProject(mw::Project& project);
 	bool GetAllTasks(std::vector<mw::Task>& tasks, mw::Project& current_project);
 	bool GetArchiveAllTasks(std::vector<mw::Task>& tasks, mw::Project& current_project);
+	bool GetArchiveAllTasks(std::vector<mw::Task>& tasks, mw::Project& current_project, unsigned int num_of_days);
 	bool IsTaskFound(mw::Task& task);
 	bool IsProjectFound(mw::Project& project);
 	bool IsUserFound(mw::User& user);
