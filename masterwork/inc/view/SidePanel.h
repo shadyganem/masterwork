@@ -17,7 +17,7 @@
 #include "mwDefines.h"
 #include "view/NewProjectFrame.h"
 #include "view/Button.h"
-
+#include <wx/treectrl.h>
 
 namespace mw
 {
@@ -41,7 +41,8 @@ namespace mw
 		wxChoice* m_users_choice;
 
 		wxListBox* m_projects_list;
-		wxListCtrl* m_projects_list_ctrl;
+		wxTreeCtrl* m_project_tree;
+
 		wxEditableListBox* m_projects_list_box;
 		void m_splitter1OnIdle(wxIdleEvent&)
 		{

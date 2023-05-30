@@ -39,8 +39,7 @@ void mw::SidePanel::UpdateProjecstList()
 	std::vector<mw::Project> projects;
 	controller.GetProjectsForActiveUser(projects);
 	wxString project_name;
-	m_projects_list_ctrl->DeleteAllItems();
-
+	
 	for (int i = 0; i < projects.size(); i++)
 	{
 		m_place_to_project_map[i] = projects[i];
@@ -50,8 +49,6 @@ void mw::SidePanel::UpdateProjecstList()
 		{
 			m_projects_list->SetSelection(i);
 		}
-
-		m_projects_list_ctrl->InsertItem(i, projects[i].name);
 	}
 }
 
@@ -119,9 +116,6 @@ void mw::SidePanel::OnUserChange(wxCommandEvent& event)
 void mw::SidePanel::OnProjectSelected(wxListEvent& event)
 {
 	mw::Controller& controller = mw::Controller::Get();
-	int index = event.GetIndex();
-	m_projects_list_ctrl->SetItemState(index, wxLIST_STATE_FOCUSED, wxLIST_STATE_FOCUSED);
-	controller.SetActiveProject(m_place_to_project_map[index]);
 }
 
 void mw::SidePanel::OnBeginLabelEdit(wxListEvent& event)
@@ -181,22 +175,23 @@ mw::SidePanel::SidePanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos,
 
 
 	//projects list instantiation 
-		
 
-	m_projects_list_ctrl = new wxListCtrl(m_panel7, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_NO_HEADER | wxLC_REPORT | wxLC_EDIT_LABELS);
-	
 
-	m_projects_list_ctrl->InsertColumn(0, "projects");
-	m_projects_list_ctrl->SetColumnWidth(0, 190);
-	m_projects_list_ctrl->SetBackgroundColour(dark);
-	m_projects_list_ctrl->SetForegroundColour(wxColour(255, 255, 255));
-	// connect events for label editing
-	m_projects_list_ctrl->Connect(wxEVT_LIST_BEGIN_LABEL_EDIT, wxListEventHandler(mw::SidePanel::OnBeginLabelEdit), nullptr, this);
-	m_projects_list_ctrl->Connect(wxEVT_LIST_END_LABEL_EDIT, wxListEventHandler(mw::SidePanel::OnEndLabelEdit), nullptr, this);
-	//m_projects_list_ctrl->Connect(wxEVT_LIST_ITEM_SELECTED, wxListEventHandler(mw::SidePanel::OnProjectSelected), NULL, this);
-	m_projects_list_ctrl->EnableAlternateRowColours(true);
+	m_project_tree = new wxTreeCtrl(m_panel7, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTreeItemIcon_SelectedExpanded);
+	//m_projects_list_ctrl = new wxListCtrl(m_panel7, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_NO_HEADER | wxLC_REPORT | wxLC_EDIT_LABELS);
+	//
 
-	bSizer21->Add(m_projects_list_ctrl, 1, wxRIGHT | wxLEFT | wxBOTTOM | wxEXPAND, 5);
+	//m_projects_list_ctrl->InsertColumn(0, "projects");
+	//m_projects_list_ctrl->SetColumnWidth(0, 190);
+	//m_projects_list_ctrl->SetBackgroundColour(dark);
+	//m_projects_list_ctrl->SetForegroundColour(wxColour(255, 255, 255));
+	//// connect events for label editing
+	//m_projects_list_ctrl->Connect(wxEVT_LIST_BEGIN_LABEL_EDIT, wxListEventHandler(mw::SidePanel::OnBeginLabelEdit), nullptr, this);
+	//m_projects_list_ctrl->Connect(wxEVT_LIST_END_LABEL_EDIT, wxListEventHandler(mw::SidePanel::OnEndLabelEdit), nullptr, this);
+	////m_projects_list_ctrl->Connect(wxEVT_LIST_ITEM_SELECTED, wxListEventHandler(mw::SidePanel::OnProjectSelected), NULL, this);
+	//m_projects_list_ctrl->EnableAlternateRowColours(true);
+
+	bSizer21->Add(m_project_tree, 1, wxRIGHT | wxLEFT | wxBOTTOM | wxEXPAND, 5);
 
 	m_projects_list = new wxListBox(m_panel7, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, wxLB_NEEDED_SB);
 	bSizer21->Add(m_projects_list, 1, wxRIGHT | wxLEFT | wxBOTTOM | wxEXPAND, 5);
@@ -236,7 +231,4 @@ mw::SidePanel::~SidePanel()
 	m_users_choice->Disconnect(wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler(mw::SidePanel::OnUserChange), NULL, this);
 	m_new_project_button->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mw::SidePanel::OnNewProjectButton), NULL, this);
 	// Disconnect events for label editing
-	m_projects_list_ctrl->Disconnect(wxEVT_LIST_BEGIN_LABEL_EDIT, wxListEventHandler(mw::SidePanel::OnBeginLabelEdit), nullptr, this);
-	m_projects_list_ctrl->Disconnect(wxEVT_LIST_END_LABEL_EDIT, wxListEventHandler(mw::SidePanel::OnEndLabelEdit), nullptr, this);
-	m_projects_list_ctrl->Disconnect(wxEVT_LIST_ITEM_SELECTED, wxListEventHandler(mw::SidePanel::OnProjectSelected), NULL, this);
 }
