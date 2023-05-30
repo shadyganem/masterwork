@@ -177,7 +177,17 @@ mw::SidePanel::SidePanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos,
 	//projects list instantiation 
 
 
-	m_project_tree = new wxTreeCtrl(m_panel7, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTreeItemIcon_SelectedExpanded);
+	m_project_tree = new wxTreeCtrl(m_panel7, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTR_DEFAULT_STYLE | wxTR_NO_LINES | wxTR_FULL_ROW_HIGHLIGHT);
+	m_project_tree->SetBackgroundColour(dark);
+	m_project_tree->SetForegroundColour(wxColour(255, 255, 255));
+
+	// Add some items to the tree control
+	wxTreeItemId rootId = m_project_tree->AddRoot("Root");
+	wxTreeItemId itemId = m_project_tree->AppendItem(rootId, "Item 1");
+	m_project_tree->AppendItem(itemId, "Subitem 1");
+	itemId = m_project_tree->AppendItem(rootId, "Item 2");
+	m_project_tree->AppendItem(itemId, "Subitem 2");
+
 	//m_projects_list_ctrl = new wxListCtrl(m_panel7, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_NO_HEADER | wxLC_REPORT | wxLC_EDIT_LABELS);
 	//
 
