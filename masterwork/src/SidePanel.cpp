@@ -116,13 +116,18 @@ void mw::SidePanel::OnProjectsTreeChar(wxKeyEvent& event)
 	mw::Controller& controller = mw::Controller::Get();
 	if (event.GetKeyCode() == WXK_DELETE)
 	{
-		wxTreeItemId selectedItem = m_project_tree->GetSelection();
-		if (selectedItem.IsOk())
+		wxTreeItemId selected_item = m_project_tree->GetSelection();
+		if (selected_item.IsOk())
 		{
-			mw::Project project = m_tree_item_id_to_project_map[selectedItem];
+			mw::Project project = m_tree_item_id_to_project_map[selected_item];
 			controller.DeleteProject(project);
-			m_project_tree->Delete(selectedItem);
+			m_project_tree->Delete(selected_item);
 		}
+	}
+	else if (event.GetKeyCode() == WXK_F2)
+	{
+		wxTreeItemId selected_item = m_project_tree->GetSelection();
+		m_project_tree->EditLabel(selected_item);
 	}
 	else
 	{
