@@ -56,7 +56,10 @@ namespace mw
 		virtual void OnUserChange(wxCommandEvent& event);
 		virtual void OnProjectSelect(wxTreeEvent& event);
 		virtual void OnProjectLabelChange(wxTreeEvent& event);
-
+		virtual void OnProjectsTreeChar(wxKeyEvent& event);
+		virtual void OnProjectsTreeRightClick(wxMouseEvent& event);
+		virtual void OnMenuDelete(wxCommandEvent& event);
+			
 		SidePanel(wxWindow* parent,
 			wxWindowID winid = wxID_ANY,
 			const wxPoint& pos = wxDefaultPosition,
@@ -67,6 +70,7 @@ namespace mw
 		~SidePanel();
 
 	private:
+		wxTreeItemId m_selected_by_righ_click;
 		bool m_is_project_seleted;
 	private:
 		// any class wishing to process wxWidgets events must use this macro

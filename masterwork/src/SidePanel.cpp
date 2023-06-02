@@ -111,6 +111,52 @@ void mw::SidePanel::OnProjectLabelChange(wxTreeEvent& event)
 	}
 }
 
+void mw::SidePanel::OnProjectsTreeChar(wxKeyEvent& event)
+{
+	mw::Controller& controller = mw::Controller::Get();
+	if (event.GetKeyCode() == WXK_DELETE)
+	{
+		wxTreeItemId selectedItem = m_project_tree->GetSelection();
+		if (selectedItem.IsOk())
+		{
+			mw::Project project = m_tree_item_id_to_project_map[selectedItem];
+			controller.DeleteProject(project);
+			m_project_tree->Delete(selectedItem);
+		}
+	}
+	else
+	{
+		event.Skip();
+	}
+}
+
+void mw::SidePanel::OnProjectsTreeRightClick(wxMouseEvent& event)
+{
+	wxPoint pos = event.GetPosition();
+	wxTreeItemId item;
+	int flags;
+	m_selected_by_righ_click = m_project_tree->HitTest(pos, flags);
+	if (m_selected_by_righ_click.IsOk() && (flags & wxTREE_HITTEST_ONITEM))
+	{
+		wxMenu contextMenu;
+		contextMenu.Append(wxID_DELETE, "Delete");
+		
+		m_project_tree->PopupMenu(&contextMenu, pos);
+	}
+}
+
+void mw::SidePanel::OnMenuDelete(wxCommandEvent& event)
+{
+	mw::Controller& controller = mw::Controller::Get();
+
+	if (m_selected_by_righ_click.IsOk())
+	{
+		mw::Project project = m_tree_item_id_to_project_map[m_selected_by_righ_click];
+		controller.DeleteProject(project);
+		m_project_tree->Delete(m_selected_by_righ_click);
+	}
+}
+
 mw::SidePanel::SidePanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, 
 	                     const wxString& name) : wxPanel(parent, winid, pos, size, style, name)
 {
@@ -171,6 +217,10 @@ mw::SidePanel::SidePanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos,
 
 	m_project_tree->Connect(wxEVT_TREE_SEL_CHANGED, wxTreeEventHandler(mw::SidePanel::OnProjectSelect), nullptr, this);
 	m_project_tree->Connect(wxEVT_TREE_END_LABEL_EDIT, wxTreeEventHandler(mw::SidePanel::OnProjectLabelChange), nullptr, this);
+	m_project_tree->Connect(wxEVT_CHAR, wxKeyEventHandler(mw::SidePanel::OnProjectsTreeChar), nullptr, this);
+	m_project_tree->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(mw::SidePanel::OnProjectsTreeRightClick), nullptr, this);
+	this->Connect(wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(mw::SidePanel::OnMenuDelete), nullptr, this);
+
 
 	m_users_choice->Connect(wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler(mw::SidePanel::OnUserChange), NULL, this);
 	m_new_project_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mw::SidePanel::OnNewProjectButton), NULL, this);
@@ -182,6 +232,10 @@ mw::SidePanel::~SidePanel()
 {
 	m_new_project_button->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mw::SidePanel::OnNewProjectButton), NULL, this);
 	m_users_choice->Disconnect(wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler(mw::SidePanel::OnUserChange), NULL, this);
+	this->Disconnect(wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(mw::SidePanel::OnMenuDelete), nullptr, this);
 	m_project_tree->Disconnect(wxEVT_TREE_SEL_CHANGED, wxTreeEventHandler(mw::SidePanel::OnProjectSelect), nullptr, this);
 	m_project_tree->Disconnect(wxEVT_TREE_END_LABEL_EDIT, wxTreeEventHandler(mw::SidePanel::OnProjectLabelChange), nullptr, this);
+	m_project_tree->Disconnect(wxEVT_CHAR, wxKeyEventHandler(mw::SidePanel::OnProjectsTreeChar), nullptr, this);
+	m_project_tree->Disconnect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(mw::SidePanel::OnProjectsTreeRightClick), nullptr, this);
+
 }
