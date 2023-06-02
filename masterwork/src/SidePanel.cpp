@@ -99,10 +99,16 @@ void mw::SidePanel::OnProjectLabelChange(wxTreeEvent& event)
 	wxTreeItemId item_id = event.GetItem();
 	wxString new_label = event.GetLabel();
 
-
-	mw::Project project = this->m_tree_item_id_to_project_map[item_id];
-	project.name = new_label.ToStdString();
-	controller.AddProject(project, false);
+	if (!new_label.IsEmpty())
+	{
+		mw::Project project = this->m_tree_item_id_to_project_map[item_id];
+		project.name = new_label.ToStdString();
+		controller.AddProject(project, false);
+	}
+	else
+	{
+		controller.RequestUpdateUI(this->GetId());
+	}
 }
 
 mw::SidePanel::SidePanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, 
@@ -140,7 +146,7 @@ mw::SidePanel::SidePanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos,
 	//projects list instantiation 
 
 
-	m_project_tree = new wxTreeCtrl(m_panel7, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTR_NO_LINES | wxTR_EDIT_LABELS | wxTR_SINGLE);
+	m_project_tree = new wxTreeCtrl(m_panel7, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTR_NO_LINES | wxTR_EDIT_LABELS | wxTR_SINGLE | wxTR_HAS_BUTTONS);
 	m_project_tree->SetBackgroundColour(dark);
 	m_project_tree->SetForegroundColour(wxColour(255, 255, 255));
 
