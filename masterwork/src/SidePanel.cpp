@@ -30,49 +30,43 @@ void mw::SidePanel::UpdateUsersList()
 	}
 }
 
-void mw::SidePanel::UpdateProjecstList()
+void mw::SidePanel::UpdateProjectsTree()
 {
 	mw::Logger logger;
-	m_projects_list->Clear();
-	m_place_to_project_map.clear();
+	m_project_tree->Disconnect(wxEVT_TREE_SEL_CHANGED, wxTreeEventHandler(mw::SidePanel::OnProjectSelect), nullptr, this);
+
+	m_project_tree->DeleteAllItems();
+	m_tree_item_id_to_project_map.clear();
+	wxTreeItemId rootId = m_project_tree->AddRoot("Projects");
+
+	wxTreeItemId itemId;
 	mw::Controller& controller = mw::Controller::Get();
 	std::vector<mw::Project> projects;
 	controller.GetProjectsForActiveUser(projects);
 	wxString project_name;
-	
+
 	for (int i = 0; i < projects.size(); i++)
 	{
-		m_place_to_project_map[i] = projects[i];
 		project_name = projects[i].name;
-		m_projects_list->InsertItems(1, &project_name, i);
+
+		itemId = m_project_tree->AppendItem(rootId, project_name);
+
+		m_tree_item_id_to_project_map[itemId] = projects[i];
+
 		if (projects[i].is_active == true)
 		{
-			m_projects_list->SetSelection(i);
+			m_project_tree->SetItemBold(itemId);
+			//warning SelectItem will trigger a selection change event
+			m_project_tree->SelectItem(itemId);
 		}
 	}
+	m_project_tree->Connect(wxEVT_TREE_SEL_CHANGED, wxTreeEventHandler(mw::SidePanel::OnProjectSelect), nullptr, this);
 }
 
 void mw::SidePanel::OnUpdateUI(wxEvent& event)
 {
 	this->UpdateUsersList();
-	this->UpdateProjecstList();
-}
-
-void mw::SidePanel::OnItemSelect(wxCommandEvent& event)
-{
-	mw::Controller& controller = mw::Controller::Get();
-	int sel_item = this->m_projects_list->GetSelection();
-	controller.SetActiveProject(m_place_to_project_map[sel_item]);
-}
-
-void mw::SidePanel::OnProjectListRightUp(wxCommandEvent& event)
-{
-	const wxPoint pt = wxGetMousePosition();
-	wxMenu menu;
-	menu.Append(ProjectListPopupMenuItems::Rename, "Rename");
-	menu.Append(ProjectListPopupMenuItems::Delete, "Delete");
-	menu.Connect(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(mw::SidePanel::OnProjectListMenuClick), NULL, this);
-	m_projects_list->PopupMenu(&menu);
+	this->UpdateProjectsTree();
 }
 
 void mw::SidePanel::OnNewProjectButton(wxCommandEvent& event)
@@ -83,63 +77,32 @@ void mw::SidePanel::OnNewProjectButton(wxCommandEvent& event)
 	event.Skip();
 }
 
-void mw::SidePanel::OnProjectListMenuClick(wxCommandEvent& evt)
-{
-	mw::Controller& controller = mw::Controller::Get();
-	int sel_item;
-	mw::Project sel_proj;
-	sel_item = this->m_projects_list->GetSelection();
-	sel_proj = this->m_place_to_project_map[sel_item];
-	mw::NewProjectFrame* new_project_form;
-
-	switch (evt.GetId()) 
-	{
-		case ProjectListPopupMenuItems::Rename:
-			new_project_form = new mw::NewProjectFrame(this);
-			new_project_form->SetProject(sel_proj);
-			new_project_form->CenterOnScreen();
-			new_project_form->Show(true);
-			break;
-		case ProjectListPopupMenuItems::Delete:
-			controller.DeleteProject(sel_proj);
-			break;
-	}
-}
-
 void mw::SidePanel::OnUserChange(wxCommandEvent& event)
 {
 	mw::Controller& controller = mw::Controller::Get();
 	int idx = m_users_choice->GetSelection();
 	controller.SetActiveUser(m_idx_to_user[idx]);
-}
-
-void mw::SidePanel::OnProjectSelected(wxListEvent& event)
-{
-	mw::Controller& controller = mw::Controller::Get();
-}
-
-void mw::SidePanel::OnBeginLabelEdit(wxListEvent& event)
-{
 	event.Skip();
 }
 
-void mw::SidePanel::OnEndLabelEdit(wxListEvent& event)
+void mw::SidePanel::OnProjectSelect(wxTreeEvent& event)
 {
-	int index = event.GetIndex();
-	wxString new_project_name = event.GetLabel();
 	mw::Controller& controller = mw::Controller::Get();
-	
-	mw::Project selected_proj = m_place_to_project_map[index];
-	selected_proj.name = new_project_name;
-	controller.AddProject(selected_proj, true);
-	controller.SetActiveProject(selected_proj);
+	wxTreeItemId id = event.GetItem();
+	controller.SetActiveProject(m_tree_item_id_to_project_map[id]);
+	event.Skip();
 }
 
-bool mw::SidePanel::IsProjectSelected()
+void mw::SidePanel::OnProjectLabelChange(wxTreeEvent& event)
 {
-	int sel_item;
-	sel_item = this->m_projects_list->GetSelection();
-	return false;
+	mw::Controller& controller = mw::Controller::Get();
+	wxTreeItemId item_id = event.GetItem();
+	wxString new_label = event.GetLabel();
+
+
+	mw::Project project = this->m_tree_item_id_to_project_map[item_id];
+	project.name = new_label.ToStdString();
+	controller.AddProject(project, false);
 }
 
 mw::SidePanel::SidePanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, 
@@ -177,37 +140,12 @@ mw::SidePanel::SidePanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos,
 	//projects list instantiation 
 
 
-	m_project_tree = new wxTreeCtrl(m_panel7, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTR_DEFAULT_STYLE | wxTR_NO_LINES | wxTR_FULL_ROW_HIGHLIGHT);
+	m_project_tree = new wxTreeCtrl(m_panel7, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTR_NO_LINES | wxTR_EDIT_LABELS | wxTR_SINGLE);
 	m_project_tree->SetBackgroundColour(dark);
 	m_project_tree->SetForegroundColour(wxColour(255, 255, 255));
 
-	// Add some items to the tree control
-	wxTreeItemId rootId = m_project_tree->AddRoot("Root");
-	wxTreeItemId itemId = m_project_tree->AppendItem(rootId, "Item 1");
-	m_project_tree->AppendItem(itemId, "Subitem 1");
-	itemId = m_project_tree->AppendItem(rootId, "Item 2");
-	m_project_tree->AppendItem(itemId, "Subitem 2");
-
-	//m_projects_list_ctrl = new wxListCtrl(m_panel7, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_NO_HEADER | wxLC_REPORT | wxLC_EDIT_LABELS);
-	//
-
-	//m_projects_list_ctrl->InsertColumn(0, "projects");
-	//m_projects_list_ctrl->SetColumnWidth(0, 190);
-	//m_projects_list_ctrl->SetBackgroundColour(dark);
-	//m_projects_list_ctrl->SetForegroundColour(wxColour(255, 255, 255));
-	//// connect events for label editing
-	//m_projects_list_ctrl->Connect(wxEVT_LIST_BEGIN_LABEL_EDIT, wxListEventHandler(mw::SidePanel::OnBeginLabelEdit), nullptr, this);
-	//m_projects_list_ctrl->Connect(wxEVT_LIST_END_LABEL_EDIT, wxListEventHandler(mw::SidePanel::OnEndLabelEdit), nullptr, this);
-	////m_projects_list_ctrl->Connect(wxEVT_LIST_ITEM_SELECTED, wxListEventHandler(mw::SidePanel::OnProjectSelected), NULL, this);
-	//m_projects_list_ctrl->EnableAlternateRowColours(true);
 
 	bSizer21->Add(m_project_tree, 1, wxRIGHT | wxLEFT | wxBOTTOM | wxEXPAND, 5);
-
-	m_projects_list = new wxListBox(m_panel7, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, wxLB_NEEDED_SB);
-	bSizer21->Add(m_projects_list, 1, wxRIGHT | wxLEFT | wxBOTTOM | wxEXPAND, 5);
-
-	m_projects_list->SetBackgroundColour(dark);
-	m_projects_list->SetForegroundColour(wxColour(255, 255, 255));
 
 	m_panel7->SetSizer(bSizer21);
 	m_panel7->Layout();
@@ -224,21 +162,20 @@ mw::SidePanel::SidePanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos,
 
 	this->SetSizer(bSizer19);
 	this->Layout();
-	this->UpdateUsersList();
-	this->UpdateProjecstList();
 
-	m_projects_list->Connect(wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler(mw::SidePanel::OnItemSelect), NULL, this);
-	m_projects_list->Connect(wxEVT_RIGHT_UP, wxCommandEventHandler(mw::SidePanel::OnProjectListRightUp), NULL, this);
+	m_project_tree->Connect(wxEVT_TREE_SEL_CHANGED, wxTreeEventHandler(mw::SidePanel::OnProjectSelect), nullptr, this);
+	m_project_tree->Connect(wxEVT_TREE_END_LABEL_EDIT, wxTreeEventHandler(mw::SidePanel::OnProjectLabelChange), nullptr, this);
+
 	m_users_choice->Connect(wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler(mw::SidePanel::OnUserChange), NULL, this);
 	m_new_project_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mw::SidePanel::OnNewProjectButton), NULL, this);
 
+	controller.RequestUpdateUI(SIDE_PANEL_ID);
 }
 
 mw::SidePanel::~SidePanel()
 {
-	m_projects_list->Disconnect(wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler(mw::SidePanel::OnItemSelect), NULL, this);
-	m_projects_list->Disconnect(wxEVT_RIGHT_UP, wxCommandEventHandler(mw::SidePanel::OnProjectListRightUp), NULL, this);
-	m_users_choice->Disconnect(wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler(mw::SidePanel::OnUserChange), NULL, this);
 	m_new_project_button->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mw::SidePanel::OnNewProjectButton), NULL, this);
-	// Disconnect events for label editing
+	m_users_choice->Disconnect(wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler(mw::SidePanel::OnUserChange), NULL, this);
+	m_project_tree->Disconnect(wxEVT_TREE_SEL_CHANGED, wxTreeEventHandler(mw::SidePanel::OnProjectSelect), nullptr, this);
+	m_project_tree->Disconnect(wxEVT_TREE_END_LABEL_EDIT, wxTreeEventHandler(mw::SidePanel::OnProjectLabelChange), nullptr, this);
 }

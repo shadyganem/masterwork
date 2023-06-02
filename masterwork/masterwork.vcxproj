@@ -184,7 +184,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(WXWIN)\include;$(WXWIN)\include\msvc;$(ProjectDir)inc;$(ProjectDir)inc\controller </AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXDIR)\include;$(WXDIR)\include\msvc;$(ProjectDir)inc;$(ProjectDir)inc\controller </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -220,7 +220,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(WXWIN)\include;$(WXWIN)\include\msvc;$(ProjectDir)inc;$(ProjectDir)inc\controller </AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXDIR)\include;$(WXDIR)\include\msvc;$(ProjectDir)inc;$(ProjectDir)inc\controller </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

@@ -11,7 +11,7 @@ void* mw::NotificationThread::Entry()
     // This will run in a seperate thread. 
     mw::Controller& controller = mw::Controller::Get();
     std::vector<Task> tasks; 
-    controller.GetTasksForActiveProject(tasks);
+    //controller.GetTasksForActiveProject(tasks);
 
 
 

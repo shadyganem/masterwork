@@ -26,7 +26,7 @@ namespace mw
 	{
 	public:
 
-		std::map<int, mw::Project> m_place_to_project_map;
+		std::map<wxTreeItemId, mw::Project> m_tree_item_id_to_project_map;
 
 		wxSplitterWindow* m_splitter1;
 		wxPanel* m_panel7;
@@ -40,10 +40,8 @@ namespace mw
 		
 		wxChoice* m_users_choice;
 
-		wxListBox* m_projects_list;
 		wxTreeCtrl* m_project_tree;
 
-		wxEditableListBox* m_projects_list_box;
 		void m_splitter1OnIdle(wxIdleEvent&)
 		{
 			m_splitter1->SetSashPosition(324);
@@ -51,17 +49,13 @@ namespace mw
 		}
 
 		void UpdateUsersList();
-		void UpdateProjecstList();
+		void UpdateProjectsTree();
 		void OnUpdateUI(wxEvent& event);
-		virtual void OnItemSelect(wxCommandEvent& event);
-		virtual void OnProjectListRightUp(wxCommandEvent& event);
+
 		virtual void OnNewProjectButton(wxCommandEvent& event);
-		virtual void OnProjectListMenuClick(wxCommandEvent& evt);
 		virtual void OnUserChange(wxCommandEvent& event);
-		virtual void OnProjectSelected(wxListEvent& event);
-		virtual void OnBeginLabelEdit(wxListEvent& event);
-		virtual void OnEndLabelEdit(wxListEvent& event);
-		bool IsProjectSelected();
+		virtual void OnProjectSelect(wxTreeEvent& event);
+		virtual void OnProjectLabelChange(wxTreeEvent& event);
 
 		SidePanel(wxWindow* parent,
 			wxWindowID winid = wxID_ANY,
