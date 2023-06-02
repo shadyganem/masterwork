@@ -197,10 +197,9 @@ mw::SidePanel::SidePanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos,
 	//projects list instantiation 
 
 
-	m_project_tree = new wxTreeCtrl(m_panel7, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTR_NO_LINES | wxTR_EDIT_LABELS | wxTR_SINGLE | wxTR_HAS_BUTTONS);
+	m_project_tree = new wxTreeCtrl(m_panel7, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTR_EDIT_LABELS | wxTR_SINGLE | wxTR_HAS_BUTTONS);
 	m_project_tree->SetBackgroundColour(dark);
 	m_project_tree->SetForegroundColour(wxColour(255, 255, 255));
-
 
 	bSizer21->Add(m_project_tree, 1, wxRIGHT | wxLEFT | wxBOTTOM | wxEXPAND, 5);
 
