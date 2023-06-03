@@ -557,6 +557,61 @@ bool Model::GetAllNotifications(std::vector<mw::Notification>& notifications_vec
 	}
 }
 
+bool Model::GetAllReminders(std::vector<mw::Reminder>& reminders, const mw::User& current_user)
+{
+	mw::Logger logger;
+	try
+	{
+		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
+			return false;
+
+		Records records;
+		Record row;
+
+
+		std::string sql = "SELECT * FROM reminders WHERE user_uid=" + std::to_string(current_user.uid) + ";";
+
+
+		m_db_handler.Select(sql.c_str(), records);
+
+		mw::Reminder reminder;
+
+		if (records.empty())
+		{
+			logger.Warning("No records where found for: " + sql);
+		}
+
+		for (int i = 0; i < records.size(); i++)
+		{
+			row = records[i];
+			reminder.uid = std::stoi(row[0]);
+			reminder.user_uid = std::stoi(row[1]);
+			reminder.hash = std::stoull(row[2]);
+			reminder.text = row[3];
+			reminder.details = row[4];
+			reminder.status = (mw::ReminderStatus)std::stoi(row[5]);
+			reminder.priority = std::stoi(row[6]);
+			reminder.repeat = std::stoi(row[7]);
+			reminder.creation_time = std::stoi(row[8]);
+			reminder.start_time = std::stoi(row[9]);
+			reminder.end_time = std::stoi(row[10]);
+			reminder.last_update = std::stoi(row[11]);
+			reminder.color = std::stoi(row[12]);
+
+			reminders.push_back(reminder);
+		}
+		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
+			return false;
+		return true;
+	}
+	catch (...)
+	{
+		logger.Error("Exception occured at mwModel::GetAllProjects(std::vector<mwProject>& prjects_vect, const mwUser& user) ");
+		m_db_handler.DisConn(this->m_db_path.c_str());
+		return false;
+	}
+}
+
 bool Model::SetActiveProject(mw::Project& project)
 {
 	mw::Logger logger;
@@ -1120,7 +1175,7 @@ bool Model::InitRemindersTable()
 		"\"status\"	         INTEGER NOT NULL DEFAULT 0,    "
 		"\"priority\"	     INTEGER NOT NULL DEFAULT 2,    "
 		"\"repeat\"	         INTEGER NOT NULL DEFAULT 1,    "
-		"\"creation\"	     INTEGER NOT NULL,              "
+		"\"creation_time\"	 INTEGER NOT NULL,              "
 		"\"start_time\"	     INTEGER NOT NULL,              "
 		"\"end_time\"	     INTEGER NOT NULL DEFAULT 0,    "
 		"\"last_update\"	 INTEGER NOT NULL DEFAULT 0,    "

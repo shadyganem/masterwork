@@ -52,6 +52,7 @@ namespace mw
 		void GetProjectsForActiveUser(std::vector<std::string>& projects);
 		void GetProjectsForActiveUser(std::vector<Project>& projects);
 		void GetNotificationsForActiveUser(std::vector<mw::Notification>& notifications);
+		void GetRemindersForActiveUser(std::vector<mw::Reminder>& reminders);
 		void GetTasksForActiveProject(std::vector<Task>& tasks);
 		void GetArchiveTasksForActiveProject(std::vector<Task>& tasks);
 		void RequestUpdateUI(int wind_id=-2);

@@ -294,6 +294,12 @@ void mw::Controller::GetNotificationsForActiveUser(std::vector<mw::Notification>
 	this->m_model.GetAllNotifications(notifications, m_active_user);
 }
 
+void mw::Controller::GetRemindersForActiveUser(std::vector<mw::Reminder>& reminders)
+{
+	this->m_model.GetActiveUser(m_active_user);
+	this->m_model.GetAllReminders(reminders, m_active_user);
+}
+
 void mw::Controller::GetTasksForActiveProject(std::vector<Task>& tasks)
 {
 	m_model.GetActiveUser(m_active_user);

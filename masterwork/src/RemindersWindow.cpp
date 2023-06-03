@@ -8,9 +8,11 @@ mw::RemindersWindow::RemindersWindow(wxWindow* parent, wxWindowID winid, const w
 	m_reminders_sizer = new wxBoxSizer(wxVERTICAL);
 
 
-	m_remiders_list_view = new wxListView(this, wxID_ANY, wxDefaultPosition, wxDefaultSize,	wxLC_REPORT | wxLC_SINGLE_SEL);
-	m_remiders_list_view->InsertColumn(0, "Column 1");
-	m_remiders_list_view->InsertColumn(1, "Column 2");
+	m_remiders_list_view = new wxListView(this, wxID_ANY, wxDefaultPosition, wxDefaultSize,	wxLC_REPORT | wxLC_VRULES);
+	m_remiders_list_view->InsertColumn(0, "Title");
+	m_remiders_list_view->InsertColumn(1, "Status");
+	m_remiders_list_view->InsertColumn(2, "Last Update");
+	m_remiders_list_view->SetAlternateRowColour(wxColour(37, 37, 60));
 
 	wxColour background = controller.m_backgroud_color;
 	m_remiders_list_view->SetBackgroundColour(background);
@@ -37,8 +39,15 @@ void mw::RemindersWindow::OnUpdateUI(wxEvent& event)
 
 
 	std::vector<mw::Reminder> reminders;
-	
-	
+	controller.GetRemindersForActiveUser(reminders);
+
+
+	m_remiders_list_view->DeleteAllItems();
+
+	for (int i=0; i < reminders.size(); i++) 
+	{
+		this->AddRemider(reminders[i]);
+	}
 
 
 }
@@ -47,7 +56,34 @@ void mw::RemindersWindow::OnTaskScrollWindowLeaveWindow(wxMouseEvent& event)
 {
 }
 
-void mw::RemindersWindow::AddRemider(mw::Reminder& remider)
+void mw::RemindersWindow::AddRemider(mw::Reminder& reminder)
 {
+	wxListItem list_item;
+	list_item.SetColumn(0);
+	list_item.SetText(reminder.title);
+	m_remiders_list_view->InsertItem(list_item);
+
+	list_item.SetText(std::to_string(reminder.status));
+	list_item.SetColumn(1);
+	m_remiders_list_view->SetItem(list_item);
+
+
+	list_item.SetText(std::to_string(reminder.status));
+	list_item.SetColumn(1);
+	m_remiders_list_view->SetItem(list_item);
+
+
+	// Convert the epoch timestamp to a struct tm
+	std::tm* timeinfo = std::localtime(&reminder.last_update);
+
+	// Format the date and time as a string
+	char buffer[80];
+	std::strftime(buffer, sizeof(buffer), "%d-%m-%Y %H:%M:%S", timeinfo);
+	std::string last_update = buffer;
+
+	list_item.SetText(last_update);
+	list_item.SetColumn(2);
+	m_remiders_list_view->SetItem(list_item);
+
 
 }
