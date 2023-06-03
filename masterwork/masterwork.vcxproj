@@ -39,7 +39,7 @@
     <ClInclude Include="inc\model\Project.h" />
     <ClInclude Include="inc\model\Task.h" />
     <ClInclude Include="inc\model\mwDBHandler.h" />
-    <ClInclude Include="inc\model\mwModelItem.h" />
+    <ClInclude Include="inc\model\ModelItem.h" />
     <ClInclude Include="inc\controller\Logger.h" />
     <ClInclude Include="inc\model\Notification.h" />
     <ClInclude Include="inc\view\TaskPanel.h" />
@@ -52,8 +52,10 @@
     <ClInclude Include="inc\controller\StagehandThread.h" />
     <ClInclude Include="inc\controller\NotificationThread.h" />
     <ClInclude Include="inc\view\RemindersWindow.h" />
+    <ClInclude Include="inc\model\Reminder.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Remider.cpp" />
     <ClCompile Include="src\RemindersWindow.cpp" />
     <ClCompile Include="src\NotificationThread.cpp" />
     <ClCompile Include="src\Exceptions.cpp" />

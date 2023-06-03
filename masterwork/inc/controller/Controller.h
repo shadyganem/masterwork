@@ -77,5 +77,7 @@ namespace mw
 		bool m_is_project_selected;
 		int m_active_winid;
 		int m_num_of_notifications;
+	public:
+		wxColour m_back_groud_color;
 	};
 }

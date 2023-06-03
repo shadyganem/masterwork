@@ -57,7 +57,7 @@
     <ClInclude Include="inc\model\mwDBHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\model\mwModelItem.h">
+    <ClInclude Include="inc\model\ModelItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\controller\Logger.h">
@@ -112,6 +112,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\view\RemindersWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\model\Reminder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -210,6 +213,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\RemindersWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Remider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -3,6 +3,7 @@
 #include "controller/Controller.h"
 #include "wx/wx.h"
 #include "mwDefines.h"
+#include <wx/listctrl.h>
 
 namespace mw
 {
@@ -20,8 +21,11 @@ namespace mw
 
 		virtual void OnUpdateUI(wxEvent& event);
 		virtual void OnTaskScrollWindowLeaveWindow(wxMouseEvent& event);
+		virtual void AddRemider();
 	private:
-		wxBoxSizer* m_tasks_sizer;
+		wxBoxSizer* m_reminders_sizer;
+		wxListCtrl* m_remiders_list_ctrl;
+
 	};
 
 }

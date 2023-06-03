@@ -12,16 +12,13 @@ mw::TasksWindow::TasksWindow(wxWindow* parent, wxWindowID winid, const wxPoint& 
 	m_tasks_sizer = new wxBoxSizer(wxVERTICAL);
 	m_new_task_button = new wxButton(this, wxID_ANY, "New Task", wxDefaultPosition, wxDefaultSize, wxNO_BORDER);
 	m_new_task_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mw::TasksWindow::OnNewTaskButton), NULL, this);
-	wxColour dark(37, 37, 38);
+	wxColor back_groud = controller.m_back_groud_color;
 	wxColour green(0, 136, 135);
 
 	
-	m_new_task_button->SetBackgroundColour(dark);
+	m_new_task_button->SetBackgroundColour(back_groud);
 	m_new_task_button->SetForegroundColour(green);
 	m_tasks_sizer->Add(m_new_task_button, 0, wxALIGN_CENTER, 5);
-
-	this->SetBackgroundColour(dark);
-
 
 	this->SetSizer(m_tasks_sizer);
 

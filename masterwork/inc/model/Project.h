@@ -1,12 +1,12 @@
 #pragma once
-#include "model/mwModelItem.h"
+#include "model/ModelItem.h"
 #include <string>
 #include <ctime>
 
 
 namespace mw
 {
-	class Project : public mwModelItem
+	class Project : public ModelItem
 	{
 	public:
 		enum ProjectStatus
@@ -26,6 +26,6 @@ namespace mw
 		int user_uid;
 		int status;
 		bool is_active;
-		void StampCreationTime();
+		void StampCreationTime() override;
 	};
 }

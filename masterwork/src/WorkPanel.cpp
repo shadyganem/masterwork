@@ -9,7 +9,9 @@ mw::WorkPanel::WorkPanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos,
 {
 	mw::Controller& controller = mw::Controller::Get();
 	controller.RegisterEventHandler(winid, this);
-	this->SetBackgroundColour(wxColour(37, 37, 38));
+	wxColour back_groud_color = controller.m_back_groud_color;
+
+	this->SetBackgroundColour(back_groud_color);
 
 	m_ver_sizer = new wxBoxSizer(wxVERTICAL);
 

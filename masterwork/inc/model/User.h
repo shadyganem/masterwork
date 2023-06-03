@@ -5,7 +5,7 @@
 
 namespace mw
 {
-	class User : public mwModelItem
+	class User : public ModelItem
 	{
 	public:
 		enum UserStatus

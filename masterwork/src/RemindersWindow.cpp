@@ -4,12 +4,15 @@ mw::RemindersWindow::RemindersWindow(wxWindow* parent, wxWindowID winid, const w
 {
 	mw::Controller& controller = mw::Controller::Get();
 	controller.RegisterEventHandler(winid, this);
-	m_tasks_sizer = new wxBoxSizer(wxVERTICAL);
+	m_reminders_sizer = new wxBoxSizer(wxVERTICAL);
 
-	this->SetSizer(m_tasks_sizer);
+
+	m_remiders_list_ctrl = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize,	wxLC_REPORT | wxLC_SINGLE_SEL);
+
+
+	this->SetSizer(m_reminders_sizer);
 
 	this->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(mw::RemindersWindow::OnTaskScrollWindowLeaveWindow), NULL, this);
-
 	controller.RequestUpdateUI(this->GetId());
 }
 

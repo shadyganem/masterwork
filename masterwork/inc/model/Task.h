@@ -7,7 +7,7 @@
 
 namespace mw
 {
-	class Task : public mwModelItem
+	class Task : public ModelItem
 	{
 	public:
 

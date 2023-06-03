@@ -1,15 +1,20 @@
-#include "model/mwModelItem.h"
+#include "model/ModelItem.h"
 
-mwModelItem::mwModelItem()
+mw:: ModelItem::ModelItem()
 {
 	m_type = ItemType::ANY;
 }
 
-mwModelItem::~mwModelItem()
+mw::ModelItem::~ModelItem()
 {
 }
 
-ItemType mwModelItem::GetType()
+void mw::ModelItem::StampCreationTime()
+{
+	std::time(&this->creation_time);
+}
+
+ItemType mw::ModelItem::GetType()
 {
 	return this->m_type;
 }

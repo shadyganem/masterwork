@@ -13,7 +13,7 @@ namespace mw
 		READ
 	};
 
-	class Notification : public mwModelItem
+	class Notification : public ModelItem
 	{
 	public:
 		Notification();
