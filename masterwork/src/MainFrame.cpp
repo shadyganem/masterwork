@@ -52,21 +52,18 @@ mw::MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize
 	m_top_panel->Hide();
 	m_side_panel = new mw::SidePanel(m_main_panel, SIDE_PANEL_ID, wxDefaultPosition, wxSize(200, 200));
 	m_side_panel->SetBackgroundColour(m_side_panel_bg);
-	m_bottom_panel = new mw::BottomPanel(m_main_panel, BOTTOM_PANEL_ID, wxDefaultPosition, wxSize(200, 200));
+	/*m_bottom_panel = new mw::BottomPanel(m_main_panel, BOTTOM_PANEL_ID, wxDefaultPosition, wxSize(200, 200));
 	m_bottom_panel->SetBackgroundColour(m_side_panel_bg);
-	m_bottom_panel->Hide();
+	m_bottom_panel->Hide();*/
 	m_work_panel = new mw::WorkPanel(m_main_panel, WORK_PANEL_ID, wxDefaultPosition, wxSize(200, 200));
-	m_work_panel->SetBackgroundColour(m_side_panel_bg);
-
 	
 
-
-
+	
 	main_panel_ver_sizer1->Add(m_search_ctrl, 0, wxEXPAND | wxBOTTOM | wxTOP, 5);
 	main_panel_ver_sizer1->Add(m_side_panel, 1, wxEXPAND, 0);
 	//main_panel_ver_sizer2->Add(m_top_panel, 0, wxEXPAND | wxBOTTOM, 5);
 	main_panel_ver_sizer2->Add(m_work_panel, 3, wxEXPAND | wxBOTTOM, 5);
-	main_panel_ver_sizer2->Add(m_bottom_panel, 1, wxEXPAND, 0);
+	//main_panel_ver_sizer2->Add(m_bottom_panel, 1, wxEXPAND, 0);
 
 	m_main_panel_hor_sizer1->Add(main_panel_ver_sizer1, 0, wxEXPAND | wxRIGHT, 5);
 	m_main_panel_hor_sizer1->Add(main_panel_ver_sizer2, 1, wxEXPAND, 0);
@@ -76,10 +73,7 @@ mw::MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize
 	Connect(m_notification_timer->GetId(), wxEVT_TIMER, wxTimerEventHandler(mw::MainFrame::OnNotificationTimer));
 	Connect(wxID_ANY, wxEVT_THREAD, wxThreadEventHandler(mw::MainFrame::OnNotificationThread));
 	m_1sec_timer->Start(1000);
-
-
 	m_notification_timer->StartOnce(30000);
-
 }
 
 mw::MainFrame::~MainFrame()
