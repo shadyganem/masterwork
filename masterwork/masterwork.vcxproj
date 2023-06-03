@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\Exceptions.h" />
-    <ClInclude Include="inc\view\CollapsibleGroupPane.h" />
     <ClInclude Include="inc\view\Button.h" />
     <ClInclude Include="inc\view\AboutFrame.h" />
     <ClInclude Include="inc\MasterWork.h" />
@@ -59,7 +58,6 @@
     <ClCompile Include="src\RemindersWindow.cpp" />
     <ClCompile Include="src\NotificationThread.cpp" />
     <ClCompile Include="src\Exceptions.cpp" />
-    <ClCompile Include="src\CollapsibleGroupPane.cpp" />
     <ClCompile Include="src\NotificationFactory.cpp" />
     <ClCompile Include="src\Button.cpp" />
     <ClCompile Include="src\ArchiveWindow.cpp" />
