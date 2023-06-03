@@ -1,6 +1,6 @@
 #pragma once
 
-#include "model/mwModelItem.h"
+#include "model/ModelItem.h"
 #include "model/mwDBHandler.h"
 #include "model/Task.h"
 #include "model/Project.h"

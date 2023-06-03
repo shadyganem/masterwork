@@ -12,7 +12,7 @@ mw::TasksWindow::TasksWindow(wxWindow* parent, wxWindowID winid, const wxPoint& 
 	m_tasks_sizer = new wxBoxSizer(wxVERTICAL);
 	m_new_task_button = new wxButton(this, wxID_ANY, "New Task", wxDefaultPosition, wxDefaultSize, wxNO_BORDER);
 	m_new_task_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mw::TasksWindow::OnNewTaskButton), NULL, this);
-	wxColor back_groud = controller.m_back_groud_color;
+	wxColor back_groud = controller.m_backgroud_color;
 	wxColour green(0, 136, 135);
 
 	

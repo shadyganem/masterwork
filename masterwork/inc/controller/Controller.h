@@ -78,6 +78,6 @@ namespace mw
 		int m_active_winid;
 		int m_num_of_notifications;
 	public:
-		wxColour m_back_groud_color;
+		wxColour m_backgroud_color;
 	};
 }

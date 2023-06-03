@@ -33,7 +33,7 @@ void mw::NotificationFactory::GetNotifications(std::vector<mw::Notification>& no
 
 	for (int i = 0; i < m_tasks.size(); i++)
 	{
-		if (search_flag & SEARCH_FLAG::DUE_IN_15 == SEARCH_FLAG::DUE_IN_15)
+		if ((search_flag & SEARCH_FLAG::DUE_IN_15) == SEARCH_FLAG::DUE_IN_15)
 		{
 			if (m_tasks[i].deadline > now.m_time_t - 900)
 			{
@@ -42,7 +42,7 @@ void mw::NotificationFactory::GetNotifications(std::vector<mw::Notification>& no
 				notifications.push_back(notification);
 			}
 		}
-		if (search_flag & SEARCH_FLAG::IGNORED == SEARCH_FLAG::IGNORED)
+		if ((search_flag & SEARCH_FLAG::IGNORED) == SEARCH_FLAG::IGNORED)
 		{
 			if (m_tasks[i].last_update < now.m_time_t - 432000)
 			{
@@ -63,7 +63,7 @@ void mw::NotificationFactory::GetNotifications(std::vector<mw::Notification>& no
 	{
 		if (tasks[i].notification_enabled == true)
 		{
-			if (search_flag & SEARCH_FLAG::DUE_IN_15 == SEARCH_FLAG::DUE_IN_15)
+			if ((search_flag & SEARCH_FLAG::DUE_IN_15) == SEARCH_FLAG::DUE_IN_15)
 			{
 				if ((tasks[i].deadline < ((int)now.m_time_t + 900)) && (tasks[i].deadline >= now.m_time_t))
 				{
@@ -73,7 +73,7 @@ void mw::NotificationFactory::GetNotifications(std::vector<mw::Notification>& no
 					notifications.push_back(notification);
 				}
 			}
-			if (search_flag & SEARCH_FLAG::IGNORED == SEARCH_FLAG::IGNORED)
+			if ((search_flag & SEARCH_FLAG::IGNORED) == SEARCH_FLAG::IGNORED)
 			{
 				if (tasks[i].last_update < now.m_time_t - 432000)
 				{

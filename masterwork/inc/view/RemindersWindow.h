@@ -4,6 +4,7 @@
 #include "wx/wx.h"
 #include "mwDefines.h"
 #include <wx/listctrl.h>
+#include "model/Reminder.h"
 
 namespace mw
 {
@@ -21,7 +22,8 @@ namespace mw
 
 		virtual void OnUpdateUI(wxEvent& event);
 		virtual void OnTaskScrollWindowLeaveWindow(wxMouseEvent& event);
-		virtual void AddRemider();
+		virtual void AddRemider(mw::Reminder remider);
+
 	private:
 		wxBoxSizer* m_reminders_sizer;
 		wxListCtrl* m_remiders_list_ctrl;
