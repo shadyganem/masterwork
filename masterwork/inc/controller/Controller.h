@@ -46,6 +46,7 @@ namespace mw
 		void AddProject(Project& project, bool post_update_ui = true);
 		void AddNotification(mw::Notification& notification, bool post_update_ui = true);
 		void AddUser(mw::User& user, bool set_active=false, bool post_update_ui = true);
+		void AddReminder(mw::Reminder& reminder, bool post_update_ui = true);
 		void UpdateNotification(mw::Notification& notification, bool post_update_ui = true);
 		void GetAllUsers(std::vector<mw::User>& users);
 		void GetProjectsForActiveUser(std::vector<std::string>& projects);

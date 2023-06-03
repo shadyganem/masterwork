@@ -3,7 +3,8 @@ BEGIN_EVENT_TABLE(mw::ArchiveWindow, wxScrolledWindow)
 EVT_CUSTOM(mwUpdateUI, ARCHIVE_WINDOW_ID, mw::ArchiveWindow::OnUpdateUI)
 END_EVENT_TABLE()
 
-mw::ArchiveWindow::ArchiveWindow(wxWindow* parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, const wxString& name) : wxScrolledWindow(parent, winid, pos, size, style, name)
+mw::ArchiveWindow::ArchiveWindow(wxWindow* parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, const wxString& name) 
+	: wxScrolledWindow(parent, winid, pos, size, style, name)
 {
 	mw::Controller& controller = mw::Controller::Get();
 	controller.RegisterEventHandler(winid, this);

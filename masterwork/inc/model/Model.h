@@ -4,6 +4,7 @@
 #include "model/mwDBHandler.h"
 #include "model/Task.h"
 #include "model/Project.h"
+#include "model/Reminder.h"
 #include "model/Notification.h"
 #include "model/User.h"
 
@@ -22,6 +23,7 @@ public:
 	bool AddProject(mw::Project& project);
 	bool AddTask(mw::Task& task);
 	bool AddNotification(mw::Notification& notification);
+	bool AddReminder(mw::Reminder& reminder);
 	bool GetActiveUser(mw::User& user);
 	bool SetActiveUser(mw::User& user);
 	bool DeleteTask(mw::Task& task);
@@ -51,6 +53,7 @@ private:
 	bool InitProjectsTable();
 	bool InitTasksTable();
 	bool InitNotificationsTable();
+	bool InitRemindersTable();
 	std::string m_db_path;
 	mwDBHandler m_db_handler;
 	bool is_initialized;

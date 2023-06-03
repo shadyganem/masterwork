@@ -22,11 +22,11 @@ namespace mw
 
 		virtual void OnUpdateUI(wxEvent& event);
 		virtual void OnTaskScrollWindowLeaveWindow(wxMouseEvent& event);
-		virtual void AddRemider(mw::Reminder remider);
+		virtual void AddRemider(mw::Reminder& remider);
 
 	private:
 		wxBoxSizer* m_reminders_sizer;
-		wxListCtrl* m_remiders_list_ctrl;
+		wxListView* m_remiders_list_view;
 
 	};
 

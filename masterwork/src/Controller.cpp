@@ -242,6 +242,19 @@ void mw::Controller::AddUser(mw::User& user, bool set_active, bool post_update_u
 	}
 }
 
+void mw::Controller::AddReminder(mw::Reminder& reminder, bool post_update_ui)
+{
+	m_model.GetActiveUser(m_active_user);
+	reminder.user_uid = m_active_user.uid;
+	m_mutex.Lock();
+	m_model.AddReminder(reminder);
+	m_mutex.Unlock();
+	if (post_update_ui)
+	{
+		PostUpdateUI(REMINDERS_WINDOW_ID);
+	}
+}
+
 void mw::Controller::UpdateNotification(mw::Notification& notification, bool post_update_ui)
 {
 	m_mutex.Lock();

@@ -20,8 +20,10 @@ namespace mw
 		~ModelItem();
 	public:
 		std::time_t creation_time;
+		std::time_t last_update;
 	public:
 		virtual void StampCreationTime();
+		virtual void StampLastUpdateTime();
 		ItemType GetType();
 
 	protected:

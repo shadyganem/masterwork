@@ -14,6 +14,11 @@ void mw::ModelItem::StampCreationTime()
 	std::time(&this->creation_time);
 }
 
+void mw::ModelItem::StampLastUpdateTime()
+{
+	std::time(&this->last_update);
+}
+
 ItemType mw::ModelItem::GetType()
 {
 	return this->m_type;

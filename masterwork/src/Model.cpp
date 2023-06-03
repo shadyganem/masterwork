@@ -21,6 +21,7 @@ bool Model::InitModel()
 	InitProjectsTable();
 	InitTasksTable();
 	InitNotificationsTable();
+	InitRemindersTable();
 	is_initialized = true;
 	return true;
 }
@@ -189,6 +190,50 @@ bool Model::AddNotification(mw::Notification& notification)
 			              "); ";
 		m_db_handler.ExeQuery(sql.c_str());
 
+
+		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
+			return false;
+		return true;
+
+	}
+	catch (...)
+	{
+		logger.Error("Exception occured at bool mw::Model::AddNotification(mw::Notification& notification)");
+		m_db_handler.DisConn(this->m_db_path.c_str());
+		return false;
+	}
+}
+
+bool Model::AddReminder(mw::Reminder& reminder)
+{
+	mw::Logger logger;
+	try
+	{
+		reminder.StampLastUpdateTime();
+		reminder.Hash();
+		if (reminder.user_uid == 0)
+		{
+			throw("Can not add Reminder with user UID = 0");
+		}
+		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
+			return false;
+
+		Records records;
+
+		std::string sql = "INSERT INTO reminder(user_uid,hash, title, text, status, priority, repeat, start_time, end_time, last_update, color) "
+			"VALUES (\"" + std::to_string(reminder.user_uid) + "\" , "
+			+ std::to_string(reminder.hash) + ", "
+			"\"" + reminder.title + "\","
+			"\"" + reminder.text + "\","
+			+ std::to_string(reminder.status) + ", "
+			+ std::to_string(reminder.priority) + ", "
+			+ std::to_string(reminder.repeat) + ", "
+			+ std::to_string(reminder.start_time) + ", "
+			+ std::to_string(reminder.end_time) + ", "
+			+ std::to_string(reminder.last_update) + ", "
+			+ std::to_string(reminder.color) + " "
+			"); ";
+		m_db_handler.ExeQuery(sql.c_str());
 
 		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
 			return false;
@@ -1034,8 +1079,6 @@ bool Model::InitTasksTable()
 
 bool Model::InitNotificationsTable()
 {
-	mw::Logger logger;
-	logger.Info("Initialzing notifications table");
 	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 		return false;
 
@@ -1055,6 +1098,35 @@ bool Model::InitNotificationsTable()
 						"\"color\"	        INTEGER DEFAULT -1,            "
 						"PRIMARY KEY(\"uid\" AUTOINCREMENT)                "
 						")";
+	m_mutex.lock();
+	m_db_handler.ExeQuery(sql);
+	m_mutex.unlock();
+	if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
+		return false;
+	return true;
+}
+
+bool Model::InitRemindersTable()
+{
+	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
+		return false;
+
+	const char* sql = "CREATE TABLE IF NOT EXISTS \"reminders\" (      "
+		"\"uid\"	         INTEGER NOT NULL UNIQUE,       "
+		"\"user_uid\"	     INTEGER NOT NULL DEFAULT 1,    "
+		"\"hash\"	         BIGINT NOT NULL DEFAULT 0,     "
+		"\"title\"	         TEXT NOT NULL ,                "
+		"\"text\"	         TEXT,                          "
+		"\"status\"	         INTEGER NOT NULL DEFAULT 0,    "
+		"\"priority\"	     INTEGER NOT NULL DEFAULT 2,    "
+		"\"repeat\"	         INTEGER NOT NULL DEFAULT 1,    "
+		"\"creation\"	     INTEGER NOT NULL,              "
+		"\"start_time\"	     INTEGER NOT NULL,              "
+		"\"end_time\"	     INTEGER NOT NULL DEFAULT 0,    "
+		"\"last_update\"	 INTEGER NOT NULL DEFAULT 0,    "
+		"\"color\"	         INTEGER DEFAULT -1,            "
+		"PRIMARY KEY(\"uid\" AUTOINCREMENT)                 "
+		")";
 	m_mutex.lock();
 	m_db_handler.ExeQuery(sql);
 	m_mutex.unlock();

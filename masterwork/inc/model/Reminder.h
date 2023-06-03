@@ -5,18 +5,33 @@
 
 namespace mw
 {
+	enum ReminderStatus
+	{
+		ACTIVE,
+		DISABLED
+	};
+
 	class Reminder :	public ModelItem
 	{
 	public: 
 		Reminder();
 		~Reminder();
+		void Hash();
 
-		std::time_t start_time;
-		std::string name;
 		int uid;
 		int user_uid;
-		int status;
+		std::string title;
 		bool is_active;
+		unsigned long long hash;
+		std::string text;
+		std::string details;
+		ReminderStatus status;
+		int repeat;
+		int priority;
+		time_t start_time;
+		time_t end_time;
+		int ttl;
+		int color;
 	};
 }
 
