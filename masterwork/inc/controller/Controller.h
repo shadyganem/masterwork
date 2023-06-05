@@ -81,5 +81,6 @@ namespace mw
 		int m_num_of_notifications;
 	public:
 		wxColour m_backgroud_color;
+		wxColour m_forground_color;
 	};
 }

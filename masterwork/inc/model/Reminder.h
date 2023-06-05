@@ -24,7 +24,6 @@ namespace mw
 		bool is_active;
 		unsigned long long hash;
 		std::string text;
-		std::string details;
 		ReminderStatus status;
 		int repeat;
 		int priority;

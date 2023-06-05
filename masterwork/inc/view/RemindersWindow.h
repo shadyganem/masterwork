@@ -27,7 +27,9 @@ namespace mw
 	private:
 		wxBoxSizer* m_reminders_sizer;
 		wxListView* m_remiders_list_view;
-
+		std::map<std::string, int> m_column_to_index_map;
+	private:
+		DECLARE_EVENT_TABLE()
 	};
 
 }

@@ -569,10 +569,11 @@ bool Model::GetAllReminders(std::vector<mw::Reminder>& reminders, const mw::User
 		Record row;
 
 
-		std::string sql = "SELECT * FROM reminders WHERE user_uid=" + std::to_string(current_user.uid) + ";";
+		std::string sql = "SELECT * FROM reminders WHERE user_uid=" + std::to_string(current_user.uid) + " ;";
 
 
 		m_db_handler.Select(sql.c_str(), records);
+
 
 		mw::Reminder reminder;
 
@@ -583,12 +584,13 @@ bool Model::GetAllReminders(std::vector<mw::Reminder>& reminders, const mw::User
 
 		for (int i = 0; i < records.size(); i++)
 		{
+
 			row = records[i];
 			reminder.uid = std::stoi(row[0]);
 			reminder.user_uid = std::stoi(row[1]);
 			reminder.hash = std::stoull(row[2]);
-			reminder.text = row[3];
-			reminder.details = row[4];
+			reminder.title = row[3];
+			reminder.text = row[4];
 			reminder.status = (mw::ReminderStatus)std::stoi(row[5]);
 			reminder.priority = std::stoi(row[6]);
 			reminder.repeat = std::stoi(row[7]);
