@@ -30,7 +30,7 @@ namespace mw
 		virtual void OnTaskScrollWindowLeaveWindow(wxMouseEvent& event);
 		virtual void OnItemActivated(wxDataViewEvent& event);
 		virtual void AddTask(mw::Task& task);
-
+		virtual void OnToolbarButtonClick(wxCommandEvent& event);
 
 	public:
 		std::map<int, mw::Task> m_index_to_task_map;
