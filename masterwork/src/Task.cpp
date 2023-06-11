@@ -1,4 +1,5 @@
 #include "model/Task.h"
+#define _CRT_SECURE_NO_WARNINGS
 
 mw::Task::Task()
 {
@@ -93,6 +94,46 @@ std::string mw::Task::GetPriority()
 		break;
 	}
 	return priority;
+}
+
+std::string mw::Task::GetLastUpdate()
+{
+	// Convert the epoch timestamp to a struct tm
+	std::tm timeinfo;
+
+
+	#ifdef _WIN32
+		localtime_s(&timeinfo, &this->last_update);
+	#else
+		localtime_r(&now, &localTime);
+
+	#endif
+	// Format the date and time as a string
+	char buffer[80];
+	std::strftime(buffer, sizeof(buffer), "%d-%m-%Y %H:%M:%S", &timeinfo);
+	std::string last_update = buffer;
+	return last_update;
+}
+
+std::string mw::Task::GetEndTime()
+{
+
+	// Convert the epoch timestamp to a struct tm
+	std::tm timeinfo;
+
+
+	#ifdef _WIN32
+		localtime_s(&timeinfo, &this->end_time);
+	#else
+		localtime_r(&now, &localTime);
+
+	#endif
+
+	// Format the date and time as a string
+	char buffer[80];
+	std::strftime(buffer, sizeof(buffer), "%d-%m-%Y %H:%M:%S", &timeinfo);
+	std::string end_time = buffer;
+	return end_time;
 }
 
 mw::Task::Task(std::string task_name, std::string task_description)

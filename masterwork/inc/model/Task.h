@@ -4,7 +4,6 @@
 #include <sstream>
 #include <ctime>
 
-
 namespace mw
 {
 	class Task : public ModelItem
@@ -39,6 +38,8 @@ namespace mw
 		void SetProjectId(int id);
 		std::string GetStatus();
 		std::string GetPriority();
+		std::string GetLastUpdate();
+		std::string GetEndTime();
 
 		int uid;
 		int parent_uid;

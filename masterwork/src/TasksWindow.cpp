@@ -12,17 +12,37 @@ mw::TasksWindow::TasksWindow(wxWindow* parent, wxWindowID winid, const wxPoint& 
 	m_tasks_sizer = new wxBoxSizer(wxVERTICAL);
 	m_new_task_button = new wxButton(this, wxID_ANY, "New Task", wxDefaultPosition, wxDefaultSize, wxNO_BORDER);
 	m_new_task_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mw::TasksWindow::OnNewTaskButton), NULL, this);
-	wxColor back_groud = controller.m_backgroud_color;
+	wxColour backgroud = controller.m_backgroud_color;
+	wxColour foregroud = controller.m_forground_color;
 	wxColour green(0, 136, 135);
 
+
+	m_tasks_data_view_list = new wxDataViewListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_MULTIPLE | wxDV_HORIZ_RULES);
+
+
+	m_tasks_data_view_list->AppendColumn(new wxDataViewColumn("Title", new wxDataViewTextRenderer(), 0, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT));
+	m_tasks_data_view_list->AppendColumn(new wxDataViewColumn("Status", new wxDataViewTextRenderer(), 1, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT));
+	m_tasks_data_view_list->AppendColumn(new wxDataViewColumn("Due Date", new wxDataViewTextRenderer(), 2, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT));
+	m_tasks_data_view_list->AppendColumn(new wxDataViewColumn("Priority", new wxDataViewTextRenderer(), 3, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT));
+	m_tasks_data_view_list->AppendColumn(new wxDataViewColumn("Last Modified", new wxDataViewTextRenderer(), 4, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT));
 	
-	m_new_task_button->SetBackgroundColour(back_groud);
+
+	m_tasks_data_view_list->SetBackgroundColour(backgroud);
+	m_tasks_data_view_list->SetForegroundColour(foregroud);
+	
+	m_tasks_sizer->Add(m_tasks_data_view_list, 1, wxEXPAND, 0);
+
+
+
+	m_new_task_button->SetBackgroundColour(backgroud);
 	m_new_task_button->SetForegroundColour(green);
 	m_tasks_sizer->Add(m_new_task_button, 0, wxALIGN_CENTER, 5);
 
 	this->SetSizer(m_tasks_sizer);
 
 	this->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(mw::TasksWindow::OnTaskScrollWindowLeaveWindow), NULL, this);
+	m_tasks_data_view_list->Connect(wxEVT_DATAVIEW_ITEM_ACTIVATED, wxDataViewEventHandler(mw::TasksWindow::OnItemActivated), nullptr, this);
+
 	controller.RequestUpdateUI(winid);
 }
 
@@ -33,6 +53,8 @@ mw::TasksWindow::~TasksWindow()
 
 void mw::TasksWindow::OnUpdateUI(wxEvent& event)
 {
+
+	m_tasks_data_view_list->DeleteAllItems();
 	m_new_task_button->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mw::TasksWindow::OnNewTaskButton), NULL, this);
 	m_new_task_button->Destroy();
 	m_new_task_button = new mw::Button(this, wxID_ANY, "New Task", wxDefaultPosition, wxDefaultSize, wxNO_BORDER);
@@ -46,47 +68,14 @@ void mw::TasksWindow::OnUpdateUI(wxEvent& event)
 	mw::Controller& controller = mw::Controller::Get();
 	controller.GetTasksForActiveProject(tasks);
 
-	std::map<int, bool> found_tasks;
-	std::map<mw::TaskPanel*, int>::iterator it;
-	std::map<mw::TaskPanel*, mw::Task>::iterator item;
-	std::vector<mw::TaskPanel*> unwanted_task_panels;
-	for (item = m_taskpanel_to_task_map.begin(); item != m_taskpanel_to_task_map.end(); item++)
-	{
-		bool task_found = false;
-		for (int i = 0; i < tasks.size(); i++)
-		{
-			if (item->second.uid == tasks[i].uid)
-			{
-				task_found = true;
-				item->first->SetTask(tasks[i]);
-				found_tasks[item->second.uid] = true;
-				break;
-			}
-		}
-		if (!task_found)
-		{
-			unwanted_task_panels.push_back(item->first);
-		}
-	}
+	
 
-	for (int i = 0; i < unwanted_task_panels.size(); i++)
-	{
-		unwanted_task_panels[i]->Destroy();
-		m_taskpanel_to_task_map.erase(unwanted_task_panels[i]);
-	}
-
-	mw::TaskPanel* task_panel;
+	
 
 	for (int i = 0; i < tasks.size(); i++)
 	{
-		if (!found_tasks.count(tasks[i].uid))
-		{
-			task_panel = new mw::TaskPanel(this);
-			task_panel->SetTask(tasks[i]);
-			m_taskpanel_to_task_map[task_panel] = tasks[i];
-			this->m_tasks_sizer->Add(task_panel, 0, wxEXPAND | wxALL, 1);
-			this->m_tasks_sizer->Layout();
-		}
+		m_index_to_task_map[i] = tasks[i];
+		this->AddTask(tasks[i]);
 	}
 	m_tasks_sizer->Add(m_new_task_button, 0, wxALIGN_CENTER, 5);
 	wxSize size = this->GetBestVirtualSize();
@@ -119,4 +108,45 @@ void mw::TasksWindow::OnTaskScrollWindowLeaveWindow(wxMouseEvent& event)
 		it->first->ResetBackGround();
 	}
 	event.Skip();
+}
+
+void mw::TasksWindow::OnItemActivated(wxDataViewEvent& event)
+{
+	wxDataViewItem selectedItem = m_tasks_data_view_list->GetSelection();
+
+	int row_index = m_tasks_data_view_list->GetSelectedRow();
+
+	// Check if a valid row index is obtained
+	if (row_index != wxNOT_FOUND)
+	{
+		// Handle the double-click event for the selected row
+		// ...
+
+		NewTaskFrame* m_new_task_frame = new mw::NewTaskFrame(this);
+		m_new_task_frame->SetTask(m_index_to_task_map[row_index]);
+		m_new_task_frame->CenterOnScreen();
+		m_new_task_frame->Show(true);
+	}
+	event.Skip();
+}
+
+
+void mw::TasksWindow::AddTask(mw::Task& task)
+{
+
+
+	
+
+	wxVector<wxVariant> data;
+	data.push_back(wxVariant(task.name));
+	data.push_back(wxVariant(task.GetStatus()));
+	data.push_back(wxVariant(task.GetEndTime()));
+	data.push_back(wxVariant(task.GetPriority()));
+	data.push_back(wxVariant(task.GetLastUpdate()));
+
+	
+
+	m_tasks_data_view_list->AppendItem(data);
+
+
 }

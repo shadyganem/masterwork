@@ -9,7 +9,7 @@
 #include "view/Button.h"
 #include<chrono>
 #include <wx/notifmsg.h>
-
+#include <wx/dataview.h>
 
 namespace mw
 {
@@ -28,9 +28,13 @@ namespace mw
 		virtual void OnUpdateUI(wxEvent& event);
 		virtual void OnNewTaskButton(wxCommandEvent& event);
 		virtual void OnTaskScrollWindowLeaveWindow(wxMouseEvent& event);
+		virtual void OnItemActivated(wxDataViewEvent& event);
+		virtual void AddTask(mw::Task& task);
 
 
 	public:
+		std::map<int, mw::Task> m_index_to_task_map;
+		wxDataViewListCtrl* m_tasks_data_view_list;
 		wxButton* m_new_task_button;
 		std::map<mw::TaskPanel*, mw::Task> m_taskpanel_to_task_map;
 		std::map<mw::Task, mw::TaskPanel*> m_task_to_taskpanel_map;
