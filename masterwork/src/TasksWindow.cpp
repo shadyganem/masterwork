@@ -72,7 +72,7 @@ void mw::TasksWindow::OnNewTaskButton(wxCommandEvent& event)
 	mw::NewTaskFrame* new_task_frame = new mw::NewTaskFrame(this);
 	new_task_frame->CenterOnScreen();
 	new_task_frame->Show(true);
-	event.Skip();
+	//Do not propagate to parent. this will result in double handling of the button click
 }
 
 void mw::TasksWindow::OnTaskScrollWindowLeaveWindow(wxMouseEvent& event)
