@@ -15,24 +15,45 @@ mw::RemindersWindow::RemindersWindow(wxWindow* parent, wxWindowID winid, const w
 	controller.RegisterEventHandler(winid, this);
 	m_reminders_sizer = new wxBoxSizer(wxVERTICAL);
 
-	
-	m_remiders_list_view = new wxListView(this, wxID_ANY, wxDefaultPosition, wxDefaultSize,	wxLC_REPORT | wxLC_VRULES);
-	m_column_to_index_map["Title"] = 0;
-	m_remiders_list_view->InsertColumn(0, "Title", wxLIST_FORMAT_LEFT, wxLIST_AUTOSIZE_USEHEADER);
-	
-	m_column_to_index_map["Status"] = 1;
-	m_remiders_list_view->InsertColumn(1, "Status", wxLIST_FORMAT_LEFT, wxLIST_AUTOSIZE_USEHEADER);
-	
-	m_column_to_index_map["Last Update"] = 2;
-	m_remiders_list_view->InsertColumn(2, "Last Update", wxLIST_FORMAT_LEFT, wxLIST_AUTOSIZE_USEHEADER);
-
-
 	wxColour background = controller.m_backgroud_color;
-	wxColour forground = controller.m_forground_color;
-	m_remiders_list_view->SetBackgroundColour(background);
-	m_remiders_list_view->SetForegroundColour(forground);
+	wxColour foreground = controller.m_forground_color;
 
-	m_reminders_sizer->Add(m_remiders_list_view, 0, wxEXPAND | wxALL, 0);
+
+	// instatiating m_reminders_data_view_list
+
+	m_reminders_data_view_list = new wxDataViewListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_MULTIPLE | wxDV_HORIZ_RULES);
+	
+
+
+	m_reminders_data_view_list->AppendColumn(new wxDataViewColumn("Title", new wxDataViewTextRenderer(), 0, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT));
+	m_reminders_data_view_list->AppendColumn(new wxDataViewColumn("Status", new wxDataViewTextRenderer(), 1, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT));
+	m_reminders_data_view_list->AppendColumn(new wxDataViewColumn("Last Update", new wxDataViewTextRenderer(), 2, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT));
+
+
+
+	m_reminders_data_view_list->SetBackgroundColour(background);
+	m_reminders_data_view_list->SetForegroundColour(foreground);
+
+	m_reminders_sizer->Add(m_reminders_data_view_list, 1, wxEXPAND, 0);
+
+
+
+
+	//m_remiders_list_view = new wxListView(this, wxID_ANY, wxDefaultPosition, wxDefaultSize,	wxLC_REPORT | wxLC_VRULES);
+	//m_column_to_index_map["Title"] = 0;
+	//m_remiders_list_view->InsertColumn(0, "Title", wxLIST_FORMAT_LEFT, wxLIST_AUTOSIZE_USEHEADER);
+	//
+	//m_column_to_index_map["Status"] = 1;
+	//m_remiders_list_view->InsertColumn(1, "Status", wxLIST_FORMAT_LEFT, wxLIST_AUTOSIZE_USEHEADER);
+	//
+	//m_column_to_index_map["Last Update"] = 2;
+	//m_remiders_list_view->InsertColumn(2, "Last Update", wxLIST_FORMAT_LEFT, wxLIST_AUTOSIZE_USEHEADER);
+
+
+	//m_remiders_list_view->SetBackgroundColour(background);
+	//m_remiders_list_view->SetForegroundColour(foreground);
+
+	//m_reminders_sizer->Add(m_remiders_list_view, 0, wxEXPAND | wxALL, 0);
 
 	this->SetBackgroundColour(background);
 	this->SetSizer(m_reminders_sizer);
@@ -57,8 +78,7 @@ void mw::RemindersWindow::OnUpdateUI(wxEvent& event)
 	std::vector<mw::Reminder> reminders;
 	controller.GetRemindersForActiveUser(reminders);
 
-
-	m_remiders_list_view->DeleteAllItems();
+	m_reminders_data_view_list->DeleteAllItems();
 
 	for (int i=0; i < reminders.size(); i++) 
 	{
@@ -73,36 +93,9 @@ void mw::RemindersWindow::OnTaskScrollWindowLeaveWindow(wxMouseEvent& event)
 
 void mw::RemindersWindow::AddRemider(mw::Reminder& reminder)
 {
-	mw::Logger logger;
-
-	logger.EnableDebug();
-
-	logger.Debug(reminder.title);
-
-	logger.Disable();
-	wxListItem list_item;
-	list_item.SetId(m_remiders_list_view->GetItemCount());
-
-	list_item.SetColumn(0);
-	list_item.SetText(reminder.title);
-	m_remiders_list_view->InsertItem(list_item);
-
-	list_item.SetText(std::to_string(reminder.status));
-	list_item.SetColumn(1);
-	m_remiders_list_view->SetItem(list_item);
-
-
-	// Convert the epoch timestamp to a struct tm
-	std::tm* timeinfo = std::localtime(&reminder.last_update);
-
-	// Format the date and time as a string
-	char buffer[80];
-	std::strftime(buffer, sizeof(buffer), "%d-%m-%Y %H:%M:%S", timeinfo);
-	std::string last_update = buffer;
-
-	list_item.SetText(last_update);
-	list_item.SetColumn(2);
-	m_remiders_list_view->SetItem(list_item);
-
-
+	wxVector<wxVariant> data;
+	data.push_back(wxVariant(reminder.title));
+	data.push_back(wxVariant(reminder.GetStatus()));
+	data.push_back(wxVariant(reminder.GetEndTime()));
+	m_reminders_data_view_list->AppendItem(data);
 }

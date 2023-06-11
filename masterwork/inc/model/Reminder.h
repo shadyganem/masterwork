@@ -17,7 +17,10 @@ namespace mw
 		Reminder();
 		~Reminder();
 		void Hash();
+		std::string GetStatus();
+		std::string GetEndTime();
 
+	public:
 		int uid;
 		int user_uid;
 		std::string title;

@@ -5,6 +5,7 @@
 #include "mwDefines.h"
 #include <wx/listctrl.h>
 #include "model/Reminder.h"
+#include <wx/dataview.h>
 
 namespace mw
 {
@@ -23,10 +24,11 @@ namespace mw
 		virtual void OnUpdateUI(wxEvent& event);
 		virtual void OnTaskScrollWindowLeaveWindow(wxMouseEvent& event);
 		virtual void AddRemider(mw::Reminder& remider);
-
+	public:
+		std::map<int, mw::Reminder> m_index_to_reminder_map;
+		wxDataViewListCtrl* m_reminders_data_view_list;
 	private:
 		wxBoxSizer* m_reminders_sizer;
-		wxListView* m_remiders_list_view;
 		std::map<std::string, int> m_column_to_index_map;
 	private:
 		DECLARE_EVENT_TABLE()
