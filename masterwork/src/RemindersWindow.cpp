@@ -19,6 +19,17 @@ mw::RemindersWindow::RemindersWindow(wxWindow* parent, wxWindowID winid, const w
 	wxColour foreground = controller.m_forground_color;
 
 
+
+	wxToolBar* toolbar = new wxToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_TEXT);
+
+
+	toolbar->SetBackgroundColour(background);
+	toolbar->SetForegroundColour(foreground);
+	toolbar->Realize();
+
+	m_reminders_sizer->Add(toolbar, 0, wxEXPAND);
+
+
 	// instatiating m_reminders_data_view_list
 
 	m_reminders_data_view_list = new wxDataViewListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_MULTIPLE | wxDV_HORIZ_RULES);

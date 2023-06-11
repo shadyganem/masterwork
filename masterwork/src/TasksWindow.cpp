@@ -10,13 +10,17 @@ mw::TasksWindow::TasksWindow(wxWindow* parent, wxWindowID winid, const wxPoint& 
 	mw::Controller& controller = mw::Controller::Get();
 	controller.RegisterEventHandler(winid, this);
 	m_tasks_sizer = new wxBoxSizer(wxVERTICAL);
-	wxColour backgroud = controller.m_backgroud_color;
-	wxColour foregroud = controller.m_forground_color;
+	wxColour background = controller.m_backgroud_color;
+	wxColour foreground = controller.m_forground_color;
 	wxColour green(0, 136, 135);
 
 	wxToolBar* toolbar = new wxToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_TEXT);
 	m_new_task_button = new mw::Button(toolbar, wxID_ANY, "New Task", wxDefaultPosition, wxDefaultSize, wxNO_BORDER);
+	m_new_task_button->SetBackgroundColour(background);
+	m_new_task_button->SetForegroundColour(green);
 	toolbar->AddControl(m_new_task_button);
+	toolbar->SetBackgroundColour(background);
+	toolbar->SetForegroundColour(foreground);
 	toolbar->Realize();
 
 	m_tasks_sizer->Add(toolbar, 0, wxEXPAND);
@@ -31,8 +35,8 @@ mw::TasksWindow::TasksWindow(wxWindow* parent, wxWindowID winid, const wxPoint& 
 	m_tasks_data_view_list->AppendColumn(new wxDataViewColumn("Last Modified", new wxDataViewTextRenderer(), 4, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT));
 	
 
-	m_tasks_data_view_list->SetBackgroundColour(backgroud);
-	m_tasks_data_view_list->SetForegroundColour(foregroud);
+	m_tasks_data_view_list->SetBackgroundColour(background);
+	m_tasks_data_view_list->SetForegroundColour(foreground);
 	
 	m_tasks_sizer->Add(m_tasks_data_view_list, 1, wxEXPAND, 0);
 
