@@ -23,7 +23,6 @@ namespace mw
 		~RemindersWindow();
 
 		virtual void OnUpdateUI(wxEvent& event);
-		virtual void OnTaskScrollWindowLeaveWindow(wxMouseEvent& event);
 		virtual void AddRemider(mw::Reminder& remider);
 		virtual void OnNewReminderButton(wxCommandEvent& event);
 	public:

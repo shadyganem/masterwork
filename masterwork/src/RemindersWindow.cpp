@@ -54,7 +54,6 @@ mw::RemindersWindow::RemindersWindow(wxWindow* parent, wxWindowID winid, const w
 	this->SetSizer(m_reminders_sizer);
 	this->Layout();
 
-	this->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(mw::RemindersWindow::OnTaskScrollWindowLeaveWindow), NULL, this);
 	m_new_reminder_button->Bind(wxEVT_BUTTON, &mw::RemindersWindow::OnNewReminderButton, this);
 
 	controller.RequestUpdateUI(this->GetId());
@@ -62,7 +61,6 @@ mw::RemindersWindow::RemindersWindow(wxWindow* parent, wxWindowID winid, const w
 
 mw::RemindersWindow::~RemindersWindow()
 {
-	this->Disconnect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(mw::RemindersWindow::OnTaskScrollWindowLeaveWindow));
 }
 
 void mw::RemindersWindow::OnUpdateUI(wxEvent& event)
@@ -75,10 +73,6 @@ void mw::RemindersWindow::OnUpdateUI(wxEvent& event)
 	{
 		this->AddRemider(reminders[i]);
 	}
-}
-
-void mw::RemindersWindow::OnTaskScrollWindowLeaveWindow(wxMouseEvent& event)
-{
 }
 
 void mw::RemindersWindow::AddRemider(mw::Reminder& reminder)
