@@ -22,6 +22,13 @@ mw::RemindersWindow::RemindersWindow(wxWindow* parent, wxWindowID winid, const w
 
 	wxToolBar* toolbar = new wxToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_TEXT);
 
+	wxColour green(0, 136, 135);
+
+	m_new_reminder_button = new mw::Button(toolbar, wxID_ANY, "New Reminder", wxDefaultPosition, wxDefaultSize, wxNO_BORDER);
+	m_new_reminder_button->SetBackgroundColour(background);
+	m_new_reminder_button->SetForegroundColour(green);
+	toolbar->AddControl(m_new_reminder_button);
+
 
 	toolbar->SetBackgroundColour(background);
 	toolbar->SetForegroundColour(foreground);
@@ -34,68 +41,40 @@ mw::RemindersWindow::RemindersWindow(wxWindow* parent, wxWindowID winid, const w
 
 	m_reminders_data_view_list = new wxDataViewListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_MULTIPLE | wxDV_HORIZ_RULES);
 	
-
-
 	m_reminders_data_view_list->AppendColumn(new wxDataViewColumn("Title", new wxDataViewTextRenderer(), 0, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT));
 	m_reminders_data_view_list->AppendColumn(new wxDataViewColumn("Status", new wxDataViewTextRenderer(), 1, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT));
 	m_reminders_data_view_list->AppendColumn(new wxDataViewColumn("Last Update", new wxDataViewTextRenderer(), 2, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT));
-
-
 
 	m_reminders_data_view_list->SetBackgroundColour(background);
 	m_reminders_data_view_list->SetForegroundColour(foreground);
 
 	m_reminders_sizer->Add(m_reminders_data_view_list, 1, wxEXPAND, 0);
 
-
-
-
-	//m_remiders_list_view = new wxListView(this, wxID_ANY, wxDefaultPosition, wxDefaultSize,	wxLC_REPORT | wxLC_VRULES);
-	//m_column_to_index_map["Title"] = 0;
-	//m_remiders_list_view->InsertColumn(0, "Title", wxLIST_FORMAT_LEFT, wxLIST_AUTOSIZE_USEHEADER);
-	//
-	//m_column_to_index_map["Status"] = 1;
-	//m_remiders_list_view->InsertColumn(1, "Status", wxLIST_FORMAT_LEFT, wxLIST_AUTOSIZE_USEHEADER);
-	//
-	//m_column_to_index_map["Last Update"] = 2;
-	//m_remiders_list_view->InsertColumn(2, "Last Update", wxLIST_FORMAT_LEFT, wxLIST_AUTOSIZE_USEHEADER);
-
-
-	//m_remiders_list_view->SetBackgroundColour(background);
-	//m_remiders_list_view->SetForegroundColour(foreground);
-
-	//m_reminders_sizer->Add(m_remiders_list_view, 0, wxEXPAND | wxALL, 0);
-
 	this->SetBackgroundColour(background);
 	this->SetSizer(m_reminders_sizer);
 	this->Layout();
 
 	this->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(mw::RemindersWindow::OnTaskScrollWindowLeaveWindow), NULL, this);
+	m_new_reminder_button->Bind(wxEVT_BUTTON, &mw::RemindersWindow::OnNewReminderButton, this);
+
 	controller.RequestUpdateUI(this->GetId());
 }
 
 mw::RemindersWindow::~RemindersWindow()
 {
 	this->Disconnect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(mw::RemindersWindow::OnTaskScrollWindowLeaveWindow));
-
 }
 
 void mw::RemindersWindow::OnUpdateUI(wxEvent& event)
 {
 	mw::Controller& controller = mw::Controller::Get();
-
-
-
 	std::vector<mw::Reminder> reminders;
 	controller.GetRemindersForActiveUser(reminders);
-
 	m_reminders_data_view_list->DeleteAllItems();
-
 	for (int i=0; i < reminders.size(); i++) 
 	{
 		this->AddRemider(reminders[i]);
 	}
-
 }
 
 void mw::RemindersWindow::OnTaskScrollWindowLeaveWindow(wxMouseEvent& event)
@@ -109,4 +88,9 @@ void mw::RemindersWindow::AddRemider(mw::Reminder& reminder)
 	data.push_back(wxVariant(reminder.GetStatus()));
 	data.push_back(wxVariant(reminder.GetEndTime()));
 	m_reminders_data_view_list->AppendItem(data);
+}
+
+void mw::RemindersWindow::OnNewReminderButton(wxCommandEvent& event)
+{
+	wxMessageBox("Button clicked!");
 }
