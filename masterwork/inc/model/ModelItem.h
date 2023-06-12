@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ctime>
+#include <string>
 
 enum ItemType
 {
@@ -24,6 +25,7 @@ namespace mw
 	public:
 		virtual void StampCreationTime();
 		virtual void StampLastUpdateTime();
+		virtual std::string ConvertTimeToString(time_t time);
 		ItemType GetType();
 
 	protected:

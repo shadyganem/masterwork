@@ -136,6 +136,11 @@ std::string mw::Task::GetEndTime()
 	return end_time;
 }
 
+std::string mw::Task::GetDeadline()
+{
+	return this->ConvertTimeToString(this->deadline);
+}
+
 mw::Task::Task(std::string task_name, std::string task_description)
 {
 	name = task_name;

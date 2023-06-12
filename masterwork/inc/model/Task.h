@@ -40,6 +40,7 @@ namespace mw
 		std::string GetPriority();
 		std::string GetLastUpdate();
 		std::string GetEndTime();
+		std::string GetDeadline();
 
 		int uid;
 		int parent_uid;

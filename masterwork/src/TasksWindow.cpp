@@ -118,7 +118,7 @@ void mw::TasksWindow::AddTask(mw::Task& task)
 	wxVector<wxVariant> data;
 	data.push_back(wxVariant(task.name));
 	data.push_back(wxVariant(task.GetStatus()));
-	data.push_back(wxVariant(task.GetEndTime()));
+	data.push_back(wxVariant(task.GetDeadline()));
 	data.push_back(wxVariant(task.GetPriority()));
 	data.push_back(wxVariant(task.GetLastUpdate()));
 	m_tasks_data_view_list->AppendItem(data);
