@@ -7,6 +7,7 @@
 #include "model/Reminder.h"
 #include <wx/dataview.h>
 #include "view/Button.h"
+#include "view/NewReminderFrame.h"
 
 namespace mw
 {

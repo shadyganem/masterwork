@@ -86,5 +86,8 @@ void mw::RemindersWindow::AddRemider(mw::Reminder& reminder)
 
 void mw::RemindersWindow::OnNewReminderButton(wxCommandEvent& event)
 {
-	wxMessageBox("Button clicked!");
+	mw::NewReminderFrame* new_reminder_frame = new mw::NewReminderFrame(this);
+	new_reminder_frame->CenterOnScreen();
+	new_reminder_frame->Show(true);
+	//Do not propagate to parent. this will result in double handling of the button click
 }

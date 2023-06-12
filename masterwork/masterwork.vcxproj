@@ -53,8 +53,10 @@
     <ClInclude Include="inc\controller\NotificationThread.h" />
     <ClInclude Include="inc\view\RemindersWindow.h" />
     <ClInclude Include="inc\model\Reminder.h" />
+    <ClInclude Include="inc\view\NewReminderFrame.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\NewReminderFrame.cpp" />
     <ClCompile Include="src\ExpensesWindow.cpp" />
     <ClCompile Include="src\Remider.cpp" />
     <ClCompile Include="src\RemindersWindow.cpp" />

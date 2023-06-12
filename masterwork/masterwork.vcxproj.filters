@@ -117,6 +117,9 @@
     <ClInclude Include="inc\view\ExpensesWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="inc\view\NewReminderFrame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\MainFrame.cpp">
@@ -216,6 +219,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ExpensesWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NewReminderFrame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
