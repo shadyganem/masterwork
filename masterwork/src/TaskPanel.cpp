@@ -75,7 +75,7 @@ void mw::TaskPanel::OnTaskMenuClick(wxCommandEvent& event)
 		controller.ArchiveTask(m_task);
 		break;
 	case TaskPanelMenuItems::Unarchive:
-		controller.UnArchiveTask(m_task);
+		controller.UnarchiveTask(m_task);
 		break;
 	default:
 		break;

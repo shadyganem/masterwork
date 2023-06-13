@@ -18,7 +18,6 @@ namespace mw
 		User(std::string username);
 		~User();
 
-		int uid;
 		int status;
 		std::string username;
 		bool is_active;

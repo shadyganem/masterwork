@@ -42,7 +42,8 @@ namespace mw
 		void DeleteTasks(std::vector<mw::Task>& tasks);
 ;		void ArchiveTask(Task& task);
 		void ArchiveTasks(std::vector<mw::Task>& tasks);
-		void UnArchiveTask(Task& task);
+		void UnarchiveTask(Task& task);
+		void UnarchiveTasks(std::vector<mw::Task>& tasks);
 		void DeleteProject(Project& project);
 		void AddTask(Task& task);
 		void AddProject(Project& project, bool post_update_ui = true);

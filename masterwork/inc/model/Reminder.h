@@ -21,7 +21,6 @@ namespace mw
 		std::string GetEndTime();
 
 	public:
-		int uid;
 		int user_uid;
 		std::string title;
 		bool is_active;

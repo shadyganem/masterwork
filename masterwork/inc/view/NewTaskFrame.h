@@ -30,6 +30,8 @@ namespace mw
 		void SetTaskPriority();
 		void SetTaskStatus();
 		void SetTaskDeadline();
+	public:
+		mw::Task GetTask();
 	protected:
 		wxPanel* m_main_panel;
 		wxStaticText* m_task_name_static;

@@ -38,6 +38,8 @@ mw::ArchiveWindow::ArchiveWindow(wxWindow* parent, wxWindowID winid, const wxPoi
 
 	this->SetSizer(m_tasks_sizer);
 
+	m_tasks_data_view_list->Bind(wxEVT_DATAVIEW_ITEM_CONTEXT_MENU, &mw::ArchiveWindow::OnItemContextMenu, this);
+
 	controller.RequestUpdateUI(this->GetId());
 }
 
@@ -50,7 +52,7 @@ void mw::ArchiveWindow::OnUpdateUI(wxEvent& event)
 	m_tasks_data_view_list->DeleteAllItems();
 	std::vector<mw::Task> tasks;
 	mw::Controller& controller = mw::Controller::Get();
-	controller.GetTasksForActiveProject(tasks);
+	controller.GetArchiveTasksForActiveProject(tasks);
 	for (int i = 0; i < tasks.size(); i++)
 	{
 		m_index_to_task_map[i] = tasks[i];
@@ -80,4 +82,77 @@ void mw::ArchiveWindow::OnToolbarButtonClick(wxCommandEvent& event)
 	default:
 		break;
 	}
+}
+
+void mw::ArchiveWindow::OnItemContextMenu(wxDataViewEvent& event)
+{
+	wxDataViewItem item = event.GetItem();
+	if (item.IsOk())
+	{
+		wxMenu menu;
+		// using wxID_REMOVE to archive tasks
+		menu.Append(wxID_REMOVE, "Unarchive");
+		menu.Append(wxID_DELETE, "Delete");
+		Bind(wxEVT_MENU, &mw::ArchiveWindow::OnTaskUnarchieveClick, this, wxID_REMOVE);
+		Bind(wxEVT_MENU, &mw::ArchiveWindow::OnTaskDeleteClick, this, wxID_DELETE);
+		wxPoint pos = event.GetPosition();
+		PopupMenu(&menu, pos);
+	}
+	event.Skip();
+}
+
+void mw::ArchiveWindow::OnTaskDeleteClick(wxCommandEvent& event)
+{
+	int selected_items_count = m_tasks_data_view_list->GetSelectedItemsCount();
+	if (selected_items_count == 0)
+	{
+		return;
+	}
+	std::vector<mw::Task> tasks_for_deletion;
+	mw::Controller& controller = mw::Controller::Get();
+	int answer = 0;
+	if (selected_items_count == 1)
+	{ 
+		answer = wxMessageBox("Are you sure you want to permanently delete this task?", "Confirm", wxYES_NO, this);
+	}
+	else if (selected_items_count > 1)
+	{
+		answer = wxMessageBox("Are you sure you want to permanently delete all the selected tasks?", "Confirm", wxYES_NO, this);
+	}
+	
+
+	if (answer == wxYES)
+	{
+		int row_count = m_tasks_data_view_list->GetItemCount();
+
+		for (int i = 0; i < row_count; i++)
+		{
+			if (m_tasks_data_view_list->IsRowSelected(i))
+			{
+				tasks_for_deletion.push_back(m_index_to_task_map[i]);
+			}
+		}
+	}
+	controller.DeleteTasks(tasks_for_deletion);
+}
+
+void mw::ArchiveWindow::OnTaskUnarchieveClick(wxCommandEvent& event)
+{
+	if (m_tasks_data_view_list->GetSelectedItemsCount() == 0)
+	{
+		return;
+	}
+	std::vector<mw::Task> tasks_for_unarchiving;
+	mw::Controller& controller = mw::Controller::Get();
+
+	int row_count = m_tasks_data_view_list->GetItemCount();
+
+	for (int i = 0; i < row_count; i++)
+	{
+		if (m_tasks_data_view_list->IsRowSelected(i))
+		{
+			tasks_for_unarchiving.push_back(m_index_to_task_map[i]);
+		}
+	}
+	controller.UnarchiveTasks(tasks_for_unarchiving);
 }

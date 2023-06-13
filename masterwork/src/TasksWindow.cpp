@@ -95,8 +95,10 @@ void mw::TasksWindow::OnItemContextMenu(wxDataViewEvent& event)
 	{
 		wxMenu menu;
 		// using wxID_REMOVE to archive tasks
+		menu.Append(wxID_EDIT, "Edit");
 		menu.Append(wxID_REMOVE, "Archive");
 		menu.Append(wxID_DELETE, "Delete");
+		Bind(wxEVT_MENU, &mw::TasksWindow::OnItemEditClick, this, wxID_EDIT);
 		Bind(wxEVT_MENU, &mw::TasksWindow::OnTaskArchieveClick, this, wxID_REMOVE);
 		Bind(wxEVT_MENU, &mw::TasksWindow::OnTaskDeleteClick, this, wxID_DELETE);
 		wxPoint pos = event.GetPosition();
@@ -105,17 +107,65 @@ void mw::TasksWindow::OnItemContextMenu(wxDataViewEvent& event)
 	event.Skip();
 }
 
+void mw::TasksWindow::OnItemEditClick(wxCommandEvent& event)
+{
+	int selected_items_count = m_tasks_data_view_list->GetSelectedItemsCount();
+	if (selected_items_count == 0)
+	{
+		return;
+	}
+	std::vector<mw::Task> tasks_for_editing;
+	mw::Controller& controller = mw::Controller::Get();
+	
+	int row_count = m_tasks_data_view_list->GetItemCount();
+
+	for (int i = 0; i < row_count; i++)
+	{
+		if (m_tasks_data_view_list->IsRowSelected(i))
+		{
+			tasks_for_editing.push_back(m_index_to_task_map[i]);
+		}
+	}
+
+	NewTaskFrame* new_task_frame;
+	for (int i = 0; i < tasks_for_editing.size(); i++)
+	{
+		if (m_task_to_frame_map.find(tasks_for_editing[i]) == m_task_to_frame_map.end()) 
+		{
+			new_task_frame = new mw::NewTaskFrame(this);
+			new_task_frame->Bind(wxEVT_CLOSE_WINDOW, &mw::TasksWindow::OnNewTasksFrameCloseEvent, this);
+			new_task_frame->SetTask(tasks_for_editing[i]);
+			new_task_frame->CenterOnScreen();
+			new_task_frame->Show(true);
+			m_task_to_frame_map[tasks_for_editing[i]] = new_task_frame;
+		}
+		else {
+			new_task_frame = m_task_to_frame_map[tasks_for_editing[i]];
+			new_task_frame->SetFocus();
+		}	
+	}
+	tasks_for_editing.clear();
+}
+
 void mw::TasksWindow::OnTaskDeleteClick(wxCommandEvent& event)
 {
-	if (m_tasks_data_view_list->GetSelectedItemsCount() == 0)
+	int selected_items_count = m_tasks_data_view_list->GetSelectedItemsCount();
+	if (selected_items_count == 0)
 	{
 		return;
 	}
 	std::vector<mw::Task> tasks_for_deletion;
 	mw::Controller& controller = mw::Controller::Get();
 	int answer = 0;
-	answer = wxMessageBox("Are you sure you want to permanently delete this task?", "Confirm", wxYES_NO, this);
-	
+	if (selected_items_count == 1)
+	{
+		answer = wxMessageBox("Are you sure you want to permanently delete this task?", "Confirm", wxYES_NO, this);
+	}
+	else if (selected_items_count > 1)
+	{
+		answer = wxMessageBox("Are you sure you want to permanently delete all the selected tasks?", "Confirm", wxYES_NO, this);
+	}
+
 	if (answer == wxYES)
 	{
 		int row_count = m_tasks_data_view_list->GetItemCount();
@@ -173,9 +223,23 @@ void mw::TasksWindow::OnToolbarButtonClick(wxCommandEvent& event)
 
 	switch (tool_id) {
 	case wxID_NEW:	
-		// Handle the "New" button click
 		break;
 	default:
 		break;
 	}
+}
+
+void mw::TasksWindow::OnNewTasksFrameCloseEvent(wxCloseEvent& event)
+{
+	NewTaskFrame* closed_frame = dynamic_cast<NewTaskFrame*>(event.GetEventObject());
+	if (closed_frame != nullptr)
+	{
+		m_task_to_frame_map.erase(closed_frame->GetTask());
+	}
+	event.Skip();
+}
+
+bool mw::TasksWindow::IsTaskBeingEdited(mw::Task& task)
+{
+	return false;
 }

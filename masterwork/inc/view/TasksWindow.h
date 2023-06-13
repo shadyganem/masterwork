@@ -10,6 +10,10 @@
 #include<chrono>
 #include <wx/notifmsg.h>
 #include <wx/dataview.h>
+#include "view/NewTaskFrame.h"
+
+
+#define mwID_EDIT = 1
 
 namespace mw
 {
@@ -29,12 +33,15 @@ namespace mw
 		virtual void OnNewTaskButton(wxCommandEvent& event);
 		virtual void OnItemActivated(wxDataViewEvent& event);
 		virtual void OnItemContextMenu(wxDataViewEvent& event);
+		virtual void OnItemEditClick(wxCommandEvent& event);
 		virtual void OnTaskDeleteClick(wxCommandEvent& event);
 		virtual void OnTaskArchieveClick(wxCommandEvent& event);
 		virtual void AddTask(mw::Task& task);
 		virtual void OnToolbarButtonClick(wxCommandEvent& event);
+		virtual void OnNewTasksFrameCloseEvent(wxCloseEvent& event);
 
 	public:
+		std::map<mw::Task, mw::NewTaskFrame*> m_task_to_frame_map;
 		std::map< wxDataViewItem, mw::Task> m_item_to_task_map;
 		std::map<int, mw::Task> m_index_to_task_map;
 		wxDataViewListCtrl* m_tasks_data_view_list;
@@ -44,6 +51,8 @@ namespace mw
 		std::map<mw::Task, mw::TaskPanel*> m_task_to_taskpanel_map;
 		wxBoxSizer* m_tasks_sizer;
 
+	private:
+		bool IsTaskBeingEdited(mw::Task& task);
 	private:
 		DECLARE_EVENT_TABLE()
 	};

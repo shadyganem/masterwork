@@ -115,9 +115,6 @@ mw::NewTaskFrame::NewTaskFrame(wxWindow* parent, wxWindowID id, const wxString& 
 	this->SetSizer(m_top_sizer);
 	this->Layout();
 
-
-
-
 	// Connect Events
 	m_done_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(NewTaskFrame::OnDoneButton), NULL, this);
 	m_cancel_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(NewTaskFrame::OnCancelButton), NULL, this);
@@ -149,6 +146,7 @@ void mw::NewTaskFrame::SetTask(const mw::Task& task)
 void mw::NewTaskFrame::OnCancelButton(wxCommandEvent& event)
 {
 	this->Close();
+	event.Skip();
 }
 
 void mw::NewTaskFrame::SetTaskPriority()
@@ -216,6 +214,11 @@ void mw::NewTaskFrame::SetTaskDeadline()
 	m_task.deadline = deadline.m_time_t;
 }
 
+mw::Task mw::NewTaskFrame::GetTask()
+{
+	return m_task;
+}
+
 void mw::NewTaskFrame::OnDoneButton(wxCommandEvent& event)
 {
 	mw::Logger logger;
@@ -261,4 +264,5 @@ void mw::NewTaskFrame::OnDoneButton(wxCommandEvent& event)
 	this->SetTaskDeadline();
 	controller.AddTask(m_task);
 	this->Close();
+	event.Skip();
 }

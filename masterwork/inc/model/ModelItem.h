@@ -28,6 +28,38 @@ namespace mw
 		virtual std::string ConvertTimeToString(time_t time);
 		ItemType GetType();
 
+		bool operator==(const ModelItem& other) const
+		{
+			return uid == other.uid;
+		}
+
+		bool operator<(const ModelItem& other) const
+		{
+			return uid < other.uid;
+		}
+
+		bool operator<=(const ModelItem& other) const
+		{
+			return uid <= other.uid;
+		}
+
+		bool operator>(const ModelItem& other) const
+		{
+			return uid > other.uid;
+		}
+
+		bool operator>=(const ModelItem& other) const
+		{
+			return uid >= other.uid;
+		}
+
+		bool operator!=(const ModelItem& other) const
+		{
+			return uid != other.uid;
+		}
+
+		int uid;
+
 	protected:
 		
 		ItemType m_type;

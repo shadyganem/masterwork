@@ -42,7 +42,6 @@ namespace mw
 		std::string GetEndTime();
 		std::string GetDeadline();
 
-		int uid;
 		int parent_uid;
 		std::string name;
 		std::string description;
@@ -60,5 +59,3 @@ namespace mw
 
 	};
 }
-
-

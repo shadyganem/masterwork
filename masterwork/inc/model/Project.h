@@ -22,7 +22,6 @@ namespace mw
 		void ChangeName(std::string new_name);
 		std::time_t start_time;
 		std::string name;
-		int uid;
 		int user_uid;
 		int status;
 		bool is_active;

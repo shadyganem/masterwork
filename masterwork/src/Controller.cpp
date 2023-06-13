@@ -170,12 +170,28 @@ void mw::Controller::ArchiveTasks(std::vector<mw::Task>& tasks)
 	PostUpdateUI(REMINDERS_WINDOW_ID);
 }
 
-void mw::Controller::UnArchiveTask(Task& task)
+void mw::Controller::UnarchiveTask(Task& task)
 {
+	task.StampLastUpdateTime();
 	m_mutex.Lock();
 	task.status = mw::Task::TaskStatus::NOTSTARTED;
 	m_model.UpdateTask(task);
 	m_mutex.Unlock();
+	PostUpdateUI(TASKS_WINDOW_ID);
+	PostUpdateUI(ARCHIVE_WINDOW_ID);
+	PostUpdateUI(REMINDERS_WINDOW_ID);
+}
+
+void mw::Controller::UnarchiveTasks(std::vector<mw::Task>& tasks)
+{
+	for (int i = 0; i < tasks.size(); i++)
+	{
+		tasks[i].StampLastUpdateTime();
+		m_mutex.Lock();
+		tasks[i].status = mw::Task::TaskStatus::NOTSTARTED;
+		m_model.UpdateTask(tasks[i]);
+		m_mutex.Unlock();
+	}
 	PostUpdateUI(TASKS_WINDOW_ID);
 	PostUpdateUI(ARCHIVE_WINDOW_ID);
 	PostUpdateUI(REMINDERS_WINDOW_ID);

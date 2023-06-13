@@ -26,6 +26,9 @@ namespace mw
 		virtual void OnUpdateUI(wxEvent& event);
 		virtual void AddTask(mw::Task& task);
 		virtual void OnToolbarButtonClick(wxCommandEvent& event);
+		virtual void OnItemContextMenu(wxDataViewEvent& event);
+		virtual void OnTaskDeleteClick(wxCommandEvent& event);
+		virtual void OnTaskUnarchieveClick(wxCommandEvent& event);
 
 	public:
 		std::map<int, mw::Task> m_index_to_task_map;
