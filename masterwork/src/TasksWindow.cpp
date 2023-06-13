@@ -90,7 +90,6 @@ void mw::TasksWindow::OnItemActivated(wxDataViewEvent& event)
 
 void mw::TasksWindow::OnItemContextMenu(wxDataViewEvent& event)
 {
-
 	wxDataViewItem item = event.GetItem();
 	if (item.IsOk())
 	{
@@ -98,51 +97,60 @@ void mw::TasksWindow::OnItemContextMenu(wxDataViewEvent& event)
 		// using wxID_REMOVE to archive tasks
 		menu.Append(wxID_REMOVE, "Archive");
 		menu.Append(wxID_DELETE, "Delete");
-		Bind(wxEVT_MENU, &mw::TasksWindow::OnTaskDeleteClick, this, wxID_DELETE); // Bind delete menu item event
-		Bind(wxEVT_MENU, &mw::TasksWindow::OnTaskArchieveClick, this, wxID_COPY);     // Bind copy menu item event
+		Bind(wxEVT_MENU, &mw::TasksWindow::OnTaskArchieveClick, this, wxID_REMOVE);
+		Bind(wxEVT_MENU, &mw::TasksWindow::OnTaskDeleteClick, this, wxID_DELETE);
 		wxPoint pos = event.GetPosition();
 		PopupMenu(&menu, pos);
 	}
-	wxMenu menu;
-	// using wxID_REMOVE to archive tasks
-	menu.Append(wxID_REMOVE, "Archive");
-	menu.Append(wxID_DELETE, "Delete");
-	wxPoint pos = event.GetPosition();
-	PopupMenu(&menu);
+	event.Skip();
 }
 
 void mw::TasksWindow::OnTaskDeleteClick(wxCommandEvent& event)
 {
-	wxDataViewItemArray selectedItems;
+	if (m_tasks_data_view_list->GetSelectedItemsCount() == 0)
+	{
+		return;
+	}
+	std::vector<mw::Task> tasks_for_deletion;
 	mw::Controller& controller = mw::Controller::Get();
 	int answer = 0;
 	answer = wxMessageBox("Are you sure you want to permanently delete this task?", "Confirm", wxYES_NO, this);
 	
 	if (answer == wxYES)
 	{
-		wxDataViewItemArray selectedItems;
-		m_tasks_data_view_list->GetSelections(selectedItems);
+		int row_count = m_tasks_data_view_list->GetItemCount();
 
-		// Iterate over the selected items
-		for (const auto& item : selectedItems)
+		for (int i = 0; i < row_count; i++)
 		{
-			// Get the row index for the current item
-			int rowIndex = m_tasks_data_view_list->GetModel()->Get
-			// Retrieve the corresponding task from the map
-			mw::Task task = m_index_to_task_map[rowIndex];
-
-			// Perform the necessary operations using the task
-			// For example, you can delete the task using the controller.DeleteTask() method
+			if (m_tasks_data_view_list->IsRowSelected(i))
+			{
+				tasks_for_deletion.push_back(m_index_to_task_map[i]);
+			}
 		}
 	}
-	
+	controller.DeleteTasks(tasks_for_deletion);
 }
 
 void mw::TasksWindow::OnTaskArchieveClick(wxCommandEvent& event)
 {
-	// Handle "Copy" menu item click
-	// Perform the necessary copy operation here
+	if (m_tasks_data_view_list->GetSelectedItemsCount() == 0)
+	{
+		return;
+	}
+	std::vector<mw::Task> tasks_for_archiving;
+	mw::Controller& controller = mw::Controller::Get();
 
+
+	int row_count = m_tasks_data_view_list->GetItemCount();
+
+	for (int i = 0; i < row_count; i++)
+	{
+		if (m_tasks_data_view_list->IsRowSelected(i))
+		{
+			tasks_for_archiving.push_back(m_index_to_task_map[i]);
+		}
+	}
+	controller.ArchiveTasks(tasks_for_archiving);
 }
 
 void mw::TasksWindow::AddTask(mw::Task& task)

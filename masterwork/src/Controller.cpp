@@ -127,6 +127,20 @@ void mw::Controller::DeleteTask(Task& task)
 	PostUpdateUI(REMINDERS_WINDOW_ID);
 }
 
+void mw::Controller::DeleteTasks(std::vector<mw::Task>& tasks)
+{
+	for (int i = 0; i < tasks.size(); i++)
+	{
+		tasks[i].StampLastUpdateTime();
+		m_mutex.Lock();
+		m_model.DeleteTask(tasks[i]);
+		m_mutex.Unlock();
+	}
+	PostUpdateUI(TASKS_WINDOW_ID);
+	PostUpdateUI(ARCHIVE_WINDOW_ID);
+	PostUpdateUI(REMINDERS_WINDOW_ID);
+}
+
 void mw::Controller::ArchiveTask(Task& task)
 {
 	task.StampLastUpdateTime();
@@ -137,6 +151,20 @@ void mw::Controller::ArchiveTask(Task& task)
 		return;
 	}
 	m_mutex.Unlock();
+	PostUpdateUI(TASKS_WINDOW_ID);
+	PostUpdateUI(ARCHIVE_WINDOW_ID);
+	PostUpdateUI(REMINDERS_WINDOW_ID);
+}
+
+void mw::Controller::ArchiveTasks(std::vector<mw::Task>& tasks)
+{
+	for (int i = 0; i < tasks.size(); i++)
+	{
+		tasks[i].StampLastUpdateTime();
+		m_mutex.Lock();
+		m_model.ArchiveTask(tasks[i]);
+		m_mutex.Unlock();
+	}
 	PostUpdateUI(TASKS_WINDOW_ID);
 	PostUpdateUI(ARCHIVE_WINDOW_ID);
 	PostUpdateUI(REMINDERS_WINDOW_ID);
