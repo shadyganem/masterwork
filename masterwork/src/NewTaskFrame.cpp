@@ -130,7 +130,7 @@ mw::NewTaskFrame::~NewTaskFrame()
 	m_cancel_button->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(NewTaskFrame::OnCancelButton), NULL, this);
 }
 
-void mw::NewTaskFrame::SetTask(mw::Task& task)
+void mw::NewTaskFrame::SetTask(const mw::Task& task)
 {
 	m_task = task;
 	this->SetTitle(task.name);

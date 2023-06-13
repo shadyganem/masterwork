@@ -5,6 +5,8 @@
 #include "mwDefines.h"
 #include "model/Task.h"
 #include <map>
+#include <wx/dataview.h>
+
 
 namespace mw
 {
@@ -22,10 +24,12 @@ namespace mw
 		~ArchiveWindow();
 
 		virtual void OnUpdateUI(wxEvent& event);
-		virtual void OnTaskScrollWindowLeaveWindow(wxMouseEvent& event);
-
+		virtual void AddTask(mw::Task& task);
+		virtual void OnToolbarButtonClick(wxCommandEvent& event);
 
 	public:
+		std::map<int, mw::Task> m_index_to_task_map;
+		wxDataViewListCtrl* m_tasks_data_view_list;
 		std::map<mw::TaskPanel*, mw::Task> m_taskpanel_to_task_map;
 		std::map<mw::Task, mw::TaskPanel*> m_task_to_taskpanel_map;
 		wxBoxSizer* m_tasks_sizer;

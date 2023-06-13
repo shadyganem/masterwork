@@ -27,14 +27,18 @@ namespace mw
 
 		virtual void OnUpdateUI(wxEvent& event);
 		virtual void OnNewTaskButton(wxCommandEvent& event);
-		virtual void OnTaskScrollWindowLeaveWindow(wxMouseEvent& event);
 		virtual void OnItemActivated(wxDataViewEvent& event);
+		virtual void OnItemContextMenu(wxDataViewEvent& event);
+		virtual void OnTaskDeleteClick(wxCommandEvent& event);
+		virtual void OnTaskArchieveClick(wxCommandEvent& event);
 		virtual void AddTask(mw::Task& task);
 		virtual void OnToolbarButtonClick(wxCommandEvent& event);
 
 	public:
+		std::map< wxDataViewItem, mw::Task> m_item_to_task_map;
 		std::map<int, mw::Task> m_index_to_task_map;
 		wxDataViewListCtrl* m_tasks_data_view_list;
+		wxMenu* m_menu;
 		wxButton* m_new_task_button;
 		std::map<mw::TaskPanel*, mw::Task> m_taskpanel_to_task_map;
 		std::map<mw::Task, mw::TaskPanel*> m_task_to_taskpanel_map;
