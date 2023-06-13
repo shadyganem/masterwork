@@ -12,7 +12,6 @@
 #include <wx/dataview.h>
 #include "view/NewTaskFrame.h"
 
-
 #define mwID_EDIT = 1
 
 namespace mw
@@ -33,7 +32,7 @@ namespace mw
 		virtual void OnNewTaskButton(wxCommandEvent& event);
 		virtual void OnItemActivated(wxDataViewEvent& event);
 		virtual void OnItemContextMenu(wxDataViewEvent& event);
-		virtual void OnItemEditClick(wxCommandEvent& event);
+		virtual void OnTaskEditClick(wxCommandEvent& event);
 		virtual void OnTaskDeleteClick(wxCommandEvent& event);
 		virtual void OnTaskArchieveClick(wxCommandEvent& event);
 		virtual void AddTask(mw::Task& task);
@@ -53,6 +52,7 @@ namespace mw
 
 	private:
 		bool IsTaskBeingEdited(mw::Task& task);
+		void GetSelectedTasks(std::vector<mw::Task>& tasks);
 	private:
 		DECLARE_EVENT_TABLE()
 	};
