@@ -15,7 +15,7 @@ mw::WorkPanel::WorkPanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos,
 
 	m_ver_sizer = new wxBoxSizer(wxVERTICAL);
 
-	m_pages_notbook = new wxAuiNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNB_TOP);
+	m_pages_notbook = new wxAuiNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNB_TOP | wxAUI_NB_TAB_MOVE | wxAUI_NB_TAB_SPLIT);
 
 
 	m_tasks_scroll_window = new mw::TasksWindow(m_pages_notbook, TASKS_WINDOW_ID, wxDefaultPosition, wxDefaultSize, wxHSCROLL | wxVSCROLL);
@@ -30,6 +30,8 @@ mw::WorkPanel::WorkPanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos,
 
 	m_archive_scroll_window = new mw::ArchiveWindow(m_pages_notbook, ARCHIVE_WINDOW_ID, wxDefaultPosition, wxDefaultSize, wxHSCROLL | wxVSCROLL);
 	m_archive_scroll_window->SetScrollRate(5, 5);
+	m_pages_notbook->AddPage(m_archive_scroll_window, wxT("Archived"), false);
+
 	m_pageidx_to_pageid_map[2] = ARCHIVE_WINDOW_ID;
 	m_ver_sizer->Add(m_pages_notbook, 1, wxEXPAND | wxALL, 5);
 
@@ -52,6 +54,16 @@ void mw::WorkPanel::UpdateTasksCount(int count)
 	int page_index = m_pages_notbook->GetPageIndex(m_tasks_scroll_window);
 	std::stringstream ss;
 	ss << "Tasks (" << count << ")";
+
+	m_pages_notbook->SetPageText(page_index, ss.str());
+	this->Layout();
+}
+
+void mw::WorkPanel::UpdateRemindersCount(int count)
+{
+	int page_index = m_pages_notbook->GetPageIndex(m_reminders_scroll_window);
+	std::stringstream ss;
+	ss << "Reminders (" << count << ")";
 
 	m_pages_notbook->SetPageText(page_index, ss.str());
 	this->Layout();

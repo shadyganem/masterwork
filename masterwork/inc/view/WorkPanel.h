@@ -46,6 +46,7 @@ namespace mw
         wxBoxSizer* m_ver_sizer;
         virtual void OnUpdateUI(wxEvent& event);
         virtual void UpdateTasksCount(int count);
+        virtual void UpdateRemindersCount(int count);
 
     private:
         DECLARE_EVENT_TABLE()

@@ -1,4 +1,5 @@
 #include "view/RemindersWindow.h"
+#include "view/WorkPanel.h"
 
 BEGIN_EVENT_TABLE(mw::RemindersWindow, wxScrolledWindow)
 EVT_CUSTOM(mwUpdateUI, REMINDERS_WINDOW_ID, mw::RemindersWindow::OnUpdateUI)
@@ -8,18 +9,12 @@ END_EVENT_TABLE()
 mw::RemindersWindow::RemindersWindow(wxWindow* parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, const wxString& name)
 	: wxScrolledWindow(parent, winid, pos, size, style, name)
 {
-
-
-
 	mw::Controller& controller = mw::Controller::Get();
 	controller.RegisterEventHandler(winid, this);
 	m_reminders_sizer = new wxBoxSizer(wxVERTICAL);
 
 	wxColour background = controller.m_backgroud_color;
 	wxColour foreground = controller.m_forground_color;
-
-
-
 	wxToolBar* toolbar = new wxToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_TEXT);
 
 	wxColour green(0, 136, 135);
@@ -40,7 +35,7 @@ mw::RemindersWindow::RemindersWindow(wxWindow* parent, wxWindowID winid, const w
 	// instatiating m_reminders_data_view_list
 
 	m_reminders_data_view_list = new wxDataViewListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_MULTIPLE | wxDV_HORIZ_RULES);
-	
+
 	m_reminders_data_view_list->AppendColumn(new wxDataViewColumn("Title", new wxDataViewTextRenderer(), 0, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT));
 	m_reminders_data_view_list->AppendColumn(new wxDataViewColumn("Status", new wxDataViewTextRenderer(), 1, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT));
 	m_reminders_data_view_list->AppendColumn(new wxDataViewColumn("Last Update", new wxDataViewTextRenderer(), 2, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT));
@@ -73,6 +68,9 @@ void mw::RemindersWindow::OnUpdateUI(wxEvent& event)
 	{
 		this->AddRemider(reminders[i]);
 	}
+
+	mw::WorkPanel* parent_work_panel = dynamic_cast<mw::WorkPanel*>(this->GetParent()->GetParent());
+	parent_work_panel->UpdateRemindersCount(reminders.size());
 }
 
 void mw::RemindersWindow::AddRemider(mw::Reminder& reminder)
