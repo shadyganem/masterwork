@@ -51,7 +51,6 @@ namespace mw
 		wxBoxSizer* m_tasks_sizer;
 
 	private:
-		bool IsTaskBeingEdited(mw::Task& task);
 		void GetSelectedTasks(std::vector<mw::Task>& tasks);
 	private:
 		DECLARE_EVENT_TABLE()

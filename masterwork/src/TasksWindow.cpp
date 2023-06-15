@@ -1,4 +1,5 @@
 #include "view/TasksWindow.h"
+#include "view/WorkPanel.h"
 
 BEGIN_EVENT_TABLE(mw::TasksWindow, wxScrolledWindow)
 	EVT_CUSTOM(mwUpdateUI, TASKS_WINDOW_ID, mw::TasksWindow::OnUpdateUI)
@@ -72,6 +73,9 @@ void mw::TasksWindow::OnUpdateUI(wxEvent& event)
 		m_index_to_task_map[i] = tasks[i];
 		this->AddTask(tasks[i]);
 	}
+	
+	mw::WorkPanel* parent_work_panel = dynamic_cast<mw::WorkPanel*>(this->GetParent()->GetParent());
+	parent_work_panel->UpdateTasksCount(m_index_to_task_map.size());
 }
 
 void mw::TasksWindow::OnNewTaskButton(wxCommandEvent& event)
@@ -213,11 +217,6 @@ void mw::TasksWindow::OnNewTasksFrameCloseEvent(wxCloseEvent& event)
 		m_task_to_frame_map.erase(closed_frame->GetTask());
 	}
 	event.Skip();
-}
-
-bool mw::TasksWindow::IsTaskBeingEdited(mw::Task& task)
-{
-	return false;
 }
 
 void mw::TasksWindow::GetSelectedTasks(std::vector<mw::Task>& tasks)
