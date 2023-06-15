@@ -64,6 +64,7 @@ mw::TasksWindow::~TasksWindow()
 
 void mw::TasksWindow::OnUpdateUI(wxEvent& event)
 {
+	m_index_to_task_map.clear();
 	m_tasks_data_view_list->DeleteAllItems();
 	std::vector<mw::Task> tasks;
 	mw::Controller& controller = mw::Controller::Get();
@@ -73,9 +74,8 @@ void mw::TasksWindow::OnUpdateUI(wxEvent& event)
 		m_index_to_task_map[i] = tasks[i];
 		this->AddTask(tasks[i]);
 	}
-	
 	mw::WorkPanel* parent_work_panel = dynamic_cast<mw::WorkPanel*>(this->GetParent()->GetParent());
-	parent_work_panel->UpdateTasksCount(m_index_to_task_map.size());
+	parent_work_panel->UpdateTasksCount(tasks.size());
 }
 
 void mw::TasksWindow::OnNewTaskButton(wxCommandEvent& event)
