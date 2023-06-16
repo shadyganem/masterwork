@@ -49,6 +49,7 @@ namespace mw
 		virtual void SetTaskPriority();
 		virtual void SetTaskStatus();
 		virtual void SetTaskDeadline();
+		virtual void OnSize(wxSizeEvent& event);
 
 
 	public:

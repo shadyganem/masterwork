@@ -118,6 +118,8 @@ mw::TaskPanel::TaskPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, co
 	this->SetSizer(m_top_sizer);
 	this->Layout();
 
+	this->Bind(wxEVT_SIZE, &mw::TaskPanel::OnSize, this);
+
 	m_done_button->Bind(wxEVT_BUTTON, &mw::TaskPanel::OnDoneButton, this);
 
 }
@@ -266,6 +268,12 @@ void mw::TaskPanel::SetTaskDeadline()
 	year = date.GetYear();
 	mw::DateTime deadline(sec, min, hour, day, mon, year);
 	m_task.deadline = deadline.m_time_t;
+}
+
+void mw::TaskPanel::OnSize(wxSizeEvent& event)
+{
+	this->Layout();
+	event.Skip();
 }
 
 
