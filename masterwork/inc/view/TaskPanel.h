@@ -40,6 +40,7 @@ namespace mw
 		TaskPanel(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(0, 50), long style = wxTAB_TRAVERSAL);
 		~TaskPanel();
 		void SetTask(const mw::Task& task);
+		virtual void SetNewTask();
 		virtual void ClearTask();
 		void DisableEditing();
 		void EnableEditing();
@@ -50,7 +51,7 @@ namespace mw
 		virtual void SetTaskStatus();
 		virtual void SetTaskDeadline();
 		virtual void OnSize(wxSizeEvent& event);
-
+		virtual void OnNewTaskTimer(wxTimerEvent& event);
 
 	public:
 		mw::Task m_task;
@@ -72,8 +73,10 @@ namespace mw
 		wxTimePickerCtrl* m_deadline_timepicker;
 		wxDatePickerCtrl* m_deadline_datepicker;
 		wxCheckBox* m_enable_notifications;
-
+		wxTimer* m_new_task_timer;
 	private:
+		wxColour m_default_task_name_background_colour;
+		void ResetDeadlinePickers();
 		void SetTheme(void);
 		// any class wishing to process wxWidgets events must use this macro
 		DECLARE_EVENT_TABLE()

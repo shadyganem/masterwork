@@ -93,10 +93,7 @@ void mw::TasksWindow::OnUpdateUI(wxEvent& event)
 
 void mw::TasksWindow::OnNewTaskButton(wxCommandEvent& event)
 {
-	mw::NewTaskFrame* new_task_frame = new mw::NewTaskFrame(this);
-	new_task_frame->CenterOnScreen();
-	new_task_frame->Show(true);
-	//Do not propagate to parent. this will result in double handling of the button click
+	m_task_panel->SetNewTask();
 }
 
 void mw::TasksWindow::OnItemActivated(wxDataViewEvent& event)

@@ -21,6 +21,10 @@ void mw::ModelItem::StampLastUpdateTime()
 
 std::string mw::ModelItem::ConvertTimeToString(time_t time)
 {
+	if (time < 0)
+	{
+		return "N/A";
+	}
 	// Convert the epoch timestamp to a struct tm
 	std::tm timeinfo;
 	#ifdef _WIN32

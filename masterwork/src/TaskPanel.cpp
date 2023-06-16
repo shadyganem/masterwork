@@ -24,6 +24,7 @@ mw::TaskPanel::TaskPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, co
 	bSizer40->Add(m_task_name_static, 0, wxALL, 5);
 
 	m_task_name = new wxTextCtrl(m_main_panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_CAPITALIZE);
+	m_default_task_name_background_colour = m_task_name->GetBackgroundColour();
 	bSizer40->Add(m_task_name, 1, wxALL, 5);
 
 	m_left_sizer->Add(bSizer40, 0, wxEXPAND, 5);
@@ -78,13 +79,12 @@ mw::TaskPanel::TaskPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, co
 	m_deadline_static->Wrap(-1);
 	bSizer50->Add(m_deadline_static, 0, wxALL, 5);
 
+	//must reset to show the current local time
 	m_deadline_timepicker = new wxTimePickerCtrl(m_main_panel, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxTP_DEFAULT);
-	wxDateTime now(std::time(0));
-	m_deadline_timepicker->SetTime(now.GetHour() + 1, 0, 0);
-	bSizer50->Add(m_deadline_timepicker, 0, wxALL, 5);
-
-
 	m_deadline_datepicker = new wxDatePickerCtrl(m_main_panel, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DROPDOWN);
+	this->ResetDeadlinePickers();
+
+	bSizer50->Add(m_deadline_timepicker, 0, wxALL, 5);
 	bSizer50->Add(m_deadline_datepicker, 0, wxALL, 5);
 
 	fgSizer1->Add(bSizer50, 0, wxEXPAND, 5);
@@ -113,6 +113,13 @@ mw::TaskPanel::TaskPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, co
 	m_main_panel->Layout();
 	m_main_panel_sizer->Fit(m_main_panel);
 	m_top_sizer->Add(m_main_panel, 1, wxEXPAND | wxALL, 5);
+
+
+
+	m_new_task_timer = new wxTimer(this, wxID_ANY);
+
+	// Bind the timer event to a handler
+	Bind(wxEVT_TIMER, &mw::TaskPanel::OnNewTaskTimer, this);
 
 	this->SetTheme();
 	this->SetSizer(m_top_sizer);
@@ -276,6 +283,20 @@ void mw::TaskPanel::OnSize(wxSizeEvent& event)
 	event.Skip();
 }
 
+void mw::TaskPanel::OnNewTaskTimer(wxTimerEvent& event)
+{
+	m_task_name->SetBackgroundColour(m_default_task_name_background_colour);
+	m_task_name->Refresh();
+}
+
+
+void mw::TaskPanel::ResetDeadlinePickers()
+{	
+	std::time_t current_time = std::time(nullptr);
+	wxDateTime now(current_time);
+	m_deadline_timepicker->SetTime(now.GetHour() + 1, 0, 0);
+	m_deadline_datepicker->SetValue(current_time);
+}
 
 void mw::TaskPanel::SetTheme(void)
 {
@@ -301,6 +322,7 @@ void mw::TaskPanel::SetTheme(void)
 void mw::TaskPanel::SetTask(const mw::Task& task)
 {
 	m_task = task;
+	m_task_name->SetBackgroundColour(m_default_task_name_background_colour);
 	m_task_name->SetLabelText(task.name);
 	m_task_description->SetLabelText(task.description);
 	m_priority_choice->Select(m_task.priority);
@@ -308,14 +330,22 @@ void mw::TaskPanel::SetTask(const mw::Task& task)
 	wxDateTime deadline(task.deadline);
 	m_deadline_datepicker->SetValue(deadline);
 	m_deadline_timepicker->SetValue(deadline);
-
 	wxCheckBoxState checkbox_state = (task.notification_enabled == true) ? wxCheckBoxState::wxCHK_CHECKED : wxCheckBoxState::wxCHK_UNCHECKED;
 	m_enable_notifications->Set3StateValue(checkbox_state);
 }
 
+void mw::TaskPanel::SetNewTask()
+{
+	this->ClearTask();
+	m_task_name->SetBackgroundColour(wxColour(0, 255, 0));
+	m_task_name->SetFocus();
+	m_new_task_timer->StartOnce(3000);
+
+}
+
 void mw::TaskPanel::ClearTask()
 {
-	m_task = mw::Task();
-	m_task.StampCreationTime();
-	m_task.StampLastUpdateTime();
+	mw::Task new_task;
+	this->SetTask(new_task);
+	this->ResetDeadlinePickers();
 }
