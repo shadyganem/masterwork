@@ -57,7 +57,6 @@ namespace mw
 		virtual void OnDoneButton(wxCommandEvent& event);
 		virtual void OnCancelButton(wxCommandEvent& event);
 
-
 	public:
 		NewTaskFrame(wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Task"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(450, 400), long style = wxDEFAULT_FRAME_STYLE | wxFRAME_FLOAT_ON_PARENT | wxTAB_TRAVERSAL);
 		~NewTaskFrame();

@@ -47,9 +47,19 @@ mw::TasksWindow::TasksWindow(wxWindow* parent, wxWindowID winid, const wxPoint& 
 
 	m_tasks_sizer->Add(m_tasks_data_view_list, 1, wxEXPAND, 0);
 
+
+
+	//adding the task panel
+	m_task_panel = new mw::TaskPanel(this);
+
+
+	m_tasks_sizer->Add(m_task_panel, 1, wxEXPAND, 0);
+
 	this->SetSizer(m_tasks_sizer);
 
 	m_tasks_data_view_list->Bind(wxEVT_DATAVIEW_ITEM_CONTEXT_MENU, &mw::TasksWindow::OnItemContextMenu, this);
+	m_tasks_data_view_list->Bind(wxEVT_DATAVIEW_SELECTION_CHANGED, &mw::TasksWindow::OnSelectionChanged, this);
+
 	m_tasks_data_view_list->Connect(wxEVT_DATAVIEW_ITEM_ACTIVATED, wxDataViewEventHandler(mw::TasksWindow::OnItemActivated), nullptr, this);
 	toolbar->Bind(wxEVT_TOOL, &mw::TasksWindow::OnToolbarButtonClick, this);
 	m_new_task_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mw::TasksWindow::OnNewTaskButton), NULL, this);
@@ -64,6 +74,7 @@ mw::TasksWindow::~TasksWindow()
 
 void mw::TasksWindow::OnUpdateUI(wxEvent& event)
 {
+	//m_task_panel->ClearTask();
 	m_index_to_task_map.clear();
 	m_tasks_data_view_list->DeleteAllItems();
 	std::vector<mw::Task> tasks;
@@ -74,6 +85,8 @@ void mw::TasksWindow::OnUpdateUI(wxEvent& event)
 		m_index_to_task_map[i] = tasks[i];
 		this->AddTask(tasks[i]);
 	}
+
+	m_task_panel->SetTask(m_index_to_task_map[0]);
 	mw::WorkPanel* parent_work_panel = dynamic_cast<mw::WorkPanel*>(this->GetParent()->GetParent());
 	parent_work_panel->UpdateTasksCount(tasks.size());
 }
@@ -88,7 +101,6 @@ void mw::TasksWindow::OnNewTaskButton(wxCommandEvent& event)
 
 void mw::TasksWindow::OnItemActivated(wxDataViewEvent& event)
 {
-	wxDataViewItem selectedItem = m_tasks_data_view_list->GetSelection();
 	int row_index = m_tasks_data_view_list->GetSelectedRow();
 	if (row_index != wxNOT_FOUND)
 	{
@@ -96,6 +108,17 @@ void mw::TasksWindow::OnItemActivated(wxDataViewEvent& event)
 		m_new_task_frame->SetTask(m_index_to_task_map[row_index]);
 		m_new_task_frame->CenterOnScreen();
 		m_new_task_frame->Show(true);
+	}
+	event.Skip();
+}
+
+void mw::TasksWindow::OnSelectionChanged(wxDataViewEvent& event)
+{
+	int row_index = m_tasks_data_view_list->GetSelectedRow();
+	if (row_index != wxNOT_FOUND)
+	{
+		NewTaskFrame* m_new_task_frame = new mw::NewTaskFrame(this);
+		m_task_panel->SetTask(m_index_to_task_map[row_index]);
 	}
 	event.Skip();
 }
@@ -191,10 +214,7 @@ void mw::TasksWindow::AddTask(mw::Task& task)
 	data.push_back(wxVariant(task.GetDeadline()));
 	data.push_back(wxVariant(task.GetPriority()));
 	data.push_back(wxVariant(task.GetLastUpdate()));
-
 	m_tasks_data_view_list->AppendItem(data);
-	wxDataViewItem item = m_tasks_data_view_list->GetTopItem();
-	m_item_to_task_map[item] = task;
 }
 
 void mw::TasksWindow::OnToolbarButtonClick(wxCommandEvent& event)

@@ -16,13 +16,12 @@
 #include <wx/image.h>
 #include <wx/icon.h>
 #include <wx/bmpbuttn.h>
-#include <wx/button.h>
 #include <wx/panel.h>
 #include "model/Task.h"
 
+#include <wx/timectrl.h>
 #include "controller/Logger.h"
 #include "controller/Controller.h"
-#include "view/NewTaskFrame.h"
 #include "view/Button.h"
 
 namespace mw
@@ -30,54 +29,51 @@ namespace mw
 	enum TaskPanelView
 	{
 		DEFAULT,
-		ARCHIVE
-	};
-
-	enum TaskPanelMenuItems
-	{
-		Delete, 
-		Archive,
-		Unarchive
+		BOTTOM,
+		RIGHT,
+		LEFT
 	};
 
 	class TaskPanel : public wxPanel
 	{
 	public:
-		wxStaticText* m_static_task_name;
-		wxStaticText* m_static_description;
-		mw::Task m_task;
-		wxStaticText* m_static_status;
-		wxStaticText* m_static_duedate;
-		wxStaticText* m_static_priority;
-		wxStaticText* m_static_last_modified;
-		mw::NewTaskFrame* m_new_task_frame;
-		wxStaticText* m_static_lastmodified;
-		mw::TaskPanelView m_view_state;
-
-		virtual void OnEnterWindow(wxMouseEvent& event);
-		virtual void OnleaveWindow(wxMouseEvent& event);
-		virtual void OnLeftDoubleClick(wxMouseEvent& event);
-		virtual void OnRightUp(wxMouseEvent& event);
-		virtual void OnTaskMenuClick(wxCommandEvent& event);
-		virtual void OnTaskFrameClose(wxWindowDestroyEvent& event);
-		virtual void BindEnterWindow(wxWindow* componenet);
-		virtual void BindLeaveWindow(wxWindow* componenet);
-
-		void SetTask(mw::Task task);
-		void ResetBackGround();
+		TaskPanel(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(0, 50), long style = wxTAB_TRAVERSAL);
+		~TaskPanel();
+		void SetTask(const mw::Task& task);
+		virtual void ClearTask();
 		void DisableEditing();
 		void EnableEditing();
 		void SetView(mw::TaskPanelView view);
+		virtual void OnDoneButton(wxCommandEvent& event);
+		virtual void OnCancelButton(wxCommandEvent& event);
+		virtual void SetTaskPriority();
+		virtual void SetTaskStatus();
+		virtual void SetTaskDeadline();
 
+
+	public:
+		mw::Task m_task;
+		mw::TaskPanelView m_view_state;
 		wxBoxSizer* ver_task_sizer;
-		wxPanel* m_static_view;
-		TaskPanel(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(0, 50), long style = wxTAB_TRAVERSAL);
-		~TaskPanel();
+		wxPanel* m_main_panel;
+		wxStaticText* m_task_name_static;
+		wxTextCtrl* m_task_name;
+		wxStaticText* m_task_description_static;
+		wxTextCtrl* m_task_description;
+		wxStaticText* m_priority_static;
+		wxChoice* m_priority_choice;
+		wxStaticText* m_status_static;
+		wxChoice* m_status_choice;
+		wxStaticText* m_deadline_static;
+		wxDatePickerCtrl* m_datePicker2;
+		wxButton* m_done_button;
+		wxButton* m_cancel_button;
+		wxTimePickerCtrl* m_deadline_timepicker;
+		wxDatePickerCtrl* m_deadline_datepicker;
+		wxCheckBox* m_enable_notifications;
 
 	private:
-		bool IsOnTop();
-		void SetDarkTheme(void);
-		void SetHighlightColours();
+		void SetTheme(void);
 		// any class wishing to process wxWidgets events must use this macro
 		DECLARE_EVENT_TABLE()
 	};

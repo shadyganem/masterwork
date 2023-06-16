@@ -31,6 +31,7 @@ namespace mw
 		virtual void OnUpdateUI(wxEvent& event);
 		virtual void OnNewTaskButton(wxCommandEvent& event);
 		virtual void OnItemActivated(wxDataViewEvent& event);
+		virtual void OnSelectionChanged(wxDataViewEvent& event);
 		virtual void OnItemContextMenu(wxDataViewEvent& event);
 		virtual void OnTaskEditClick(wxCommandEvent& event);
 		virtual void OnTaskDeleteClick(wxCommandEvent& event);
@@ -41,7 +42,6 @@ namespace mw
 
 	public:
 		std::map<mw::Task, mw::NewTaskFrame*> m_task_to_frame_map;
-		std::map< wxDataViewItem, mw::Task> m_item_to_task_map;
 		std::map<int, mw::Task> m_index_to_task_map;
 		wxDataViewListCtrl* m_tasks_data_view_list;
 		wxMenu* m_menu;
@@ -49,6 +49,8 @@ namespace mw
 		std::map<mw::TaskPanel*, mw::Task> m_taskpanel_to_task_map;
 		std::map<mw::Task, mw::TaskPanel*> m_task_to_taskpanel_map;
 		wxBoxSizer* m_tasks_sizer;
+
+		mw::TaskPanel* m_task_panel;
 
 	private:
 		void GetSelectedTasks(std::vector<mw::Task>& tasks);

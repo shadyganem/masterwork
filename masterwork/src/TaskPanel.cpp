@@ -5,173 +5,136 @@ wxBEGIN_EVENT_TABLE(mw::TaskPanel, wxPanel)
 wxEND_EVENT_TABLE()
 
 
-void mw::TaskPanel::OnEnterWindow(wxMouseEvent& event)
+mw::TaskPanel::TaskPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style ) : wxPanel( parent, id, pos, size, style )
 {
-	this->SetHighlightColours();
-	event.Skip();
-}
+	this->SetSizeHints(wxDefaultSize, wxDefaultSize);
 
-void mw::TaskPanel::OnleaveWindow(wxMouseEvent& event)
-{
-	wxRect task_panel_rect = this->GetScreenRect();
+	wxBoxSizer* m_top_sizer = new wxBoxSizer(wxVERTICAL);
+
+	wxBoxSizer* m_left_sizer = new wxBoxSizer(wxVERTICAL);
+	wxBoxSizer* m_right_sizer = new wxBoxSizer(wxVERTICAL);
+	wxBoxSizer* m_main_panel_sizer = new wxBoxSizer(wxHORIZONTAL);
+
+	m_main_panel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+
+	wxBoxSizer* bSizer40 = new wxBoxSizer(wxHORIZONTAL);
+
+	m_task_name_static = new wxStaticText(m_main_panel, wxID_ANY, wxT("Task Name"), wxDefaultPosition, wxDefaultSize, 0);
+	m_task_name_static->Wrap(-1);
+	bSizer40->Add(m_task_name_static, 0, wxALL, 5);
+
+	m_task_name = new wxTextCtrl(m_main_panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_CAPITALIZE);
+	bSizer40->Add(m_task_name, 1, wxALL, 5);
+
+	m_left_sizer->Add(bSizer40, 0, wxEXPAND, 5);
+
+	m_task_description_static = new wxStaticText(m_main_panel, wxID_ANY, wxT("Task Description"), wxDefaultPosition, wxDefaultSize, 0);
+	m_task_description_static->Wrap(-1);
+	m_right_sizer->Add(m_task_description_static, 0, wxALL, 5);
+
+	m_task_description = new wxTextCtrl(m_main_panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_CAPITALIZE | wxTE_MULTILINE | wxTE_RICH);
+	m_task_description->SetMaxLength(500);
+	m_right_sizer->Add(m_task_description, 1, wxALL | wxEXPAND, 5);
+
+	wxFlexGridSizer* fgSizer1;
+	fgSizer1 = new wxFlexGridSizer(3, 2, 0, 0);
+	fgSizer1->SetFlexibleDirection(wxBOTH);
+	fgSizer1->SetNonFlexibleGrowMode(wxFLEX_GROWMODE_SPECIFIED);
+
+	wxBoxSizer* m_priority_sizer;
+	m_priority_sizer = new wxBoxSizer(wxHORIZONTAL);
+
+	m_priority_static = new wxStaticText(m_main_panel, wxID_ANY, wxT("Priority"), wxDefaultPosition, wxDefaultSize, 0);
+	m_priority_static->Wrap(-1);
+	m_priority_sizer->Add(m_priority_static, 1, wxALL | wxEXPAND, 5);
+
+	wxString m_priority_choiceChoices[] = { wxT("High"), wxT("Medium"), wxT("Low"), wxT("ShowStopper") };
+	int m_priority_choiceNChoices = sizeof(m_priority_choiceChoices) / sizeof(wxString);
+	m_priority_choice = new wxChoice(m_main_panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_priority_choiceNChoices, m_priority_choiceChoices, 0);
+	m_priority_choice->SetSelection(1);
+	m_priority_sizer->Add(m_priority_choice, 0, wxALL, 5);
+
+	fgSizer1->Add(m_priority_sizer, 0, 0, 5);
+
+	wxBoxSizer* bSizer48;
+	bSizer48 = new wxBoxSizer(wxHORIZONTAL);
+
+	m_status_static = new wxStaticText(m_main_panel, wxID_ANY, wxT("Status"), wxDefaultPosition, wxDefaultSize, 0);
+	m_status_static->Wrap(-1);
+	bSizer48->Add(m_status_static, 0, wxALL, 5);
+
+	wxString m_status_choiceChoices[] = { wxT("Not started"), wxT("WIP"), wxT("Canceled"), wxT("Done"), wxT("Blocked") };
+	int m_status_choiceNChoices = sizeof(m_status_choiceChoices) / sizeof(wxString);
+	m_status_choice = new wxChoice(m_main_panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_status_choiceNChoices, m_status_choiceChoices, 0);
+	m_status_choice->SetSelection(0);
+	bSizer48->Add(m_status_choice, 0, wxALL, 5);
+
+	fgSizer1->Add(bSizer48, 1, 0, 5);
+
+	wxBoxSizer* bSizer50;
+	bSizer50 = new wxBoxSizer(wxHORIZONTAL);
+
+	m_deadline_static = new wxStaticText(m_main_panel, wxID_ANY, wxT("Due Date"), wxDefaultPosition, wxDefaultSize, 0);
+	m_deadline_static->Wrap(-1);
+	bSizer50->Add(m_deadline_static, 0, wxALL, 5);
+
+	m_deadline_timepicker = new wxTimePickerCtrl(m_main_panel, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxTP_DEFAULT);
+	wxDateTime now(std::time(0));
+	m_deadline_timepicker->SetTime(now.GetHour() + 1, 0, 0);
+	bSizer50->Add(m_deadline_timepicker, 0, wxALL, 5);
+
+
+	m_deadline_datepicker = new wxDatePickerCtrl(m_main_panel, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DROPDOWN);
+	bSizer50->Add(m_deadline_datepicker, 0, wxALL, 5);
+
+	fgSizer1->Add(bSizer50, 0, wxEXPAND, 5);
+
+	m_enable_notifications = new wxCheckBox(m_main_panel, wxID_ANY, wxT("Enable Notifications"), wxDefaultPosition, wxDefaultSize, 0);
+	m_enable_notifications->Set3StateValue(wxCheckBoxState::wxCHK_CHECKED);
+	fgSizer1->Add(m_enable_notifications, 0, wxALL, 5);
+
+	m_left_sizer->Add(fgSizer1, 1, wxEXPAND, 5);
 	
-	wxPoint mouse_pos = wxGetMousePosition();
-	if (!task_panel_rect.Contains(mouse_pos))
-	{
-		this->SetDarkTheme();
-	}	
-	event.Skip();
+	wxBoxSizer* bSizer47;
+	bSizer47 = new wxBoxSizer(wxHORIZONTAL);
+
+	m_done_button = new wxButton(m_main_panel, wxID_ANY, wxT("Done"), wxDefaultPosition, wxDefaultSize, 0);
+	bSizer47->Add(m_done_button, 0, wxALL, 5);
+
+	m_cancel_button = new wxButton(m_main_panel, wxID_ANY, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0);
+	bSizer47->Add(m_cancel_button, 0, wxALL, 5);
+
+	m_left_sizer->Add(bSizer47, 0, wxALIGN_RIGHT, 5);
+
+	m_main_panel_sizer->Add(m_left_sizer, 10, wxEXPAND, 5);
+	m_main_panel_sizer->Add(m_right_sizer, 10, wxEXPAND, 5);
+
+	m_main_panel->SetSizer(m_main_panel_sizer);
+	m_main_panel->Layout();
+	m_main_panel_sizer->Fit(m_main_panel);
+	m_top_sizer->Add(m_main_panel, 1, wxEXPAND | wxALL, 5);
+
+	this->SetTheme();
+	this->SetSizer(m_top_sizer);
+	this->Layout();
+
+	m_done_button->Bind(wxEVT_BUTTON, &mw::TaskPanel::OnDoneButton, this);
+
 }
 
-void mw::TaskPanel::OnLeftDoubleClick(wxMouseEvent& event)
+mw::TaskPanel::~TaskPanel()
 {
-	if (m_new_task_frame == nullptr)
-	{
-		m_new_task_frame = new mw::NewTaskFrame(this);
-		m_new_task_frame->Connect(wxEVT_DESTROY, wxWindowDestroyEventHandler(mw::TaskPanel::OnTaskFrameClose), NULL, this);
-		//when the mouse eneters the panel frame it exists the task panel
-		m_new_task_frame->SetTask(m_task);
-		m_new_task_frame->CenterOnScreen();
-		m_new_task_frame->Show(true);
-	}
-	else
-	{
-		m_new_task_frame->Iconize(false);
-		m_new_task_frame->SetFocus();
-		m_new_task_frame->Raise();
-	}
-	event.Skip();
-}
-
-void mw::TaskPanel::OnRightUp(wxMouseEvent& event)
-{
-	wxMenu menu;
-	menu.Append(TaskPanelMenuItems::Delete, "Delete");
-	if (this->m_view_state == mw::TaskPanelView::DEFAULT)
-	{
-		menu.Append(TaskPanelMenuItems::Archive, "Archive");
-	}
-	else
-	{
-		menu.Append(TaskPanelMenuItems::Unarchive, "Unrchive");
-	}
-	
-	menu.Connect(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(mw::TaskPanel::OnTaskMenuClick), NULL, this);
-	this->PopupMenu(&menu);
-}
-
-void mw::TaskPanel::OnTaskMenuClick(wxCommandEvent& event)
-{
-	mw::Controller& controller = mw::Controller::Get();
-	int answer = 0;
-	switch (event.GetId())
-	{
-	case TaskPanelMenuItems::Delete:
-		answer = wxMessageBox("Are you sure you want to permanently delete this task?", "Confirm", wxYES_NO, this);
-		if (answer == wxYES)
-			controller.DeleteTask(m_task);
-		break;
-	case TaskPanelMenuItems::Archive:
-		controller.ArchiveTask(m_task);
-		break;
-	case TaskPanelMenuItems::Unarchive:
-		controller.UnarchiveTask(m_task);
-		break;
-	default:
-		break;
-	}
-	event.Skip();
-}
-
-void mw::TaskPanel::OnTaskFrameClose(wxWindowDestroyEvent& event)
-{
-	m_new_task_frame->Disconnect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
-	m_new_task_frame->Disconnect(wxEVT_DESTROY, wxWindowDestroyEventHandler(mw::TaskPanel::OnTaskFrameClose), NULL, this);
-	m_new_task_frame = nullptr;
-	event.Skip();
-}
-
-void mw::TaskPanel::BindEnterWindow(wxWindow* componenet)
-{
-	if (componenet)
-	{
-		componenet->Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnEnterWindow), (wxObject*)NULL,this);
-
-		wxWindowListNode* pclNode = componenet->GetChildren().GetFirst();
-		while (pclNode)
-		{
-			wxWindow* pclChild = pclNode->GetData();
-			this->BindEnterWindow(pclChild);
-
-			pclNode = pclNode->GetNext();
-		}
-	}
-}
-
-void mw::TaskPanel::BindLeaveWindow(wxWindow* componenet)
-{
-	if (componenet)
-	{
-		componenet->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), (wxObject*)NULL, this);
-
-		wxWindowListNode* pclNode = componenet->GetChildren().GetFirst();
-		while (pclNode)
-		{
-			wxWindow* pclChild = pclNode->GetData();
-			this->BindEnterWindow(pclChild);
-
-			pclNode = pclNode->GetNext();
-		}
-	}
-}
-
-void mw::TaskPanel::SetTask(mw::Task task)
-{	
-	m_task = task;
-	m_static_task_name->SetLabelText(m_task.name);
-
-	if (std::all_of(m_task.description.begin(), m_task.description.end(), isspace))
-	{
-		// if description has only spaces 
-		m_static_task_name->SetToolTip(wxString("No Description"));
-	}
-	else
-	{
-		m_static_task_name->SetToolTip(m_task.description);
-	}
-	m_static_status->SetLabelText("Status: " + m_task.GetStatus());
-	m_static_priority->SetLabelText("Priority: " + m_task.GetPriority());
-	wxDateTime deadline(m_task.deadline);
-	wxString date = deadline.FormatISODate();
-	wxString time = deadline.FormatISOTime();
-	m_static_duedate->SetLabelText("Due Date: " + time.ToStdString() + " " + date.ToStdString());
-	wxDateTime last_modified(m_task.last_update);
-	m_static_last_modified->SetLabelText("Last Modified: " + last_modified.FormatISOTime().ToStdString() + " " + last_modified.FormatISODate().ToStdString());
-}
-
-void mw::TaskPanel::ResetBackGround()
-{
-	this->SetDarkTheme();
 }
 
 void mw::TaskPanel::DisableEditing()
 {
-	this->Disconnect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick));
-	m_static_task_name->Disconnect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
-	m_static_status->Disconnect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
-	m_static_duedate->Disconnect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
-	m_static_priority->Disconnect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
-	m_static_last_modified->Disconnect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
+	this->Freeze();
+	this->Thaw();
 }
 
 void mw::TaskPanel::EnableEditing()
 {
-	this->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick));
-	m_static_task_name->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
-	m_static_status->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
-	m_static_duedate->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
-	m_static_priority->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
-	m_static_last_modified->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
+	this->Thaw();
 }
 
 void mw::TaskPanel::SetView(mw::TaskPanelView view)
@@ -180,145 +143,171 @@ void mw::TaskPanel::SetView(mw::TaskPanelView view)
 	{
 	case TaskPanelView::DEFAULT:
 		this->m_view_state = mw::TaskPanelView::DEFAULT;
-		this->EnableEditing();
 		break;
-	case TaskPanelView::ARCHIVE:
-		this->m_view_state = mw::TaskPanelView::ARCHIVE;
-		this->DisableEditing();
+	case TaskPanelView::BOTTOM:
+		this->m_view_state = mw::TaskPanelView::BOTTOM;
 		break;
 	default:
 		break;
 	}
 }
 
-mw::TaskPanel::TaskPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style ) : wxPanel( parent, id, pos, size, style )
+void mw::TaskPanel::OnDoneButton(wxCommandEvent& event)
 {
-	wxBoxSizer* main_sizer = new wxBoxSizer(wxHORIZONTAL);
+	mw::Logger logger;
+	mw::Controller& controller = mw::Controller::Get();
 
-	wxBoxSizer* bSizer17 = new wxBoxSizer(wxHORIZONTAL);
-	m_static_task_name = new wxStaticText(this, wxID_ANY, wxT("Task name"), wxDefaultPosition, wxDefaultSize, 0);
-	m_static_task_name->SetFont(wxFont().Bold());
-	m_static_task_name->Wrap(-1);
-	bSizer17->Add(m_static_task_name, 1, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+	mw::Project proj;
+	controller.GetActiveProject(proj);
+	if (proj.uid == 0)
+	{
+		logger.Warning("Active project UID is 0");
+		return;
+	}
+	m_task.project_uid = proj.uid;
 
-	main_sizer->Add(bSizer17, 1, wxEXPAND, 5);
-
-	wxGridSizer* m_info_grid_sizer;
-	m_info_grid_sizer = new wxGridSizer(2, 4, 0, 0);
-
-	m_static_status = new wxStaticText(this, wxID_ANY, wxT("Status: "), wxDefaultPosition, wxDefaultSize, 0);
-	m_static_status->Wrap(-1);
-	m_info_grid_sizer->Add(m_static_status, 0, wxALL, 5);
-
-	m_static_duedate = new wxStaticText(this, wxID_ANY, wxT("Due date:"), wxDefaultPosition, wxDefaultSize, 0);
-	m_static_duedate->Wrap(-1);
-	m_info_grid_sizer->Add(m_static_duedate, 0, wxALL, 5);
-
-	m_static_priority = new wxStaticText(this, wxID_ANY, wxT("Priority:"), wxDefaultPosition, wxDefaultSize, 0);
-	m_static_priority->Wrap(-1);
-	m_info_grid_sizer->Add(m_static_priority, 0, wxALL, 5);
-
-	m_static_last_modified = new wxStaticText(this, wxID_ANY, wxT("Last Modified:"), wxDefaultPosition, wxDefaultSize, 0);
-	m_static_last_modified->Wrap(-1);
-	m_info_grid_sizer->Add(m_static_last_modified, 0, wxALL, 5);
-
-	main_sizer->Add(m_info_grid_sizer, 1, wxEXPAND | wxALIGN_CENTER_VERTICAL, 5);
-
-	this->SetSizer(main_sizer);
-	this->SetDarkTheme();
-	this->SetMinSize(wxSize(600, 50));
-
-	// Connect Events
-
-	this->BindEnterWindow(this);
-	this->BindLeaveWindow(this);
-	m_static_task_name->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
-	m_static_task_name->Connect(wxEVT_RIGHT_UP, wxMouseEventHandler(TaskPanel::OnRightUp), NULL, this);
-
-	m_static_status->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
-	m_static_status->Connect(wxEVT_RIGHT_UP, wxMouseEventHandler(TaskPanel::OnRightUp), NULL, this);
+	m_task.name = this->m_task_name->GetLineText(0).ToStdString();
 
 
-	m_static_duedate->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
-	m_static_duedate->Connect(wxEVT_RIGHT_UP, wxMouseEventHandler(TaskPanel::OnRightUp), NULL, this);
+	if (m_task.name.find_first_not_of(" ") == std::string::npos)
+	{
+		m_task.name = "New Task";
+	}
+
+	size_t start = m_task.name.find_first_not_of(" ");
+	m_task.name = m_task.name.substr(start);
+	size_t end = m_task.name.find_last_not_of(" ");
+	m_task.name = m_task.name.substr(0, end + 1);
 
 
-	m_static_priority->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
-	m_static_priority->Connect(wxEVT_RIGHT_UP, wxMouseEventHandler(TaskPanel::OnRightUp), NULL, this);
+	int num_of_lines = this->m_task_description->GetNumberOfLines();
+	m_task.description.clear();
+	for (int i = 0; i < num_of_lines; i++)
+	{
+		m_task.description += this->m_task_description->GetLineText(i).ToStdString();
+		m_task.description += "\n";
+	}
 
 
-	m_static_last_modified->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
-	m_static_last_modified->Connect(wxEVT_RIGHT_UP, wxMouseEventHandler(TaskPanel::OnRightUp), NULL, this);
+	m_task.notification_enabled = (m_enable_notifications->IsChecked() == true) ? true : false;
 
-
-	this->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick));
-	this->Connect(wxEVT_RIGHT_UP, wxMouseEventHandler(TaskPanel::OnRightUp));
+	this->SetTaskPriority();
+	this->SetTaskStatus();
+	this->SetTaskDeadline();
+	controller.AddTask(m_task);
+	this->Close();
+	event.Skip();
 }
 
-mw::TaskPanel::~TaskPanel()
+void mw::TaskPanel::OnCancelButton(wxCommandEvent& event)
 {
-	// Disconnect Events
-	this->Disconnect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(mw::TaskPanel::OnEnterWindow));
-	this->Disconnect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(mw::TaskPanel::OnleaveWindow));
-	this->Disconnect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick));
-	this->Disconnect(wxEVT_RIGHT_UP, wxMouseEventHandler(TaskPanel::OnRightUp));
-
-	m_static_task_name->Disconnect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
-	m_static_task_name->Disconnect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
-	m_static_task_name->Disconnect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnEnterWindow), NULL, this);
-
-	m_static_status->Disconnect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
-	m_static_duedate->Disconnect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
-	m_static_priority->Disconnect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
-	m_static_last_modified->Disconnect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(TaskPanel::OnLeftDoubleClick), NULL, this);
-	m_static_last_modified->Disconnect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnEnterWindow), NULL, this);
-
-
-	m_static_status->Disconnect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
-	m_static_status->Disconnect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnEnterWindow), NULL, this);
-
-	m_static_duedate->Disconnect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
-	m_static_duedate->Disconnect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnEnterWindow), NULL, this);
-
-
-	m_static_priority->Disconnect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
-	m_static_priority->Disconnect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnEnterWindow), NULL, this);
-
-
-	m_static_last_modified->Disconnect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(TaskPanel::OnleaveWindow), NULL, this);
-	m_static_last_modified->Disconnect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(TaskPanel::OnEnterWindow), NULL, this);
-
 }
 
-bool mw::TaskPanel::IsOnTop()
+void mw::TaskPanel::SetTaskPriority()
 {
-	bool is_on_top = true;
-
-	is_on_top = m_static_task_name->IsTopLevel() && is_on_top;
-	is_on_top = m_static_status->IsTopLevel() && is_on_top;
-	is_on_top = m_static_duedate->IsTopLevel() && is_on_top;
-	is_on_top = m_static_priority->IsTopLevel() && is_on_top;
-	is_on_top = m_static_last_modified->IsTopLevel() && is_on_top;
-	return is_on_top;
+	mw::Logger logger;
+	switch (this->m_priority_choice->GetSelection())
+	{
+	case 0:
+		m_task.priority = mw::Task::TaskPriority::HIGH;
+		break;
+	case 1:
+		m_task.priority = mw::Task::TaskPriority::MEDIUM;
+		break;
+	case 2:
+		m_task.priority = mw::Task::TaskPriority::LOW;
+		break;
+	case 3:
+		m_task.priority = mw::Task::TaskPriority::SHOWSTOPPER;
+		break;
+	default:
+		logger.Warning("Could not find a valid selection for the priority. Selecting Medium as a default value");
+		m_task.priority = mw::Task::TaskPriority::MEDIUM;
+		break;
+	}
 }
 
-void mw::TaskPanel::SetDarkTheme(void)
+void mw::TaskPanel::SetTaskStatus()
 {
+	mw::Logger logger;
+	switch (this->m_status_choice->GetSelection())
+	{
+	case 0:
+		m_task.status = mw::Task::TaskStatus::NOTSTARTED;
+		break;
+	case 1:
+		m_task.status = mw::Task::TaskStatus::WIP;
+		break;
+	case 2:
+		m_task.status = mw::Task::TaskStatus::CANCELED;
+		break;
+	case 3:
+		m_task.status = mw::Task::TaskStatus::DONE;
+		break;
+	case 4:
+		m_task.status = mw::Task::TaskStatus::BLOCKED;
+		break;
+	default:
+		logger.Warning("Could not find a valid selection for the status. Selecting NotStarted as a default value");
+		m_task.status = mw::Task::TaskStatus::NOTSTARTED;
+		break;
+	}
+}
+
+void mw::TaskPanel::SetTaskDeadline()
+{
+	mw::Logger logger;
+	int day = 0, mon = 1, year = 0;
+	int hour = 0, min = 0, sec = 0;
+	m_deadline_timepicker->GetTime(&hour, &min, &sec);
+	wxDateTime date = m_deadline_datepicker->GetValue();
+	day = date.GetDay();
+	mon = date.GetMonth();
+	year = date.GetYear();
+	mw::DateTime deadline(sec, min, hour, day, mon, year);
+	m_task.deadline = deadline.m_time_t;
+}
+
+
+void mw::TaskPanel::SetTheme(void)
+{
+
+
+	mw::Controller& controller = mw::Controller::Get();
+
+
 	wxColour white(255, 255, 255);
-	wxColour dark(74, 74, 74);
+	wxColour background = controller.m_backgroud_color;
+	wxColour foreground = controller.m_forground_color;
 	wxColour buttons_green(0, 136, 135);
-	this->SetBackgroundColour(dark);
-	m_static_task_name->SetForegroundColour(white);
-	m_static_status->SetForegroundColour(white);
-	m_static_duedate->SetForegroundColour(white);
-	m_static_priority->SetForegroundColour(white);
-	m_static_last_modified->SetForegroundColour(white);
+	this->m_main_panel->SetBackgroundColour(background);
+	this->m_status_static->SetForegroundColour(foreground);
+	this->m_task_name_static->SetForegroundColour(foreground);
+	this->m_priority_static->SetForegroundColour(foreground);
+	this->m_deadline_static->SetForegroundColour(foreground);
+	this->m_task_description_static->SetForegroundColour(foreground);
+	this->m_enable_notifications->SetForegroundColour(foreground);
 	this->Refresh();
 }
 
-void mw::TaskPanel::SetHighlightColours()
+void mw::TaskPanel::SetTask(const mw::Task& task)
 {
-	this->SetBackgroundColour(wxColour(153, 153, 153));
-	this->SetBackgroundColour(this->GetBackgroundColour());
-	this->Refresh();
+	m_task = task;
+	m_task_name->SetLabelText(task.name);
+	m_task_description->SetLabelText(task.description);
+	m_priority_choice->Select(m_task.priority);
+	m_status_choice->Select(m_task.status);
+	wxDateTime deadline(task.deadline);
+	m_deadline_datepicker->SetValue(deadline);
+	m_deadline_timepicker->SetValue(deadline);
+
+	wxCheckBoxState checkbox_state = (task.notification_enabled == true) ? wxCheckBoxState::wxCHK_CHECKED : wxCheckBoxState::wxCHK_UNCHECKED;
+	m_enable_notifications->Set3StateValue(checkbox_state);
+}
+
+void mw::TaskPanel::ClearTask()
+{
+	m_task = mw::Task();
+	m_task.StampCreationTime();
+	m_task.StampLastUpdateTime();
 }
