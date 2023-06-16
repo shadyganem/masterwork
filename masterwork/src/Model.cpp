@@ -134,6 +134,21 @@ bool Model::AddTask(mw::Task& task)
 			"); ";
 		m_db_handler.ExeQuery(sql.c_str());
 
+		sql.clear();
+		sql = "SELECT MAX(uid) FROM tasks;";
+
+		Records records;
+
+		m_db_handler.Select(sql.c_str(), records);
+		if (records.empty())
+		{
+			m_db_handler.DisConn(this->m_db_path.c_str());
+			return false;
+		}
+		Record row = records[0];
+		task.uid = std::stoi(row[0]);
+
+
 		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
 			return false;
 		return true;
