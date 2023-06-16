@@ -11,6 +11,7 @@
 #include <wx/notifmsg.h>
 #include <wx/dataview.h>
 #include "view/NewTaskFrame.h"
+#include "mwDefines.h"
 
 #define mwID_EDIT = 1
 
@@ -39,6 +40,7 @@ namespace mw
 		virtual void AddTask(mw::Task& task);
 		virtual void OnToolbarButtonClick(wxCommandEvent& event);
 		virtual void OnNewTasksFrameCloseEvent(wxCloseEvent& event);
+		virtual void OnProjectChanged(wxEvent& event);
 
 	public:
 		std::map<mw::Task, mw::NewTaskFrame*> m_task_to_frame_map;
@@ -50,6 +52,7 @@ namespace mw
 		std::map<mw::Task, mw::TaskPanel*> m_task_to_taskpanel_map;
 		wxBoxSizer* m_tasks_sizer;
 
+		mw::Project m_current_project;
 		mw::TaskPanel* m_task_panel;
 
 	private:

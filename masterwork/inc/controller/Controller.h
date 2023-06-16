@@ -66,6 +66,7 @@ namespace mw
 	private:
 		Controller() {}
 		void PostUpdateUI(int windId);
+		void PostProjectChangedEevent(int winID);
 		void PostNotification(int windId);
 		wxEvtHandler* m_main_frame;
 		wxVector <wxEvtHandler*> m_events_handlers;

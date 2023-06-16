@@ -3,6 +3,7 @@
 
 BEGIN_EVENT_TABLE(mw::TasksWindow, wxScrolledWindow)
 	EVT_CUSTOM(mwUpdateUI, TASKS_WINDOW_ID, mw::TasksWindow::OnUpdateUI)
+	EVT_CUSTOM(mwProjectChanged, TASKS_WINDOW_ID, mw::TasksWindow::OnProjectChanged)
 END_EVENT_TABLE()
 
 mw::TasksWindow::TasksWindow(wxWindow* parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, const wxString& name)
@@ -85,8 +86,6 @@ void mw::TasksWindow::OnUpdateUI(wxEvent& event)
 		m_index_to_task_map[i] = tasks[i];
 		this->AddTask(tasks[i]);
 	}
-
-	m_task_panel->SetTask(m_index_to_task_map[0]);
 	mw::WorkPanel* parent_work_panel = dynamic_cast<mw::WorkPanel*>(this->GetParent()->GetParent());
 	parent_work_panel->UpdateTasksCount(tasks.size());
 }
@@ -234,6 +233,11 @@ void mw::TasksWindow::OnNewTasksFrameCloseEvent(wxCloseEvent& event)
 		m_task_to_frame_map.erase(closed_frame->GetTask());
 	}
 	event.Skip();
+}
+
+void mw::TasksWindow::OnProjectChanged(wxEvent& event)
+{
+	m_task_panel->SetTask(m_index_to_task_map[0]);
 }
 
 void mw::TasksWindow::GetSelectedTasks(std::vector<mw::Task>& tasks)

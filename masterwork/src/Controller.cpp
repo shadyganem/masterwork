@@ -69,6 +69,7 @@ void mw::Controller::SetActiveProject(Project& project, bool post_update_ui)
 	{
 		PostUpdateUI(SIDE_PANEL_ID);
 		PostUpdateUI(TASKS_WINDOW_ID);
+		PostProjectChangedEevent(TASKS_WINDOW_ID);
 		PostUpdateUI(ARCHIVE_WINDOW_ID);
 		PostUpdateUI(REMINDERS_WINDOW_ID);
 	}
@@ -439,6 +440,17 @@ void mw::Controller::PostUpdateUI(int wind_id)
 	else
 	{
 		logger.Info("No event handler found for WindId = " + std::to_string(wind_id));
+	}
+}
+
+void mw::Controller::PostProjectChangedEevent(int win_id)
+{
+	if (this->m_event_handlers.count(win_id) != 0)
+	{
+		wxEvtHandler* event_handler = this->m_event_handlers[win_id];
+		wxCommandEvent* event = new wxCommandEvent(mwProjectChanged, win_id);
+		event->SetEventObject(event_handler);
+		event_handler->QueueEvent(event);
 	}
 }
 

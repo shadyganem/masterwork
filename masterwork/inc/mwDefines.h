@@ -1,6 +1,6 @@
 #pragma once
 
-#define MW_VERSION "1.1.2"
+#define MW_VERSION "1.2.2"
 
 enum UI_COMPONENTS_ID
 {
@@ -34,3 +34,4 @@ enum EVENTS_ID
 wxDECLARE_EVENT(mwUpdateUI, wxCommandEvent);
 wxDECLARE_EVENT(mwAppendTask, wxCommandEvent);
 wxDECLARE_EVENT(mwNotification, wxCommandEvent);
+wxDECLARE_EVENT(mwProjectChanged, wxCommandEvent);

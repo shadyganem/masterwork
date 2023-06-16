@@ -1,6 +1,7 @@
 #include "view/MainFrame.h"
 
 wxDEFINE_EVENT(mwUpdateUI, wxCommandEvent);
+wxDEFINE_EVENT(mwProjectChanged, wxCommandEvent);
 wxDEFINE_EVENT(mwNotification, wxCommandEvent);
 
 BEGIN_EVENT_TABLE(mw::MainFrame, wxFrame)
