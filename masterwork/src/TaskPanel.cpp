@@ -31,11 +31,11 @@ mw::TaskPanel::TaskPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, co
 
 	m_task_description_static = new wxStaticText(m_main_panel, wxID_ANY, wxT("Task Description"), wxDefaultPosition, wxDefaultSize, 0);
 	m_task_description_static->Wrap(-1);
-	m_right_sizer->Add(m_task_description_static, 0, wxALL, 5);
+	m_left_sizer->Add(m_task_description_static, 0, wxALL, 5);
 
 	m_task_description = new wxTextCtrl(m_main_panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_CAPITALIZE | wxTE_MULTILINE | wxTE_RICH);
 	m_task_description->SetMaxLength(500);
-	m_right_sizer->Add(m_task_description, 1, wxALL | wxEXPAND, 5);
+	m_left_sizer->Add(m_task_description, 1, wxALL | wxEXPAND, 5);
 
 	wxFlexGridSizer* fgSizer1;
 	fgSizer1 = new wxFlexGridSizer(3, 2, 0, 0);
@@ -93,7 +93,7 @@ mw::TaskPanel::TaskPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, co
 	m_enable_notifications->Set3StateValue(wxCheckBoxState::wxCHK_CHECKED);
 	fgSizer1->Add(m_enable_notifications, 0, wxALL, 5);
 
-	m_left_sizer->Add(fgSizer1, 1, wxEXPAND, 5);
+	m_right_sizer->Add(fgSizer1, 1, wxEXPAND, 5);
 	
 	wxBoxSizer* bSizer47;
 	bSizer47 = new wxBoxSizer(wxHORIZONTAL);
@@ -104,7 +104,7 @@ mw::TaskPanel::TaskPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, co
 	m_cancel_button = new wxButton(m_main_panel, wxID_ANY, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0);
 	bSizer47->Add(m_cancel_button, 0, wxALL, 5);
 
-	m_left_sizer->Add(bSizer47, 0, wxALIGN_RIGHT, 5);
+	m_right_sizer->Add(bSizer47, 0, wxALIGN_RIGHT, 5);
 
 	m_main_panel_sizer->Add(m_left_sizer, 10, wxEXPAND, 5);
 	m_main_panel_sizer->Add(m_right_sizer, 10, wxEXPAND, 5);
