@@ -325,6 +325,7 @@ void mw::TaskPanel::SetTask(const mw::Task& task)
 	m_task_name->SetBackgroundColour(m_default_task_name_background_colour);
 	m_task_name->SetLabelText(task.name);
 	m_task_description->SetLabelText(task.description);
+	m_task_name->SetHint("Task Name");
 	m_priority_choice->Select(m_task.priority);
 	m_status_choice->Select(m_task.status);
 	wxDateTime deadline(task.deadline);
@@ -334,13 +335,24 @@ void mw::TaskPanel::SetTask(const mw::Task& task)
 	m_enable_notifications->Set3StateValue(checkbox_state);
 }
 
-void mw::TaskPanel::SetNewTask()
+void mw::TaskPanel::NewTask()
 {
-	this->ClearTask();
-	m_task_name->SetBackgroundColour(wxColour(0, 255, 0));
-	m_task_name->SetFocus();
+	mw::Task new_task;
+	m_task = new_task;
+	m_task_name->SetBackgroundColour(wxColour(63, 160, 96));
 	m_new_task_timer->StartOnce(3000);
-
+	m_task_name->SetLabelText("");
+	m_task_name->SetHint("New Task");
+	m_task_description->SetLabelText(new_task.description);
+	m_priority_choice->Select(new_task.priority);
+	m_status_choice->Select(new_task.status);
+	this->ResetDeadlinePickers();
+	wxCheckBoxState checkbox_state = (new_task.notification_enabled == true) ? wxCheckBoxState::wxCHK_CHECKED : wxCheckBoxState::wxCHK_UNCHECKED;
+	m_enable_notifications->Set3StateValue(checkbox_state);
+	if (this->IsShownOnScreen())
+	{
+		m_task_name->SetFocus();
+	}
 }
 
 void mw::TaskPanel::ClearTask()

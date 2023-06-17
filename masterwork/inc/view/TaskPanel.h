@@ -40,7 +40,7 @@ namespace mw
 		TaskPanel(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(0, 50), long style = wxTAB_TRAVERSAL);
 		~TaskPanel();
 		void SetTask(const mw::Task& task);
-		virtual void SetNewTask();
+		virtual void NewTask();
 		virtual void ClearTask();
 		void DisableEditing();
 		void EnableEditing();

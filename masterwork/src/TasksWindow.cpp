@@ -46,7 +46,7 @@ mw::TasksWindow::TasksWindow(wxWindow* parent, wxWindowID winid, const wxPoint& 
 	m_tasks_data_view_list->SetBackgroundColour(background);
 	m_tasks_data_view_list->SetForegroundColour(foreground);
 
-	m_tasks_sizer->Add(m_tasks_data_view_list, 1, wxEXPAND, 0);
+	m_tasks_sizer->Add(m_tasks_data_view_list, 5, wxEXPAND, 0);
 
 
 
@@ -54,7 +54,7 @@ mw::TasksWindow::TasksWindow(wxWindow* parent, wxWindowID winid, const wxPoint& 
 	m_task_panel = new mw::TaskPanel(this);
 
 
-	m_tasks_sizer->Add(m_task_panel, 1, wxEXPAND, 0);
+	m_tasks_sizer->Add(m_task_panel, 2, wxEXPAND, 0);
 
 	this->SetSizer(m_tasks_sizer);
 
@@ -92,7 +92,7 @@ void mw::TasksWindow::OnUpdateUI(wxEvent& event)
 
 void mw::TasksWindow::OnNewTaskButton(wxCommandEvent& event)
 {
-	m_task_panel->SetNewTask();
+	m_task_panel->NewTask();
 }
 
 void mw::TasksWindow::OnItemActivated(wxDataViewEvent& event)
@@ -237,7 +237,14 @@ void mw::TasksWindow::OnNewTasksFrameCloseEvent(wxCloseEvent& event)
 
 void mw::TasksWindow::OnProjectChanged(wxEvent& event)
 {
-	m_task_panel->SetTask(m_index_to_task_map[0]);
+	if (m_index_to_task_map.size() > 0)
+	{
+		m_task_panel->SetTask(m_index_to_task_map[0]);
+	}
+	else
+	{
+		m_task_panel->NewTask();
+	}
 }
 
 void mw::TasksWindow::GetSelectedTasks(std::vector<mw::Task>& tasks)
