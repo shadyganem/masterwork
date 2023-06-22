@@ -13,20 +13,21 @@ mw::TasksWindow::TasksWindow(wxWindow* parent, wxWindowID winid, const wxPoint& 
 	controller.RegisterEventHandler(winid, this);
 	m_tasks_sizer = new wxBoxSizer(wxVERTICAL);
 	wxColour background = controller.m_backgroud_color;
-	wxColour foreground = controller.m_forground_color;
+	wxColour foreground = controller.m_foreground_color;
 	wxColour green(0, 136, 135);
 
 	// creating a tool bar
-	wxToolBar* toolbar = new wxToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_TEXT);
-	m_new_task_button = new mw::Button(toolbar, wxID_ANY, "New Task", wxDefaultPosition, wxDefaultSize, wxNO_BORDER);
+	m_toolbar = new wxToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_TEXT);
+	m_new_task_button = new mw::Button(m_toolbar, wxID_ANY, "New Task", wxDefaultPosition, wxDefaultSize, wxNO_BORDER);
 	m_new_task_button->SetBackgroundColour(background);
 	m_new_task_button->SetForegroundColour(green);
-	toolbar->AddControl(m_new_task_button);
-	toolbar->SetBackgroundColour(background);
-	toolbar->SetForegroundColour(foreground);
-	toolbar->Realize();
 
-	m_tasks_sizer->Add(toolbar, 0, wxEXPAND);
+	m_toolbar->AddControl(m_new_task_button);
+	m_toolbar->SetBackgroundColour(background);
+	m_toolbar->SetForegroundColour(foreground);
+	m_toolbar->Realize();
+
+	m_tasks_sizer->Add(m_toolbar, 0, wxEXPAND);
 
 	// creating the dataviewlistctrl object to show task data
 	m_tasks_data_view_list = new wxDataViewListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_MULTIPLE | wxDV_HORIZ_RULES);
@@ -62,7 +63,7 @@ mw::TasksWindow::TasksWindow(wxWindow* parent, wxWindowID winid, const wxPoint& 
 	m_tasks_data_view_list->Bind(wxEVT_DATAVIEW_SELECTION_CHANGED, &mw::TasksWindow::OnSelectionChanged, this);
 
 	m_tasks_data_view_list->Connect(wxEVT_DATAVIEW_ITEM_ACTIVATED, wxDataViewEventHandler(mw::TasksWindow::OnItemActivated), nullptr, this);
-	toolbar->Bind(wxEVT_TOOL, &mw::TasksWindow::OnToolbarButtonClick, this);
+	m_toolbar->Bind(wxEVT_TOOL, &mw::TasksWindow::OnToolbarButtonClick, this);
 	m_new_task_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mw::TasksWindow::OnNewTaskButton), NULL, this);
 	controller.RequestUpdateUI(winid);
 }
@@ -75,7 +76,6 @@ mw::TasksWindow::~TasksWindow()
 
 void mw::TasksWindow::OnUpdateUI(wxEvent& event)
 {
-	//m_task_panel->ClearTask();
 	m_index_to_task_map.clear();
 	m_tasks_data_view_list->DeleteAllItems();
 	std::vector<mw::Task> tasks;
@@ -88,6 +88,8 @@ void mw::TasksWindow::OnUpdateUI(wxEvent& event)
 	}
 	mw::WorkPanel* parent_work_panel = dynamic_cast<mw::WorkPanel*>(this->GetParent()->GetParent());
 	parent_work_panel->UpdateTasksCount(tasks.size());
+	m_toolbar->SetBackgroundColour(controller.m_backgroud_color);
+	m_toolbar->SetForegroundColour(controller.m_foreground_color);
 }
 
 void mw::TasksWindow::OnNewTaskButton(wxCommandEvent& event)

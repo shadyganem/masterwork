@@ -14,7 +14,7 @@ mw::RemindersWindow::RemindersWindow(wxWindow* parent, wxWindowID winid, const w
 	m_reminders_sizer = new wxBoxSizer(wxVERTICAL);
 
 	wxColour background = controller.m_backgroud_color;
-	wxColour foreground = controller.m_forground_color;
+	wxColour foreground = controller.m_foreground_color;
 	wxToolBar* toolbar = new wxToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_TEXT);
 
 	wxColour green(0, 136, 135);

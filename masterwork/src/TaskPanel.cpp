@@ -307,7 +307,7 @@ void mw::TaskPanel::SetTheme(void)
 
 	wxColour white(255, 255, 255);
 	wxColour background = controller.m_backgroud_color;
-	wxColour foreground = controller.m_forground_color;
+	wxColour foreground = controller.m_foreground_color;
 	wxColour buttons_green(0, 136, 135);
 	this->m_main_panel->SetBackgroundColour(background);
 	this->m_status_static->SetForegroundColour(foreground);

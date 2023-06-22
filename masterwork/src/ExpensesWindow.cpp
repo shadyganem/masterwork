@@ -7,7 +7,7 @@ mw::ExpensesWindow::ExpensesWindow(wxWindow* parent, wxWindowID winid, const wxP
 	controller.RegisterEventHandler(winid, this);
 	m_expenses_sizer = new wxBoxSizer(wxVERTICAL);
 	wxColour background = controller.m_backgroud_color;
-	wxColour foreground = controller.m_forground_color;
+	wxColour foreground = controller.m_foreground_color;
 	wxColour green(0, 136, 135);
 
 	wxToolBar* toolbar = new wxToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_TEXT);

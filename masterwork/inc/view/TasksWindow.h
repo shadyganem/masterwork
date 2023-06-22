@@ -54,6 +54,7 @@ namespace mw
 
 		mw::Project m_current_project;
 		mw::TaskPanel* m_task_panel;
+		wxToolBar* m_toolbar;
 
 	private:
 		void GetSelectedTasks(std::vector<mw::Task>& tasks);

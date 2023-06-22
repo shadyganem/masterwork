@@ -12,7 +12,7 @@ void mw::Controller::Init()
 	m_logger.Info("The active user is \"" + this->m_active_user.username + "\"");
 	m_logger.Info("The active project is \"" + this->m_active_project.name + "\"");
 	m_backgroud_color = wxColor(37, 37, 38);
-	m_forground_color = wxColor(255, 255, 255);
+	m_foreground_color = wxColor(255, 255, 255);
 	m_num_of_notifications = 0;
 	m_active_winid = TASKS_WINDOW_ID;
 }
