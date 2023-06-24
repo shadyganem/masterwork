@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="inc\model\PasswordHasher.h" />
     <ClInclude Include="inc\view\ExpensesWindow.h" />
     <ClInclude Include="inc\Exceptions.h" />
     <ClInclude Include="inc\view\Button.h" />
@@ -29,6 +30,7 @@
     <ClInclude Include="inc\view\BottomPanel.h" />
     <ClInclude Include="inc\mwDefines.h" />
     <ClInclude Include="inc\view\MainFrame.h" />
+    <ClInclude Include="inc\view\PasswordWindow.h" />
     <ClInclude Include="inc\view\SidePanel.h" />
     <ClInclude Include="inc\view\TasksWindow.h" />
     <ClInclude Include="inc\view\WorkPanel.h" />
@@ -58,6 +60,8 @@
   <ItemGroup>
     <ClCompile Include="src\NewReminderFrame.cpp" />
     <ClCompile Include="src\ExpensesWindow.cpp" />
+    <ClCompile Include="src\PasswordHasher.cpp" />
+    <ClCompile Include="src\PasswordWindow.cpp" />
     <ClCompile Include="src\Remider.cpp" />
     <ClCompile Include="src\RemindersWindow.cpp" />
     <ClCompile Include="src\NotificationThread.cpp" />
@@ -172,12 +176,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(WXDIR)\include;$(WXDIR)\include\msvc;$(ProjectDir)inc;$(ProjectDir)inc\controller </AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXDIR)\include;$(WXDIR)\include\msvc;$(ProjectDir)inc;$(ProjectDir)inc\controller;$(ProjectDir)lib\Bcryptcpp\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(WXDIR)\lib\vc_lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(WXDIR)\lib\vc_lib;$(ProjectDir)lib\Bcryptcpp</AdditionalLibraryDirectories>
+      <AdditionalDependencies>bcrypt.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -188,14 +193,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(WXDIR)\include;$(WXDIR)\include\msvc;$(ProjectDir)inc;$(ProjectDir)inc\controller </AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXDIR)\include;$(WXDIR)\include\msvc;$(ProjectDir)inc;$(ProjectDir)inc\controller;$(ProjectDir)lib\Bcryptcpp\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(WXWIN)\lib\vc_lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(WXWIN)\lib\vc_lib;$(ProjectDir)lib\Bcryptcpp</AdditionalLibraryDirectories>
+      <AdditionalDependencies>bcrypt.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command> Xcopy "$(SolutionDir)..\masterwork\assets\" "$(SolutionDir)bin\$(Platform)\$(Configuration)\assets\" /s /y</Command>
@@ -208,12 +214,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(WXDIR)\include;$(WXDIR)\include\msvc;$(ProjectDir)inc;$(ProjectDir)inc\controller </AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXDIR)\include;$(WXDIR)\include\msvc;$(ProjectDir)inc;$(ProjectDir)inc\controller;$(ProjectDir)lib\Bcryptcpp\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(WXDIR)\lib\vc_x64_lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(WXDIR)\lib\vc_x64_lib;$(ProjectDir)lib\Bcryptcpp</AdditionalLibraryDirectories>
+      <AdditionalDependencies>bcrypt.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -224,14 +231,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(WXDIR)\include;$(WXDIR)\include\msvc;$(ProjectDir)inc;$(ProjectDir)inc\controller </AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXDIR)\include;$(WXDIR)\include\msvc;$(ProjectDir)inc;$(ProjectDir)inc\controller;$(ProjectDir)lib\Bcryptcpp\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(WXWIN)\lib\vc_x64_lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(WXWIN)\lib\vc_x64_lib;$(ProjectDir)lib\Bcryptcpp</AdditionalLibraryDirectories>
+      <AdditionalDependencies>bcrypt.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

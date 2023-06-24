@@ -17,22 +17,30 @@ mw::WorkPanel::WorkPanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos,
 
 	m_pages_notbook = new wxAuiNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNB_TOP | wxAUI_NB_TAB_MOVE | wxAUI_NB_TAB_SPLIT);
 
-
+	// Adding tasks window
 	m_tasks_scroll_window = new mw::TasksWindow(m_pages_notbook, TASKS_WINDOW_ID, wxDefaultPosition, wxDefaultSize, wxHSCROLL | wxVSCROLL);
 	m_tasks_scroll_window->SetScrollRate(5, 5);
 	m_pages_notbook->AddPage(m_tasks_scroll_window, "Tasks", false);
 	m_pageidx_to_pageid_map[0] = TASKS_WINDOW_ID;
 
+	// Adding reminders window
 	m_reminders_scroll_window = new mw::RemindersWindow(m_pages_notbook, REMINDERS_WINDOW_ID, wxDefaultPosition, wxDefaultSize, wxHSCROLL | wxVSCROLL);
 	m_reminders_scroll_window->SetScrollRate(5, 5);
 	m_pages_notbook->AddPage(m_reminders_scroll_window, wxT("Reminders"), false);
 	m_pageidx_to_pageid_map[1] = REMINDERS_WINDOW_ID;
 
+	// Adding passwords window
+	m_password_scroll_window = new mw::PasswordWindow(m_pages_notbook, PASSWORD_WINDOW_ID, wxDefaultPosition, wxDefaultSize, wxHSCROLL | wxVSCROLL);
+	m_password_scroll_window->SetScrollRate(5, 5);
+	m_pages_notbook->AddPage(m_password_scroll_window, "Passwords", false);
+	m_pageidx_to_pageid_map[2] = PASSWORD_WINDOW_ID;
+
+	// Adding archive window
 	m_archive_scroll_window = new mw::ArchiveWindow(m_pages_notbook, ARCHIVE_WINDOW_ID, wxDefaultPosition, wxDefaultSize, wxHSCROLL | wxVSCROLL);
 	m_archive_scroll_window->SetScrollRate(5, 5);
 	m_pages_notbook->AddPage(m_archive_scroll_window, wxT("Archived"), false);
+	m_pageidx_to_pageid_map[3] = ARCHIVE_WINDOW_ID;
 
-	m_pageidx_to_pageid_map[2] = ARCHIVE_WINDOW_ID;
 	m_ver_sizer->Add(m_pages_notbook, 1, wxEXPAND | wxALL, 5);
 
 	this->SetSizer(m_ver_sizer);

@@ -1068,6 +1068,7 @@ bool Model::InitUsersTable()
 					"\"username\"	TEXT NOT NULL, "
 					"\"is_active\"  NUMERIC NOT NULL DEFAULT 0, "
              		"\"status\"     NUMERIC NOT NULL DEFAULT 0, "
+					"\"password\"   BINARY(64), "
 					"PRIMARY KEY(\"uid\" AUTOINCREMENT) "
 					"); "
 
@@ -1075,12 +1076,14 @@ bool Model::InitUsersTable()
 		            "\"uid\", "
 					"\"username\", "
 					"\"is_active\", "
-                    "\"status\" ) "
+                    "\"status\" , "
+					"\"password\" ) "
 					"VALUES ( "
 		            "\"1\", "
 					"\"Default User\", "
 					"\"1\", "
-		            "\"0\" ); ";
+		            "\"0\" , "
+					"\"X'QWERSDFAsdfa;lkjas'\" ); ";
 
 	m_mutex.lock();
 	m_db_handler.ExeQuery(sql);

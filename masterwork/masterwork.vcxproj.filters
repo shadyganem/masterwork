@@ -120,6 +120,12 @@
     <ClInclude Include="inc\view\NewReminderFrame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="inc\model\PasswordHasher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\view\PasswordWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\MainFrame.cpp">
@@ -222,6 +228,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\NewReminderFrame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PasswordHasher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PasswordWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
