@@ -22,6 +22,7 @@ bool Model::InitModel()
 	InitTasksTable();
 	InitNotificationsTable();
 	InitRemindersTable();
+	InitPasswordsTable();
 	is_initialized = true;
 	return true;
 }
@@ -1205,6 +1206,31 @@ bool Model::InitRemindersTable()
 		"\"creation_time\"	 INTEGER NOT NULL,              "
 		"\"start_time\"	     INTEGER NOT NULL,              "
 		"\"end_time\"	     INTEGER NOT NULL DEFAULT 0,    "
+		"\"last_update\"	 INTEGER NOT NULL DEFAULT 0,    "
+		"\"color\"	         INTEGER DEFAULT -1,            "
+		"PRIMARY KEY(\"uid\" AUTOINCREMENT)                 "
+		")";
+	m_mutex.lock();
+	m_db_handler.ExeQuery(sql);
+	m_mutex.unlock();
+	if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
+		return false;
+	return true;
+}
+
+bool Model::InitPasswordsTable()
+{
+	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
+		return false;
+
+	const char* sql = "CREATE TABLE IF NOT EXISTS \"passwords\" (      "
+		"\"uid\"	            INTEGER NOT NULL UNIQUE,    "
+		"\"user_uid\"	        INTEGER NOT NULL DEFAULT 1, "
+		"\"username\"	        TEXT NOT NULL,              "
+		"\"encrypted_password\" TEXT NOT NULL ,             "
+		"\"url\"	            TEXT,                       "
+		"\"notes\"	            TEXT,                       "
+		"\"creation_time\"	 INTEGER NOT NULL,              "
 		"\"last_update\"	 INTEGER NOT NULL DEFAULT 0,    "
 		"\"color\"	         INTEGER DEFAULT -1,            "
 		"PRIMARY KEY(\"uid\" AUTOINCREMENT)                 "

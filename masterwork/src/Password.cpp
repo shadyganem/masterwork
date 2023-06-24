@@ -8,7 +8,7 @@ mw::Password::~Password()
 {
 }
 
-std::string mw::Password::DecryptPassword()
+bool mw::Password::DecryptPassword()
 {
-	return std::string();
+	return false;
 }

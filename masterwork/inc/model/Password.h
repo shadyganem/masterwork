@@ -11,7 +11,7 @@ namespace mw
 		Password();
 		~Password();
 
-		virtual std::string DecryptPassword();
+		virtual bool DecryptPassword();
 
 	public:
 		int uid;

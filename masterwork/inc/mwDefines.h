@@ -1,6 +1,6 @@
 #pragma once
 
-#define MW_VERSION "1.2.2"
+#define MW_VERSION "2.0.0"
 
 enum UI_COMPONENTS_ID
 {

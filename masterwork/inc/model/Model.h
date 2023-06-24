@@ -55,6 +55,7 @@ private:
 	bool InitTasksTable();
 	bool InitNotificationsTable();
 	bool InitRemindersTable();
+	bool InitPasswordsTable();
 	std::string m_db_path;
 	mwDBHandler m_db_handler;
 	bool is_initialized;
