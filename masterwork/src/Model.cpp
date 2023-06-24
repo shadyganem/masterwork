@@ -32,10 +32,13 @@ bool Model::AddUser(mw::User& user)
 	{
 		if (this->ConnectDb() == false)
 			return false;
-		std::string sql = "INSERT INTO users(username, is_active, status)"
+		
+		std::string sql = "INSERT INTO users(username, is_active, status, hashed_password, is_password_protected)"
 			"VALUES (\"" + user.username + "\" ,"
-			+ std::to_string(user.is_active) + " , "
-			+ std::to_string(user.status) + 
+			+ std::to_string(user.is_active) + ", "
+			+ std::to_string(user.status) + ", "
+			+ " \"" + user.hashed_password + "\" ,"
+			+ std::to_string(user.is_password_protected) +
 			" ); ";
 
 		m_db_handler.ExeQuery(sql.c_str());
@@ -987,6 +990,7 @@ bool Model::UpdateUser(mw::User& user)
 		std::string sql = "UPDATE users "
 			"SET username=\"" + user.username + "\", "
 			"status=\"" + std::to_string(user.status) + "\" "
+			"hashed_password=\"" + user.hashed_password + "\" "
 			"WHERE uid=" + std::to_string(user.uid) + " ;";
 
 		logger.Info("Executinig query " + sql);
@@ -1068,7 +1072,8 @@ bool Model::InitUsersTable()
 					"\"username\"	TEXT NOT NULL, "
 					"\"is_active\"  NUMERIC NOT NULL DEFAULT 0, "
              		"\"status\"     NUMERIC NOT NULL DEFAULT 0, "
-					"\"password\"   BINARY(64), "
+					"\"hashed_password\" TEXT NOT NULL, "
+					"\"is_password_protected\" NUMERIC NOT NULL DEFAULT 0, "
 					"PRIMARY KEY(\"uid\" AUTOINCREMENT) "
 					"); "
 
@@ -1077,13 +1082,15 @@ bool Model::InitUsersTable()
 					"\"username\", "
 					"\"is_active\", "
                     "\"status\" , "
-					"\"password\" ) "
+					"\"hashed_password\" , "
+					"\"is_password_protected\")"
 					"VALUES ( "
 		            "\"1\", "
 					"\"Default User\", "
 					"\"1\", "
 		            "\"0\" , "
-					"\"X'QWERSDFAsdfa;lkjas'\" ); ";
+					"\"$2a$12$U8YKViISROZEWkabHvseXujY64NhQxpvklgek20SDClb2yP7oK.kW\" , "
+		            "\"0\" ); ";
 
 	m_mutex.lock();
 	m_db_handler.ExeQuery(sql);

@@ -21,6 +21,8 @@ namespace mw
 		int status;
 		std::string username;
 		bool is_active;
+		std::string hashed_password;
+		bool is_password_protected;
 	};
 }
 
