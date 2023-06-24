@@ -83,6 +83,10 @@ void mw::TasksWindow::OnUpdateUI(wxEvent& event)
 	controller.GetTasksForActiveProject(tasks);
 	for (int i = 0; i < tasks.size(); i++)
 	{
+		if (tasks[i].uid == m_task_panel->m_task.uid)
+		{
+			m_task_panel->SetTask(tasks[i]);
+		}
 		m_index_to_task_map[i] = tasks[i];
 		this->AddTask(tasks[i]);
 	}
