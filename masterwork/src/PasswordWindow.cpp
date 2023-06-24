@@ -17,6 +17,10 @@ mw::PasswordWindow::PasswordWindow(wxWindow* parent, wxWindowID winid, const wxP
 
 	wxColour green(0, 136, 135);
 
+	m_new_password_button = new mw::Button(m_toolbar, wxID_ANY, "New Password", wxDefaultPosition, wxDefaultSize, wxNO_BORDER);
+	m_new_password_button->SetBackgroundColour(background);
+	m_new_password_button->SetForegroundColour(green);
+	m_toolbar->AddControl(m_new_password_button);
 
 	m_toolbar->SetBackgroundColour(background);
 	m_toolbar->SetForegroundColour(foreground);

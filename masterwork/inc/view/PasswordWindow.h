@@ -30,7 +30,7 @@ namespace mw
 		std::map<int, mw::Reminder> m_index_to_reminder_map;
 		wxDataViewListCtrl* m_passwords_data_view_list;
 	private:
-		mw::Button* m_new_reminder_button;
+		mw::Button* m_new_password_button;
 		wxBoxSizer* m_sizer_1;
 		std::map<std::string, int> m_column_to_index_map;
 	private:

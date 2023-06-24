@@ -17,12 +17,15 @@ namespace mw
 		User();
 		User(std::string username);
 		~User();
-
+		virtual void SetPassword(std::string password);
+	public:
 		int status;
 		std::string username;
 		bool is_active;
 		std::string hashed_password;
 		bool is_password_protected;
+
+
 	};
 }
 

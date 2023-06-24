@@ -231,7 +231,7 @@ void mw::MainFrame::OnNewProject(wxCommandEvent& event)
 
 void mw::MainFrame::OnNewUser(wxCommandEvent& event)
 {
-	mw::NewUserFrame* new_user_frame = new mw::NewUserFrame(this);
+	mw::NewUserFrame* new_user_frame = new mw::NewUserFrame(this, wxID_ANY, "New User", wxDefaultPosition, wxDefaultSize);
 	new_user_frame->CenterOnParent();
 	new_user_frame->Show(true);
 	event.Skip();

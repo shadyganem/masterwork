@@ -28,3 +28,9 @@ mw::User::User(std::string username)
 mw::User::~User()
 {
 }
+
+void mw::User::SetPassword(std::string password)
+{
+	mw::PasswordHasher hasher;
+	this->hashed_password = hasher.hashPassword(password);
+}
