@@ -58,8 +58,10 @@
     <ClInclude Include="inc\view\NewReminderFrame.h" />
     <ClInclude Include="inc\model\Password.h" />
     <ClInclude Include="inc\view\NewPasswordFrame.h" />
+    <ClInclude Include="inc\view\LoginFrame.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\LoginFrame.cpp" />
     <ClCompile Include="src\NewPasswordFrame.cpp" />
     <ClCompile Include="src\Password.cpp" />
     <ClCompile Include="src\NewReminderFrame.cpp" />
