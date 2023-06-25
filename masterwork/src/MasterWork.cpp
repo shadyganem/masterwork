@@ -4,11 +4,11 @@ wxIMPLEMENT_APP(MasterWork);
 // Application Entry Point
 bool MasterWork::OnInit()
 {
-	wxSingleInstanceChecker* m_checker = new wxSingleInstanceChecker;
-	if (m_checker->IsAnotherRunning())
+	wxSingleInstanceChecker* checker = new wxSingleInstanceChecker;
+	if (checker->IsAnotherRunning())
 	{
-		delete m_checker; // OnExit() won't be called if we return false therefore it is important to delete the checker object.
-		m_checker = NULL;
+		delete checker; // OnExit() won't be called if we return false therefore it is important to delete the checker object.
+		checker = NULL;
 		return false;
 	}
 	mw::Controller& controller = mw::Controller::Get();
