@@ -59,8 +59,10 @@
     <ClInclude Include="inc\model\Password.h" />
     <ClInclude Include="inc\view\NewPasswordFrame.h" />
     <ClInclude Include="inc\view\LoginFrame.h" />
+    <ClInclude Include="inc\model\PasswordEncryptor.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\PasswordEncryptor.cpp" />
     <ClCompile Include="src\LoginFrame.cpp" />
     <ClCompile Include="src\NewPasswordFrame.cpp" />
     <ClCompile Include="src\Password.cpp" />
