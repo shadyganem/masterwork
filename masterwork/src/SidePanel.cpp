@@ -26,6 +26,7 @@ void mw::SidePanel::UpdateUsersList()
 		if (users[i].is_active == true)
 		{
 			m_users_choice->SetSelection(i);
+			m_last_user_inx = i;
 		}
 	}
 }
@@ -81,7 +82,27 @@ void mw::SidePanel::OnUserChange(wxCommandEvent& event)
 {
 	mw::Controller& controller = mw::Controller::Get();
 	int idx = m_users_choice->GetSelection();
-	controller.SetActiveUser(m_idx_to_user[idx]);
+	mw::User selected_user = m_idx_to_user[idx];
+	int result;
+	if (selected_user.is_password_protected)
+	{
+		mw::LoginDialog login(this, wxID_ANY, "Login as: " + selected_user.username);
+		login.SetUser(selected_user);
+		login.SetSize(wxSize(400, 200));
+		int result = login.ShowModal();
+		if (result == wxID_OK)
+		{
+			controller.SetActiveUser(m_idx_to_user[idx]);
+		}
+		else
+		{
+			controller.SetActiveUser(m_idx_to_user[m_last_user_inx]);
+		}
+	}
+	else
+	{
+		controller.SetActiveUser(m_idx_to_user[idx]);
+	}
 	event.Skip();
 }
 

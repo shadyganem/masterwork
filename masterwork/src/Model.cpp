@@ -290,6 +290,8 @@ bool Model::GetActiveUser(mw::User& user)
 		user.username = row[1];
 		user.is_active = std::stoi(row[2]) == 1 ? true : false;
 		user.status = std::stoi(row[3]);
+		user.hashed_password = row[4];
+		user.is_password_protected = (bool)std::stoi(row[5]);
 		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
 			return false;
 		return true;
@@ -423,6 +425,8 @@ bool Model::GetAllUsers(std::vector<mw::User>& ret_users_vect)
 			user.username = row[1];
 			user.is_active = std::stoi(row[2]) == 1 ? true : false;
 			user.status = std::stoi(row[3]);
+			user.hashed_password = row[4];
+			user.is_password_protected = (bool)std::stoi(row[5]);
 			ret_users_vect.push_back(user);
 		}
 		this->DisconnectDb();

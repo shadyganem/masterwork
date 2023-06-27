@@ -18,6 +18,7 @@
 #include "view/NewProjectFrame.h"
 #include "view/Button.h"
 #include <wx/treectrl.h>
+#include "view/LoginDialog.h"
 
 namespace mw
 {
@@ -72,6 +73,7 @@ namespace mw
 	private:
 		wxTreeItemId m_selected_by_righ_click;
 		bool m_is_project_seleted;
+		int m_last_user_inx;
 	private:
 		// any class wishing to process wxWidgets events must use this macro
 		DECLARE_EVENT_TABLE()
