@@ -198,6 +198,7 @@ void mw::MainFrame::ShowStutusBarMessage(const wxString& msg)
 void mw::MainFrame::SetStatusBarBackgrounColor(const wxColor& color)
 {
 	m_status_bar->SetBackgroundColour(color);
+	m_status_bar->Refresh();
 }
 
 void mw::MainFrame::OnExit(wxCommandEvent& event)
@@ -255,6 +256,7 @@ void mw::MainFrame::On1SecTimer(wxTimerEvent& event)
 	{
 		wxString active_user = controller.GetActiveUsername();
 		controller.SetStatusBarText("Ready - " + active_user);
+		controller.SetStatusBarColour(m_info_bg);
 		m_3_sec_check = 0;
 	}
 	else
@@ -289,8 +291,6 @@ void mw::MainFrame::OnNotificationThread(wxThreadEvent& even)
 	m_notification_timer->StartOnce(30000);
 }
 
-
-
 void mw::MainFrame::OnNewTaskButton(wxCommandEvent& event)
 {
 	mw::Controller& controller = mw::Controller::Get();
@@ -308,7 +308,9 @@ void mw::MainFrame::OnUpdateUI(wxEvent& event)
 	mw::Controller& controller = mw::Controller::Get();
 	int num_of_notifications;
 	controller.GetNumOfNotifications(num_of_notifications);
-	ShowStutusBarMessage(controller.GetStatusBarText());
+	this->ShowStutusBarMessage(controller.GetStatusBarText());
+	this->SetStatusBarBackgrounColor(controller.GetStatusBarColour());
+
 }
 
 void mw::MainFrame::OnAboutClick(wxCommandEvent& event)

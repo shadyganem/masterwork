@@ -88,6 +88,19 @@ wxString mw::Controller::GetStatusBarText(void)
 	return m_status_bar_text;
 }
 
+void mw::Controller::SetStatusBarColour(wxColour colour)
+{
+	m_mutex.Lock();
+	m_status_bar_colour = colour;
+	m_mutex.Unlock();
+	PostUpdateUI(MAIN_FRAME_ID);
+}
+
+wxColour mw::Controller::GetStatusBarColour(void)
+{
+	return m_status_bar_colour;
+}
+
 void mw::Controller::SetInfoBarText(const wxString& txt)
 {
 	m_mutex.Lock();

@@ -58,6 +58,7 @@ namespace mw
 		// panels
 		wxPanel* m_main_panel;
 		wxColor m_info_bg = wxColor(0, 122, 204);
+		wxColor m_success_bg = wxColor(0, 128, 0);
 		wxColor m_err_bg = wxColor(134, 27, 45);
 		wxColor m_white_fg = wxColor(255, 255, 255);
 		wxColor m_tool_bar_bg = wxColor(61, 61, 61);

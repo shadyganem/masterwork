@@ -4,6 +4,7 @@ mw::LoginDialog::LoginDialog(wxWindow* parent, wxWindowID id, const wxString& ti
 {
     m_login_status = false;
     // Create the login form elements
+    this->SetSize(wxSize(400, 200));
     wxPanel* panel = new wxPanel(this);
     wxBoxSizer* vbox = new wxBoxSizer(wxVERTICAL);
 
@@ -23,8 +24,7 @@ mw::LoginDialog::LoginDialog(wxWindow* parent, wxWindowID id, const wxString& ti
     vbox->Add(login_button, 0, wxALIGN_CENTER | wxALL, 5);
 
     panel->SetSizer(vbox);
-    Centre();
-    this->Fit();
+    this->Centre();
 }
 
 mw::LoginDialog::~LoginDialog()

@@ -23,10 +23,32 @@ void mw::SidePanel::UpdateUsersList()
 	{
 		m_users_choice->Append(users[i].username);
 		m_idx_to_user[i] = users[i];
-		if (users[i].is_active == true)
+	}
+	for (int i = 0; i < users.size(); i++)
+	{
+		if (users[i].is_active )
 		{
-			m_users_choice->SetSelection(i);
-			m_last_user_inx = i;
+			if (users[i].is_password_protected)
+			{
+				if (this->Login(users[i]) == wxID_OK)
+				{
+					controller.SetStatusBarText("Login Successful!");
+					controller.SetStatusBarColour(wxColour(0, 128, 0));
+					m_users_choice->SetSelection(i);
+					m_last_user_inx = i;
+				}
+				else
+				{
+					controller.SetActiveUser(m_idx_to_user[0]);
+					controller.SetStatusBarText("Login Failed!");
+					controller.SetStatusBarColour(wxColour(255, 0, 0));
+				}
+			}
+			else
+			{
+				m_users_choice->SetSelection(i);
+				m_last_user_inx = i;
+			}
 		}
 	}
 }
@@ -82,27 +104,7 @@ void mw::SidePanel::OnUserChange(wxCommandEvent& event)
 {
 	mw::Controller& controller = mw::Controller::Get();
 	int idx = m_users_choice->GetSelection();
-	mw::User selected_user = m_idx_to_user[idx];
-	int result;
-	if (selected_user.is_password_protected)
-	{
-		mw::LoginDialog login(this, wxID_ANY, "Login as: " + selected_user.username);
-		login.SetUser(selected_user);
-		login.SetSize(wxSize(400, 200));
-		int result = login.ShowModal();
-		if (result == wxID_OK)
-		{
-			controller.SetActiveUser(m_idx_to_user[idx]);
-		}
-		else
-		{
-			controller.SetActiveUser(m_idx_to_user[m_last_user_inx]);
-		}
-	}
-	else
-	{
-		controller.SetActiveUser(m_idx_to_user[idx]);
-	}
+	controller.SetActiveUser(m_idx_to_user[idx]);
 	event.Skip();
 }
 
@@ -186,6 +188,7 @@ void mw::SidePanel::OnMenuDelete(wxCommandEvent& event)
 mw::SidePanel::SidePanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, 
 	                     const wxString& name) : wxPanel(parent, winid, pos, size, style, name)
 {
+	m_last_user_inx = 0;
 	mw::Controller& controller = mw::Controller::Get();
 	controller.RegisterEventHandler(SIDE_PANEL_ID, this);
 	m_is_project_seleted = false;
@@ -263,4 +266,11 @@ mw::SidePanel::~SidePanel()
 	m_project_tree->Disconnect(wxEVT_CHAR, wxKeyEventHandler(mw::SidePanel::OnProjectsTreeChar), nullptr, this);
 	m_project_tree->Disconnect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(mw::SidePanel::OnProjectsTreeRightClick), nullptr, this);
 
+}
+
+int mw::SidePanel::Login(mw::User& user)
+{
+	mw::LoginDialog login(this, wxID_ANY, "Login as: " + user.username);
+	login.SetUser(user);
+	return login.ShowModal();
 }

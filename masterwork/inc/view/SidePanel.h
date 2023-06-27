@@ -69,11 +69,13 @@ namespace mw
 			const wxString& name = wxASCII_STR(wxPanelNameStr));
 
 		~SidePanel();
-
+	private:
+		int Login(mw::User& user);
 	private:
 		wxTreeItemId m_selected_by_righ_click;
 		bool m_is_project_seleted;
 		int m_last_user_inx;
+
 	private:
 		// any class wishing to process wxWidgets events must use this macro
 		DECLARE_EVENT_TABLE()

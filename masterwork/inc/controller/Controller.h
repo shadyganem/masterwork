@@ -34,6 +34,8 @@ namespace mw
 		void SetActiveProject(Project& project, bool post_update_ui = true);
 		void SetStatusBarText(const wxString& txt);
 		wxString GetStatusBarText(void);
+		void SetStatusBarColour(wxColour colour);
+		wxColour GetStatusBarColour(void);
 		void SetInfoBarText(const wxString& txt);
 		wxString GetInfoBarText(void);
 		void RegisterMainFrame(wxEvtHandler* mf);
@@ -72,6 +74,7 @@ namespace mw
 		wxVector <wxEvtHandler*> m_events_handlers;
 		std::map<int, wxEvtHandler*> m_event_handlers;
 		wxString m_status_bar_text;
+		wxColour m_status_bar_colour;
 		wxString m_info_bar_text;
 		Model m_model;
 		wxMutex m_mutex;
