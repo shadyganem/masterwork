@@ -23,32 +23,10 @@ void mw::SidePanel::UpdateUsersList()
 	{
 		m_users_choice->Append(users[i].username);
 		m_idx_to_user[i] = users[i];
-	}
-	for (int i = 0; i < users.size(); i++)
-	{
-		if (users[i].is_active )
+		if (users[i].is_active)
 		{
-			if (users[i].is_password_protected)
-			{
-				if (this->Login(users[i]) == wxID_OK)
-				{
-					controller.SetStatusBarText("Login Successful!");
-					controller.SetStatusBarColour(wxColour(0, 128, 0));
-					m_users_choice->SetSelection(i);
-					m_last_user_inx = i;
-				}
-				else
-				{
-					controller.SetActiveUser(m_idx_to_user[0]);
-					controller.SetStatusBarText("Login Failed!");
-					controller.SetStatusBarColour(wxColour(255, 0, 0));
-				}
-			}
-			else
-			{
-				m_users_choice->SetSelection(i);
-				m_last_user_inx = i;
-			}
+			m_users_choice->SetSelection(i);
+			m_last_user_inx = i;
 		}
 	}
 }
@@ -104,7 +82,28 @@ void mw::SidePanel::OnUserChange(wxCommandEvent& event)
 {
 	mw::Controller& controller = mw::Controller::Get();
 	int idx = m_users_choice->GetSelection();
-	controller.SetActiveUser(m_idx_to_user[idx]);
+	mw::User user = m_idx_to_user[idx];
+
+	if (user.is_password_protected)
+	{
+		if (this->Login(user) == wxID_OK)
+		{
+			controller.SetStatusBarText("Login Successful!");
+			controller.SetStatusBarColour(wxColour(0, 128, 0));
+			controller.SetActiveUser(user);
+		}
+		else
+		{
+			controller.SetActiveUser(m_idx_to_user[0]);
+			controller.SetStatusBarText("Login Failed!");
+			controller.SetStatusBarColour(wxColour(255, 0, 0));
+			controller.SetActiveUser(m_idx_to_user[m_last_user_inx]);
+		}
+	}
+	else
+	{
+		controller.SetActiveUser(m_idx_to_user[idx]);
+	}
 	event.Skip();
 }
 
