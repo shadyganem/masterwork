@@ -244,7 +244,7 @@ void mw::MainFrame::On1SecTimer(wxTimerEvent& event)
 	mw::Controller& controller = mw::Controller::Get();
 	if (m_10_sec_check == 10)
 	{
-		controller.SetInfoBarText("MasterWork! - By Shady Ganem");
+		controller.SetInfoBarText("MasterWork! - By Shadi Ganem");
 		m_10_sec_check = 0;
 	}
 	else
