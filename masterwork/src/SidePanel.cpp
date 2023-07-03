@@ -88,15 +88,13 @@ void mw::SidePanel::OnUserChange(wxCommandEvent& event)
 	{
 		if (this->Login(user) == wxID_OK)
 		{
-			controller.SetStatusBarText("Login Successful!");
-			controller.SetStatusBarColour(wxColour(0, 128, 0));
+			controller.SetStatusBar("Login Successful", wxColour(0, 128, 0));
 			controller.SetActiveUser(user);
 		}
 		else
 		{
 			controller.SetActiveUser(m_idx_to_user[0]);
-			controller.SetStatusBarText("Login Failed!");
-			controller.SetStatusBarColour(wxColour(255, 0, 0));
+			controller.SetStatusBar("Login Failed!", wxColour(255, 0, 0));
 			controller.SetActiveUser(m_idx_to_user[m_last_user_inx]);
 		}
 	}

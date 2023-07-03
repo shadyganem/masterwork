@@ -33,6 +33,7 @@ namespace mw
 		void SetActiveUser(mw::User& user, bool post_update_ui = true);
 		void SetActiveProject(Project& project, bool post_update_ui = true);
 		void SetStatusBarText(const wxString& txt);
+		void SetStatusBar(const wxString& txt,const wxColour& color);
 		wxString GetStatusBarText(void);
 		void SetStatusBarColour(wxColour colour);
 		wxColour GetStatusBarColour(void);

@@ -306,8 +306,6 @@ void mw::MainFrame::OnSearch(wxCommandEvent& event)
 void mw::MainFrame::OnUpdateUI(wxEvent& event)
 {
 	mw::Controller& controller = mw::Controller::Get();
-	int num_of_notifications;
-	controller.GetNumOfNotifications(num_of_notifications);
 	this->ShowStutusBarMessage(controller.GetStatusBarText());
 	this->SetStatusBarBackgrounColor(controller.GetStatusBarColour());
 
