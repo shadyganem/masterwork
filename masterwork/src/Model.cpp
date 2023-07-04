@@ -678,6 +678,59 @@ bool Model::GetAllReminders(std::vector<mw::Reminder>& reminders, const mw::User
 	}
 }
 
+bool Model::GetAllPasswords(std::vector<mw::Password>& passwords, const mw::User& current_user)
+{
+	mw::Logger logger;
+	try
+	{
+		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
+			return false;
+
+		Records records;
+		Record row;
+
+
+		std::string sql = "SELECT * FROM passwords WHERE user_uid=" + std::to_string(current_user.uid) + " ;";
+
+
+		m_db_handler.Select(sql.c_str(), records);
+
+
+		mw::Password password;
+
+		if (records.empty())
+		{
+			logger.Warning("No records where found for: " + sql);
+		}
+
+		for (int i = 0; i < records.size(); i++)
+		{
+
+			row = records[i];
+			password.uid = std::stoi(row[0]);
+			password.user_uid = std::stoi(row[1]);
+			password.username = row[2];
+			password.encrypted_password = row[3];
+			password.url = row[4];
+			password.notes = row[5];
+			password.creation_time = std::stoi(row[6]);
+			password.last_update = std::stoi(row[7]);
+			password.color = std::stoi(row[8]);
+
+			passwords.push_back(password);
+		}
+		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
+			return false;
+		return true;
+	}
+	catch (...)
+	{
+		logger.Error("Exception occured at mwModel::GetAllProjects(std::vector<mwProject>& prjects_vect, const mwUser& user) ");
+		m_db_handler.DisConn(this->m_db_path.c_str());
+		return false;
+	}
+}
+
 bool Model::SetActiveProject(mw::Project& project)
 {
 	mw::Logger logger;

@@ -388,6 +388,12 @@ void mw::Controller::GetTasksForActiveProject(std::vector<Task>& tasks)
 	this->m_model.GetAllTasks(tasks, m_active_project);
 }
 
+void mw::Controller::GetPasswordsForActiveUser(std::vector<mw::Password>& passwords)
+{
+	this->m_model.GetActiveUser(m_active_user);
+	this->m_model.GetAllPasswords(passwords, m_active_user);
+}
+
 void mw::Controller::GetArchiveTasksForActiveProject(std::vector<Task>& tasks)
 {
 	m_model.GetActiveUser(m_active_user);

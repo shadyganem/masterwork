@@ -35,6 +35,7 @@ public:
 	bool GetAllProjects(std::vector<mw::Project>& prjects_vect, const mw::User& currnet_user);
 	bool GetAllNotifications(std::vector<mw::Notification>& notifications_vect, const mw::User& currnet_user);
 	bool GetAllReminders(std::vector<mw::Reminder>& reminders, const mw::User& current_user);
+	bool GetAllPasswords(std::vector<mw::Password>& passwords, const mw::User& currnet_user);
 	bool SetActiveProject(mw::Project& project);
 	bool GetAllTasks(std::vector<mw::Task>& tasks, mw::Project& current_project);
 	bool GetArchiveAllTasks(std::vector<mw::Task>& tasks, mw::Project& current_project);

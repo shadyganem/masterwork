@@ -8,6 +8,7 @@
 #include "view/Button.h"
 #include "view/NewPasswordFrame.h"
 #include "view/NewReminderFrame.h"
+#include "model/Password.h"
 
 
 namespace mw
@@ -26,6 +27,7 @@ namespace mw
 
 		virtual void OnUpdateUI(wxEvent& event);
 		virtual void OnNewPasswordButton(wxCommandEvent& event);
+		virtual void AddPassword(mw::Password& password);
 
 	public:
 

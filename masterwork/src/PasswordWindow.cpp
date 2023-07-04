@@ -33,9 +33,10 @@ mw::PasswordWindow::PasswordWindow(wxWindow* parent, wxWindowID winid, const wxP
 
 	m_passwords_data_view_list = new wxDataViewListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_MULTIPLE | wxDV_HORIZ_RULES);
 
-	m_passwords_data_view_list->AppendColumn(new wxDataViewColumn("Title", new wxDataViewTextRenderer(), 0, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT));
-	m_passwords_data_view_list->AppendColumn(new wxDataViewColumn("Status", new wxDataViewTextRenderer(), 1, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT));
-	m_passwords_data_view_list->AppendColumn(new wxDataViewColumn("Last Update", new wxDataViewTextRenderer(), 2, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT));
+	m_passwords_data_view_list->AppendColumn(new wxDataViewColumn("username", new wxDataViewTextRenderer(), 0, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT));
+	m_passwords_data_view_list->AppendColumn(new wxDataViewColumn("url", new wxDataViewTextRenderer(), 1, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT));
+	m_passwords_data_view_list->AppendColumn(new wxDataViewColumn("notes", new wxDataViewTextRenderer(), 2, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT));
+	m_passwords_data_view_list->AppendColumn(new wxDataViewColumn("password", new wxDataViewTextRenderer(), 3, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT));
 
 	m_passwords_data_view_list->SetBackgroundColour(background);
 	m_passwords_data_view_list->SetForegroundColour(foreground);
@@ -57,18 +58,37 @@ mw::PasswordWindow::~PasswordWindow()
 
 void mw::PasswordWindow::OnUpdateUI(wxEvent& event)
 {
+	m_passwords_data_view_list->DeleteAllItems();
 	mw::Controller& controller = mw::Controller::Get();
 	wxColour background = controller.m_backgroud_color;
 	wxColour foreground = controller.m_foreground_color;
 	m_toolbar->SetBackgroundColour(background);
 	m_toolbar->SetForegroundColour(foreground);
+
+
+	std::vector<mw::Password> passwords;
+	controller.GetPasswordsForActiveUser(passwords);
+
+	for (int i = 0; i < passwords.size(); i++)
+	{
+		this->AddPassword(passwords[i]);
+	}
+
 }
 
 void mw::PasswordWindow::OnNewPasswordButton(wxCommandEvent& event)
 {
 	mw::NewPasswordFrame* new_password_frame = new mw::NewPasswordFrame(this);
-
 	new_password_frame->Center();
 	new_password_frame->Show();
-	
+}
+
+void mw::PasswordWindow::AddPassword(mw::Password& password)
+{
+	wxVector<wxVariant> data;
+	data.push_back(wxVariant(password.username));
+	data.push_back(wxVariant(password.url));
+	data.push_back(wxVariant(password.notes));
+	data.push_back(wxVariant(password.encrypted_password));
+	m_passwords_data_view_list->AppendItem(data);
 }
