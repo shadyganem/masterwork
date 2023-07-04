@@ -323,6 +323,19 @@ void mw::Controller::AddReminder(mw::Reminder& reminder, bool post_update_ui)
 	}
 }
 
+void mw::Controller::AddPassword(mw::Password& password, bool post_update_ui)
+{
+	m_model.GetActiveUser(m_active_user);
+	password.user_uid = m_active_user.uid;
+	m_mutex.Lock();
+	m_model.AddPassword(password);
+	m_mutex.Unlock();
+	if (post_update_ui)
+	{
+		PostUpdateUI(PASSWORD_WINDOW_ID);
+	}
+}
+
 void mw::Controller::UpdateNotification(mw::Notification& notification, bool post_update_ui)
 {
 	m_mutex.Lock();

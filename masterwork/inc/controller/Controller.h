@@ -7,6 +7,7 @@
 #include "model/Model.h"
 #include "model/Task.h"
 #include "model/User.h"
+#include "model/Password.h"
 #include "controller/Logger.h"
 #include <vector>
 #include <map>
@@ -53,6 +54,7 @@ namespace mw
 		void AddNotification(mw::Notification& notification, bool post_update_ui = true);
 		void AddUser(mw::User& user, bool set_active=false, bool post_update_ui = true);
 		void AddReminder(mw::Reminder& reminder, bool post_update_ui = true);
+		void AddPassword(mw::Password& password, bool post_update_ui = true);
 		void UpdateNotification(mw::Notification& notification, bool post_update_ui = true);
 		void GetAllUsers(std::vector<mw::User>& users);
 		void GetProjectsForActiveUser(std::vector<std::string>& projects);

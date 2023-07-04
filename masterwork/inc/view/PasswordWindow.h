@@ -6,6 +6,7 @@
 #include "mwDefines.h"
 #include <wx/dataview.h>
 #include "view/Button.h"
+#include "view/NewPasswordFrame.h"
 #include "view/NewReminderFrame.h"
 
 
@@ -24,6 +25,8 @@ namespace mw
 		~PasswordWindow();
 
 		virtual void OnUpdateUI(wxEvent& event);
+		virtual void OnNewPasswordButton(wxCommandEvent& event);
+
 	public:
 
 		wxToolBar* m_toolbar;

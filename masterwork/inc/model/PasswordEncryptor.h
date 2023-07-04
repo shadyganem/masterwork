@@ -18,6 +18,12 @@ namespace mw
         virtual std::string encrypt(const std::string& password);
 
         virtual std::string decrypt(const std::string& encrypted_password);
+
+        virtual std::string encrypt(const std::string& password, const std::string& masterPassword);
+        virtual std::string decrypt(const std::string& encrypted_password, const std::string& masterPassword, const unsigned char* iv);
+
+
+
     };
 }
 

@@ -7,7 +7,7 @@
 #include "model/Reminder.h"
 #include "model/Notification.h"
 #include "model/User.h"
-
+#include "model/Password.h"
 #include <string>
 #include <vector>
 #include <mutex>
@@ -24,6 +24,7 @@ public:
 	bool AddTask(mw::Task& task);
 	bool AddNotification(mw::Notification& notification);
 	bool AddReminder(mw::Reminder& reminder);
+	bool AddPassword(mw::Password& password);
 	bool GetActiveUser(mw::User& user);
 	bool SetActiveUser(mw::User& user);
 	bool DeleteTask(mw::Task& task);

@@ -22,11 +22,11 @@ namespace mw
 		std::string url;
 		std::string notes;
 		std::time_t start_time;
-		std::time_t last_update;
 		std::time_t end_time;
 		int red;
 		int green;
 		int blue;
+		int color;
 
 	};
 }

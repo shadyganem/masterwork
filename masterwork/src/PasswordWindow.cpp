@@ -46,6 +46,7 @@ mw::PasswordWindow::PasswordWindow(wxWindow* parent, wxWindowID winid, const wxP
 	this->SetSizer(m_sizer_1);
 	this->Layout();
 
+	m_new_password_button->Bind(wxEVT_BUTTON, &mw::PasswordWindow::OnNewPasswordButton, this);
 
 	controller.RequestUpdateUI(this->GetId());
 }
@@ -61,4 +62,13 @@ void mw::PasswordWindow::OnUpdateUI(wxEvent& event)
 	wxColour foreground = controller.m_foreground_color;
 	m_toolbar->SetBackgroundColour(background);
 	m_toolbar->SetForegroundColour(foreground);
+}
+
+void mw::PasswordWindow::OnNewPasswordButton(wxCommandEvent& event)
+{
+	mw::NewPasswordFrame* new_password_frame = new mw::NewPasswordFrame(this);
+
+	new_password_frame->Center();
+	new_password_frame->Show();
+	
 }

@@ -267,6 +267,47 @@ bool Model::AddReminder(mw::Reminder& reminder)
 	}
 }
 
+bool Model::AddPassword(mw::Password& password)
+{
+	mw::Logger logger;
+	try
+	{
+		password.StampLastUpdateTime();
+
+		if (password.user_uid == 0)
+		{
+			throw("Can not add Reminder with user UID = 0");
+		}
+		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
+			return false;
+
+		Records records;
+
+		std::string sql = "INSERT INTO passwords(user_uid, username, encrypted_password, url, notes, creation_time, last_update, color) "
+			"VALUES (" + std::to_string(password.user_uid) + ", "
+			"\"" + password.username + "\", "
+			"\"" + password.password + "\", "
+			"\"" + password.url + "\", "
+			"\"" + password.notes + "\", "
+			+ std::to_string(password.creation_time) + ", "
+			+ std::to_string(password.last_update) + ", "
+			+ std::to_string(password.color) + " "
+			"); ";
+		m_db_handler.ExeQuery(sql.c_str());
+
+		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
+			return false;
+		return true;
+
+	}
+	catch (...)
+	{
+		logger.Error("Exception occured at bool mw::Model::AddNotification(mw::Notification& notification)");
+		m_db_handler.DisConn(this->m_db_path.c_str());
+		return false;
+	}
+}
+
 bool Model::GetActiveUser(mw::User& user)
 {
 	try
