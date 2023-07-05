@@ -1,7 +1,7 @@
 #include "view/PasswordWindow.h"
 
 BEGIN_EVENT_TABLE(mw::PasswordWindow, wxScrolledWindow)
-	EVT_CUSTOM(mwUpdateUI, PASSWORD_WINDOW_ID, mw::PasswordWindow::OnUpdateUI)
+	EVT_CUSTOM(mwUpdateUI, PASSWORDS_WINDOW_ID, mw::PasswordWindow::OnUpdateUI)
 END_EVENT_TABLE()
 
 mw::PasswordWindow::PasswordWindow(wxWindow* parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, const wxString& name) 

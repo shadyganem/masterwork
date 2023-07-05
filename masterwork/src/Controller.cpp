@@ -55,6 +55,7 @@ void mw::Controller::SetActiveUser(mw::User& user, bool post_update_ui)
 		PostUpdateUI(TASKS_WINDOW_ID);
 		PostUpdateUI(ARCHIVE_WINDOW_ID);
 		PostUpdateUI(REMINDERS_WINDOW_ID);
+		PostUpdateUI(PASSWORDS_WINDOW_ID);
 	}
 }
 
@@ -332,7 +333,7 @@ void mw::Controller::AddPassword(mw::Password& password, bool post_update_ui)
 	m_mutex.Unlock();
 	if (post_update_ui)
 	{
-		PostUpdateUI(PASSWORD_WINDOW_ID);
+		PostUpdateUI(PASSWORDS_WINDOW_ID);
 	}
 }
 

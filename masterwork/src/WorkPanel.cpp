@@ -30,10 +30,10 @@ mw::WorkPanel::WorkPanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos,
 	m_pageidx_to_pageid_map[1] = REMINDERS_WINDOW_ID;
 
 	// Adding passwords window
-	m_password_scroll_window = new mw::PasswordWindow(m_pages_notbook, PASSWORD_WINDOW_ID, wxDefaultPosition, wxDefaultSize, wxHSCROLL | wxVSCROLL);
+	m_password_scroll_window = new mw::PasswordWindow(m_pages_notbook, PASSWORDS_WINDOW_ID, wxDefaultPosition, wxDefaultSize, wxHSCROLL | wxVSCROLL);
 	m_password_scroll_window->SetScrollRate(5, 5);
 	m_pages_notbook->AddPage(m_password_scroll_window, "Passwords", false);
-	m_pageidx_to_pageid_map[2] = PASSWORD_WINDOW_ID;
+	m_pageidx_to_pageid_map[2] = PASSWORDS_WINDOW_ID;
 
 	// Adding archive window
 	m_archive_scroll_window = new mw::ArchiveWindow(m_pages_notbook, ARCHIVE_WINDOW_ID, wxDefaultPosition, wxDefaultSize, wxHSCROLL | wxVSCROLL);
