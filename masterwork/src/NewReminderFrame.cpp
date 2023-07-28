@@ -42,7 +42,11 @@ void mw::NewReminderFrame::OnSaveButton(wxCommandEvent& event)
     m_reminder.status = ReminderStatus::ACTIVE;
 
     // You can continue setting other reminder properties here
+    mw::Logger logger;
+    logger.EnableDebug();
 
+    logger.Debug(m_reminder.title);
+    logger.DisableDebug();
     
     mw::Controller& controller = mw::Controller::Get();
 
