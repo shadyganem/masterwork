@@ -5,6 +5,7 @@
 #include <wx/textctrl.h>
 #include "model/Reminder.h"
 #include "wx/wx.h"
+#include "controller/Controller.h"
 
 namespace mw
 {
@@ -20,8 +21,8 @@ namespace mw
 		void OnSaveButton(wxCommandEvent& event);
 		mw::Reminder m_reminder;
 		// Member variables for the form components
-		wxTextCtrl* titleInput;
-		wxTextCtrl* textInput;
+		wxTextCtrl* title_input;
+		wxTextCtrl* text_input;
 		wxButton* save_button;
 
 	};

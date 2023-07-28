@@ -239,19 +239,20 @@ bool Model::AddReminder(mw::Reminder& reminder)
 
 		Records records;
 
-		std::string sql = "INSERT INTO reminder(user_uid,hash, title, text, status, priority, repeat, start_time, end_time, last_update, color) "
-			"VALUES (\"" + std::to_string(reminder.user_uid) + "\" , "
-			+ std::to_string(reminder.hash) + ", "
+		std::string sql = "INSERT INTO reminder(user_uid, hash, title, text, status, priority, repeat, start_time, end_time, last_update, color) "
+			"VALUES (\"" + std::to_string(reminder.user_uid) + "\", "
+			"\"" + std::to_string(reminder.hash) + "\", "
 			"\"" + reminder.title + "\","
 			"\"" + reminder.text + "\","
-			+ std::to_string(reminder.status) + ", "
-			+ std::to_string(reminder.priority) + ", "
-			+ std::to_string(reminder.repeat) + ", "
-			+ std::to_string(reminder.start_time) + ", "
-			+ std::to_string(reminder.end_time) + ", "
-			+ std::to_string(reminder.last_update) + ", "
-			+ std::to_string(reminder.color) + " "
+			"\"" + std::to_string(reminder.status) + "\", "
+			"\"" + std::to_string(reminder.priority) + "\", "
+			"\"" + std::to_string(reminder.repeat) + "\", "
+			"\"" + std::to_string(reminder.start_time) + "\", "
+			"\"" + std::to_string(reminder.end_time) + "\", "
+			"\"" + std::to_string(reminder.last_update) + "\", "
+			"\"" + std::to_string(reminder.color) + "\" "
 			"); ";
+
 		m_db_handler.ExeQuery(sql.c_str());
 
 		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)

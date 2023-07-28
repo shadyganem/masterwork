@@ -16,7 +16,6 @@ void mw::Reminder::Hash()
 
 std::string mw::Reminder::GetStatus()
 {
-
 	std::string status_string;
 	switch (this->status)
 	{
