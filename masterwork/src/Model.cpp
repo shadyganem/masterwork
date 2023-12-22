@@ -239,30 +239,35 @@ bool Model::AddReminder(mw::Reminder& reminder)
 
 		Records records;
 
-		std::string sql = "INSERT INTO reminder(user_uid, hash, title, text, status, priority, repeat, start_time, end_time, last_update, color) "
-			"VALUES (\"" + std::to_string(reminder.user_uid) + "\", "
-			"\"" + std::to_string(reminder.hash) + "\", "
+		std::string sql = "INSERT INTO reminders(user_uid, hash, title, text, status, priority, repeat,creation_time, start_time, end_time, last_update, color) "
+			"VALUES (" + std::to_string(reminder.user_uid) + ", "
+			+ std::to_string(reminder.hash) + ","
 			"\"" + reminder.title + "\","
 			"\"" + reminder.text + "\","
-			"\"" + std::to_string(reminder.status) + "\", "
-			"\"" + std::to_string(reminder.priority) + "\", "
-			"\"" + std::to_string(reminder.repeat) + "\", "
-			"\"" + std::to_string(reminder.start_time) + "\", "
-			"\"" + std::to_string(reminder.end_time) + "\", "
-			"\"" + std::to_string(reminder.last_update) + "\", "
-			"\"" + std::to_string(reminder.color) + "\" "
+			+ std::to_string(reminder.status) + ","
+			+ std::to_string(reminder.priority) + ","
+			+ std::to_string(reminder.repeat) + ","
+			+ std::to_string(reminder.creation_time) + ","
+			+ std::to_string(reminder.start_time) + ","
+			+ std::to_string(reminder.end_time) + ","
+		    + std::to_string(reminder.last_update) + ","
+			"\"" + reminder.color + "\""
 			"); ";
 
+		logger.EnableDebug();
+		logger.Debug(sql);
+		logger.DisableDebug();
 		m_db_handler.ExeQuery(sql.c_str());
 
 		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
+		{
 			return false;
+		}
 		return true;
-
 	}
 	catch (...)
 	{
-		logger.Error("Exception occured at bool mw::Model::AddNotification(mw::Notification& notification)");
+		logger.Error("Exception occured at bool Model::AddReminder(mw::Reminder& reminder)");
 		m_db_handler.DisConn(this->m_db_path.c_str());
 		return false;
 	}
@@ -528,6 +533,7 @@ bool Model::GetAllProjects(std::vector<mw::Project>& projects_vect, const mw::Us
 	mw::Logger logger;
 	try
 	{
+		logger.EnableDebug();
 		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 			return false;
 
@@ -557,9 +563,11 @@ bool Model::GetAllProjects(std::vector<mw::Project>& projects_vect, const mw::Us
 		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
 			return false;
 		return true;
+		logger.DisableDebug();
 	}
-	catch(...)
+	catch(const std::exception& e)
 	{
+		logger.Error("The exception is: " + std::string(e.what()));
 		logger.Error("Exception occured at mwModel::GetAllProjects(std::vector<mwProject>& prjects_vect, const mwUser& user) ");
 		m_db_handler.DisConn(this->m_db_path.c_str());
 		return false;
@@ -663,7 +671,7 @@ bool Model::GetAllReminders(std::vector<mw::Reminder>& reminders, const mw::User
 			reminder.start_time = std::stoi(row[9]);
 			reminder.end_time = std::stoi(row[10]);
 			reminder.last_update = std::stoi(row[11]);
-			reminder.color = std::stoi(row[12]);
+			reminder.color = row[12];
 
 			reminders.push_back(reminder);
 		}
@@ -673,7 +681,7 @@ bool Model::GetAllReminders(std::vector<mw::Reminder>& reminders, const mw::User
 	}
 	catch (...)
 	{
-		logger.Error("Exception occured at mwModel::GetAllProjects(std::vector<mwProject>& prjects_vect, const mwUser& user) ");
+		logger.Error("Exception occured at Model::GetAllReminders(std::vector<mw::Reminder>& reminders, const mw::User& current_user) ");
 		m_db_handler.DisConn(this->m_db_path.c_str());
 		return false;
 	}
@@ -1306,7 +1314,7 @@ bool Model::InitRemindersTable()
 		"\"start_time\"	     INTEGER NOT NULL,              "
 		"\"end_time\"	     INTEGER NOT NULL DEFAULT 0,    "
 		"\"last_update\"	 INTEGER NOT NULL DEFAULT 0,    "
-		"\"color\"	         INTEGER DEFAULT -1,            "
+		"\"color\"	         TEXT DEFAULT '#FFFFFF',        "
 		"PRIMARY KEY(\"uid\" AUTOINCREMENT)                 "
 		")";
 	m_mutex.lock();

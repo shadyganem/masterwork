@@ -17,7 +17,6 @@ void mw::SidePanel::UpdateUsersList()
 	std::vector<mw::User> users;
 	m_users_choice->Clear();
 	controller.GetAllUsers(users);
-	wxArrayString m_usernames;
 	m_idx_to_user.clear();
 	for (int i = 0; i < users.size(); i++)
 	{

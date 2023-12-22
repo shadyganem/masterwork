@@ -1,4 +1,7 @@
 #include "model/ModelItem.h"
+#include <iostream>
+#include <iomanip> // for setw
+#include <sstream> // for stringstream
 
 mw:: ModelItem::ModelItem()
 {
@@ -37,6 +40,15 @@ std::string mw::ModelItem::ConvertTimeToString(time_t time)
 	std::strftime(buffer, sizeof(buffer), "%d-%m-%Y %H:%M:%S", &timeinfo);
 	std::string string_time = buffer;
 	return string_time;
+}
+
+std::string mw::ModelItem::RGBToHexString(int red, int green, int blue)
+{
+	std::stringstream ss;
+	ss << std::uppercase << std::hex << std::setw(2) << std::setfill('0') << red
+		<< std::setw(2) << green << std::setw(2) << blue;
+	return "#" + ss.str();
+	
 }
 
 ItemType mw::ModelItem::GetType()

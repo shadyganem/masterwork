@@ -2,6 +2,7 @@
 #include "ModelItem.h"
 #include <string>
 #include <ctime>
+#include <vector>
 
 namespace mw
 {
@@ -11,7 +12,15 @@ namespace mw
 		DISABLED
 	};
 
-	class Reminder :	public ModelItem
+	enum ReminderRepeatOptions
+	{
+		DONT_REPEAT,
+		EVERYDAY,
+		EVERY_MONTH,
+		EVERY_YEAR
+	};
+
+	class Reminder : public ModelItem
 	{
 	public: 
 		Reminder();
@@ -20,6 +29,9 @@ namespace mw
 		std::string GetStatus();
 		std::string GetEndTime();
 
+		std::string RepateOptionToString(mw::ReminderRepeatOptions option);
+		static std::vector<std::string> GetRepeatOptions();
+		
 	public:
 		int user_uid;
 		std::string title;
@@ -32,7 +44,7 @@ namespace mw
 		time_t start_time;
 		time_t end_time;
 		int ttl;
-		int color;
+		std::string color;
 	};
 }
 

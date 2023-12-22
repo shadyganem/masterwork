@@ -6,6 +6,8 @@
 #include "model/Reminder.h"
 #include "wx/wx.h"
 #include "controller/Controller.h"
+#include <wx/clrpicker.h>
+
 
 namespace mw
 {
@@ -24,6 +26,11 @@ namespace mw
 		wxTextCtrl* title_input;
 		wxTextCtrl* text_input;
 		wxButton* save_button;
+		bool m_new_reminder;
+		wxChoice* m_repeat_options;
+
+		wxColourPickerCtrl* m_color_picker;
+
 
 	};
 }

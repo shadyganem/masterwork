@@ -26,6 +26,7 @@ namespace mw
 		virtual void StampCreationTime();
 		virtual void StampLastUpdateTime();
 		virtual std::string ConvertTimeToString(time_t time);
+		virtual std::string RGBToHexString(int red, int green, int blue);
 		ItemType GetType();
 
 		bool operator==(const ModelItem& other) const

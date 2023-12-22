@@ -38,7 +38,7 @@ mw::WorkPanel::WorkPanel(wxWindow* parent, wxWindowID winid, const wxPoint& pos,
 	// Adding archive window
 	m_archive_scroll_window = new mw::ArchiveWindow(m_pages_notbook, ARCHIVE_WINDOW_ID, wxDefaultPosition, wxDefaultSize, wxHSCROLL | wxVSCROLL);
 	m_archive_scroll_window->SetScrollRate(5, 5);
-	m_pages_notbook->AddPage(m_archive_scroll_window, wxT("Archived"), false);
+	m_pages_notbook->AddPage(m_archive_scroll_window, wxT("Archived Tasks"), false);
 	m_pageidx_to_pageid_map[3] = ARCHIVE_WINDOW_ID;
 
 	m_ver_sizer->Add(m_pages_notbook, 1, wxEXPAND | wxALL, 5);

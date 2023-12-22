@@ -3,10 +3,21 @@
 mw::NewReminderFrame::NewReminderFrame(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style) 
 	: wxFrame(parent, id, title, pos, size, style)
 {
+    m_new_reminder = true;
     // Create input fields and button
     title_input = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
     text_input = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
     save_button = new wxButton(this, wxID_ANY, wxT("Save"));
+
+    std::vector<std::string> options = mw::Reminder::GetRepeatOptions();
+    wxArrayString wxStringArray;
+    wxStringArray.assign(options.begin(), options.end());
+    m_repeat_options = new wxChoice(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxStringArray, 0);
+    m_repeat_options->SetSelection(0);
+
+
+    m_color_picker = new wxColourPickerCtrl(this, wxID_ANY, wxColour(0, 0, 0), wxDefaultPosition, wxDefaultSize, wxCLRP_SHOW_LABEL);
+
 
     // Create a vertical sizer to arrange the components
     wxBoxSizer* v_sizer = new wxBoxSizer(wxVERTICAL);
@@ -14,6 +25,9 @@ mw::NewReminderFrame::NewReminderFrame(wxWindow* parent, wxWindowID id, const wx
     v_sizer->Add(title_input, 0, wxEXPAND | wxALL, 5);
     v_sizer->Add(new wxStaticText(this, wxID_ANY, wxT("Text:")), 0, wxALL, 5);
     v_sizer->Add(text_input, 1, wxEXPAND | wxALL, 5);
+    v_sizer->Add(m_repeat_options, 0,  wxALL, 5);
+    v_sizer->Add(m_color_picker, 0,  wxALL, 5);
+
     v_sizer->Add(save_button, 0, wxALIGN_RIGHT | wxALL, 5);
 
     // Set the sizer for the frame
@@ -40,16 +54,13 @@ void mw::NewReminderFrame::OnSaveButton(wxCommandEvent& event)
     m_reminder.title = std::string(title.mb_str());
     m_reminder.text = std::string(text.mb_str());
     m_reminder.status = ReminderStatus::ACTIVE;
-
+    m_reminder.repeat = m_repeat_options->GetSelection();
+    wxColor color = m_color_picker->GetColour();
+    m_reminder.color = m_reminder.RGBToHexString(color.GetRed(), color.GetGreen(), color.GetBlue());
     // You can continue setting other reminder properties here
-    mw::Logger logger;
-    logger.EnableDebug();
-
-    logger.Debug(m_reminder.title);
-    logger.DisableDebug();
-    
+    if (m_new_reminder == true)
+        m_reminder.StampCreationTime();
     mw::Controller& controller = mw::Controller::Get();
-
 
     controller.AddReminder(m_reminder);
 
