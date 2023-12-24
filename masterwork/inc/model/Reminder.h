@@ -31,6 +31,7 @@ namespace mw
 
 		std::string RepeatOptionToString(mw::ReminderRepeatOptions option);
 		static std::vector<std::string> GetRepeatOptions();
+		static std::vector<std::string> GetAlertOptions();
 		
 	public:
 		int user_uid;
@@ -45,6 +46,7 @@ namespace mw
 		time_t end_time;
 		int ttl;
 		std::string color;
+		std::vector<time_t> alert_options;
 	};
 }
 

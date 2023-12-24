@@ -23,6 +23,7 @@ bool Model::InitModel()
 	InitNotificationsTable();
 	InitRemindersTable();
 	InitPasswordsTable();
+	InitAlertOptionsTable();
 	is_initialized = true;
 	return true;
 }
@@ -254,9 +255,6 @@ bool Model::AddReminder(mw::Reminder& reminder)
 			"\"" + reminder.color + "\""
 			"); ";
 
-		logger.EnableDebug();
-		logger.Debug(sql);
-		logger.DisableDebug();
 		m_db_handler.ExeQuery(sql.c_str());
 
 		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
@@ -1342,6 +1340,26 @@ bool Model::InitPasswordsTable()
 		"\"color\"	         INTEGER DEFAULT -1,            "
 		"PRIMARY KEY(\"uid\" AUTOINCREMENT)                 "
 		")";
+	m_mutex.lock();
+	m_db_handler.ExeQuery(sql);
+	m_mutex.unlock();
+	if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
+		return false;
+	return true;
+}
+
+bool Model::InitAlertOptionsTable()
+{
+	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
+		return false;
+
+	const char* sql = "CREATE TABLE IF NOT EXISTS \"reminder_alert_options\" (      "
+		"\"uid\"	            INTEGER NOT NULL UNIQUE,    "
+		"\"reminder_uid\"	    INTEGER NOT NULL,           "
+		"\"option_value\"       BIGINT NOT NULL,            "
+		"PRIMARY KEY(\"uid\" AUTOINCREMENT)                 "
+		");";
+
 	m_mutex.lock();
 	m_db_handler.ExeQuery(sql);
 	m_mutex.unlock();

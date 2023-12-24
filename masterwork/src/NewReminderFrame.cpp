@@ -18,10 +18,14 @@ mw::NewReminderFrame::NewReminderFrame(wxWindow* parent, wxWindowID id, const wx
 
     m_color_picker = new wxColourPickerCtrl(this, wxID_ANY, wxColour(0, 0, 0), wxDefaultPosition, wxDefaultSize, wxCLRP_SHOW_LABEL);
 
-    wxString alertTypes[] = { "Type 1", "Type 2", "Type 3", "Type 4" };
+    
+    options.clear();
+    options = mw::Reminder::GetRepeatOptions();
+    wxStringArray.Clear();
+    wxStringArray.assign(options.begin(), options.end());
 
     // Create a wxCheckListBox for multi-selection
-    m_checklist_box = new wxCheckListBox(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, WXSIZEOF(alertTypes), alertTypes);
+    m_checklist_box = new wxCheckListBox(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxStringArray);
 
 
 
@@ -63,6 +67,9 @@ void mw::NewReminderFrame::OnSaveButton(wxCommandEvent& event)
     m_reminder.text = std::string(text.mb_str());
     m_reminder.status = ReminderStatus::ACTIVE;
     m_reminder.repeat = m_repeat_options->GetSelection();
+    wxArrayInt checklist_selections;
+    m_checklist_box->GetSelections(checklist_selections);
+
     wxColor color = m_color_picker->GetColour();
     m_reminder.color = m_reminder.RGBToHexString(color.GetRed(), color.GetGreen(), color.GetBlue());
     // You can continue setting other reminder properties here

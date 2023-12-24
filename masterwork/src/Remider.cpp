@@ -65,3 +65,13 @@ std::vector<std::string> mw::Reminder::GetRepeatOptions()
 	return options;
 }
 
+std::vector<std::string> mw::Reminder::GetAlertOptions()
+{
+	std::vector<std::string> options;
+	options.push_back("At time of event");
+	options.push_back("10 minutes before");
+	options.push_back("1 hour before");
+	options.push_back("1 day before");
+	return options;
+}
+
