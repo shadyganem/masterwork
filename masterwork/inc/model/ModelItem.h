@@ -23,6 +23,7 @@ namespace mw
 		std::time_t creation_time;
 		std::time_t last_update;
 	public:
+		virtual std::string GetLastUpdateTime();
 		virtual void StampCreationTime();
 		virtual void StampLastUpdateTime();
 		virtual std::string ConvertTimeToString(time_t time);

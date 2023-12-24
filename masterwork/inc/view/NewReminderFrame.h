@@ -30,6 +30,7 @@ namespace mw
 		wxChoice* m_repeat_options;
 
 		wxColourPickerCtrl* m_color_picker;
+		wxCheckListBox* m_checklist_box;
 
 
 	};

@@ -29,7 +29,7 @@ namespace mw
 		std::string GetStatus();
 		std::string GetEndTime();
 
-		std::string RepateOptionToString(mw::ReminderRepeatOptions option);
+		std::string RepeatOptionToString(mw::ReminderRepeatOptions option);
 		static std::vector<std::string> GetRepeatOptions();
 		
 	public:

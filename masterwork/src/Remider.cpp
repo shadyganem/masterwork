@@ -3,6 +3,7 @@
 mw::Reminder::Reminder()
 {
 	this->StampCreationTime();
+	this->title = "New Reminder";
 }
 
 mw::Reminder::~Reminder()
@@ -35,26 +36,10 @@ std::string mw::Reminder::GetStatus()
 
 std::string mw::Reminder::GetEndTime()
 {
-
-	// Convert the epoch timestamp to a struct tm
-	std::tm timeinfo;
-
-
-	#ifdef _WIN32
-		localtime_s(&timeinfo, &this->end_time);
-	#else
-		localtime_r(&now, &localTime);
-
-	#endif
-
-	// Format the date and time as a string
-	char buffer[80];
-	std::strftime(buffer, sizeof(buffer), "%d-%m-%Y %H:%M:%S", &timeinfo);
-	std::string end_time = buffer;
-	return end_time;
+	return this->ConvertTimeToString(this->end_time);
 }
 
-std::string mw::Reminder::RepateOptionToString(mw::ReminderRepeatOptions option)
+std::string mw::Reminder::RepeatOptionToString(mw::ReminderRepeatOptions option)
 {
 	switch (option) {
 	case mw::ReminderRepeatOptions::DONT_REPEAT:

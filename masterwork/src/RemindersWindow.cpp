@@ -78,7 +78,7 @@ void mw::RemindersWindow::AddRemider(mw::Reminder& reminder)
 	wxVector<wxVariant> data;
 	data.push_back(wxVariant(reminder.title));
 	data.push_back(wxVariant(reminder.GetStatus()));
-	data.push_back(wxVariant(reminder.GetEndTime()));
+	data.push_back(wxVariant(reminder.GetLastUpdateTime()));
 	m_reminders_data_view_list->AppendItem(data);
 }
 

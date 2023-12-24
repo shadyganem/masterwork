@@ -6,7 +6,7 @@ mw::NewReminderFrame::NewReminderFrame(wxWindow* parent, wxWindowID id, const wx
     m_new_reminder = true;
     // Create input fields and button
     title_input = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
-    text_input = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
+    text_input = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_TAB);
     save_button = new wxButton(this, wxID_ANY, wxT("Save"));
 
     std::vector<std::string> options = mw::Reminder::GetRepeatOptions();
@@ -18,15 +18,22 @@ mw::NewReminderFrame::NewReminderFrame(wxWindow* parent, wxWindowID id, const wx
 
     m_color_picker = new wxColourPickerCtrl(this, wxID_ANY, wxColour(0, 0, 0), wxDefaultPosition, wxDefaultSize, wxCLRP_SHOW_LABEL);
 
+    wxString alertTypes[] = { "Type 1", "Type 2", "Type 3", "Type 4" };
+
+    // Create a wxCheckListBox for multi-selection
+    m_checklist_box = new wxCheckListBox(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, WXSIZEOF(alertTypes), alertTypes);
+
+
 
     // Create a vertical sizer to arrange the components
     wxBoxSizer* v_sizer = new wxBoxSizer(wxVERTICAL);
     v_sizer->Add(new wxStaticText(this, wxID_ANY, wxT("Title:")), 0, wxALL, 5);
     v_sizer->Add(title_input, 0, wxEXPAND | wxALL, 5);
-    v_sizer->Add(new wxStaticText(this, wxID_ANY, wxT("Text:")), 0, wxALL, 5);
-    v_sizer->Add(text_input, 1, wxEXPAND | wxALL, 5);
+    v_sizer->Add(new wxStaticText(this, wxID_ANY, wxT("Note:")), 0, wxALL, 5);
+    v_sizer->Add(text_input, 0, wxEXPAND | wxALL, 5);
     v_sizer->Add(m_repeat_options, 0,  wxALL, 5);
     v_sizer->Add(m_color_picker, 0,  wxALL, 5);
+    v_sizer->Add(m_checklist_box, 0,  wxALL, 5);
 
     v_sizer->Add(save_button, 0, wxALIGN_RIGHT | wxALL, 5);
 
@@ -51,7 +58,8 @@ void mw::NewReminderFrame::OnSaveButton(wxCommandEvent& event)
 {
     wxString title = title_input->GetValue();
     wxString text = text_input->GetValue();
-    m_reminder.title = std::string(title.mb_str());
+    if (!title.IsEmpty())
+        m_reminder.title = std::string(title.mb_str());
     m_reminder.text = std::string(text.mb_str());
     m_reminder.status = ReminderStatus::ACTIVE;
     m_reminder.repeat = m_repeat_options->GetSelection();
