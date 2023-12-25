@@ -3,6 +3,7 @@
 #include <string>
 #include <ctime>
 #include <vector>
+#include <chrono>
 
 namespace mw
 {
@@ -44,9 +45,11 @@ namespace mw
 		int priority;
 		time_t start_time;
 		time_t end_time;
+		time_t reminder_time;
 		int ttl;
 		std::string color;
 		std::vector<time_t> alert_options;
+
 	};
 }
 

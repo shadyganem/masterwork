@@ -5,7 +5,7 @@ BEGIN_EVENT_TABLE(mw::SidePanel, wxPanel)
 	EVT_CUSTOM(mwUpdateUI, SIDE_PANEL_ID, mw::SidePanel::OnUpdateUI)
 END_EVENT_TABLE()
 
-static enum ProjectListPopupMenuItems
+enum ProjectListPopupMenuItems
 {
 	Delete,
 	Rename

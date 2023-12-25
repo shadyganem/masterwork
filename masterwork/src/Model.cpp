@@ -240,7 +240,7 @@ bool Model::AddReminder(mw::Reminder& reminder)
 
 		Records records;
 
-		std::string sql = "INSERT INTO reminders(user_uid, hash, title, text, status, priority, repeat,creation_time, start_time, end_time, last_update, color) "
+		std::string sql = "INSERT INTO reminders(user_uid, hash, title, text, status, priority, repeat,creation_time, reminder_time, end_time, last_update, color) "
 			"VALUES (" + std::to_string(reminder.user_uid) + ", "
 			+ std::to_string(reminder.hash) + ","
 			"\"" + reminder.title + "\","
@@ -249,7 +249,7 @@ bool Model::AddReminder(mw::Reminder& reminder)
 			+ std::to_string(reminder.priority) + ","
 			+ std::to_string(reminder.repeat) + ","
 			+ std::to_string(reminder.creation_time) + ","
-			+ std::to_string(reminder.start_time) + ","
+			+ std::to_string(reminder.reminder_time) + ","
 			+ std::to_string(reminder.end_time) + ","
 		    + std::to_string(reminder.last_update) + ","
 			"\"" + reminder.color + "\""
@@ -666,7 +666,7 @@ bool Model::GetAllReminders(std::vector<mw::Reminder>& reminders, const mw::User
 			reminder.priority = std::stoi(row[6]);
 			reminder.repeat = std::stoi(row[7]);
 			reminder.creation_time = std::stoi(row[8]);
-			reminder.start_time = std::stoi(row[9]);
+			reminder.reminder_time = std::stoi(row[9]);
 			reminder.end_time = std::stoi(row[10]);
 			reminder.last_update = std::stoi(row[11]);
 			reminder.color = row[12];
@@ -1309,7 +1309,7 @@ bool Model::InitRemindersTable()
 		"\"priority\"	     INTEGER NOT NULL DEFAULT 2,    "
 		"\"repeat\"	         INTEGER NOT NULL DEFAULT 1,    "
 		"\"creation_time\"	 INTEGER NOT NULL,              "
-		"\"start_time\"	     INTEGER NOT NULL,              "
+		"\"reminder_time\"	 INTEGER NOT NULL,              "
 		"\"end_time\"	     INTEGER NOT NULL DEFAULT 0,    "
 		"\"last_update\"	 INTEGER NOT NULL DEFAULT 0,    "
 		"\"color\"	         TEXT DEFAULT '#FFFFFF',        "
