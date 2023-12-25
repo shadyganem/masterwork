@@ -21,6 +21,8 @@
 #include "controller/Controller.h"
 #include "model/Task.h"
 #include "model/DateTime.h"
+#include <wx/notebook.h>
+
 
 namespace mw
 {
@@ -49,6 +51,7 @@ namespace mw
 		wxTimePickerCtrl* m_deadline_timepicker;
 		wxDatePickerCtrl* m_deadline_datepicker;
 		wxCheckBox* m_enable_notifications;
+		wxNotebook* m_notebook;
 
 
 

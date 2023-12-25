@@ -110,7 +110,28 @@ mw::NewTaskFrame::NewTaskFrame(wxWindow* parent, wxWindowID id, const wxString& 
 	m_main_panel->SetSizer(m_main_panel_sizer);
 	m_main_panel->Layout();
 	m_main_panel_sizer->Fit(m_main_panel);
-	m_top_sizer->Add(m_main_panel, 1, wxEXPAND | wxALL, 5);
+	//m_top_sizer->Add(m_main_panel, 1, wxEXPAND | wxALL, 5);
+
+	m_notebook = new wxNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0);
+
+	// Add the task details tab
+	m_notebook->AddPage(m_main_panel, wxT("Details"), false);
+
+	// Add the user metadata tab
+	wxPanel* userMetadataPanel = new wxPanel(m_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+	wxBoxSizer* userMetadataSizer = new wxBoxSizer(wxVERTICAL);
+
+	// Add your user metadata controls here (e.g., wxStaticText, wxTextCtrl, etc.)
+
+	userMetadataPanel->SetSizer(userMetadataSizer);
+	userMetadataPanel->Layout();
+	userMetadataSizer->Fit(userMetadataPanel);
+
+	m_notebook->AddPage(userMetadataPanel, wxT("nMetadata"), false);
+
+	m_top_sizer->Add(m_notebook, 1, wxEXPAND | wxALL, 5);
+
+
 
 	this->SetSizer(m_top_sizer);
 	this->Layout();
