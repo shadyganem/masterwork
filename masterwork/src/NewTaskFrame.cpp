@@ -8,9 +8,16 @@ mw::NewTaskFrame::NewTaskFrame(wxWindow* parent, wxWindowID id, const wxString& 
 	wxBoxSizer* m_top_sizer;
 	m_top_sizer = new wxBoxSizer(wxVERTICAL);
 
-	m_main_panel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
-	wxBoxSizer* m_main_panel_sizer;
-	m_main_panel_sizer = new wxBoxSizer(wxVERTICAL);
+	m_notebook = new wxNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0);
+
+	m_details_panel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+	m_notebook->AddPage(m_details_panel, wxT("Details"), false);
+
+	m_metadata_panel = new wxPanel(m_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+
+	m_notebook->AddPage(m_metadata_panel, wxT("Metadata"), false);
+
+	wxBoxSizer* m_main_panel_sizer = new wxBoxSizer(wxVERTICAL);
 
 	wxBoxSizer* m_form_sizer;
 	m_form_sizer = new wxBoxSizer(wxVERTICAL);
@@ -18,20 +25,20 @@ mw::NewTaskFrame::NewTaskFrame(wxWindow* parent, wxWindowID id, const wxString& 
 	wxBoxSizer* bSizer40;
 	bSizer40 = new wxBoxSizer(wxHORIZONTAL);
 
-	m_task_name_static = new wxStaticText(m_main_panel, wxID_ANY, wxT("Task Name"), wxDefaultPosition, wxDefaultSize, 0);
+	m_task_name_static = new wxStaticText(m_details_panel, wxID_ANY, wxT("Task Name"), wxDefaultPosition, wxDefaultSize, 0);
 	m_task_name_static->Wrap(-1);
 	bSizer40->Add(m_task_name_static, 0, wxALL, 5);
 
-	m_task_name = new wxTextCtrl(m_main_panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_CAPITALIZE);
+	m_task_name = new wxTextCtrl(m_details_panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_CAPITALIZE);
 	bSizer40->Add(m_task_name, 1, wxALL, 5);
 
 	m_form_sizer->Add(bSizer40, 0, wxEXPAND, 5);
 
-	m_task_description_static = new wxStaticText(m_main_panel, wxID_ANY, wxT("Task Description"), wxDefaultPosition, wxDefaultSize, 0);
+	m_task_description_static = new wxStaticText(m_details_panel, wxID_ANY, wxT("Task Description"), wxDefaultPosition, wxDefaultSize, 0);
 	m_task_description_static->Wrap(-1);
 	m_form_sizer->Add(m_task_description_static, 0, wxALL, 5);
 
-	m_task_description = new wxTextCtrl(m_main_panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_CAPITALIZE | wxTE_MULTILINE | wxTE_RICH);
+	m_task_description = new wxTextCtrl(m_details_panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_CAPITALIZE | wxTE_MULTILINE | wxTE_RICH);
 	m_task_description->SetMaxLength(500);
 	m_form_sizer->Add(m_task_description, 1, wxALL | wxEXPAND, 5);
 
@@ -43,13 +50,13 @@ mw::NewTaskFrame::NewTaskFrame(wxWindow* parent, wxWindowID id, const wxString& 
 	wxBoxSizer* m_priority_sizer;
 	m_priority_sizer = new wxBoxSizer(wxHORIZONTAL);
 
-	m_priority_static = new wxStaticText(m_main_panel, wxID_ANY, wxT("Priority"), wxDefaultPosition, wxDefaultSize, 0);
+	m_priority_static = new wxStaticText(m_details_panel, wxID_ANY, wxT("Priority"), wxDefaultPosition, wxDefaultSize, 0);
 	m_priority_static->Wrap(-1);
 	m_priority_sizer->Add(m_priority_static, 1, wxALL | wxEXPAND, 5);
 
 	wxString m_priority_choiceChoices[] = { wxT("High"), wxT("Medium"), wxT("Low"), wxT("ShowStopper") };
 	int m_priority_choiceNChoices = sizeof(m_priority_choiceChoices) / sizeof(wxString);
-	m_priority_choice = new wxChoice(m_main_panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_priority_choiceNChoices, m_priority_choiceChoices, 0);
+	m_priority_choice = new wxChoice(m_details_panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_priority_choiceNChoices, m_priority_choiceChoices, 0);
 	m_priority_choice->SetSelection(1);
 	m_priority_sizer->Add(m_priority_choice, 0, wxALL, 5);
 
@@ -58,13 +65,13 @@ mw::NewTaskFrame::NewTaskFrame(wxWindow* parent, wxWindowID id, const wxString& 
 	wxBoxSizer* bSizer48;
 	bSizer48 = new wxBoxSizer(wxHORIZONTAL);
 
-	m_status_static = new wxStaticText(m_main_panel, wxID_ANY, wxT("Status"), wxDefaultPosition, wxDefaultSize, 0);
+	m_status_static = new wxStaticText(m_details_panel, wxID_ANY, wxT("Status"), wxDefaultPosition, wxDefaultSize, 0);
 	m_status_static->Wrap(-1);
 	bSizer48->Add(m_status_static, 0, wxALL, 5);
 
 	wxString m_status_choiceChoices[] = { wxT("Not started"), wxT("WIP"), wxT("Canceled"), wxT("Done"), wxT("Blocked") };
 	int m_status_choiceNChoices = sizeof(m_status_choiceChoices) / sizeof(wxString);
-	m_status_choice = new wxChoice(m_main_panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_status_choiceNChoices, m_status_choiceChoices, 0);
+	m_status_choice = new wxChoice(m_details_panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_status_choiceNChoices, m_status_choiceChoices, 0);
 	m_status_choice->SetSelection(0);
 	bSizer48->Add(m_status_choice, 0, wxALL, 5);
 
@@ -73,22 +80,22 @@ mw::NewTaskFrame::NewTaskFrame(wxWindow* parent, wxWindowID id, const wxString& 
 	wxBoxSizer* bSizer50;
 	bSizer50 = new wxBoxSizer(wxHORIZONTAL);
 
-	m_deadline_static = new wxStaticText(m_main_panel, wxID_ANY, wxT("Due Date"), wxDefaultPosition, wxDefaultSize, 0);
+	m_deadline_static = new wxStaticText(m_details_panel, wxID_ANY, wxT("Due Date"), wxDefaultPosition, wxDefaultSize, 0);
 	m_deadline_static->Wrap(-1);
 	bSizer50->Add(m_deadline_static, 0, wxALL, 5);
 
-	m_deadline_timepicker = new wxTimePickerCtrl(m_main_panel, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxTP_DEFAULT);
+	m_deadline_timepicker = new wxTimePickerCtrl(m_details_panel, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxTP_DEFAULT);
 	wxDateTime now(std::time(0));
 	m_deadline_timepicker->SetTime(now.GetHour() + 1, 0, 0);
 	bSizer50->Add(m_deadline_timepicker, 0, wxALL, 5);
 
 
-	m_deadline_datepicker = new wxDatePickerCtrl(m_main_panel, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DROPDOWN);
+	m_deadline_datepicker = new wxDatePickerCtrl(m_details_panel, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DROPDOWN);
 	bSizer50->Add(m_deadline_datepicker, 0, wxALL, 5);
 
 	fgSizer1->Add(bSizer50, 0, wxEXPAND, 5);
 
-	m_enable_notifications = new wxCheckBox(m_main_panel, wxID_ANY, wxT("Enable Notifications"), wxDefaultPosition, wxDefaultSize, 0);
+	m_enable_notifications = new wxCheckBox(m_details_panel, wxID_ANY, wxT("Enable Notifications"), wxDefaultPosition, wxDefaultSize, 0);
 	m_enable_notifications->Set3StateValue(wxCheckBoxState::wxCHK_CHECKED);
 	fgSizer1->Add(m_enable_notifications, 0, wxALL, 5);
 
@@ -99,39 +106,33 @@ mw::NewTaskFrame::NewTaskFrame(wxWindow* parent, wxWindowID id, const wxString& 
 	wxBoxSizer* bSizer47;
 	bSizer47 = new wxBoxSizer(wxHORIZONTAL);
 
-	m_done_button = new wxButton(m_main_panel, wxID_ANY, wxT("Done"), wxDefaultPosition, wxDefaultSize, 0);
+	m_done_button = new wxButton(m_details_panel, wxID_ANY, wxT("Done"), wxDefaultPosition, wxDefaultSize, 0);
 	bSizer47->Add(m_done_button, 0, wxALL, 5);
 
-	m_cancel_button = new wxButton(m_main_panel, wxID_ANY, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0);
+	m_cancel_button = new wxButton(m_details_panel, wxID_ANY, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0);
 	bSizer47->Add(m_cancel_button, 0, wxALL, 5);
 
 	m_main_panel_sizer->Add(bSizer47, 0, wxALIGN_RIGHT, 5);
 
-	m_main_panel->SetSizer(m_main_panel_sizer);
-	m_main_panel->Layout();
-	m_main_panel_sizer->Fit(m_main_panel);
+	m_details_panel->SetSizer(m_main_panel_sizer);
+	m_details_panel->Layout();
+	m_main_panel_sizer->Fit(m_details_panel);
 	//m_top_sizer->Add(m_main_panel, 1, wxEXPAND | wxALL, 5);
 
-	m_notebook = new wxNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0);
 
 	// Add the task details tab
-	m_notebook->AddPage(m_main_panel, wxT("Details"), false);
 
 	// Add the user metadata tab
-	wxPanel* userMetadataPanel = new wxPanel(m_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
-	wxBoxSizer* userMetadataSizer = new wxBoxSizer(wxVERTICAL);
+	wxBoxSizer* m_metadata_panel_sizer = new wxBoxSizer(wxVERTICAL);
 
 	// Add your user metadata controls here (e.g., wxStaticText, wxTextCtrl, etc.)
 
-	userMetadataPanel->SetSizer(userMetadataSizer);
-	userMetadataPanel->Layout();
-	userMetadataSizer->Fit(userMetadataPanel);
+	m_metadata_panel->SetSizer(m_metadata_panel_sizer);
+	m_metadata_panel->Layout();
+	m_metadata_panel_sizer->Fit(m_metadata_panel);
 
-	m_notebook->AddPage(userMetadataPanel, wxT("nMetadata"), false);
 
 	m_top_sizer->Add(m_notebook, 1, wxEXPAND | wxALL, 5);
-
-
 
 	this->SetSizer(m_top_sizer);
 	this->Layout();

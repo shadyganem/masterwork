@@ -35,7 +35,8 @@ namespace mw
 	public:
 		mw::Task GetTask();
 	protected:
-		wxPanel* m_main_panel;
+		wxPanel* m_details_panel;
+		wxPanel* m_metadata_panel;
 		wxStaticText* m_task_name_static;
 		wxTextCtrl* m_task_name;
 		wxStaticText* m_task_description_static;
