@@ -43,17 +43,13 @@ mw::TasksWindow::TasksWindow(wxWindow* parent, wxWindowID winid, const wxPoint& 
 	wxDataViewColumn* m_priority_column = new wxDataViewColumn("Priority", new wxDataViewTextRenderer(), 3, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT);
 	m_priority_column->SetSortable(true);
 	m_tasks_data_view_list->AppendColumn(m_priority_column);
-	m_tasks_data_view_list->AppendColumn(new wxDataViewColumn("Last Modified", new wxDataViewTextRenderer(), 4, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT));
 	m_tasks_data_view_list->SetBackgroundColour(background);
 	m_tasks_data_view_list->SetForegroundColour(foreground);
 
 	m_tasks_sizer->Add(m_tasks_data_view_list, 5, wxEXPAND, 0);
 
-
-
 	//adding the task panel
 	m_task_panel = new mw::TaskPanel(this);
-
 
 	m_tasks_sizer->Add(m_task_panel, 2, wxEXPAND, 0);
 
@@ -215,7 +211,6 @@ void mw::TasksWindow::AddTask(mw::Task& task)
 	data.push_back(wxVariant(task.GetStatus()));
 	data.push_back(wxVariant(task.GetDeadline()));
 	data.push_back(wxVariant(task.GetPriority()));
-	data.push_back(wxVariant(task.GetLastUpdate()));
 	m_tasks_data_view_list->AppendItem(data);
 }
 
