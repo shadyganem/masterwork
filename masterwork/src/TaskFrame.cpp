@@ -1,7 +1,7 @@
-#include "view/NewTaskFrame.h"
+#include "view/TaskFrame.h"
 
 
-mw::NewTaskFrame::NewTaskFrame(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style) : wxFrame(parent, id, title, pos, size, style)
+mw::TaskFrame::TaskFrame(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style) : wxFrame(parent, id, title, pos, size, style)
 {
 	this->SetSizeHints(wxDefaultSize, wxDefaultSize);
 
@@ -140,18 +140,18 @@ mw::NewTaskFrame::NewTaskFrame(wxWindow* parent, wxWindowID id, const wxString& 
 	this->Layout();
 
 	// Connect Events
-	m_done_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(NewTaskFrame::OnDoneButton), NULL, this);
-	m_cancel_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(NewTaskFrame::OnCancelButton), NULL, this);
+	m_done_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(TaskFrame::OnDoneButton), NULL, this);
+	m_cancel_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(TaskFrame::OnCancelButton), NULL, this);
 }
 
-mw::NewTaskFrame::~NewTaskFrame()
+mw::TaskFrame::~TaskFrame()
 {
 	// Disconnect Events
-	m_done_button->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(NewTaskFrame::OnDoneButton), NULL, this);
-	m_cancel_button->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(NewTaskFrame::OnCancelButton), NULL, this);
+	m_done_button->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(TaskFrame::OnDoneButton), NULL, this);
+	m_cancel_button->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(TaskFrame::OnCancelButton), NULL, this);
 }
 
-void mw::NewTaskFrame::SetTask(const mw::Task& task)
+void mw::TaskFrame::SetTask(const mw::Task& task)
 {
 	m_task = task;
 	this->SetTitle(task.name);
@@ -169,13 +169,13 @@ void mw::NewTaskFrame::SetTask(const mw::Task& task)
 	m_enable_notifications->Set3StateValue(checkbox_state);
 }
 
-void mw::NewTaskFrame::OnCancelButton(wxCommandEvent& event)
+void mw::TaskFrame::OnCancelButton(wxCommandEvent& event)
 {
 	this->Close();
 	event.Skip();
 }
 
-void mw::NewTaskFrame::SetTaskPriority()
+void mw::TaskFrame::SetTaskPriority()
 {
 	mw::Logger logger;
 	switch (this->m_priority_choice->GetSelection())
@@ -199,7 +199,7 @@ void mw::NewTaskFrame::SetTaskPriority()
 	}
 }
 
-void mw::NewTaskFrame::SetTaskStatus()
+void mw::TaskFrame::SetTaskStatus()
 {
 	mw::Logger logger;
 	switch (this->m_status_choice->GetSelection())
@@ -226,7 +226,7 @@ void mw::NewTaskFrame::SetTaskStatus()
 	}
 }
 
-void mw::NewTaskFrame::SetTaskDeadline()
+void mw::TaskFrame::SetTaskDeadline()
 {
 	mw::Logger logger;
 	int day=0, mon=1, year=0;
@@ -240,7 +240,7 @@ void mw::NewTaskFrame::SetTaskDeadline()
 	m_task.deadline = deadline.m_time_t;
 }
 
-void mw::NewTaskFrame::AddMetadataItem(std::string key, std::string value)
+void mw::TaskFrame::AddMetadataItem(std::string key, std::string value)
 {
 	wxVector<wxVariant> data;
 	data.push_back(wxVariant(key));
@@ -248,12 +248,12 @@ void mw::NewTaskFrame::AddMetadataItem(std::string key, std::string value)
 	m_metadata_dataview->AppendItem(data);
 }
 
-mw::Task mw::NewTaskFrame::GetTask()
+mw::Task mw::TaskFrame::GetTask()
 {
 	return m_task;
 }
 
-void mw::NewTaskFrame::OnDoneButton(wxCommandEvent& event)
+void mw::TaskFrame::OnDoneButton(wxCommandEvent& event)
 {
 	mw::Logger logger;
 	mw::Controller& controller = mw::Controller::Get();

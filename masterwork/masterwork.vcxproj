@@ -46,7 +46,7 @@
     <ClInclude Include="inc\model\Notification.h" />
     <ClInclude Include="inc\view\TaskPanel.h" />
     <ClInclude Include="inc\view\NewProjectFrame.h" />
-    <ClInclude Include="inc\view\NewTaskFrame.h" />
+    <ClInclude Include="inc\view\TaskFrame.h" />
     <ClInclude Include="inc\model\DateTime.h" />
     <ClInclude Include="inc\view\NewUserFrame.h" />
     <ClInclude Include="inc\view\TaskEditPanel.h" />
@@ -80,7 +80,7 @@
     <ClCompile Include="src\NewUserFrame.cpp" />
     <ClCompile Include="src\AboutFrame.cpp" />
     <ClCompile Include="src\DateTime.cpp" />
-    <ClCompile Include="src\NewTaskFrame.cpp" />
+    <ClCompile Include="src\TaskFrame.cpp" />
     <ClCompile Include="src\NewProjectFrame.cpp" />
     <ClCompile Include="src\TaskPanel.cpp" />
     <ClCompile Include="src\mwNotification.cpp" />

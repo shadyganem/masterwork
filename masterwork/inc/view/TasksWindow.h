@@ -10,7 +10,7 @@
 #include<chrono>
 #include <wx/notifmsg.h>
 #include <wx/dataview.h>
-#include "view/NewTaskFrame.h"
+#include "view/TaskFrame.h"
 #include "mwDefines.h"
 
 #define mwID_EDIT = 1
@@ -43,7 +43,7 @@ namespace mw
 		virtual void OnProjectChanged(wxEvent& event);
 
 	public:
-		std::map<mw::Task, mw::NewTaskFrame*> m_task_to_frame_map;
+		std::map<mw::Task, mw::TaskFrame*> m_task_to_frame_map;
 		std::map<int, mw::Task> m_index_to_task_map;
 		wxDataViewListCtrl* m_tasks_data_view_list;
 		wxMenu* m_menu;

@@ -72,7 +72,7 @@
     <ClInclude Include="inc\view\NewProjectFrame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\view\NewTaskFrame.h">
+    <ClInclude Include="inc\view\TaskFrame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\model\DateTime.h">
@@ -194,7 +194,7 @@
     <ClCompile Include="src\NewProjectFrame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\NewTaskFrame.cpp">
+    <ClCompile Include="src\TaskFrame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\DateTime.cpp">

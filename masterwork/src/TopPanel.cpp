@@ -24,7 +24,7 @@ mw::TopPanel::~TopPanel()
 
 void mw::TopPanel::OnNewTaskButton(wxCommandEvent& event)
 {
-	mw::NewTaskFrame* new_task_frame = new mw::NewTaskFrame(this);
+	mw::TaskFrame* new_task_frame = new mw::TaskFrame(this);
 	new_task_frame->CenterOnScreen();
 	new_task_frame->Show(true);
 	event.Skip();

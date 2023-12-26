@@ -28,7 +28,7 @@
 
 namespace mw
 {
-	class NewTaskFrame : public wxFrame
+	class TaskFrame : public wxFrame
 	{
 	private:
 		void SetTaskPriority();
@@ -67,8 +67,8 @@ namespace mw
 		virtual void OnCancelButton(wxCommandEvent& event);
 
 	public:
-		NewTaskFrame(wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Task"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(450, 400), long style = wxDEFAULT_FRAME_STYLE | wxFRAME_FLOAT_ON_PARENT | wxTAB_TRAVERSAL);
-		~NewTaskFrame();
+		TaskFrame(wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Task"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(450, 400), long style = wxDEFAULT_FRAME_STYLE | wxFRAME_FLOAT_ON_PARENT | wxTAB_TRAVERSAL);
+		~TaskFrame();
 
 		void SetTask(const mw::Task& task);
 		mw::Task m_task;

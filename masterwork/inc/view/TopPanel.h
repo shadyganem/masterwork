@@ -5,7 +5,7 @@
 #include "controller/Controller.h"
 
 #include "view/NewProjectFrame.h"
-#include "view/NewTaskFrame.h"
+#include "view/TaskFrame.h"
 namespace mw
 {
     class TopPanel : public wxPanel

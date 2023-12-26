@@ -106,7 +106,7 @@ void mw::TasksWindow::OnItemActivated(wxDataViewEvent& event)
 	int row_index = m_tasks_data_view_list->GetSelectedRow();
 	if (row_index != wxNOT_FOUND)
 	{
-		NewTaskFrame* m_new_task_frame = new mw::NewTaskFrame(this);
+		TaskFrame* m_new_task_frame = new mw::TaskFrame(this);
 		m_new_task_frame->SetTask(m_index_to_task_map[row_index]);
 		m_new_task_frame->CenterOnScreen();
 		m_new_task_frame->Show(true);
@@ -119,7 +119,7 @@ void mw::TasksWindow::OnSelectionChanged(wxDataViewEvent& event)
 	int row_index = m_tasks_data_view_list->GetSelectedRow();
 	if (row_index != wxNOT_FOUND)
 	{
-		NewTaskFrame* m_new_task_frame = new mw::NewTaskFrame(this);
+		TaskFrame* m_new_task_frame = new mw::TaskFrame(this);
 		m_task_panel->SetTask(m_index_to_task_map[row_index]);
 	}
 	event.Skip();
@@ -153,12 +153,12 @@ void mw::TasksWindow::OnTaskEditClick(wxCommandEvent& event)
 	mw::Controller& controller = mw::Controller::Get();
 	this->GetSelectedTasks(tasks_for_editing);
 
-	NewTaskFrame* new_task_frame;
+	TaskFrame* new_task_frame;
 	for (int i = 0; i < tasks_for_editing.size(); i++)
 	{
 		if (m_task_to_frame_map.find(tasks_for_editing[i]) == m_task_to_frame_map.end()) 
 		{
-			new_task_frame = new mw::NewTaskFrame(this);
+			new_task_frame = new mw::TaskFrame(this);
 			new_task_frame->Bind(wxEVT_CLOSE_WINDOW, &mw::TasksWindow::OnNewTasksFrameCloseEvent, this);
 			new_task_frame->SetTask(tasks_for_editing[i]);
 			new_task_frame->CenterOnScreen();
@@ -233,7 +233,7 @@ void mw::TasksWindow::OnToolbarButtonClick(wxCommandEvent& event)
 
 void mw::TasksWindow::OnNewTasksFrameCloseEvent(wxCloseEvent& event)
 {
-	NewTaskFrame* closed_frame = dynamic_cast<NewTaskFrame*>(event.GetEventObject());
+	TaskFrame* closed_frame = dynamic_cast<TaskFrame*>(event.GetEventObject());
 	if (closed_frame != nullptr)
 	{
 		m_task_to_frame_map.erase(closed_frame->GetTask());
