@@ -117,20 +117,22 @@ mw::NewTaskFrame::NewTaskFrame(wxWindow* parent, wxWindowID id, const wxString& 
 	m_details_panel->SetSizer(m_main_panel_sizer);
 	m_details_panel->Layout();
 	m_main_panel_sizer->Fit(m_details_panel);
-	//m_top_sizer->Add(m_main_panel, 1, wxEXPAND | wxALL, 5);
 
-
-	// Add the task details tab
-
-	// Add the user metadata tab
 	wxBoxSizer* m_metadata_panel_sizer = new wxBoxSizer(wxVERTICAL);
 
-	// Add your user metadata controls here (e.g., wxStaticText, wxTextCtrl, etc.)
+	// Create a wxDataViewListCtrl
+	m_metadata_dataview = new wxDataViewListCtrl(m_metadata_panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_SINGLE | wxDV_NO_HEADER);
 
+	// Add columns for key and value
+	m_metadata_dataview->AppendTextColumn("Key", wxDATAVIEW_CELL_INERT, wxCOL_WIDTH_AUTOSIZE);
+	m_metadata_dataview->AppendTextColumn("Value", wxDATAVIEW_CELL_INERT, wxCOL_WIDTH_AUTOSIZE);
+
+	m_metadata_panel_sizer->Add(m_metadata_dataview, 1, wxEXPAND | wxALL, 10);
+
+	// assign the metadata sizer to the metada panel
 	m_metadata_panel->SetSizer(m_metadata_panel_sizer);
 	m_metadata_panel->Layout();
 	m_metadata_panel_sizer->Fit(m_metadata_panel);
-
 
 	m_top_sizer->Add(m_notebook, 1, wxEXPAND | wxALL, 5);
 
@@ -161,6 +163,8 @@ void mw::NewTaskFrame::SetTask(const mw::Task& task)
 	m_deadline_datepicker->SetValue(deadline);
 	m_deadline_timepicker->SetValue(deadline);
 
+	this->AddMetadataItem("Last Updated", m_task.GetLastUpdate());
+	//this->AddMetadataItem("Creation Date", m_task.GetCreationTime());
 	wxCheckBoxState checkbox_state = (task.notification_enabled == true) ? wxCheckBoxState::wxCHK_CHECKED : wxCheckBoxState::wxCHK_UNCHECKED;
 	m_enable_notifications->Set3StateValue(checkbox_state);
 }
@@ -234,6 +238,14 @@ void mw::NewTaskFrame::SetTaskDeadline()
 	year = date.GetYear();
 	mw::DateTime deadline(sec, min, hour, day, mon, year);
 	m_task.deadline = deadline.m_time_t;
+}
+
+void mw::NewTaskFrame::AddMetadataItem(std::string key, std::string value)
+{
+	wxVector<wxVariant> data;
+	data.push_back(wxVariant(key));
+	data.push_back(wxVariant(value));
+	m_metadata_dataview->AppendItem(data);
 }
 
 mw::Task mw::NewTaskFrame::GetTask()

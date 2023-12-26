@@ -22,6 +22,8 @@
 #include "model/Task.h"
 #include "model/DateTime.h"
 #include <wx/notebook.h>
+#include <wx/dataview.h>
+
 
 
 namespace mw
@@ -32,9 +34,11 @@ namespace mw
 		void SetTaskPriority();
 		void SetTaskStatus();
 		void SetTaskDeadline();
+		void AddMetadataItem(std::string key, std::string value);
 	public:
 		mw::Task GetTask();
 	protected:
+		wxNotebook* m_notebook;
 		wxPanel* m_details_panel;
 		wxPanel* m_metadata_panel;
 		wxStaticText* m_task_name_static;
@@ -52,7 +56,8 @@ namespace mw
 		wxTimePickerCtrl* m_deadline_timepicker;
 		wxDatePickerCtrl* m_deadline_datepicker;
 		wxCheckBox* m_enable_notifications;
-		wxNotebook* m_notebook;
+		
+		wxDataViewListCtrl* m_metadata_dataview;
 
 
 

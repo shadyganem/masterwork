@@ -17,6 +17,12 @@ std::string mw::ModelItem::GetLastUpdateTime()
 	return this->ConvertTimeToString(this->last_update);
 }
 
+std::string mw::ModelItem::GetCreationTime()
+{
+	return this->ConvertTimeToString(this->creation_time);
+
+}
+
 void mw::ModelItem::StampCreationTime()
 {
 	std::time(&this->creation_time);
