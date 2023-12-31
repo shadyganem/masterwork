@@ -131,7 +131,7 @@ bool Model::AddTask(mw::Task& task)
 			"\"" + task.description + "\"  ,"
 			+ std::to_string(task.status) + ","
 			+ std::to_string(task.priority) + ","
-			+ std::to_string(task.start_time) + ","
+			+ std::to_string(task.creation_time) + ","
 			+ std::to_string(task.deadline) + ","
 			+ std::to_string(task.project_uid) + ", "
 			+ std::to_string(task.last_update) + ", "
@@ -799,7 +799,7 @@ bool Model::GetAllTasks(std::vector<mw::Task>& tasks, mw::Project& project)
 			task.description = row[3];
 			task.status = std::stoi(row[4]);
 			task.priority = std::stoi(row[5]);
-			task.start_time = std::stoi(row[6]);
+			task.creation_time = std::stoi(row[6]);
 			task.end_time = std::stoi(row[7]);
 			task.deadline = std::stoi(row[8]);
 			task.last_update = std::stoi(row[9]);

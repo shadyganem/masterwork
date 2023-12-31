@@ -17,16 +17,6 @@ mw::Task::~Task()
 {
 }
 
-void mw::Task::StampCreationTime()
-{
-	std::time(&start_time);
-}
-
-void mw::Task::StampLastUpdateTime()
-{
-	std::time(&last_update);
-}
-
 void mw::Task::StampEndTime()
 {
 	std::time(&end_time);

@@ -241,6 +241,7 @@ void mw::Controller::AddTask(Task& task)
 	}
 	else
 	{
+		task.StampCreationTime();
 		m_model.AddTask(task);
 	}
 	m_mutex.Unlock();

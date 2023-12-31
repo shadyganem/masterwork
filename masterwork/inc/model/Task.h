@@ -32,8 +32,6 @@ namespace mw
 		Task(std::string name, std::string dec);
 		Task();
 		~Task();
-		void StampCreationTime();
-		void StampLastUpdateTime();
 		void StampEndTime();
 		void SetProjectId(int id);
 		std::string GetStatus();
@@ -48,7 +46,6 @@ namespace mw
 		int status;
 		int priority;
 		std::time_t start_time;
-		std::time_t last_update;
 		std::time_t end_time;
 		std::time_t deadline;
 		int project_uid;
