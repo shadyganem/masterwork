@@ -163,7 +163,9 @@ void mw::TaskFrame::SetTask(const mw::Task& task)
 	m_deadline_datepicker->SetValue(deadline);
 	m_deadline_timepicker->SetValue(deadline);
 
+	this->AddMetadataItem("Creation Time", m_task.GetCreationTime());
 	this->AddMetadataItem("Last Updated", m_task.GetLastUpdate());
+
 	//this->AddMetadataItem("Creation Date", m_task.GetCreationTime());
 	wxCheckBoxState checkbox_state = (task.notification_enabled == true) ? wxCheckBoxState::wxCHK_CHECKED : wxCheckBoxState::wxCHK_UNCHECKED;
 	m_enable_notifications->Set3StateValue(checkbox_state);

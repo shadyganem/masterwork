@@ -38,21 +38,28 @@ std::string mw::ModelItem::ConvertTimeToString(time_t time)
 	if (time < 0) {
 		return "N/A";
 	}
+	try
+	{
+		std::chrono::system_clock::time_point timePoint = std::chrono::system_clock::from_time_t(time);
+		std::time_t t = std::chrono::system_clock::to_time_t(timePoint);
 
-	std::chrono::system_clock::time_point timePoint = std::chrono::system_clock::from_time_t(time);
-	std::time_t t = std::chrono::system_clock::to_time_t(timePoint);
-
-	std::tm timeinfo;
-	#ifdef _WIN32
+		std::tm timeinfo;
+#ifdef _WIN32
 		localtime_s(&timeinfo, &t);
-	#else
+#else
 		localtime_r(&t, &timeinfo);
-	#endif
+#endif
 
-	std::ostringstream oss;
-	oss << std::put_time(&timeinfo, "%d-%m-%Y %H:%M:%S");
+		std::ostringstream oss;
+		oss << std::put_time(&timeinfo, "%d-%m-%Y %H:%M:%S");
 
-	return oss.str();
+		return oss.str();
+	}
+	catch (...) 
+	{
+		return "N/A";
+	}
+	
 }
 
 std::string mw::ModelItem::RGBToHexString(int red, int green, int blue)
