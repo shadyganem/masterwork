@@ -2,6 +2,7 @@
 #include <iostream>
 #include <iomanip> // for setw
 #include <sstream> // for stringstream
+#include <chrono>
 
 mw:: ModelItem::ModelItem()
 {
@@ -20,7 +21,6 @@ std::string mw::ModelItem::GetLastUpdateTime()
 std::string mw::ModelItem::GetCreationTime()
 {
 	return this->ConvertTimeToString(this->creation_time);
-
 }
 
 void mw::ModelItem::StampCreationTime()
@@ -35,22 +35,24 @@ void mw::ModelItem::StampLastUpdateTime()
 
 std::string mw::ModelItem::ConvertTimeToString(time_t time)
 {
-	if (time < 0)
-	{
+	if (time < 0) {
 		return "N/A";
 	}
-	// Convert the epoch timestamp to a struct tm
+
+	std::chrono::system_clock::time_point timePoint = std::chrono::system_clock::from_time_t(time);
+	std::time_t t = std::chrono::system_clock::to_time_t(timePoint);
+
 	std::tm timeinfo;
 	#ifdef _WIN32
-		localtime_s(&timeinfo, &time);
+		localtime_s(&timeinfo, &t);
 	#else
-		localtime_r(&now, &localTime);
+		localtime_r(&t, &timeinfo);
 	#endif
-	// Format the date and time as a string
-	char buffer[80];
-	std::strftime(buffer, sizeof(buffer), "%d-%m-%Y %H:%M:%S", &timeinfo);
-	std::string string_time = buffer;
-	return string_time;
+
+	std::ostringstream oss;
+	oss << std::put_time(&timeinfo, "%d-%m-%Y %H:%M:%S");
+
+	return oss.str();
 }
 
 std::string mw::ModelItem::RGBToHexString(int red, int green, int blue)

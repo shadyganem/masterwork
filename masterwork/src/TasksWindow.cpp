@@ -1,5 +1,7 @@
 #include "view/TasksWindow.h"
 #include "view/WorkPanel.h"
+#include <wx/dataview.h>
+#include <wx/datetime.h>
 
 BEGIN_EVENT_TABLE(mw::TasksWindow, wxScrolledWindow)
 	EVT_CUSTOM(mwUpdateUI, TASKS_WINDOW_ID, mw::TasksWindow::OnUpdateUI)
@@ -39,10 +41,12 @@ mw::TasksWindow::TasksWindow(wxWindow* parent, wxWindowID winid, const wxPoint& 
 	wxDataViewColumn* m_status_column = new wxDataViewColumn("Status", new wxDataViewTextRenderer(), 1, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT);
 	m_status_column->SetSortable(true);
 	m_tasks_data_view_list->AppendColumn(m_status_column);
-	m_tasks_data_view_list->AppendColumn(new wxDataViewColumn("Due Date", new wxDataViewTextRenderer(), 2, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT));
-	wxDataViewColumn* m_priority_column = new wxDataViewColumn("Priority", new wxDataViewTextRenderer(), 3, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT);
+	wxDataViewColumn* m_priority_column = new wxDataViewColumn("Priority", new wxDataViewTextRenderer(), 2, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT);
 	m_priority_column->SetSortable(true);
 	m_tasks_data_view_list->AppendColumn(m_priority_column);
+	wxDataViewColumn* m_due_data_column = new wxDataViewColumn("Due Date", new wxDataViewTextRenderer(), 3, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT);
+	m_tasks_data_view_list->AppendColumn(m_due_data_column);
+
 	m_tasks_data_view_list->SetBackgroundColour(background);
 	m_tasks_data_view_list->SetForegroundColour(foreground);
 
@@ -209,8 +213,8 @@ void mw::TasksWindow::AddTask(mw::Task& task)
 	wxVector<wxVariant> data;
 	data.push_back(wxVariant(task.name));
 	data.push_back(wxVariant(task.GetStatus()));
-	data.push_back(wxVariant(task.GetDeadline()));
 	data.push_back(wxVariant(task.GetPriority()));
+	data.push_back(wxVariant(task.GetDeadline()));
 	m_tasks_data_view_list->AppendItem(data);
 }
 

@@ -21,12 +21,7 @@ namespace mw
 	{
 
 	public:
-		TasksWindow(wxWindow* parent,
-			wxWindowID winid = wxID_ANY,
-			const wxPoint& pos = wxDefaultPosition,
-			const wxSize& size = wxDefaultSize,
-			long style = wxScrolledWindowStyle,
-			const wxString& name = wxASCII_STR(wxPanelNameStr));
+		TasksWindow(wxWindow* parent, wxWindowID winid = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxScrolledWindowStyle, const wxString& name = wxASCII_STR(wxPanelNameStr));
 		~TasksWindow();
 
 		virtual void OnUpdateUI(wxEvent& event);
