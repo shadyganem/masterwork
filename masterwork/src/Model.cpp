@@ -406,9 +406,32 @@ bool Model::ArchiveTask(mw::Task& task)
 		this->ConnectDb();
 
 		std::string sql = "UPDATE tasks "
-			"SET status= " + std::to_string(mw::Task::TaskStatus::DELETED) + " "
-			"WHERE uid=" + std::to_string(task.uid) + " "
-			";";
+			"SET archived= 1 "
+			"WHERE uid=" + std::to_string(task.uid) + " ;";
+			
+
+		m_db_handler.Update(sql.c_str());
+
+		this->DisconnectDb();
+	}
+	catch (...)
+	{
+		this->DisconnectDb();
+		return false;
+	}
+}
+
+bool Model::UnarchiveTask(mw::Task& task)
+{
+	try
+	{
+		task.StampLastUpdateTime();
+		this->ConnectDb();
+
+		std::string sql = "UPDATE tasks "
+			"SET archived= 0 "
+			"WHERE uid=" + std::to_string(task.uid) + " ;";
+
 
 		m_db_handler.Update(sql.c_str());
 
@@ -781,7 +804,7 @@ bool Model::GetAllTasks(std::vector<mw::Task>& tasks, mw::Project& project)
 		Records records;
 		Record row;
 		std::string sql = "SELECT * FROM tasks WHERE project_uid=" + std::to_string(project.uid) + " "
-						  "AND status!=-1"
+						  "AND archived=0"
 			              ";";
 		logger.Info("Executinig query " + sql);
 		m_db_handler.Select(sql.c_str(), records);
@@ -833,7 +856,7 @@ bool Model::GetArchiveAllTasks(std::vector<mw::Task>& tasks, mw::Project& projec
 		Records records;
 		Record row;
 		std::string sql = "SELECT * FROM tasks WHERE project_uid=" + std::to_string(project.uid) + " "
-			"AND status=-1"
+			"AND archived=1"
 			";";
 		logger.Info("Executinig query " + sql);
 		m_db_handler.Select(sql.c_str(), records);
@@ -887,7 +910,7 @@ bool Model::GetArchiveAllTasks(std::vector<mw::Task>& tasks, mw::Project& curren
 		Records records;
 		Record row;
 		std::string sql = "SELECT * FROM tasks WHERE project_uid=" + std::to_string(current_project.uid) + " "
-			"AND status=-1" + " "
+			"AND archived=1" + " "
 			"AND last_update >= " + std::to_string(current_epoch_time - num_of_days*24*60*60) + " " 
 			";";
 		logger.Info("Executinig query " + sql);
@@ -938,7 +961,7 @@ bool Model::IsTaskFound(mw::Task& task)
 		Records records;
 		bool found = true;
 		std::string sql = "SELECT * FROM tasks WHERE uid=" + std::to_string(task.uid) + " "
-		                  "AND status!=-1"
+		                  "AND archived=0"
 			              ";";
 
 		logger.Info("Executinig query " + sql);
@@ -1254,6 +1277,7 @@ bool Model::InitTasksTable()
 		               "\"green\"	    INTEGER DEFAULT 0,          "
 		               "\"blue\"	    INTEGER DEFAULT 0,          "
 					   "\"notification_enabled\" BOLLEAN DEFAULT 1, "
+					   "\"archived\"	INTEGER DEFAULT 0,          "
 					   "PRIMARY KEY(\"uid\" AUTOINCREMENT)          "
 					   ")";
 	m_mutex.lock();

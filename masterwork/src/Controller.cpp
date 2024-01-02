@@ -212,8 +212,7 @@ void mw::Controller::UnarchiveTasks(std::vector<mw::Task>& tasks)
 	{
 		tasks[i].StampLastUpdateTime();
 		m_mutex.Lock();
-		tasks[i].status = mw::Task::TaskStatus::NOTSTARTED;
-		m_model.UpdateTask(tasks[i]);
+		m_model.UnarchiveTask(tasks[i]);
 		m_mutex.Unlock();
 	}
 	PostUpdateUI(TASKS_WINDOW_ID);

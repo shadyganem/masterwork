@@ -29,6 +29,7 @@ public:
 	bool SetActiveUser(mw::User& user);
 	bool DeleteTask(mw::Task& task);
 	bool ArchiveTask(mw::Task& task);
+	bool UnarchiveTask(mw::Task& task);
 	bool DeleteProject(mw::Project& project);
 	bool GetAllUsers(std::vector<mw::User>& ret_users_vect);
 	bool GetActiveProject(mw::Project& project, mw::User& user);
