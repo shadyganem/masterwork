@@ -47,7 +47,13 @@ mw::PasswordWindow::PasswordWindow(wxWindow* parent, wxWindowID winid, const wxP
 	this->SetSizer(m_sizer_1);
 	this->Layout();
 
+	m_password_menu = new wxMenu;
+	m_password_menu->Append(wxID_COPY, "Copy Password To Clipboard");
+
+	Bind(wxEVT_MENU, &mw::PasswordWindow::OnCopyToClipboard, this, wxID_COPY);
+
 	m_new_password_button->Bind(wxEVT_BUTTON, &mw::PasswordWindow::OnNewPasswordButton, this);
+	m_passwords_data_view_list->Bind(wxEVT_DATAVIEW_ITEM_CONTEXT_MENU, &mw::PasswordWindow::OnContextMenu, this);
 
 	controller.RequestUpdateUI(this->GetId());
 }
@@ -81,6 +87,32 @@ void mw::PasswordWindow::OnNewPasswordButton(wxCommandEvent& event)
 	mw::NewPasswordFrame* new_password_frame = new mw::NewPasswordFrame(this);
 	new_password_frame->Center();
 	new_password_frame->Show();
+}
+
+void mw::PasswordWindow::OnContextMenu(wxDataViewEvent& event)
+{
+	
+	// Get the mouse position
+	wxPoint pos = event.GetPosition();
+
+	// Convert the position to the client coordinates
+	wxDataViewItem item;
+	wxDataViewColumn* col;
+	m_passwords_data_view_list->HitTest(pos, item, col);
+	int row = m_passwords_data_view_list->ItemToRow(item);
+
+	if (col->GetTitle() == "password")
+	{
+		m_text_for_copy = m_passwords_data_view_list->GetTextValue(row, event.GetColumn());
+		PopupMenu(m_password_menu);
+	}
+}
+
+void mw::PasswordWindow::OnCopyToClipboard(wxCommandEvent& event)
+{
+	mw::Clipboard clipboard;
+	clipboard.CopyTextToClipboard(m_text_for_copy);
+	m_text_for_copy.clear();
 }
 
 void mw::PasswordWindow::AddPassword(mw::Password& password)

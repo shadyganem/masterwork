@@ -9,6 +9,7 @@
 #include "view/NewPasswordFrame.h"
 #include "view/NewReminderFrame.h"
 #include "model/Password.h"
+#include "controller/Clipboard.h"
 
 
 namespace mw
@@ -27,6 +28,8 @@ namespace mw
 
 		virtual void OnUpdateUI(wxEvent& event);
 		virtual void OnNewPasswordButton(wxCommandEvent& event);
+		virtual void OnContextMenu(wxDataViewEvent& event);
+		virtual void OnCopyToClipboard(wxCommandEvent& event);
 		virtual void AddPassword(mw::Password& password);
 
 	public:
@@ -35,6 +38,8 @@ namespace mw
 		std::map<int, mw::Reminder> m_index_to_reminder_map;
 		wxDataViewListCtrl* m_passwords_data_view_list;
 	private:
+		std::string m_text_for_copy;
+		wxMenu* m_password_menu;
 		mw::Button* m_new_password_button;
 		wxBoxSizer* m_sizer_1;
 		std::map<std::string, int> m_column_to_index_map;

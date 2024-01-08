@@ -7,6 +7,7 @@ namespace mw
 {
 	class Clipboard
 	{
+	public:
 		virtual void CopyTextToClipboard(std::string text);
 		virtual void CopyTextFromClipboard(std::string& text);
 	};
