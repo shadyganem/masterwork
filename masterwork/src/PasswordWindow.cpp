@@ -47,8 +47,7 @@ mw::PasswordWindow::PasswordWindow(wxWindow* parent, wxWindowID winid, const wxP
 	this->SetSizer(m_sizer_1);
 	this->Layout();
 
-	m_password_menu = new wxMenu;
-	m_password_menu->Append(wxID_COPY, "Copy Password To Clipboard");
+	
 
 	Bind(wxEVT_MENU, &mw::PasswordWindow::OnCopyToClipboard, this, wxID_COPY);
 
@@ -100,12 +99,28 @@ void mw::PasswordWindow::OnContextMenu(wxDataViewEvent& event)
 	wxDataViewColumn* col;
 	m_passwords_data_view_list->HitTest(pos, item, col);
 	int row = m_passwords_data_view_list->ItemToRow(item);
-
+	wxMenu menu;
 	if (col->GetTitle() == "password")
 	{
+		menu.Append(wxID_COPY, "Copy password To Clipboard");
 		m_text_for_copy = m_passwords_data_view_list->GetTextValue(row, event.GetColumn());
-		PopupMenu(m_password_menu);
+		PopupMenu(&menu);
 	}
+
+	if (col->GetTitle() == "url")
+	{
+		menu.Append(wxID_COPY, "Copy url To Clipboard");
+		m_text_for_copy = m_passwords_data_view_list->GetTextValue(row, event.GetColumn());
+		PopupMenu(&menu);
+	}
+
+	if (col->GetTitle() == "username")
+	{
+		menu.Append(wxID_COPY, "Copy username To Clipboard");
+		m_text_for_copy = m_passwords_data_view_list->GetTextValue(row, event.GetColumn());
+		PopupMenu(&menu);
+	}
+	event.Skip();
 }
 
 void mw::PasswordWindow::OnCopyToClipboard(wxCommandEvent& event)
