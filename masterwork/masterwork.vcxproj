@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="inc\controller\Clipboard.h" />
     <ClInclude Include="inc\model\PasswordHasher.h" />
     <ClInclude Include="inc\view\ExpensesWindow.h" />
     <ClInclude Include="inc\Exceptions.h" />
@@ -62,6 +63,7 @@
     <ClInclude Include="inc\model\PasswordEncryptor.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Clipboard.cpp" />
     <ClCompile Include="src\PasswordEncryptor.cpp" />
     <ClCompile Include="src\LoginDialog.cpp" />
     <ClCompile Include="src\NewPasswordFrame.cpp" />
