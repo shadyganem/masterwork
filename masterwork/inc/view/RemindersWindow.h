@@ -24,6 +24,8 @@ namespace mw
 		~RemindersWindow();
 
 		virtual void OnUpdateUI(wxEvent& event);
+		virtual void OnContextMenu(wxDataViewEvent& event);
+		virtual void OnDeleteReminderClick(wxCommandEvent& event);
 		virtual void AddRemider(mw::Reminder& remider);
 		virtual void OnNewReminderButton(wxCommandEvent& event);
 	public:
@@ -31,6 +33,7 @@ namespace mw
 		std::map<int, mw::Reminder> m_index_to_reminder_map;
 		wxDataViewListCtrl* m_reminders_data_view_list;
 	private:
+		void GetSelectedTasks(std::vector<mw::Reminder>& reminders);
 		mw::Button* m_new_reminder_button;
 		wxBoxSizer* m_reminders_sizer;
 		std::map<std::string, int> m_column_to_index_map;

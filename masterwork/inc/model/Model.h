@@ -28,6 +28,7 @@ public:
 	bool GetActiveUser(mw::User& user);
 	bool SetActiveUser(mw::User& user);
 	bool DeleteTask(mw::Task& task);
+	bool DeleteReminder(mw::Reminder& reminder);
 	bool ArchiveTask(mw::Task& task);
 	bool UnarchiveTask(mw::Task& task);
 	bool DeleteProject(mw::Project& project);

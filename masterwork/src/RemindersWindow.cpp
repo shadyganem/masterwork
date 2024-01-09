@@ -48,8 +48,9 @@ mw::RemindersWindow::RemindersWindow(wxWindow* parent, wxWindowID winid, const w
 	this->SetBackgroundColour(background);
 	this->SetSizer(m_reminders_sizer);
 	this->Layout();
-
+	this->Bind(wxEVT_MENU, &mw::RemindersWindow::OnDeleteReminderClick, this, wxID_DELETE);
 	m_new_reminder_button->Bind(wxEVT_BUTTON, &mw::RemindersWindow::OnNewReminderButton, this);
+	m_reminders_data_view_list->Bind(wxEVT_DATAVIEW_ITEM_CONTEXT_MENU, &mw::RemindersWindow::OnContextMenu, this);
 
 	controller.RequestUpdateUI(this->GetId());
 }
@@ -67,10 +68,53 @@ void mw::RemindersWindow::OnUpdateUI(wxEvent& event)
 	for (int i=0; i < reminders.size(); i++) 
 	{
 		this->AddRemider(reminders[i]);
+		m_index_to_reminder_map[i] = reminders[i];
 	}
 
 	mw::WorkPanel* parent_work_panel = dynamic_cast<mw::WorkPanel*>(this->GetParent()->GetParent());
 	parent_work_panel->UpdateRemindersCount(reminders.size());
+}
+
+void mw::RemindersWindow::OnContextMenu(wxDataViewEvent& event)
+{
+	// Get the mouse position
+	wxPoint pos = event.GetPosition();
+
+	// Convert the position to the client coordinates
+	wxDataViewItem item;
+	wxDataViewColumn* col;
+	m_reminders_data_view_list->HitTest(pos, item, col);
+	int row = m_reminders_data_view_list->ItemToRow(item);
+	wxMenu menu;
+	menu.Append(wxID_DELETE, "Delete");
+	PopupMenu(&menu);
+	event.Skip();
+}
+
+void mw::RemindersWindow::OnDeleteReminderClick(wxCommandEvent& event)
+{
+	int selected_items_count = m_reminders_data_view_list->GetSelectedItemsCount();
+	if (selected_items_count == 0)
+	{
+		return;
+	}
+	std::vector<mw::Reminder> reminders_for_deletion;
+	mw::Controller& controller = mw::Controller::Get();
+	int answer = 0;
+	if (selected_items_count == 1)
+	{
+		answer = wxMessageBox("Are you sure you want to permanently delete this reminder?", "Confirm", wxYES_NO, this);
+	}
+	else if (selected_items_count > 1)
+	{
+		answer = wxMessageBox("Are you sure you want to permanently delete all the selected reminders?", "Confirm", wxYES_NO, this);
+	}
+
+	if (answer == wxYES)
+	{
+		this->GetSelectedTasks(reminders_for_deletion);
+		controller.DeleteReminders(reminders_for_deletion);
+	}
 }
 
 void mw::RemindersWindow::AddRemider(mw::Reminder& reminder)
@@ -88,4 +132,16 @@ void mw::RemindersWindow::OnNewReminderButton(wxCommandEvent& event)
 	new_reminder_frame->CenterOnScreen();
 	new_reminder_frame->Show(true);
 	//Do not propagate to parent. this will result in double handling of the button click
+}
+
+void mw::RemindersWindow::GetSelectedTasks(std::vector<mw::Reminder>& reminders)
+{
+	int row_count = m_reminders_data_view_list->GetItemCount();
+	for (int i = 0; i < row_count; i++)
+	{
+		if (m_reminders_data_view_list->IsRowSelected(i))
+		{
+			reminders.push_back(m_index_to_reminder_map[i]);
+		}
+	}
 }

@@ -162,6 +162,16 @@ void mw::Controller::DeleteTasks(std::vector<mw::Task>& tasks)
 	}
 	PostUpdateUI(TASKS_WINDOW_ID);
 	PostUpdateUI(ARCHIVE_WINDOW_ID);
+}
+
+void mw::Controller::DeleteReminders(std::vector<mw::Reminder>& reminders)
+{
+	for (int i = 0; i < reminders.size(); i++)
+	{
+		m_mutex.Lock();
+		m_model.DeleteReminder(reminders[i]);
+		m_mutex.Unlock();
+	}
 	PostUpdateUI(REMINDERS_WINDOW_ID);
 }
 

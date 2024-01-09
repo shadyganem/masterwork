@@ -194,8 +194,8 @@ void mw::TasksWindow::OnTaskDeleteClick(wxCommandEvent& event)
 	if (answer == wxYES)
 	{
 		this->GetSelectedTasks(tasks_for_deletion);
+		controller.DeleteTasks(tasks_for_deletion);
 	}
-	controller.DeleteTasks(tasks_for_deletion);
 }
 
 void mw::TasksWindow::OnTaskArchieveClick(wxCommandEvent& event)

@@ -44,6 +44,7 @@ namespace mw
 		void RegisterEventHandler(int ID, wxEvtHandler* event_handler);
 		void DeleteTask(Task& task);
 		void DeleteTasks(std::vector<mw::Task>& tasks);
+		void DeleteReminders(std::vector<mw::Reminder>& reminders);
 ;		void ArchiveTask(Task& task);
 		void ArchiveTasks(std::vector<mw::Task>& tasks);
 		void UnarchiveTask(Task& task);

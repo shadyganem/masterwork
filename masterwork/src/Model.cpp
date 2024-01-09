@@ -398,6 +398,27 @@ bool Model::DeleteTask(mw::Task& task)
 	}
 }
 
+bool Model::DeleteReminder(mw::Reminder& reminder)
+{
+	try
+	{
+		reminder.StampLastUpdateTime();
+		this->ConnectDb();
+
+		std::string sql = "DELETE FROM reminders WHERE uid=" + std::to_string(reminder.uid) + " ;";
+
+		m_db_handler.ExeQuery(sql.c_str());
+
+		this->DisconnectDb();
+	}
+	catch (...)
+	{
+		this->DisconnectDb();
+		return false;
+	}
+
+}
+
 bool Model::ArchiveTask(mw::Task& task)
 {
 	try
