@@ -61,6 +61,7 @@
     <ClInclude Include="inc\view\NewPasswordFrame.h" />
     <ClInclude Include="inc\view\LoginDialog.h" />
     <ClInclude Include="inc\model\PasswordEncryptor.h" />
+    <ClInclude Include="inc\view\TitleBar.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Clipboard.cpp" />
@@ -104,6 +105,7 @@
     <ClCompile Include="src\sqlite3.c" />
     <ClCompile Include="src\TaskEditPanel.cpp" />
     <ClCompile Include="src\StagehandThread.cpp" />
+    <ClCompile Include="src\TitleBar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="resources\style\style.xml" />

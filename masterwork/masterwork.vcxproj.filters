@@ -141,6 +141,9 @@
     <ClInclude Include="inc\controller\Clipboard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="inc\view\TitleBar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\MainFrame.cpp">
@@ -264,6 +267,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Clipboard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TitleBar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
