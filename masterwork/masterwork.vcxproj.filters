@@ -147,6 +147,9 @@
     <ClInclude Include="inc\view\PreferencesFrame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="inc\view\LoginFrame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\MainFrame.cpp">
@@ -276,6 +279,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\PreferencesFrame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LoginFrame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
