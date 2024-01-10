@@ -6,7 +6,7 @@ mw::LoginFrame::LoginFrame(wxWindow* parent, wxWindowID id, const wxString& titl
     // Create the login form elements
     this->SetSize(wxSize(400, 200));
     wxPanel* panel = new wxPanel(this);
-    wxBoxSizer* vbox = new wxBoxSizer(wxVERTICAL);
+    m_vbox = new wxBoxSizer(wxVERTICAL);
 
 
     m_username_text_ctrl = new wxTextCtrl(panel, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD);
@@ -21,18 +21,19 @@ mw::LoginFrame::LoginFrame(wxWindow* parent, wxWindowID id, const wxString& titl
     m_password_text_ctrl = new wxTextCtrl(panel, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD);
     m_password_text_ctrl->SetHint("Password");
 
-    vbox->Add(m_users_choice, 0, wxEXPAND | wxALL, 5);
-    vbox->Add(m_password_text_ctrl, 0, wxEXPAND | wxALL, 5);
+    m_vbox->Add(m_users_choice, 0, wxEXPAND | wxALL, 5);
+    m_vbox->Add(m_password_text_ctrl, 0, wxEXPAND | wxALL, 5);
 
     wxButton* login_button = new wxButton(panel, wxID_ANY, wxT("Login"));
     login_button->Bind(wxEVT_BUTTON, &mw::LoginFrame::OnLogin, this);
 
-    vbox->Add(login_button, 0, wxALIGN_CENTER | wxALL, 5);
+    m_vbox->Add(login_button, 0, wxALIGN_CENTER | wxALL, 5);
 
 
     m_users_choice->Bind(wxEVT_COMMAND_CHOICE_SELECTED, &mw::LoginFrame::OnUserChange, this);
+    m_password_text_ctrl->Show(m_user.is_password_protected);
 
-    panel->SetSizer(vbox);
+    panel->SetSizer(m_vbox);
     this->Centre();
 }
 
@@ -42,13 +43,14 @@ mw::LoginFrame::~LoginFrame()
 
 void mw::LoginFrame::OnLogin(wxCommandEvent& event)
 {
-    
+    mw::Controller& controller = mw::Controller::Get();
     wxString password = m_password_text_ctrl->GetValue();
     mw::PasswordHasher hasher;
     m_login_status = hasher.verifyPassword(password.ToStdString(), m_user.hashed_password);
 
     if (m_login_status)
     {
+        controller.SetActiveUser(m_user);
         // Send a custom event to indicate successful login
         wxCommandEvent loginEvent(wxEVT_COMMAND_BUTTON_CLICKED, wxID_OK);
         wxPostEvent(this, loginEvent);
@@ -77,14 +79,26 @@ void mw::LoginFrame::OnUserChange(wxCommandEvent& event)
 {
     int index = m_users_choice->GetSelection();
     m_user = m_idx_to_user[index];
-    if (m_user.is_password_protected)
-    {
-        m_password_text_ctrl->Show(true);
+    m_password_text_ctrl->Show(m_user.is_password_protected);
+    m_vbox->Layout();
+}
+
+void mw::LoginFrame::OnKeyPress(wxKeyEvent& event)
+{
+    if (event.GetKeyCode() == WXK_RETURN || event.GetKeyCode() == WXK_NUMPAD_ENTER) {
+        // Check if the focus is on the password text control
+        if (wxWindow::FindFocus() == m_password_text_ctrl) 
+        {
+            wxCommandEvent loginEvent(wxEVT_COMMAND_BUTTON_CLICKED, wxID_OK);
+
+            // Trigger the same logic as the login button click
+            this->OnLogin(loginEvent);
+            return;  // Exit early to prevent further processing
+        }
     }
-    else
-    {
-        m_password_text_ctrl->Show(false);
-    }
+
+    // Allow the event to propagate for other key presses
+    event.Skip();
 }
 
 void mw::LoginFrame::UpdateUsersList()

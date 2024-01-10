@@ -31,6 +31,8 @@ namespace mw
 
 	private:
 		virtual void OnUserChange(wxCommandEvent& event);
+		void OnKeyPress(wxKeyEvent& event);
+
 		void UpdateUsersList();
 		std::map<int, mw::User> m_idx_to_user;
 		void OnLogin(wxCommandEvent& event);
@@ -39,5 +41,6 @@ namespace mw
 		wxTextCtrl* m_username_text_ctrl;
 		wxTextCtrl* m_password_text_ctrl;
 		mw::User m_user;
+		wxBoxSizer* m_vbox;
 	};
 }
