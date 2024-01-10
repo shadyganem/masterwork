@@ -7,6 +7,7 @@ wxDEFINE_EVENT(mwNotification, wxCommandEvent);
 BEGIN_EVENT_TABLE(mw::MainFrame, wxFrame)
 	EVT_MENU(MENU_FILE_EXIT_ID, mw::MainFrame::OnExit)
 	EVT_MENU(MENU_WINDOW_PROPERTIES_ID, mw::MainFrame::OnProperties)
+	EVT_MENU(MENU_WINDOW_PREFERENCES_ID, mw::MainFrame::OnPreferences)
 	EVT_MENU(MENU_FILE_NEW_PROJECT_ID, mw::MainFrame::OnNewProject)
 	EVT_MENU(MENU_FILE_NEW_USER_ID, mw::MainFrame::OnNewUser)
 	EVT_MENU(MENU_HELP_ABOUT_ID, mw::MainFrame::OnAboutClick)
@@ -100,6 +101,7 @@ void mw::MainFrame::InitMenuBar()
 	menu_file->Append(MENU_FILE_EXIT_ID, "Exit");
 	wxMenu* menu_window = new wxMenu();
 	menu_window->Append(MENU_WINDOW_PROPERTIES_ID, "Properties");
+	menu_window->Append(MENU_WINDOW_PREFERENCES_ID, "Preferences");
 	menu_window->Append(MENU_WINDOW_REFRESH_ID, "Refresh");
 	wxMenu* menu_help = new wxMenu();
 	menu_help->Append(MENU_HELP_ABOUT_ID, "About MasterWork");
@@ -229,6 +231,14 @@ void mw::MainFrame::OnCharHook(wxKeyEvent& event)
 void mw::MainFrame::OnProperties(wxCommandEvent& event)
 {
 	ShowStutusBarMessage("Propeties");
+}
+
+void mw::MainFrame::OnPreferences(wxCommandEvent& event)
+{
+	mw::PreferencesFrame* prefrences_frame = new mw::PreferencesFrame(this);
+	prefrences_frame->CenterOnParent();
+	prefrences_frame->Show(true);
+	event.Skip();
 }
 
 void mw::MainFrame::OnRefresh(wxCommandEvent& event)

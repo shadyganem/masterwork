@@ -18,6 +18,7 @@
 #include <wx/icon.h>
 #include <wx/artprov.h>
 #include "controller/NotificationThread.h"
+#include "view/PreferencesFrame.h"
 
 
 namespace mw
@@ -71,6 +72,7 @@ namespace mw
 		void OnExit(wxCommandEvent& event);
 		void OnCharHook(wxKeyEvent& event);
 		void OnProperties(wxCommandEvent& event);
+		void OnPreferences(wxCommandEvent& event);
 		void OnRefresh(wxCommandEvent& event);
 		void OnNewProject(wxCommandEvent& event);
 		void OnNewUser(wxCommandEvent& event);
