@@ -35,16 +35,20 @@ mw::TasksWindow::TasksWindow(wxWindow* parent, wxWindowID winid, const wxPoint& 
 	m_tasks_data_view_list = new wxDataViewListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_MULTIPLE | wxDV_HORIZ_RULES);
 
 
-	wxDataViewColumn* m_title_column = new wxDataViewColumn("Title", new wxDataViewTextRenderer(), 0, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT);
+	wxDataViewColumn* m_uid_column = new wxDataViewColumn("uid", new wxDataViewTextRenderer(), 0, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT);
+	m_uid_column->SetSortable(true);
+	m_tasks_data_view_list->AppendColumn(m_uid_column);
+
+	wxDataViewColumn* m_title_column = new wxDataViewColumn("Title", new wxDataViewTextRenderer(), 1, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT);
 	m_title_column->SetSortable(true);
 	m_tasks_data_view_list->AppendColumn(m_title_column);
-	wxDataViewColumn* m_status_column = new wxDataViewColumn("Status", new wxDataViewTextRenderer(), 1, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT);
+	wxDataViewColumn* m_status_column = new wxDataViewColumn("Status", new wxDataViewTextRenderer(), 2, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT);
 	m_status_column->SetSortable(true);
 	m_tasks_data_view_list->AppendColumn(m_status_column);
-	wxDataViewColumn* m_priority_column = new wxDataViewColumn("Priority", new wxDataViewTextRenderer(), 2, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT);
+	wxDataViewColumn* m_priority_column = new wxDataViewColumn("Priority", new wxDataViewTextRenderer(), 3, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT);
 	m_priority_column->SetSortable(true);
 	m_tasks_data_view_list->AppendColumn(m_priority_column);
-	wxDataViewColumn* m_due_data_column = new wxDataViewColumn("Due Date", new wxDataViewTextRenderer(), 3, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT);
+	wxDataViewColumn* m_due_data_column = new wxDataViewColumn("Due Date", new wxDataViewTextRenderer(), 4, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT);
 	m_tasks_data_view_list->AppendColumn(m_due_data_column);
 
 	m_tasks_data_view_list->SetBackgroundColour(background);
@@ -211,6 +215,7 @@ void mw::TasksWindow::OnTaskArchieveClick(wxCommandEvent& event)
 void mw::TasksWindow::AddTask(mw::Task& task)
 {
 	wxVector<wxVariant> data;
+	data.push_back(wxVariant(std::to_string(task.uid)));
 	data.push_back(wxVariant(task.name));
 	data.push_back(wxVariant(task.GetStatus()));
 	data.push_back(wxVariant(task.GetPriority()));

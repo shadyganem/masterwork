@@ -163,6 +163,7 @@ void mw::TaskFrame::SetTask(const mw::Task& task)
 	m_deadline_datepicker->SetValue(deadline);
 	m_deadline_timepicker->SetValue(deadline);
 
+	this->AddMetadataItem("uid", std::to_string(m_task.uid));
 	this->AddMetadataItem("Creation Time", m_task.GetCreationTime());
 	this->AddMetadataItem("Last Updated", m_task.GetLastUpdate());
 

@@ -36,10 +36,6 @@ void mw::LoginDialog::OnLogin(wxCommandEvent& event)
     wxString username = m_username_text_ctrl->GetValue();
     wxString password = m_password_text_ctrl->GetValue();
     mw::PasswordHasher hasher;
-    mw::Logger logger;
-    logger.EnableDebug();
-    logger.Debug(m_user.hashed_password);
-    logger.DisableDebug();
     m_login_status = hasher.verifyPassword(password.ToStdString(), m_user.hashed_password);
     if (m_login_status)
     {

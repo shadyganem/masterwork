@@ -533,7 +533,7 @@ bool Model::GetActiveProject(mw::Project& project, mw::User& user)
 	try
 	{
 		mw::Logger logger;
-		logger.Info("Select active project");
+		
 		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 			return false;
 
@@ -542,7 +542,6 @@ bool Model::GetActiveProject(mw::Project& project, mw::User& user)
 			              "AND user_uid=" + std::to_string(user.uid) +
 			              ";";
 		Records records;
-		logger.Info("Executinig query " + sql);
 
 		m_db_handler.Select(sql.c_str(), records);
 		if (records.empty())
@@ -575,7 +574,6 @@ bool Model::GetAllProjects(std::vector<mw::Project>& projects_vect, const mw::Us
 	mw::Logger logger;
 	try
 	{
-		logger.EnableDebug();
 		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 			return false;
 
@@ -605,7 +603,6 @@ bool Model::GetAllProjects(std::vector<mw::Project>& projects_vect, const mw::Us
 		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
 			return false;
 		return true;
-		logger.DisableDebug();
 	}
 	catch(const std::exception& e)
 	{
@@ -873,13 +870,11 @@ bool Model::GetArchiveAllTasks(std::vector<mw::Task>& tasks, mw::Project& projec
 			return false;
 
 		mw::Logger logger;
-		logger.Info("selecting all tasks for " + project.name);
 		Records records;
 		Record row;
 		std::string sql = "SELECT * FROM tasks WHERE project_uid=" + std::to_string(project.uid) + " "
 			"AND archived=1"
-			";";
-		logger.Info("Executinig query " + sql);
+			";";		
 		m_db_handler.Select(sql.c_str(), records);
 		mw::Task task;
 		if (records.empty())
