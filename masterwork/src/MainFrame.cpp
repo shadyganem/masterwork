@@ -71,6 +71,8 @@ mw::MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize
 	m_main_panel_hor_sizer1->Add(main_panel_ver_sizer3, 0, wxEXPAND | wxLEFT, 5);
 	m_main_panel->SetSizer(m_main_panel_hor_sizer1);
 
+
+	this->Bind(wxEVT_CHAR_HOOK, &mw::MainFrame::OnCharHook, this);
 	Connect(m_notification_timer->GetId(), wxEVT_TIMER, wxTimerEventHandler(mw::MainFrame::OnNotificationTimer));
 	Connect(wxID_ANY, wxEVT_THREAD, wxThreadEventHandler(mw::MainFrame::OnNotificationThread));
 	m_1sec_timer->Start(1000);
@@ -208,6 +210,19 @@ void mw::MainFrame::OnExit(wxCommandEvent& event)
 	this->TerminateStagehandThread();
 
 	Close();
+	event.Skip();
+}
+
+void mw::MainFrame::OnCharHook(wxKeyEvent& event)
+{
+	// Check if the pressed key is '/'
+	if (event.GetKeyCode() == '/') {
+		// Set focus to the search bar
+		if (!m_search_ctrl->HasFocus())
+		{
+			m_search_ctrl->SetFocus();
+		}
+	}
 	event.Skip();
 }
 

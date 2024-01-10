@@ -69,6 +69,7 @@ namespace mw
 		DECLARE_EVENT_TABLE()
 		// event handlers
 		void OnExit(wxCommandEvent& event);
+		void OnCharHook(wxKeyEvent& event);
 		void OnProperties(wxCommandEvent& event);
 		void OnRefresh(wxCommandEvent& event);
 		void OnNewProject(wxCommandEvent& event);
