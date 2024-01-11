@@ -22,11 +22,12 @@ namespace mw
     public:
         LoginDialog(wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Login"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(450, 400), long style = wxDEFAULT_FRAME_STYLE | wxFRAME_FLOAT_ON_PARENT | wxTAB_TRAVERSAL);
         ~LoginDialog();
-        virtual void OnLogin(wxCommandEvent& event);
         virtual bool GetLoginStatus();
         virtual void SetUser(mw::User& user);
 
     private:
+        virtual void OnLogin(wxCommandEvent& event);
+        virtual void OnKeyPress(wxKeyEvent& event);
         bool m_login_status;
         wxTextCtrl* m_username_text_ctrl;
         wxTextCtrl* m_password_text_ctrl;

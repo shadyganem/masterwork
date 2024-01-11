@@ -20,6 +20,7 @@ mw::LoginDialog::LoginDialog(wxWindow* parent, wxWindowID id, const wxString& ti
 
     wxButton* login_button = new wxButton(panel, wxID_ANY, wxT("Login"));
     login_button->Bind(wxEVT_BUTTON, &mw::LoginDialog::OnLogin, this);
+    m_password_text_ctrl->Bind(wxEVT_KEY_UP, &mw::LoginDialog::OnKeyPress, this);
 
     vbox->Add(login_button, 0, wxALIGN_CENTER | wxALL, 5);
 
@@ -45,6 +46,24 @@ void mw::LoginDialog::OnLogin(wxCommandEvent& event)
     {
         this->EndModal(wxID_ABORT);
     }
+}
+
+void mw::LoginDialog::OnKeyPress(wxKeyEvent& event)
+{
+    if (event.GetKeyCode() == WXK_RETURN || event.GetKeyCode() == WXK_NUMPAD_ENTER) {
+        // Check if the focus is on the password text control
+        if (wxWindow::FindFocus() == m_password_text_ctrl)
+        {
+            wxCommandEvent loginEvent(wxEVT_COMMAND_BUTTON_CLICKED, wxID_OK);
+
+            // Trigger the same logic as the login button click
+            this->OnLogin(loginEvent);
+            return;  // Exit early to prevent further processing
+        }
+    }
+
+    // Allow the event to propagate for other key presses
+    event.Skip();
 }
 
 bool mw::LoginDialog::GetLoginStatus()
