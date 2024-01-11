@@ -29,17 +29,21 @@ mw::LoginFrame::LoginFrame(wxWindow* parent, wxWindowID id, const wxString& titl
     
 
     wxButton* login_button = new wxButton(panel, wxID_ANY, wxT("Login"));
-    login_button->Bind(wxEVT_BUTTON, &mw::LoginFrame::OnLogin, this);
+    
 
     m_vbox->Add(login_button, 0, wxALIGN_CENTER | wxALL, 5);
     m_vbox->Add(m_error_text, 0, wxEXPAND | wxALL, 5);
-    m_users_choice->Bind(wxEVT_COMMAND_CHOICE_SELECTED, &mw::LoginFrame::OnUserChange, this);
+    
 
     m_vbox->Layout();
     panel->SetSizer(m_vbox);
     this->Centre();
 
     m_timer = new wxTimer(this, wxID_ANY);
+
+    m_users_choice->Bind(wxEVT_COMMAND_CHOICE_SELECTED, &mw::LoginFrame::OnUserChange, this);
+    login_button->Bind(wxEVT_BUTTON, &mw::LoginFrame::OnLogin, this);
+    m_password_text_ctrl->Bind(wxEVT_KEY_UP, &mw::LoginFrame::OnKeyPress, this);
     this->Bind(wxEVT_TIMER, &mw::LoginFrame::OnTimerEvent, this, m_timer->GetId());
 }
 
@@ -75,6 +79,24 @@ void mw::LoginFrame::OnLogin(wxCommandEvent& event)
     }
 }
 
+void mw::LoginFrame::OnKeyPress(wxKeyEvent& event)
+{
+    if (event.GetKeyCode() == WXK_RETURN || event.GetKeyCode() == WXK_NUMPAD_ENTER) {
+        // Check if the focus is on the password text control
+        if (wxWindow::FindFocus() == m_password_text_ctrl)
+        {
+            wxCommandEvent loginEvent(wxEVT_COMMAND_BUTTON_CLICKED, wxID_OK);
+
+            // Trigger the same logic as the login button click
+            this->OnLogin(loginEvent);
+            return;  // Exit early to prevent further processing
+        }
+    }
+
+    // Allow the event to propagate for other key presses
+    event.Skip();
+}
+
 bool mw::LoginFrame::GetLoginStatus()
 {
     return m_login_status;
@@ -93,24 +115,6 @@ void mw::LoginFrame::OnUserChange(wxCommandEvent& event)
     m_user = m_idx_to_user[index];
     m_password_text_ctrl->Show(m_user.is_password_protected);
     m_vbox->Layout();
-}
-
-void mw::LoginFrame::OnKeyPress(wxKeyEvent& event)
-{
-    if (event.GetKeyCode() == WXK_RETURN || event.GetKeyCode() == WXK_NUMPAD_ENTER) {
-        // Check if the focus is on the password text control
-        if (wxWindow::FindFocus() == m_password_text_ctrl) 
-        {
-            wxCommandEvent loginEvent(wxEVT_COMMAND_BUTTON_CLICKED, wxID_OK);
-
-            // Trigger the same logic as the login button click
-            this->OnLogin(loginEvent);
-            return;  // Exit early to prevent further processing
-        }
-    }
-
-    // Allow the event to propagate for other key presses
-    event.Skip();
 }
 
 void mw::LoginFrame::UpdateUsersList()
