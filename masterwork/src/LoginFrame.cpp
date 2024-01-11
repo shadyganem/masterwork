@@ -2,12 +2,10 @@
 
 mw::LoginFrame::LoginFrame(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style) : wxFrame(parent, id, title, pos, size, style)
 {
-    m_login_status = false;
-    // Create the login form elements
     this->SetSize(wxSize(400, 200));
+
     wxPanel* panel = new wxPanel(this);
     m_vbox = new wxBoxSizer(wxVERTICAL);
-
 
     m_username_text_ctrl = new wxTextCtrl(panel, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD);
     m_username_text_ctrl->SetHint("Username");
@@ -21,20 +19,28 @@ mw::LoginFrame::LoginFrame(wxWindow* parent, wxWindowID id, const wxString& titl
     m_password_text_ctrl = new wxTextCtrl(panel, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD);
     m_password_text_ctrl->SetHint("Password");
 
+    wxString errorMessage = wxT("Incorrect password. Please try again.");
+    m_error_text = new wxStaticText(panel, wxID_ANY, errorMessage, wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
+    m_error_text->SetForegroundColour(*wxRED);
+    m_error_text->Hide();
+
     m_vbox->Add(m_users_choice, 0, wxEXPAND | wxALL, 5);
     m_vbox->Add(m_password_text_ctrl, 0, wxEXPAND | wxALL, 5);
+    
 
     wxButton* login_button = new wxButton(panel, wxID_ANY, wxT("Login"));
     login_button->Bind(wxEVT_BUTTON, &mw::LoginFrame::OnLogin, this);
 
     m_vbox->Add(login_button, 0, wxALIGN_CENTER | wxALL, 5);
-
-
+    m_vbox->Add(m_error_text, 0, wxEXPAND | wxALL, 5);
     m_users_choice->Bind(wxEVT_COMMAND_CHOICE_SELECTED, &mw::LoginFrame::OnUserChange, this);
-    m_password_text_ctrl->Show(m_user.is_password_protected);
 
+    m_vbox->Layout();
     panel->SetSizer(m_vbox);
     this->Centre();
+
+    m_timer = new wxTimer(this, wxID_ANY);
+    this->Bind(wxEVT_TIMER, &mw::LoginFrame::OnTimerEvent, this, m_timer->GetId());
 }
 
 mw::LoginFrame::~LoginFrame()
@@ -55,11 +61,17 @@ void mw::LoginFrame::OnLogin(wxCommandEvent& event)
         wxCommandEvent loginEvent(wxEVT_COMMAND_BUTTON_CLICKED, wxID_OK);
         wxPostEvent(this, loginEvent);
         // Close the login frame
-        Close();
+        this->Close();
     }
     else
     {
-
+        // Display an error message in the frame
+        m_error_text->Show();
+        m_timer->StartOnce(3000);  // 3000 milliseconds (3 seconds)
+        // You might also choose to clear the password field for security reasons
+        m_password_text_ctrl->Clear();
+        // Refresh the layout to ensure the new static text is displayed
+        m_vbox->Layout();
     }
 }
 
@@ -120,3 +132,11 @@ void mw::LoginFrame::UpdateUsersList()
         }
     }
 }
+
+void mw::LoginFrame::OnTimerEvent(wxTimerEvent& event)
+{
+    // Timer event occurred, disable the error message
+    m_error_text->Hide();
+    m_vbox->Layout();  // Refresh layout to reflect the change
+}
+

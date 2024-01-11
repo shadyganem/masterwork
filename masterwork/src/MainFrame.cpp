@@ -220,6 +220,12 @@ void mw::MainFrame::OnCharHook(wxKeyEvent& event)
 	// Check if the pressed key is '/'
 	if (event.GetKeyCode() == '/') {
 		// Set focus to the search bar
+		wxWindow* focusedWindow = wxWindow::FindFocus();
+		if (focusedWindow && focusedWindow->IsKindOf(CLASSINFO(wxTextCtrl))) {
+			// Do not change focus if typing in a text box
+			event.Skip();
+			return;
+		}
 		if (!m_search_ctrl->HasFocus())
 		{
 			m_search_ctrl->SetFocus();
