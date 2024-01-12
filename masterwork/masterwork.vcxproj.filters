@@ -117,7 +117,7 @@
     <ClInclude Include="inc\view\ExpensesWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\view\NewReminderFrame.h">
+    <ClInclude Include="inc\view\ReminderFrame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\model\PasswordHasher.h">
@@ -251,7 +251,7 @@
     <ClCompile Include="src\ExpensesWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\NewReminderFrame.cpp">
+    <ClCompile Include="src\ReminderFrame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\PasswordHasher.cpp">

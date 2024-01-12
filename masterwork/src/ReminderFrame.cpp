@@ -1,6 +1,6 @@
-#include "view/NewReminderFrame.h"
+#include "view/ReminderFrame.h"
 
-mw::NewReminderFrame::NewReminderFrame(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style) 
+mw::ReminderFrame::ReminderFrame(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style) 
 	: wxFrame(parent, id, title, pos, size, style)
 {
     m_new_reminder = true;
@@ -45,20 +45,20 @@ mw::NewReminderFrame::NewReminderFrame(wxWindow* parent, wxWindowID id, const wx
     this->SetSizer(v_sizer);
 
     // Connect the Save button click event to the event handler
-    save_button->Bind(wxEVT_BUTTON, &mw::NewReminderFrame::OnSaveButton, this);
+    save_button->Bind(wxEVT_BUTTON, &mw::ReminderFrame::OnSaveButton, this);
 
 }
 
-mw::NewReminderFrame::~NewReminderFrame()
+mw::ReminderFrame::~ReminderFrame()
 {
 }
 
-void mw::NewReminderFrame::SetReminder(const mw::Reminder& reminder)
+void mw::ReminderFrame::SetReminder(const mw::Reminder& reminder)
 {
 	m_reminder = reminder;
 }
 
-void mw::NewReminderFrame::OnSaveButton(wxCommandEvent& event)
+void mw::ReminderFrame::OnSaveButton(wxCommandEvent& event)
 {
     wxString title = title_input->GetValue();
     wxString text = text_input->GetValue();

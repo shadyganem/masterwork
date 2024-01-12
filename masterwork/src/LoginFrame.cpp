@@ -14,7 +14,7 @@ mw::LoginFrame::LoginFrame(wxWindow* parent, wxWindowID id, const wxString& titl
     wxArrayString m_usernames;
     m_users_choice = new wxChoice(panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_usernames, 0);
     m_users_choice->SetSelection(0);
-    this->UpdateUsersList();
+    
 
     m_password_text_ctrl = new wxTextCtrl(panel, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD);
     m_password_text_ctrl->SetHint("Password");
@@ -40,7 +40,7 @@ mw::LoginFrame::LoginFrame(wxWindow* parent, wxWindowID id, const wxString& titl
     this->Centre();
 
     m_timer = new wxTimer(this, wxID_ANY);
-
+    this->UpdateUsersList();
     m_users_choice->Bind(wxEVT_COMMAND_CHOICE_SELECTED, &mw::LoginFrame::OnUserChange, this);
     login_button->Bind(wxEVT_BUTTON, &mw::LoginFrame::OnLogin, this);
     m_password_text_ctrl->Bind(wxEVT_KEY_UP, &mw::LoginFrame::OnKeyPress, this);
@@ -133,6 +133,8 @@ void mw::LoginFrame::UpdateUsersList()
         {
             m_users_choice->SetSelection(i);
             m_user = users[i];
+            m_password_text_ctrl->Show(m_user.is_password_protected);
+
         }
     }
 }

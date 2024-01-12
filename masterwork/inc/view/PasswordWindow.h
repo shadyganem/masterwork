@@ -7,7 +7,6 @@
 #include <wx/dataview.h>
 #include "view/Button.h"
 #include "view/NewPasswordFrame.h"
-#include "view/NewReminderFrame.h"
 #include "model/Password.h"
 #include "controller/Clipboard.h"
 

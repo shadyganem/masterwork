@@ -56,7 +56,7 @@
     <ClInclude Include="inc\controller\NotificationThread.h" />
     <ClInclude Include="inc\view\RemindersWindow.h" />
     <ClInclude Include="inc\model\Reminder.h" />
-    <ClInclude Include="inc\view\NewReminderFrame.h" />
+    <ClInclude Include="inc\view\ReminderFrame.h" />
     <ClInclude Include="inc\model\Password.h" />
     <ClInclude Include="inc\view\NewPasswordFrame.h" />
     <ClInclude Include="inc\view\LoginDialog.h" />
@@ -73,7 +73,7 @@
     <ClCompile Include="src\LoginDialog.cpp" />
     <ClCompile Include="src\NewPasswordFrame.cpp" />
     <ClCompile Include="src\Password.cpp" />
-    <ClCompile Include="src\NewReminderFrame.cpp" />
+    <ClCompile Include="src\ReminderFrame.cpp" />
     <ClCompile Include="src\ExpensesWindow.cpp" />
     <ClCompile Include="src\PasswordHasher.cpp" />
     <ClCompile Include="src\PasswordWindow.cpp" />
