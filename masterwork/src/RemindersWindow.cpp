@@ -51,6 +51,7 @@ mw::RemindersWindow::RemindersWindow(wxWindow* parent, wxWindowID winid, const w
 	this->Bind(wxEVT_MENU, &mw::RemindersWindow::OnDeleteReminderClick, this, wxID_DELETE);
 	m_new_reminder_button->Bind(wxEVT_BUTTON, &mw::RemindersWindow::OnNewReminderButton, this);
 	m_reminders_data_view_list->Bind(wxEVT_DATAVIEW_ITEM_CONTEXT_MENU, &mw::RemindersWindow::OnContextMenu, this);
+	m_reminders_data_view_list->Bind(wxEVT_DATAVIEW_ITEM_ACTIVATED, &mw::RemindersWindow::OnItemActivated, this);
 
 	controller.RequestUpdateUI(this->GetId());
 }
@@ -115,6 +116,19 @@ void mw::RemindersWindow::OnDeleteReminderClick(wxCommandEvent& event)
 		this->GetSelectedTasks(reminders_for_deletion);
 		controller.DeleteReminders(reminders_for_deletion);
 	}
+}
+
+void mw::RemindersWindow::OnItemActivated(wxDataViewEvent& event)
+{
+	int row_index = m_reminders_data_view_list->GetSelectedRow();
+	if (row_index != wxNOT_FOUND)
+	{
+		mw::ReminderFrame * m_reminder_frame = new mw::ReminderFrame(this);
+		m_reminder_frame->SetReminder(m_index_to_reminder_map[row_index]);
+		m_reminder_frame->CenterOnScreen();
+		m_reminder_frame->Show(true);
+	}
+	event.Skip();
 }
 
 void mw::RemindersWindow::AddRemider(mw::Reminder& reminder)

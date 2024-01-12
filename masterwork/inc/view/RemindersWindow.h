@@ -26,6 +26,7 @@ namespace mw
 		virtual void OnUpdateUI(wxEvent& event);
 		virtual void OnContextMenu(wxDataViewEvent& event);
 		virtual void OnDeleteReminderClick(wxCommandEvent& event);
+		virtual void OnItemActivated(wxDataViewEvent& event);
 		virtual void AddRemider(mw::Reminder& remider);
 		virtual void OnNewReminderButton(wxCommandEvent& event);
 	public:
