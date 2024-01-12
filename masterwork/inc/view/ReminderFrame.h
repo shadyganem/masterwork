@@ -28,11 +28,8 @@ namespace mw
 		wxButton* save_button;
 		bool m_new_reminder;
 		wxChoice* m_repeat_options;
-
+		wxCheckListBox* m_alert_options_checklist_box;
 		wxColourPickerCtrl* m_color_picker;
-		wxCheckListBox* m_checklist_box;
-
-
 	};
 }
 
