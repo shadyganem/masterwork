@@ -1,23 +1,29 @@
 #include "view/LoginFrame.h"
 
-mw::LoginFrame::LoginFrame(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style) : wxFrame(parent, id, title, pos, size, style)
+
+mw::LoginFrame::LoginFrame(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style)
+    : wxFrame(parent, id, title, pos, size, style)
 {
+    // Set background color to dark gray
+    this->SetBackgroundColour(wxColour(30, 30, 30));
+
+    // Set frame size
     this->SetSize(wxSize(400, 200));
 
     wxPanel* panel = new wxPanel(this);
-    m_vbox = new wxBoxSizer(wxVERTICAL);
+    panel->SetBackgroundColour(wxColour(50, 50, 50)); // Set panel background color
 
-    m_username_text_ctrl = new wxTextCtrl(panel, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD);
-    m_username_text_ctrl->SetHint("Username");
-    m_username_text_ctrl->Hide();
+    m_vbox = new wxBoxSizer(wxVERTICAL);
 
     wxArrayString m_usernames;
     m_users_choice = new wxChoice(panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_usernames, 0);
     m_users_choice->SetSelection(0);
-    
+    m_users_choice->SetBackgroundColour(wxColour(70, 70, 70)); // Set choice background color
+    m_users_choice->SetForegroundColour(*wxWHITE); // Set choice text color
 
     m_password_text_ctrl = new wxTextCtrl(panel, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD);
     m_password_text_ctrl->SetHint("Password");
+    
 
     wxString errorMessage = wxT("Incorrect password. Please try again.");
     m_error_text = new wxStaticText(panel, wxID_ANY, errorMessage, wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
@@ -25,15 +31,16 @@ mw::LoginFrame::LoginFrame(wxWindow* parent, wxWindowID id, const wxString& titl
     m_error_text->Hide();
 
     m_vbox->Add(m_users_choice, 0, wxEXPAND | wxALL, 5);
-    m_vbox->Add(m_password_text_ctrl, 0, wxEXPAND | wxALL, 5);
-    
 
+    m_vbox->Add(m_password_text_ctrl, 0, wxEXPAND | wxALL, 5);
+
+    // Use a different color for the button
     wxButton* login_button = new wxButton(panel, wxID_ANY, wxT("Login"));
-    
+    login_button->SetBackgroundColour(wxColour(0, 120, 215));  // Blue button color
+    login_button->SetForegroundColour(*wxWHITE);  // White text color
 
     m_vbox->Add(login_button, 0, wxALIGN_CENTER | wxALL, 5);
     m_vbox->Add(m_error_text, 0, wxEXPAND | wxALL, 5);
-    
 
     m_vbox->Layout();
     panel->SetSizer(m_vbox);
@@ -46,6 +53,7 @@ mw::LoginFrame::LoginFrame(wxWindow* parent, wxWindowID id, const wxString& titl
     m_password_text_ctrl->Bind(wxEVT_KEY_UP, &mw::LoginFrame::OnKeyPress, this);
     this->Bind(wxEVT_TIMER, &mw::LoginFrame::OnTimerEvent, this, m_timer->GetId());
 }
+
 
 mw::LoginFrame::~LoginFrame()
 {
@@ -100,13 +108,6 @@ void mw::LoginFrame::OnKeyPress(wxKeyEvent& event)
 bool mw::LoginFrame::GetLoginStatus()
 {
     return m_login_status;
-}
-
-void mw::LoginFrame::SetUser(mw::User& user)
-{
-    m_username_text_ctrl->SetValue(user.username);
-    m_username_text_ctrl->Disable();
-    m_user = user;
 }
 
 void mw::LoginFrame::OnUserChange(wxCommandEvent& event)

@@ -18,7 +18,6 @@
 #include "model/PasswordHasher.h"
 
 
-
 namespace mw
 {
 	class LoginFrame : public wxFrame
@@ -27,7 +26,6 @@ namespace mw
 		LoginFrame(wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Login"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(450, 400), long style = wxDEFAULT_FRAME_STYLE | wxFRAME_FLOAT_ON_PARENT | wxTAB_TRAVERSAL);
 		~LoginFrame();
 		bool GetLoginStatus();
-		void SetUser(mw::User& user);
 
 	private:
 		virtual void OnUserChange(wxCommandEvent& event);
@@ -39,7 +37,6 @@ namespace mw
 		void OnTimerEvent(wxTimerEvent& event);
 		wxChoice* m_users_choice;
 		bool m_login_status;
-		wxTextCtrl* m_username_text_ctrl;
 		wxTextCtrl* m_password_text_ctrl;
 		mw::User m_user;
 		wxBoxSizer* m_vbox;
