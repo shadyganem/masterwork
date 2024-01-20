@@ -34,7 +34,7 @@ namespace mw
 	public:
 
 		wxToolBar* m_toolbar;
-		std::map<int, mw::Reminder> m_index_to_reminder_map;
+		std::map<int, mw::Password> m_index_to_password_map;
 		wxDataViewListCtrl* m_passwords_data_view_list;
 	private:
 		std::string m_text_for_copy;

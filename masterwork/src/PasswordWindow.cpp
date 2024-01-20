@@ -63,6 +63,7 @@ mw::PasswordWindow::~PasswordWindow()
 
 void mw::PasswordWindow::OnUpdateUI(wxEvent& event)
 {
+	m_index_to_password_map.clear();
 	m_passwords_data_view_list->DeleteAllItems();
 	mw::Controller& controller = mw::Controller::Get();
 	wxColour background = controller.m_backgroud_color;
@@ -70,15 +71,14 @@ void mw::PasswordWindow::OnUpdateUI(wxEvent& event)
 	m_toolbar->SetBackgroundColour(background);
 	m_toolbar->SetForegroundColour(foreground);
 
-
 	std::vector<mw::Password> passwords;
 	controller.GetPasswordsForActiveUser(passwords);
 
 	for (int i = 0; i < passwords.size(); i++)
 	{
 		this->AddPassword(passwords[i]);
+		m_index_to_password_map[i] = passwords[i];
 	}
-
 }
 
 void mw::PasswordWindow::OnNewPasswordButton(wxCommandEvent& event)
@@ -103,7 +103,8 @@ void mw::PasswordWindow::OnContextMenu(wxDataViewEvent& event)
 	if (col->GetTitle() == "password")
 	{
 		menu.Append(wxID_COPY, "Copy password To Clipboard");
-		m_text_for_copy = m_passwords_data_view_list->GetTextValue(row, event.GetColumn());
+		mw::Password password = m_index_to_password_map[row];
+		m_text_for_copy = password.encrypted_password;
 		PopupMenu(&menu);
 	}
 
@@ -136,6 +137,8 @@ void mw::PasswordWindow::AddPassword(mw::Password& password)
 	data.push_back(wxVariant(password.username));
 	data.push_back(wxVariant(password.url));
 	data.push_back(wxVariant(password.notes));
-	data.push_back(wxVariant(password.encrypted_password));
+	std::string copy = password.encrypted_password;
+	std::fill(copy.begin(), copy.end(), '*');
+	data.push_back(wxVariant(copy));
 	m_passwords_data_view_list->AppendItem(data);
 }

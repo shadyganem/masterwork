@@ -60,6 +60,8 @@ void mw::NewPasswordFrame::OnAddButtonClicked(wxCommandEvent& event)
     {
         this->m_password.StampCreationTime();
         this->m_password.password = password.ToStdString();
+        // ToDo: the password needs to be stored with encryption
+        this->m_password.encrypted_password = password.ToStdString();
         this->m_password.url = url.ToStdString();
         this->m_password.notes = notes.ToStdString();
         this->m_password.username = username.ToStdString();

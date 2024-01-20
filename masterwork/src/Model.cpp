@@ -383,6 +383,9 @@ bool Model::AddPassword(mw::Password& password) {
 		sqlite3_bind_int64(statement, 1, password.user_uid);
 		sqlite3_bind_text(statement, 2, password.username.c_str(), -1, SQLITE_STATIC);
 		sqlite3_bind_text(statement, 3, password.encrypted_password.c_str(), -1, SQLITE_STATIC);
+		logger.EnableDebug();
+		logger.Debug(password.encrypted_password);
+		logger.DisableDebug();
 		sqlite3_bind_text(statement, 4, password.url.c_str(), -1, SQLITE_STATIC);
 		sqlite3_bind_text(statement, 5, password.notes.c_str(), -1, SQLITE_STATIC);
 		sqlite3_bind_int64(statement, 6, password.creation_time);
@@ -1178,9 +1181,6 @@ bool Model::UpdateTask(mw::Task& task)
 		// Bind parameters
 		sqlite3_bind_text(statement, 1, task.name.c_str(), -1, SQLITE_STATIC);
 		sqlite3_bind_text(statement, 2, task.description.c_str(), -1, SQLITE_STATIC);
-		logger.EnableDebug();
-		logger.Debug(task.description);
-		logger.DisableDebug();
 		sqlite3_bind_int(statement, 3, task.status);
 		sqlite3_bind_int(statement, 4, task.priority);
 		sqlite3_bind_int64(statement, 5, task.deadline);
