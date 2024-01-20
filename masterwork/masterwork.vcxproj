@@ -41,7 +41,7 @@
     <ClInclude Include="inc\model\User.h" />
     <ClInclude Include="inc\model\Project.h" />
     <ClInclude Include="inc\model\Task.h" />
-    <ClInclude Include="inc\model\mwDBHandler.h" />
+    <ClInclude Include="inc\model\DataBaseHandler.h" />
     <ClInclude Include="inc\model\ModelItem.h" />
     <ClInclude Include="inc\controller\Logger.h" />
     <ClInclude Include="inc\model\Notification.h" />
@@ -93,7 +93,7 @@
     <ClCompile Include="src\mwNotification.cpp" />
     <ClCompile Include="src\Logger.cpp" />
     <ClCompile Include="src\mwModelItem.cpp" />
-    <ClCompile Include="src\mwDBHandler.cpp" />
+    <ClCompile Include="src\DataBaseHandler.cpp" />
     <ClCompile Include="src\Task.cpp" />
     <ClCompile Include="src\Project.cpp" />
     <ClCompile Include="src\TasksWindow.cpp" />

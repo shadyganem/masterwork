@@ -54,7 +54,7 @@
     <ClInclude Include="inc\model\Task.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\model\mwDBHandler.h">
+    <ClInclude Include="inc\model\DataBaseHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\model\ModelItem.h">
@@ -188,7 +188,7 @@
     <ClCompile Include="src\Task.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mwDBHandler.cpp">
+    <ClCompile Include="src\DataBaseHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\mwModelItem.cpp">

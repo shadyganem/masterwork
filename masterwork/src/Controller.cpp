@@ -481,7 +481,6 @@ void mw::Controller::UpdateNotifications()
 
 void mw::Controller::PostUpdateUI(int wind_id)
 {
-
 	Logger logger;
 	if (this->m_event_handlers.count(wind_id) != 0)
 	{

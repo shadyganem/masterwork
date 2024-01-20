@@ -23,7 +23,7 @@ bool Model::InitModel()
 	InitNotificationsTable();
 	InitRemindersTable();
 	InitPasswordsTable();
-	InitAlertOptionsTable();
+	InitAlertTimesTable();
 	is_initialized = true;
 	return true;
 }
@@ -1056,42 +1056,54 @@ bool Model::IsUserFound(mw::User& user)
 	}
 }
 
-bool Model::UpdateTask(mw::Task& task)
-{
+bool Model::UpdateTask(mw::Task& task) {
 	mw::Logger logger;
-	try
-	{
+
+	try {
 		task.StampLastUpdateTime();
-		if (task.project_uid == 0)
-		{
-			throw("Can not add task with project_uid= 0");
+
+		if (task.project_uid == 0) {
+			throw std::runtime_error("Cannot update task with project_uid=0");
 		}
-		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
-			return false;
 
-		int noti_en = task.notification_enabled == true ? 1 : 0;
+		// Use parameterized query
 		std::string sql = "UPDATE tasks "
-						  "SET name=\"" + task.name + "\", "
-						  "description=\"" + task.description + "\", "
-						  "status=" + std::to_string(task.status) + ", "
-						  "priority=" + std::to_string(task.priority) + ", "
-						  "deadline=" + std::to_string(task.deadline) + ", "
-						  "last_update=" + std::to_string(task.last_update) + ", "
-						  "notification_enabled=" + std::to_string(noti_en) + " "
-						  "WHERE uid=" + std::to_string(task.uid) + ";";
+			"SET name=?, description=?, status=?, priority=?, deadline=?, last_update=?, notification_enabled=? "
+			"WHERE uid=?;";
 
-		logger.Info("Executinig query " + sql);
+		logger.Info("Executing query: " + sql);
 
-		m_db_handler.Update(sql.c_str());
-
-		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
+		// RAII for database connection
+		if (!m_db_handler.Conn(this->m_db_path.c_str())) {
+			logger.Error("Failed to connect to the database.");
 			return false;
+		}
+
+		sqlite3_stmt* statement;
+		m_db_handler.Prepare(sql.c_str(), &statement);
+
+		// Bind parameters
+		sqlite3_bind_text(statement, 1, task.name.c_str(), -1, SQLITE_STATIC);
+		sqlite3_bind_text(statement, 2, task.description.c_str(), -1, SQLITE_STATIC);
+		sqlite3_bind_int(statement, 3, task.status);
+		sqlite3_bind_int(statement, 4, task.priority);
+		sqlite3_bind_int64(statement, 5, task.deadline);
+		sqlite3_bind_int64(statement, 6, task.last_update);
+		sqlite3_bind_int(statement, 7, task.notification_enabled ? 1 : 0);
+		sqlite3_bind_int64(statement, 8, task.uid);
+
+		// Execute the statement
+		m_db_handler.Step(statement);
+		m_db_handler.Finalize(statement);
+
+		// Commit the transaction (if you are using transactions)
+		// m_db_handler.Commit();
+
+		// Disconnect in destructor (RAII)
 		return true;
 	}
-	catch (...)
-	{
-		logger.Error("Exception occured at bool mwModel::AddTask(mwTask& task)");
-		m_db_handler.DisConn(this->m_db_path.c_str());
+	catch (const std::exception& e) {
+		logger.Error("Exception occurred: " + std::string(e.what()));
 		return false;
 	}
 }
@@ -1388,16 +1400,16 @@ bool Model::InitPasswordsTable()
 	return true;
 }
 
-bool Model::InitAlertOptionsTable()
+bool Model::InitAlertTimesTable()
 {
 	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 		return false;
 
-	const char* sql = "CREATE TABLE IF NOT EXISTS \"reminder_alert_options\" (      "
-		"\"uid\"	            INTEGER NOT NULL UNIQUE,    "
-		"\"reminder_uid\"	    INTEGER NOT NULL,           "
-		"\"option_value\"       BIGINT NOT NULL,            "
-		"PRIMARY KEY(\"uid\" AUTOINCREMENT)                 "
+	const char* sql = "CREATE TABLE IF NOT EXISTS \"reminder_alert_times\" (      "
+		"\"uid\"	INTEGER NOT NULL UNIQUE,"
+		"\"reminder_uid\"	    INTEGER NOT NULL,"
+		"\"value\"              INTEGER NOT NULL,"
+		"PRIMARY KEY(\"uid\" AUTOINCREMENT)"
 		");";
 
 	m_mutex.lock();

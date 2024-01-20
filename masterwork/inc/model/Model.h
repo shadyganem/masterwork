@@ -1,7 +1,7 @@
 #pragma once
 
 #include "model/ModelItem.h"
-#include "model/mwDBHandler.h"
+#include "model/DataBaseHandler.h"
 #include "model/Task.h"
 #include "model/Project.h"
 #include "model/Reminder.h"
@@ -60,9 +60,9 @@ private:
 	bool InitNotificationsTable();
 	bool InitRemindersTable();
 	bool InitPasswordsTable();
-	bool InitAlertOptionsTable();
+	bool InitAlertTimesTable();
 	std::string m_db_path;
-	mwDBHandler m_db_handler;
+	mw::DataBaseHandler m_db_handler;
 	bool is_initialized;
 	std::mutex m_mutex;
 };
