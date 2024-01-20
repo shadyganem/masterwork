@@ -6,7 +6,7 @@ Model::Model()
 	is_initialized = false;
 }
 
-void Model::SetDbPath(std::string path)
+void Model::SetDatabasePath(std::string path)
 {
 	m_db_path = path;
 }
@@ -1179,6 +1179,9 @@ bool Model::UpdateTask(mw::Task& task)
 		// Bind parameters
 		sqlite3_bind_text(statement, 1, task.name.c_str(), -1, SQLITE_STATIC);
 		sqlite3_bind_text(statement, 2, task.description.c_str(), -1, SQLITE_STATIC);
+		logger.EnableDebug();
+		logger.Debug(task.description);
+		logger.DisableDebug();
 		sqlite3_bind_int(statement, 3, task.status);
 		sqlite3_bind_int(statement, 4, task.priority);
 		sqlite3_bind_int64(statement, 5, task.deadline);
@@ -1194,6 +1197,11 @@ bool Model::UpdateTask(mw::Task& task)
 		// m_db_handler.Commit();
 
 		// Disconnect in destructor (RAII)
+				// RAII for database disconnection
+		if (!m_db_handler.DisConn(this->m_db_path.c_str())) {
+			logger.Error("Failed to disconnect from the database.");
+			return false;
+		}
 		return true;
 	}
 	catch (const std::exception& e) {

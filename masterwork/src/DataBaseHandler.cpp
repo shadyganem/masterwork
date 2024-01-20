@@ -1,12 +1,12 @@
-#include "model/DataBaseHandler.h"
+#include "model/DatabaseHandler.h"
 
-mw::DataBaseHandler::DataBaseHandler()
+mw::DatabaseHandler::DatabaseHandler()
 {
 	m_db = NULL;
 	is_conn = false;
 }
 
-int mw::DataBaseHandler::Sqlite3SelectCallback(void* p_data, int num_fields, char** p_fields, char** p_col_names)
+int mw::DatabaseHandler::Sqlite3SelectCallback(void* p_data, int num_fields, char** p_fields, char** p_col_names)
 {
 	mw::Logger logger;
 	Records* records = static_cast<Records*>(p_data);
@@ -21,14 +21,14 @@ int mw::DataBaseHandler::Sqlite3SelectCallback(void* p_data, int num_fields, cha
 	return 0;
 }
 
-int mw::DataBaseHandler::Sqlite3UpdateCallback(void* p_data, int num_fields, char** p_fields, char** p_col_names)
+int mw::DatabaseHandler::Sqlite3UpdateCallback(void* p_data, int num_fields, char** p_fields, char** p_col_names)
 {
 	mw::Logger logger;
 	logger.Info("callback is called");
 	return 0;
 }
 
-bool mw::DataBaseHandler::CreateDB(const char* path)
+bool mw::DatabaseHandler::CreateDB(const char* path)
 {
 	sqlite3* db;
 	int rc = sqlite3_open(path, &db);
@@ -38,7 +38,7 @@ bool mw::DataBaseHandler::CreateDB(const char* path)
 	return true;
 }
 
-bool mw::DataBaseHandler::ExeQuery(const char* sql)
+bool mw::DatabaseHandler::ExeQuery(const char* sql)
 {
 	if (is_conn == false)
 		return false;
@@ -52,7 +52,7 @@ bool mw::DataBaseHandler::ExeQuery(const char* sql)
 	return true;
 }
 
-bool mw::DataBaseHandler::Select(const char* sql, Records& ret_records)
+bool mw::DatabaseHandler::Select(const char* sql, Records& ret_records)
 {
 	char* errmsg;
 	int rc = sqlite3_exec(m_db, sql, Sqlite3SelectCallback, &ret_records, &errmsg);
@@ -63,7 +63,7 @@ bool mw::DataBaseHandler::Select(const char* sql, Records& ret_records)
 	return true;
 }
 
-bool mw::DataBaseHandler::Update(const char* sql)
+bool mw::DatabaseHandler::Update(const char* sql)
 {
 	if (is_conn == false)
 		return false;
@@ -77,12 +77,12 @@ bool mw::DataBaseHandler::Update(const char* sql)
 	return true;
 }
 
-bool mw::DataBaseHandler::CreateNewTable(const char* sql)
+bool mw::DatabaseHandler::CreateNewTable(const char* sql)
 {
 	return false;
 }
 
-bool mw::DataBaseHandler::Conn(const char* path)
+bool mw::DatabaseHandler::Conn(const char* path)
 {
 	if (this->is_conn)
 		return true;
@@ -95,7 +95,7 @@ bool mw::DataBaseHandler::Conn(const char* path)
 	return true;
 }
 
-bool mw::DataBaseHandler::DisConn(const char* path)
+bool mw::DatabaseHandler::DisConn(const char* path)
 {
 	if (this->is_conn == false)
 		return true;
@@ -107,24 +107,24 @@ bool mw::DataBaseHandler::DisConn(const char* path)
 	return true;
 }
 
-bool mw::DataBaseHandler::BindText(mw::SqlStatement statement, std::string text)
+bool mw::DatabaseHandler::BindText(mw::SqlStatement statement, std::string text)
 {
 	return false;
 }
 
-bool mw::DataBaseHandler::Prepare(const char* sql, sqlite3_stmt** statement)
+bool mw::DatabaseHandler::Prepare(const char* sql, sqlite3_stmt** statement)
 {
 	int result = sqlite3_prepare_v2(m_db, sql, -1, statement, nullptr);
 	return (result == SQLITE_OK);
 }
 
-bool mw::DataBaseHandler::Step(sqlite3_stmt* statement)
+bool mw::DatabaseHandler::Step(sqlite3_stmt* statement)
 {
 	int result = sqlite3_step(statement);
 	return (result == SQLITE_DONE || result == SQLITE_ROW);
 }
 
-bool mw::DataBaseHandler::Finalize(sqlite3_stmt* statement)
+bool mw::DatabaseHandler::Finalize(sqlite3_stmt* statement)
 {
 	int result = sqlite3_finalize(statement);
 	return (result == SQLITE_OK);

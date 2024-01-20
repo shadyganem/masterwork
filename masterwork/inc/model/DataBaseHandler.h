@@ -12,10 +12,10 @@ using Records = std::vector<std::vector<std::string>>;
 
 namespace mw
 {
-	class DataBaseHandler
+	class DatabaseHandler
 	{
 	public:
-		DataBaseHandler();
+		DatabaseHandler();
 		static int Sqlite3SelectCallback(void* pdata, int argc, char** argv, char** azColName);
 		static int Sqlite3UpdateCallback(void* pdata, int argc, char** argv, char** azColName);
 		bool CreateDB(const char* path);

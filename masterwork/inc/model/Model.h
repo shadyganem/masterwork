@@ -1,7 +1,7 @@
 #pragma once
 
 #include "model/ModelItem.h"
-#include "model/DataBaseHandler.h"
+#include "model/DatabaseHandler.h"
 #include "model/SqlStatement.h"
 #include "model/Task.h"
 #include "model/Project.h"
@@ -18,7 +18,7 @@ class Model
 {
 public:
 	Model();
-	void SetDbPath(std::string path);
+	void SetDatabasePath(std::string path);
 	bool InitModel();
 	bool AddUser(mw::User& user);
 	bool AddProject(mw::Project& project);
@@ -63,7 +63,7 @@ private:
 	bool InitPasswordsTable();
 	bool InitAlertTimesTable();
 	std::string m_db_path;
-	mw::DataBaseHandler m_db_handler;
+	mw::DatabaseHandler m_db_handler;
 	bool is_initialized;
 	std::mutex m_mutex;
 };

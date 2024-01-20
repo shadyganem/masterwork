@@ -5,7 +5,7 @@ void mw::Controller::Init()
 	m_logger.Clear();
 	m_logger.Disable();
 	m_logger.Info("Intializing controller");
-	m_model.SetDbPath("mw.db");
+	m_model.SetDatabasePath("mw.db");
 	m_model.InitModel();
 	m_model.GetActiveUser(m_active_user);
 	m_model.GetActiveProject(m_active_project, m_active_user);
