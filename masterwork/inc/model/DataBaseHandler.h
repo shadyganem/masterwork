@@ -4,6 +4,8 @@
 #include <vector>
 #include "controller/Logger.h"
 #include <utility>
+#include "model/SqlStatement.h"
+#include <string>
 
 using Record = std::vector<std::string>;
 using Records = std::vector<std::vector<std::string>>;
@@ -23,6 +25,7 @@ namespace mw
 		bool CreateNewTable(const char* sql);
 		bool Conn(const char* path);
 		bool DisConn(const char* path);
+		bool BindText(mw::SqlStatement statement, std::string text);
 
 		virtual bool Prepare(const char* sql, sqlite3_stmt** statement);
 		virtual bool Step(sqlite3_stmt* statement);

@@ -64,8 +64,10 @@
     <ClInclude Include="inc\view\TitleBar.h" />
     <ClInclude Include="inc\view\PreferencesFrame.h" />
     <ClInclude Include="inc\view\LoginFrame.h" />
+    <ClInclude Include="inc\model\SqlStatement.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\SqlStatement.cpp" />
     <ClCompile Include="src\LoginFrame.cpp" />
     <ClCompile Include="src\PreferencesFrame.cpp" />
     <ClCompile Include="src\Clipboard.cpp" />

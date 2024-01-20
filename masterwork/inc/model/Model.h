@@ -2,6 +2,7 @@
 
 #include "model/ModelItem.h"
 #include "model/DataBaseHandler.h"
+#include "model/SqlStatement.h"
 #include "model/Task.h"
 #include "model/Project.h"
 #include "model/Reminder.h"
@@ -52,7 +53,7 @@ public:
 
 
 private:
-	bool ConnectDb();
+	bool ConnectDataBase();
 	bool DisconnectDb();
 	bool InitUsersTable();
 	bool InitProjectsTable();

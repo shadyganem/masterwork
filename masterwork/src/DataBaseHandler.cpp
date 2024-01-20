@@ -107,6 +107,11 @@ bool mw::DataBaseHandler::DisConn(const char* path)
 	return true;
 }
 
+bool mw::DataBaseHandler::BindText(mw::SqlStatement statement, std::string text)
+{
+	return false;
+}
+
 bool mw::DataBaseHandler::Prepare(const char* sql, sqlite3_stmt** statement)
 {
 	int result = sqlite3_prepare_v2(m_db, sql, -1, statement, nullptr);

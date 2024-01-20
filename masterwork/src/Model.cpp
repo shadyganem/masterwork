@@ -32,7 +32,7 @@ bool Model::AddUser(mw::User& user)
 {
 	try
 	{
-		if (this->ConnectDb() == false)
+		if (this->ConnectDataBase() == false)
 			return false;
 		
 		std::string sql = "INSERT INTO users(username, is_active, status, hashed_password, is_password_protected)"
@@ -73,7 +73,7 @@ bool Model::AddProject(mw::Project& project)
 {
 	try
 	{
-		if (this->ConnectDb() == false)
+		if (this->ConnectDataBase() == false)
 			return false;
 		std::string sql = "INSERT INTO projects(user_uid, name, start_time, is_active) "
 			"VALUES (\"" + std::to_string(project.user_uid) + "\"  ,"
@@ -353,7 +353,7 @@ bool Model::SetActiveUser(mw::User& user)
 {
 	try
 	{
-		this->ConnectDb();
+		this->ConnectDataBase();
 
 		std::string sql = "UPDATE users "
 					      "SET is_active=0 "
@@ -383,7 +383,7 @@ bool Model::DeleteTask(mw::Task& task)
 	try
 	{
 		task.StampLastUpdateTime();
-		this->ConnectDb();
+		this->ConnectDataBase();
 
 		std::string sql = "DELETE FROM tasks WHERE uid=" + std::to_string(task.uid) + " ;";
 
@@ -403,7 +403,7 @@ bool Model::DeleteReminder(mw::Reminder& reminder)
 	try
 	{
 		reminder.StampLastUpdateTime();
-		this->ConnectDb();
+		this->ConnectDataBase();
 
 		std::string sql = "DELETE FROM reminders WHERE uid=" + std::to_string(reminder.uid) + " ;";
 
@@ -424,7 +424,7 @@ bool Model::ArchiveTask(mw::Task& task)
 	try
 	{
 		task.StampLastUpdateTime();
-		this->ConnectDb();
+		this->ConnectDataBase();
 
 		std::string sql = "UPDATE tasks "
 			"SET archived= 1 "
@@ -447,7 +447,7 @@ bool Model::UnarchiveTask(mw::Task& task)
 	try
 	{
 		task.StampLastUpdateTime();
-		this->ConnectDb();
+		this->ConnectDataBase();
 
 		std::string sql = "UPDATE tasks "
 			"SET archived= 0 "
@@ -471,7 +471,7 @@ bool Model::DeleteProject(mw::Project& project)
 	{
 		mw::Logger logger;
 		logger.Info("Delete Project" );
-		this->ConnectDb();
+		this->ConnectDataBase();
 
 		std::string sql = "UPDATE projects "
 			"SET status= " + std::to_string(mw::Project::ProjectStatus::DELETED) + ", "
@@ -496,7 +496,7 @@ bool Model::GetAllUsers(std::vector<mw::User>& ret_users_vect)
 {
 	try
 	{
-		this->ConnectDb();
+		this->ConnectDataBase();
 		mw::Logger logger;
 		Records records;
 		Record row;
@@ -784,7 +784,7 @@ bool Model::SetActiveProject(mw::Project& project)
 	mw::Logger logger;
 	try
 	{
-		this->ConnectDb();
+		this->ConnectDataBase();
 
 		std::string sql = "UPDATE projects "
 			              "SET is_active=0 "
@@ -1056,7 +1056,8 @@ bool Model::IsUserFound(mw::User& user)
 	}
 }
 
-bool Model::UpdateTask(mw::Task& task) {
+bool Model::UpdateTask(mw::Task& task) 
+{
 	mw::Logger logger;
 
 	try {
@@ -1070,8 +1071,6 @@ bool Model::UpdateTask(mw::Task& task) {
 		std::string sql = "UPDATE tasks "
 			"SET name=?, description=?, status=?, priority=?, deadline=?, last_update=?, notification_enabled=? "
 			"WHERE uid=?;";
-
-		logger.Info("Executing query: " + sql);
 
 		// RAII for database connection
 		if (!m_db_handler.Conn(this->m_db_path.c_str())) {
@@ -1108,102 +1107,148 @@ bool Model::UpdateTask(mw::Task& task) {
 	}
 }
 
-bool Model::UpdateProject(mw::Project& project)
+bool Model::UpdateProject(mw::Project& project) 
 {
 	mw::Logger logger;
-	try
-	{
-		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
-			return false;
 
+	try {
+		// RAII for database connection
+		if (!m_db_handler.Conn(this->m_db_path.c_str())) {
+			logger.Error("Failed to connect to the database.");
+			return false;
+		}
+
+		// Use parameterized query
 		std::string sql = "UPDATE projects "
-			              "SET name=\"" + project.name + "\" "
-			              "WHERE uid=" + std::to_string(project.uid) + " ;";
+			"SET name=? "
+			"WHERE uid=?;";
 
-		logger.Info("Executinig query " + sql);
+		logger.Info("Executing query: " + sql);
 
-		m_db_handler.Update(sql.c_str());
+		sqlite3_stmt* statement;
+		m_db_handler.Prepare(sql.c_str(), &statement);
 
-		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
+		// Bind parameters
+		sqlite3_bind_text(statement, 1, project.name.c_str(), -1, SQLITE_STATIC);
+		sqlite3_bind_int64(statement, 2, project.uid);
+
+		// Execute the statement
+		m_db_handler.Step(statement);
+		m_db_handler.Finalize(statement);
+
+		// RAII for database disconnection
+		if (!m_db_handler.DisConn(this->m_db_path.c_str())) {
+			logger.Error("Failed to disconnect from the database.");
 			return false;
+		}
+
 		return true;
 	}
-	catch (...)
-	{
-		logger.Error("Exception occured at bool mwModel::AddTask(mwTask& task)");
-		m_db_handler.DisConn(this->m_db_path.c_str());
+	catch (const std::exception& e) {
+		logger.Error("Exception occurred: " + std::string(e.what()));
 		return false;
 	}
 }
 
-bool Model::UpdateUser(mw::User& user)
+bool Model::UpdateUser(mw::User& user) 
 {
 	mw::Logger logger;
-	try
-	{
-		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
-			return false;
 
+	try {
+		// RAII for database connection
+		if (!m_db_handler.Conn(this->m_db_path.c_str())) {
+			logger.Error("Failed to connect to the database.");
+			return false;
+		}
+
+		// Use parameterized query
 		std::string sql = "UPDATE users "
-			"SET username=\"" + user.username + "\", "
-			"status=\"" + std::to_string(user.status) + "\" "
-			"hashed_password=\"" + user.hashed_password + "\" "
-			"WHERE uid=" + std::to_string(user.uid) + " ;";
+			"SET username=?, status=?, hashed_password=? "
+			"WHERE uid=?;";
 
-		logger.Info("Executinig query " + sql);
+		logger.Info("Executing query: " + sql);
 
-		m_db_handler.Update(sql.c_str());
+		sqlite3_stmt* statement;
+		m_db_handler.Prepare(sql.c_str(), &statement);
 
-		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
+		// Bind parameters
+		sqlite3_bind_text(statement, 1, user.username.c_str(), -1, SQLITE_STATIC);
+		sqlite3_bind_int(statement, 2, user.status);
+		sqlite3_bind_text(statement, 3, user.hashed_password.c_str(), -1, SQLITE_STATIC);
+		sqlite3_bind_int64(statement, 4, user.uid);
+
+		// Execute the statement
+		m_db_handler.Step(statement);
+		m_db_handler.Finalize(statement);
+
+		// RAII for database disconnection
+		if (!m_db_handler.DisConn(this->m_db_path.c_str())) {
+			logger.Error("Failed to disconnect from the database.");
 			return false;
+		}
+
 		return true;
 	}
-	catch (...)
-	{
-		logger.Error("Exception occured at bool mwModel::AddTask(mwTask& task)");
-		m_db_handler.DisConn(this->m_db_path.c_str());
+	catch (const std::exception& e) {
+		logger.Error("Exception occurred: " + std::string(e.what()));
 		return false;
 	}
 }
 
-bool Model::UpdateNotification(mw::Notification& notification)
-{
-	try
-	{
+bool Model::UpdateNotification(mw::Notification& notification) {
+	mw::Logger logger;
+
+	try {
 		notification.StampLastUpdateTime();
 
-		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
+		// RAII for database connection
+		if (!m_db_handler.Conn(this->m_db_path.c_str())) {
+			logger.Error("Failed to connect to the database.");
 			return false;
+		}
 
+		// Use parameterized query
 		std::string sql = "UPDATE notifications "
-			"SET text=\"" + notification.text + "\", "
-			"details=\"" + notification.details +"\", "
-			"status=\"" + std::to_string(notification.status) + "\", "
-			"priority=\"" + std::to_string(notification.priority) + "\", "
-			"repeat=\"" + std::to_string(notification.repeat) + "\", "
-			"end_time=\"" + std::to_string(notification.end_time) + "\", "
-			"last_update=\"" + std::to_string(notification.last_update) + "\", "
-			"ttl=\"" + std::to_string(notification.ttl) + "\", "
-			"color=\"" + std::to_string(notification.color) + "\" "
+			"SET text=?, details=?, status=?, priority=?, repeat=?, "
+			"end_time=?, last_update=?, ttl=?, color=? "
+			"WHERE uid=?;";
 
-			"WHERE uid=" + std::to_string(notification.uid) + " ;";
+		logger.Info("Executing query: " + sql);
 
-		m_db_handler.Update(sql.c_str());
+		sqlite3_stmt* statement;
+		m_db_handler.Prepare(sql.c_str(), &statement);
 
-		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
+		// Bind parameters
+		sqlite3_bind_text(statement, 1, notification.text.c_str(), -1, SQLITE_STATIC);
+		sqlite3_bind_text(statement, 2, notification.details.c_str(), -1, SQLITE_STATIC);
+		sqlite3_bind_int(statement, 3, notification.status);
+		sqlite3_bind_int(statement, 4, notification.priority);
+		sqlite3_bind_int(statement, 5, notification.repeat);
+		sqlite3_bind_int64(statement, 6, notification.end_time);
+		sqlite3_bind_int64(statement, 7, notification.last_update);
+		sqlite3_bind_int64(statement, 8, notification.ttl);
+		sqlite3_bind_int64(statement, 9, notification.color);
+		sqlite3_bind_int64(statement, 10, notification.uid);
+
+		// Execute the statement
+		m_db_handler.Step(statement);
+		m_db_handler.Finalize(statement);
+
+		// RAII for database disconnection
+		if (!m_db_handler.DisConn(this->m_db_path.c_str())) {
+			logger.Error("Failed to disconnect from the database.");
 			return false;
+		}
+
 		return true;
 	}
-	catch (...)
-	{
-		mw::Logger logger;
-		logger.Error("Exception occured at bool mwModel::AddTask(mwTask& task)");
-		m_db_handler.DisConn(this->m_db_path.c_str());
+	catch (const std::exception& e) {
+		logger.Error("Exception occurred: " + std::string(e.what()));
 		return false;
 	}
 }
 
-bool Model::ConnectDb()
+bool Model::ConnectDataBase()
 {
 	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 		throw "Failed to connect to DB ";
