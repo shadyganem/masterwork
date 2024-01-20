@@ -81,7 +81,7 @@ void mw::Controller::SetStatusBarText(const wxString& txt)
 	m_mutex.Lock();
 	m_status_bar_text = txt;
 	m_mutex.Unlock();
-	PostUpdateUI(MAIN_FRAME_ID);
+	this->PostUpdateUI(MAIN_FRAME_ID);
 }
 
 void mw::Controller::SetStatusBar(const wxString& txt,const wxColour& color)
@@ -90,7 +90,7 @@ void mw::Controller::SetStatusBar(const wxString& txt,const wxColour& color)
 	m_status_bar_text = txt;
 	m_status_bar_colour = color;
 	m_mutex.Unlock();
-	PostUpdateUI(MAIN_FRAME_ID);
+	this->PostUpdateUI(MAIN_FRAME_ID);
 }
 
 wxString mw::Controller::GetStatusBarText(void)

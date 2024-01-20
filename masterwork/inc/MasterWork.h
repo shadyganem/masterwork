@@ -13,7 +13,7 @@ public:
 	virtual bool OnInit();
 
 private:
-	void OnLogin(wxCommandEvent& event);
+	void OnLoginSuccess(wxCommandEvent& event);
 	mw::MainFrame* m_main_frame = nullptr;
 	wxSingleInstanceChecker m_checker;
 };
