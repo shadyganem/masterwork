@@ -28,285 +28,381 @@ bool Model::InitModel()
 	return true;
 }
 
-bool Model::AddUser(mw::User& user)
-{
-	try
-	{
-		if (this->ConnectDataBase() == false)
-			return false;
-		
-		std::string sql = "INSERT INTO users(username, is_active, status, hashed_password, is_password_protected)"
-			"VALUES (\"" + user.username + "\" ,"
-			+ std::to_string(user.is_active) + ", "
-			+ std::to_string(user.status) + ", "
-			+ " \"" + user.hashed_password + "\" ,"
-			+ std::to_string(user.is_password_protected) +
-			" ); ";
-
-		m_db_handler.ExeQuery(sql.c_str());
-
-		sql = "SELECT MAX(uid) AS max_uid from users;";
-		Records records;
-
-		m_db_handler.Select(sql.c_str(), records);
-		if (records.empty())
-		{
-			m_db_handler.DisConn(this->m_db_path.c_str());
-			return false;
-		}
-		Record row = records[0];
-		user.uid = std::stoi(row[0]);
-		if (this->DisconnectDb() == false)
-			return false;
-		return true;
-	}
-	catch (...)
-	{
-		mw::Logger logger;
-		logger.Debug("Exception while adding user");
-		this->DisconnectDb();
-		return false;
-	}
-}
-
-bool Model::AddProject(mw::Project& project)
-{
-	try
-	{
-		if (this->ConnectDataBase() == false)
-			return false;
-		std::string sql = "INSERT INTO projects(user_uid, name, start_time, is_active) "
-			"VALUES (\"" + std::to_string(project.user_uid) + "\"  ,"
-			"\"" + project.name + "\" ,"
-			+ std::to_string(project.start_time) + ", "
-			+ std::to_string(project.is_active) +
-			");";
-
-		m_db_handler.ExeQuery(sql.c_str());
-
-		sql = "SELECT MAX(uid) AS max_uid from projects;";
-		Records records;
-
-		m_db_handler.Select(sql.c_str(), records);
-		if (records.empty())
-		{
-			m_db_handler.DisConn(this->m_db_path.c_str());
-			return false;
-		}
-		Record row = records[0];
-		project.uid = std::stoi(row[0]);
-
-		if (this->DisconnectDb() == false)
-			return false;
-		return true;
-	}
-	catch (...)
-	{
-		mw::Logger logger;
-		logger.Debug("Exception while adding project");
-		this->DisconnectDb();
-		return false;
-	}
-
-}
-
-bool Model::AddTask(mw::Task& task)
+bool Model::AddUser(mw::User& user) 
 {
 	mw::Logger logger;
-	try
-	{
-		task.StampLastUpdateTime();
-		if (task.project_uid == 0)
-		{
-			throw("Can not add task with UID = 0");
-		}
-		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
+
+	try {
+		// RAII for database connection
+		if (!this->ConnectDataBase()) {
+			logger.Error("Failed to connect to the database.");
 			return false;
+		}
 
-		int noti_en; 
-		noti_en = (task.notification_enabled == true) ? 1 : 0;
-		std::string sql = "INSERT INTO tasks(name, parent_uid, description, status, priority, start_time, deadline, project_uid, last_update, notification_enabled)"
-			"VALUES (\"" + task.name + "\"  ,"
-			+ std::to_string(task.parent_uid) + ","
-			"\"" + task.description + "\"  ,"
-			+ std::to_string(task.status) + ","
-			+ std::to_string(task.priority) + ","
-			+ std::to_string(task.creation_time) + ","
-			+ std::to_string(task.deadline) + ","
-			+ std::to_string(task.project_uid) + ", "
-			+ std::to_string(task.last_update) + ", "
-			+ std::to_string(noti_en) + " "
-			"); ";
-		m_db_handler.ExeQuery(sql.c_str());
+		// Use parameterized query
+		std::string sql = "INSERT INTO users(username, is_active, status, hashed_password, is_password_protected) "
+			"VALUES (?, ?, ?, ?, ?);";
 
-		sql.clear();
-		sql = "SELECT MAX(uid) FROM tasks;";
+		logger.Info("Executing query: " + sql);
 
+		sqlite3_stmt* statement;
+		m_db_handler.Prepare(sql.c_str(), &statement);
+
+		// Bind parameters
+		sqlite3_bind_text(statement, 1, user.username.c_str(), -1, SQLITE_STATIC);
+		sqlite3_bind_int(statement, 2, user.is_active);
+		sqlite3_bind_int(statement, 3, user.status);
+		sqlite3_bind_text(statement, 4, user.hashed_password.c_str(), -1, SQLITE_STATIC);
+		sqlite3_bind_int(statement, 5, user.is_password_protected);
+
+		// Execute the statement
+		m_db_handler.Step(statement);
+		m_db_handler.Finalize(statement);
+
+		// Get the inserted user's uid
+		sql = "SELECT last_insert_rowid() AS max_uid;";
 		Records records;
-
 		m_db_handler.Select(sql.c_str(), records);
-		if (records.empty())
-		{
+
+		if (records.empty()) {
+			logger.Error("Failed to retrieve the new user's uid.");
+			this->DisconnectDb();
+			return false;
+		}
+
+		user.uid = std::stoi(records[0][0]);
+
+		// RAII for database disconnection
+		if (!this->DisconnectDb()) {
+			logger.Error("Failed to disconnect from the database.");
+			return false;
+		}
+
+		return true;
+	}
+	catch (const std::exception& e) {
+		logger.Error("Exception occurred: " + std::string(e.what()));
+		this->DisconnectDb();
+		return false;
+	}
+}
+
+bool Model::AddProject(mw::Project& project) 
+{
+	mw::Logger logger;
+
+	try {
+		// RAII for database connection
+		if (!this->ConnectDataBase()) {
+			logger.Error("Failed to connect to the database.");
+			return false;
+		}
+
+		// Use parameterized query
+		std::string sql = "INSERT INTO projects(user_uid, name, start_time, is_active) "
+			"VALUES (?, ?, ?, ?);";
+
+		sqlite3_stmt* statement;
+		m_db_handler.Prepare(sql.c_str(), &statement);
+
+		// Bind parameters
+		sqlite3_bind_int64(statement, 1, project.user_uid);
+		sqlite3_bind_text(statement, 2, project.name.c_str(), -1, SQLITE_STATIC);
+		sqlite3_bind_int64(statement, 3, project.start_time);
+		sqlite3_bind_int(statement, 4, project.is_active);
+
+		// Execute the statement
+		m_db_handler.Step(statement);
+		m_db_handler.Finalize(statement);
+
+		// Get the inserted project's uid
+		sql = "SELECT last_insert_rowid() AS max_uid;";
+		Records records;
+		m_db_handler.Select(sql.c_str(), records);
+
+		if (records.empty()) {
+			logger.Error("Failed to retrieve the new project's uid.");
+			this->DisconnectDb();
+			return false;
+		}
+
+		project.uid = std::stoi(records[0][0]);
+
+		// RAII for database disconnection
+		if (!this->DisconnectDb()) {
+			logger.Error("Failed to disconnect from the database.");
+			return false;
+		}
+
+		return true;
+	}
+	catch (const std::exception& e) {
+		logger.Error("Exception occurred: " + std::string(e.what()));
+		this->DisconnectDb();
+		return false;
+	}
+}
+
+bool Model::AddTask(mw::Task& task) {
+	mw::Logger logger;
+
+	try {
+		task.StampLastUpdateTime();
+
+		// Check if project UID is valid
+		if (task.project_uid == 0) {
+			throw std::runtime_error("Cannot add task with project_uid = 0");
+		}
+
+		// RAII for database connection
+		if (!m_db_handler.Conn(this->m_db_path.c_str())) {
+			logger.Error("Failed to connect to the database.");
+			return false;
+		}
+
+		// Use parameterized query
+		std::string sql = "INSERT INTO tasks(name, parent_uid, description, status, priority, start_time, deadline, project_uid, last_update, notification_enabled) "
+			"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+
+		logger.Info("Executing query: " + sql);
+
+		sqlite3_stmt* statement;
+		m_db_handler.Prepare(sql.c_str(), &statement);
+
+		// Bind parameters
+		sqlite3_bind_text(statement, 1, task.name.c_str(), -1, SQLITE_STATIC);
+		sqlite3_bind_int64(statement, 2, task.parent_uid);
+		sqlite3_bind_text(statement, 3, task.description.c_str(), -1, SQLITE_STATIC);
+		sqlite3_bind_int(statement, 4, task.status);
+		sqlite3_bind_int(statement, 5, task.priority);
+		sqlite3_bind_int64(statement, 6, task.creation_time);
+		sqlite3_bind_int64(statement, 7, task.deadline);
+		sqlite3_bind_int64(statement, 8, task.project_uid);
+		sqlite3_bind_int64(statement, 9, task.last_update);
+		sqlite3_bind_int(statement, 10, task.notification_enabled ? 1 : 0);
+
+		// Execute the statement
+		m_db_handler.Step(statement);
+		m_db_handler.Finalize(statement);
+
+		// Get the inserted task's uid
+		sql = "SELECT last_insert_rowid() AS max_uid;";
+		Records records;
+		m_db_handler.Select(sql.c_str(), records);
+
+		if (records.empty()) {
+			logger.Error("Failed to retrieve the new task's uid.");
 			m_db_handler.DisConn(this->m_db_path.c_str());
 			return false;
 		}
-		Record row = records[0];
-		task.uid = std::stoi(row[0]);
 
+		task.uid = std::stoi(records[0][0]);
 
-		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
+		// RAII for database disconnection
+		if (!m_db_handler.DisConn(this->m_db_path.c_str())) {
+			logger.Error("Failed to disconnect from the database.");
 			return false;
-		return true;
+		}
 
+		return true;
 	}
-	catch (...)
-	{
-		logger.Error("Exception occured at bool mwModel::AddTask(mwTask& task)");
+	catch (const std::exception& e) {
+		logger.Error("Exception occurred: " + std::string(e.what()));
 		m_db_handler.DisConn(this->m_db_path.c_str());
 		return false;
 	}
 }
 
-bool Model::AddNotification(mw::Notification& notification)
-{
+bool Model::AddNotification(mw::Notification& notification) {
 	mw::Logger logger;
-	try
-	{
+
+	try {
 		notification.StampLastUpdateTime();
 		notification.Hash();
-		if (notification.user_uid == 0)
-		{
-			throw("Can not add Notification with user UID = 0");
-		}
-		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
-			return false;
 
+		// Check if user UID is valid
+		if (notification.user_uid == 0) {
+			throw std::runtime_error("Cannot add Notification with user UID = 0");
+		}
+
+		// RAII for database connection
+		if (!m_db_handler.Conn(this->m_db_path.c_str())) {
+			logger.Error("Failed to connect to the database.");
+			return false;
+		}
+
+		// Use parameterized query to check for existing hash
+		std::string sqlCheckHash = "SELECT * FROM notifications WHERE hash=?;";
 		Records records;
 
+		sqlite3_stmt* statement;
+		m_db_handler.Prepare(sqlCheckHash.c_str(), &statement);
+		sqlite3_bind_int64(statement, 1, notification.hash);
 
-		std::string sql = "SELECT * FROM notifications WHERE hash=" + std::to_string(notification.hash) + " ;";
+		//m_db_handler.SelectPrepared(statement, records);
+		m_db_handler.Finalize(statement);
 
-		m_db_handler.Select(sql.c_str(), records);
-
-
-		if (records.size() > 0)
-		{
+		if (!records.empty()) {
+			// Notification with the same hash already exists
+			if (!m_db_handler.DisConn(this->m_db_path.c_str())) {
+				logger.Error("Failed to disconnect from the database.");
+			}
 			return true;
 		}
 
-		sql = "INSERT INTO notifications(user_uid,hash, text, details, status, priority, repeat, start_time, end_time, last_update, ttl, color) "
-			              "VALUES (\"" + std::to_string(notification.user_uid) + "\" , "
-			              + std::to_string(notification.hash) + ", "
-			              "\"" + notification.text + "\","
-                          "\"" + notification.details + "\","
-			              + std::to_string(notification.status)      + ", "
-			              + std::to_string(notification.priority)    + ", "
-			              + std::to_string(notification.repeat)      +   ", "
-			              + std::to_string(notification.start_time)  + ", "
-			              + std::to_string(notification.end_time)    + ", "
-			              + std::to_string(notification.last_update) + ", "
-			              + std::to_string(notification.ttl)         + ", "
-			              + std::to_string(notification.color)       + " "
-			              "); ";
-		m_db_handler.ExeQuery(sql.c_str());
+		// Use parameterized query for inserting
+		std::string sqlInsert = "INSERT INTO notifications(user_uid, hash, text, details, status, priority, repeat, start_time, end_time, last_update, ttl, color) "
+			"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
+		logger.Info("Executing query: " + sqlInsert);
 
-		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
+		sqlite3_stmt* statementInsert;
+		m_db_handler.Prepare(sqlInsert.c_str(), &statementInsert);
+
+		// Bind parameters
+		sqlite3_bind_int64(statementInsert, 1, notification.user_uid);
+		sqlite3_bind_int64(statementInsert, 2, notification.hash);
+		sqlite3_bind_text(statementInsert, 3, notification.text.c_str(), -1, SQLITE_STATIC);
+		sqlite3_bind_text(statementInsert, 4, notification.details.c_str(), -1, SQLITE_STATIC);
+		sqlite3_bind_int(statementInsert, 5, notification.status);
+		sqlite3_bind_int(statementInsert, 6, notification.priority);
+		sqlite3_bind_int(statementInsert, 7, notification.repeat);
+		sqlite3_bind_int64(statementInsert, 8, notification.start_time);
+		sqlite3_bind_int64(statementInsert, 9, notification.end_time);
+		sqlite3_bind_int64(statementInsert, 10, notification.last_update);
+		sqlite3_bind_int64(statementInsert, 11, notification.ttl);
+		sqlite3_bind_int64(statementInsert, 12, notification.color);
+
+		// Execute the statement
+		m_db_handler.Step(statementInsert);
+		m_db_handler.Finalize(statementInsert);
+
+		// RAII for database disconnection
+		if (!m_db_handler.DisConn(this->m_db_path.c_str())) {
+			logger.Error("Failed to disconnect from the database.");
 			return false;
+		}
+
 		return true;
 
 	}
-	catch (...)
-	{
-		logger.Error("Exception occured at bool mw::Model::AddNotification(mw::Notification& notification)");
+	catch (const std::exception& e) {
+		logger.Error("Exception occurred: " + std::string(e.what()));
 		m_db_handler.DisConn(this->m_db_path.c_str());
 		return false;
 	}
 }
 
-bool Model::AddReminder(mw::Reminder& reminder)
-{
+bool Model::AddReminder(mw::Reminder& reminder) {
 	mw::Logger logger;
-	try
-	{
+
+	try {
 		reminder.StampLastUpdateTime();
 		reminder.Hash();
-		if (reminder.user_uid == 0)
-		{
-			throw("Can not add Reminder with user UID = 0");
+
+		// Check if user UID is valid
+		if (reminder.user_uid == 0) {
+			throw std::runtime_error("Cannot add Reminder with user UID = 0");
 		}
-		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
-			return false;
 
-		Records records;
-
-		std::string sql = "INSERT INTO reminders(user_uid, hash, title, text, status, priority, repeat,creation_time, reminder_time, end_time, last_update, color) "
-			"VALUES (" + std::to_string(reminder.user_uid) + ", "
-			+ std::to_string(reminder.hash) + ","
-			"\"" + reminder.title + "\","
-			"\"" + reminder.text + "\","
-			+ std::to_string(reminder.status) + ","
-			+ std::to_string(reminder.priority) + ","
-			+ std::to_string(reminder.repeat) + ","
-			+ std::to_string(reminder.creation_time) + ","
-			+ std::to_string(reminder.reminder_time) + ","
-			+ std::to_string(reminder.end_time) + ","
-		    + std::to_string(reminder.last_update) + ","
-			"\"" + reminder.color + "\""
-			"); ";
-
-		m_db_handler.ExeQuery(sql.c_str());
-
-		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
-		{
+		// RAII for database connection
+		if (!m_db_handler.Conn(this->m_db_path.c_str())) {
+			logger.Error("Failed to connect to the database.");
 			return false;
 		}
+
+		// Use parameterized query
+		std::string sql = "INSERT INTO reminders(user_uid, hash, title, text, status, priority, repeat, creation_time, reminder_time, end_time, last_update, color) "
+			"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+
+		logger.Info("Executing query: " + sql);
+
+		sqlite3_stmt* statement;
+		m_db_handler.Prepare(sql.c_str(), &statement);
+
+		// Bind parameters
+		sqlite3_bind_int64(statement, 1, reminder.user_uid);
+		sqlite3_bind_int64(statement, 2, reminder.hash);
+		sqlite3_bind_text(statement, 3, reminder.title.c_str(), -1, SQLITE_STATIC);
+		sqlite3_bind_text(statement, 4, reminder.text.c_str(), -1, SQLITE_STATIC);
+		sqlite3_bind_int(statement, 5, reminder.status);
+		sqlite3_bind_int(statement, 6, reminder.priority);
+		sqlite3_bind_int(statement, 7, reminder.repeat);
+		sqlite3_bind_int64(statement, 8, reminder.creation_time);
+		sqlite3_bind_int64(statement, 9, reminder.reminder_time);
+		sqlite3_bind_int64(statement, 10, reminder.end_time);
+		sqlite3_bind_int64(statement, 11, reminder.last_update);
+		sqlite3_bind_text(statement, 12, reminder.color.c_str(), -1, SQLITE_STATIC);
+
+		// Execute the statement
+		m_db_handler.Step(statement);
+		m_db_handler.Finalize(statement);
+
+		// RAII for database disconnection
+		if (!m_db_handler.DisConn(this->m_db_path.c_str())) {
+			logger.Error("Failed to disconnect from the database.");
+			return false;
+		}
+
 		return true;
 	}
-	catch (...)
-	{
-		logger.Error("Exception occured at bool Model::AddReminder(mw::Reminder& reminder)");
+	catch (const std::exception& e) {
+		logger.Error("Exception occurred: " + std::string(e.what()));
 		m_db_handler.DisConn(this->m_db_path.c_str());
 		return false;
 	}
 }
 
-bool Model::AddPassword(mw::Password& password)
-{
+bool Model::AddPassword(mw::Password& password) {
 	mw::Logger logger;
-	try
-	{
+
+	try {
 		password.StampLastUpdateTime();
 
-		if (password.user_uid == 0)
-		{
-			throw("Can not add Reminder with user UID = 0");
+		// Check if user UID is valid
+		if (password.user_uid == 0) {
+			throw std::runtime_error("Cannot add Password with user UID = 0");
 		}
-		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
+
+		// RAII for database connection
+		if (!m_db_handler.Conn(this->m_db_path.c_str())) {
+			logger.Error("Failed to connect to the database.");
 			return false;
+		}
 
-		Records records;
+		// Use parameterized query
+		std::string sql = "INSERT INTO passwords(user_uid, username, encrypted_password, url, notes, creation_time, last_update) "
+			"VALUES (?, ?, ?, ?, ?, ?, ?);";
 
-		std::string sql = "INSERT INTO passwords(user_uid, username, encrypted_password, url, notes, creation_time, last_update, color) "
-			"VALUES (" + std::to_string(password.user_uid) + ", "
-			"\"" + password.username + "\", "
-			"\"" + password.password + "\", "
-			"\"" + password.url + "\", "
-			"\"" + password.notes + "\", "
-			+ std::to_string(password.creation_time) + ", "
-			+ std::to_string(password.last_update) + ", "
-			+ std::to_string(password.color) + " "
-			"); ";
-		m_db_handler.ExeQuery(sql.c_str());
+		logger.Info("Executing query: " + sql);
 
-		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
+		sqlite3_stmt* statement;
+		m_db_handler.Prepare(sql.c_str(), &statement);
+
+		// Bind parameters
+		sqlite3_bind_int64(statement, 1, password.user_uid);
+		sqlite3_bind_text(statement, 2, password.username.c_str(), -1, SQLITE_STATIC);
+		sqlite3_bind_text(statement, 3, password.encrypted_password.c_str(), -1, SQLITE_STATIC);
+		sqlite3_bind_text(statement, 4, password.url.c_str(), -1, SQLITE_STATIC);
+		sqlite3_bind_text(statement, 5, password.notes.c_str(), -1, SQLITE_STATIC);
+		sqlite3_bind_int64(statement, 6, password.creation_time);
+		sqlite3_bind_int64(statement, 7, password.last_update);
+
+		// Execute the statement
+		m_db_handler.Step(statement);
+		m_db_handler.Finalize(statement);
+
+		// RAII for database disconnection
+		if (!m_db_handler.DisConn(this->m_db_path.c_str())) {
+			logger.Error("Failed to disconnect from the database.");
 			return false;
+		}
+
 		return true;
 
 	}
-	catch (...)
-	{
-		logger.Error("Exception occured at bool mw::Model::AddNotification(mw::Notification& notification)");
+	catch (const std::exception& e) {
+		logger.Error("Exception occurred: " + std::string(e.what()));
 		m_db_handler.DisConn(this->m_db_path.c_str());
 		return false;
 	}
@@ -763,7 +859,6 @@ bool Model::GetAllPasswords(std::vector<mw::Password>& passwords, const mw::User
 			password.notes = row[5];
 			password.creation_time = std::stoi(row[6]);
 			password.last_update = std::stoi(row[7]);
-			password.color = std::stoi(row[8]);
 
 			passwords.push_back(password);
 		}
@@ -1434,7 +1529,6 @@ bool Model::InitPasswordsTable()
 		"\"notes\"	            TEXT,                       "
 		"\"creation_time\"	 INTEGER NOT NULL,              "
 		"\"last_update\"	 INTEGER NOT NULL DEFAULT 0,    "
-		"\"color\"	         INTEGER DEFAULT -1,            "
 		"PRIMARY KEY(\"uid\" AUTOINCREMENT)                 "
 		")";
 	m_mutex.lock();

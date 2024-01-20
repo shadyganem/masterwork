@@ -21,13 +21,6 @@ namespace mw
 		std::string encrypted_password;
 		std::string url;
 		std::string notes;
-		std::time_t start_time;
-		std::time_t end_time;
-		int red;
-		int green;
-		int blue;
-		int color;
-
 	};
 }
 
