@@ -53,7 +53,6 @@ namespace mw
 
 	private:
 		void GetSelectedTasks(std::vector<mw::Task>& tasks);
-	private:
-		DECLARE_EVENT_TABLE()
+
 	};
 }

@@ -3,10 +3,6 @@
 #include <wx/dataview.h>
 #include <wx/datetime.h>
 
-BEGIN_EVENT_TABLE(mw::TasksWindow, wxScrolledWindow)
-	EVT_CUSTOM(mwUpdateUI, TASKS_WINDOW_ID, mw::TasksWindow::OnUpdateUI)
-	EVT_CUSTOM(mwProjectChanged, TASKS_WINDOW_ID, mw::TasksWindow::OnProjectChanged)
-END_EVENT_TABLE()
 
 mw::TasksWindow::TasksWindow(wxWindow* parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, const wxString& name)
 	: wxScrolledWindow(parent, winid, pos, size, style, name)
@@ -65,7 +61,8 @@ mw::TasksWindow::TasksWindow(wxWindow* parent, wxWindowID winid, const wxPoint& 
 
 	m_tasks_data_view_list->Bind(wxEVT_DATAVIEW_ITEM_CONTEXT_MENU, &mw::TasksWindow::OnItemContextMenu, this);
 	m_tasks_data_view_list->Bind(wxEVT_DATAVIEW_SELECTION_CHANGED, &mw::TasksWindow::OnSelectionChanged, this);
-
+	this->Bind(mwProjectChanged, &mw::TasksWindow::OnProjectChanged, this);
+	this->Bind(mwUpdateUI, &mw::TasksWindow::OnUpdateUI, this);
 	m_tasks_data_view_list->Connect(wxEVT_DATAVIEW_ITEM_ACTIVATED, wxDataViewEventHandler(mw::TasksWindow::OnItemActivated), nullptr, this);
 	m_toolbar->Bind(wxEVT_TOOL, &mw::TasksWindow::OnToolbarButtonClick, this);
 	m_new_task_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mw::TasksWindow::OnNewTaskButton), NULL, this);
