@@ -481,13 +481,17 @@ void mw::Controller::UpdateNotifications()
 
 void mw::Controller::PostUpdateUI(int wind_id)
 {
+
 	Logger logger;
 	if (this->m_event_handlers.count(wind_id) != 0)
 	{
 		wxEvtHandler* event_handler = this->m_event_handlers[wind_id];
+		wxPostEvent(event_handler, wxCommandEvent(mwUpdateUI, wind_id));
+		// keeping this for now if issue arise. 
+		/*wxEvtHandler* event_handler = this->m_event_handlers[wind_id];
 		wxCommandEvent* event = new wxCommandEvent(mwUpdateUI, wind_id);
 		event->SetEventObject(event_handler);
-		event_handler->QueueEvent(event);
+		event_handler->QueueEvent(event);*/
 	}
 	else
 	{

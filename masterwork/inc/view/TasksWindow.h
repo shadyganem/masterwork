@@ -13,8 +13,6 @@
 #include "view/TaskFrame.h"
 #include "mwDefines.h"
 
-#define mwID_EDIT = 1
-
 namespace mw
 {
 	class TasksWindow : public wxScrolledWindow
