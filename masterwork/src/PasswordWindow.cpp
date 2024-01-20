@@ -91,7 +91,12 @@ void mw::PasswordWindow::OnNewPasswordButton(wxCommandEvent& event)
 
 void mw::PasswordWindow::OnContextMenu(wxDataViewEvent& event)
 {
-	int count = m_passwords_data_view_list->GetSelectedItemsCount();
+	wxDataViewItem selected_item = event.GetItem();
+	if (!selected_item.IsOk())
+	{
+		return;
+	}
+	int selected_items_count = m_passwords_data_view_list->GetSelectedItemsCount();
 	// Get the mouse position
 	wxPoint pos = event.GetPosition();
 
@@ -103,22 +108,25 @@ void mw::PasswordWindow::OnContextMenu(wxDataViewEvent& event)
 
 	m_menu_selected_password = m_index_to_password_map[row];
 	wxMenu menu;
-	if (col->GetTitle() == "password" && count == 1)
+	if (selected_items_count == 1)
 	{
-		menu.Append(wxID_COPY, "Copy password To Clipboard");
-		m_text_for_copy = m_menu_selected_password.encrypted_password;
-	}
+		if (col->GetTitle() == "password")
+		{
+			menu.Append(wxID_COPY, "Copy password To Clipboard");
+			m_text_for_copy = m_menu_selected_password.encrypted_password;
+		}
 
-	if (col->GetTitle() == "url" && count == 1)
-	{
-		menu.Append(wxID_COPY, "Copy url To Clipboard");
-		m_text_for_copy = m_passwords_data_view_list->GetTextValue(row, event.GetColumn());
-	}
+		if (col->GetTitle() == "url")
+		{
+			menu.Append(wxID_COPY, "Copy url To Clipboard");
+			m_text_for_copy = m_passwords_data_view_list->GetTextValue(row, event.GetColumn());
+		}
 
-	if (col->GetTitle() == "username" && count == 1)
-	{
-		menu.Append(wxID_COPY, "Copy username To Clipboard");
-		m_text_for_copy = m_passwords_data_view_list->GetTextValue(row, event.GetColumn());
+		if (col->GetTitle() == "username")
+		{
+			menu.Append(wxID_COPY, "Copy username To Clipboard");
+			m_text_for_copy = m_passwords_data_view_list->GetTextValue(row, event.GetColumn());
+		}
 	}
 
 	//menu.Append(ID_EDIT_PASSWORD, "Edit");
@@ -136,10 +144,28 @@ void mw::PasswordWindow::OnMenuCopyClick(wxCommandEvent& event)
 
 void mw::PasswordWindow::OnMenuDeleteClick(wxCommandEvent& event)
 {
+	int selected_items_count = m_passwords_data_view_list->GetSelectedItemsCount();
+	if (selected_items_count == 0)
+	{
+		return;
+	}
 	mw::Controller& controller = mw::Controller::Get();
-	std::vector<mw::Password> passwords_for_deletion;
-	this->GetSelectedPasswords(passwords_for_deletion);
-	controller.DeletePasswords(passwords_for_deletion);
+	int answer = 0;
+	if (selected_items_count == 1)
+	{
+		answer = wxMessageBox("Are you sure you want to permanently delete this password?", "Confirm", wxYES_NO, this);
+	}
+	else if (selected_items_count > 1)
+	{
+		answer = wxMessageBox("Are you sure you want to permanently delete all selected passwords?", "Confirm", wxYES_NO, this);
+	}
+
+	if (answer == wxYES)
+	{
+		std::vector<mw::Password> passwords_for_deletion;
+		this->GetSelectedPasswords(passwords_for_deletion);
+		controller.DeletePasswords(passwords_for_deletion);
+	}
 }
 
 void mw::PasswordWindow::AddPassword(mw::Password& password)
