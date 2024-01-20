@@ -28,7 +28,7 @@ namespace mw
 		virtual void OnUpdateUI(wxEvent& event);
 		virtual void OnNewPasswordButton(wxCommandEvent& event);
 		virtual void OnContextMenu(wxDataViewEvent& event);
-		virtual void OnCopyToClipboard(wxCommandEvent& event);
+		virtual void OnMenuClick(wxCommandEvent& event);
 		virtual void AddPassword(mw::Password& password);
 
 	public:

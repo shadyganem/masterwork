@@ -566,7 +566,6 @@ bool Model::DeleteProject(mw::Project& project)
 	try
 	{
 		mw::Logger logger;
-		logger.Info("Delete Project" );
 		this->ConnectDataBase();
 
 		std::string sql = "UPDATE projects "

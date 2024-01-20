@@ -49,7 +49,7 @@ mw::PasswordWindow::PasswordWindow(wxWindow* parent, wxWindowID winid, const wxP
 
 	
 
-	Bind(wxEVT_MENU, &mw::PasswordWindow::OnCopyToClipboard, this, wxID_COPY);
+	this->Bind(wxEVT_MENU, &mw::PasswordWindow::OnMenuClick, this, wxID_COPY);
 
 	m_new_password_button->Bind(wxEVT_BUTTON, &mw::PasswordWindow::OnNewPasswordButton, this);
 	m_passwords_data_view_list->Bind(wxEVT_DATAVIEW_ITEM_CONTEXT_MENU, &mw::PasswordWindow::OnContextMenu, this);
@@ -123,7 +123,7 @@ void mw::PasswordWindow::OnContextMenu(wxDataViewEvent& event)
 	event.Skip();
 }
 
-void mw::PasswordWindow::OnCopyToClipboard(wxCommandEvent& event)
+void mw::PasswordWindow::OnMenuClick(wxCommandEvent& event)
 {
 	mw::Clipboard clipboard;
 	clipboard.CopyTextToClipboard(m_text_for_copy);

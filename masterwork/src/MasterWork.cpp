@@ -16,6 +16,7 @@ bool MasterWork::OnInit()
 
 
 	m_main_frame = new mw::MainFrame("MasterWork", wxPoint(50, 50), wxSize(1150, 635));
+
 	// first Login
 	mw::LoginFrame* login = new mw::LoginFrame(NULL);
 	login->Bind(wxEVT_COMMAND_BUTTON_CLICKED, &MasterWork::OnLoginSuccess, this);

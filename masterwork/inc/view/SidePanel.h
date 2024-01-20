@@ -59,7 +59,7 @@ namespace mw
 		virtual void OnProjectLabelChange(wxTreeEvent& event);
 		virtual void OnProjectsTreeChar(wxKeyEvent& event);
 		virtual void OnProjectsTreeRightClick(wxMouseEvent& event);
-		virtual void OnMenuDelete(wxCommandEvent& event);
+		virtual void OnMenuClick(wxCommandEvent& event);
 			
 		SidePanel(wxWindow* parent,
 			wxWindowID winid = wxID_ANY,
