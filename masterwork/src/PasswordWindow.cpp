@@ -91,7 +91,7 @@ void mw::PasswordWindow::OnNewPasswordButton(wxCommandEvent& event)
 
 void mw::PasswordWindow::OnContextMenu(wxDataViewEvent& event)
 {
-	
+	int count = m_passwords_data_view_list->GetSelectedItemsCount();
 	// Get the mouse position
 	wxPoint pos = event.GetPosition();
 
@@ -103,19 +103,19 @@ void mw::PasswordWindow::OnContextMenu(wxDataViewEvent& event)
 
 	m_menu_selected_password = m_index_to_password_map[row];
 	wxMenu menu;
-	if (col->GetTitle() == "password")
+	if (col->GetTitle() == "password" && count == 1)
 	{
 		menu.Append(wxID_COPY, "Copy password To Clipboard");
 		m_text_for_copy = m_menu_selected_password.encrypted_password;
 	}
 
-	if (col->GetTitle() == "url")
+	if (col->GetTitle() == "url" && count == 1)
 	{
 		menu.Append(wxID_COPY, "Copy url To Clipboard");
 		m_text_for_copy = m_passwords_data_view_list->GetTextValue(row, event.GetColumn());
 	}
 
-	if (col->GetTitle() == "username")
+	if (col->GetTitle() == "username" && count == 1)
 	{
 		menu.Append(wxID_COPY, "Copy username To Clipboard");
 		m_text_for_copy = m_passwords_data_view_list->GetTextValue(row, event.GetColumn());
@@ -137,9 +137,9 @@ void mw::PasswordWindow::OnMenuCopyClick(wxCommandEvent& event)
 void mw::PasswordWindow::OnMenuDeleteClick(wxCommandEvent& event)
 {
 	mw::Controller& controller = mw::Controller::Get();
-	std::vector<mw::Password> passwords;
-	passwords.push_back(m_menu_selected_password);
-	controller.DeletePasswords(passwords);
+	std::vector<mw::Password> passwords_for_deletion;
+	this->GetSelectedPasswords(passwords_for_deletion);
+	controller.DeletePasswords(passwords_for_deletion);
 }
 
 void mw::PasswordWindow::AddPassword(mw::Password& password)
@@ -152,4 +152,16 @@ void mw::PasswordWindow::AddPassword(mw::Password& password)
 	std::fill(copy.begin(), copy.end(), '*');
 	data.push_back(wxVariant(copy));
 	m_passwords_data_view_list->AppendItem(data);
+}
+
+void mw::PasswordWindow::GetSelectedPasswords(std::vector<mw::Password>& passwords)
+{
+	int row_count = m_passwords_data_view_list->GetItemCount();
+	for (int i = 0; i < row_count; i++)
+	{
+		if (m_passwords_data_view_list->IsRowSelected(i))
+		{
+			passwords.push_back(m_index_to_password_map[i]);
+		}
+	}
 }

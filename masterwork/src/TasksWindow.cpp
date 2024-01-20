@@ -63,6 +63,9 @@ mw::TasksWindow::TasksWindow(wxWindow* parent, wxWindowID winid, const wxPoint& 
 	m_tasks_data_view_list->Bind(wxEVT_DATAVIEW_SELECTION_CHANGED, &mw::TasksWindow::OnSelectionChanged, this);
 	this->Bind(mwProjectChanged, &mw::TasksWindow::OnProjectChanged, this);
 	this->Bind(mwUpdateUI, &mw::TasksWindow::OnUpdateUI, this);
+	this->Bind(wxEVT_MENU, &mw::TasksWindow::OnTaskEditClick, this, wxID_EDIT);
+	this->Bind(wxEVT_MENU, &mw::TasksWindow::OnTaskArchieveClick, this, wxID_REMOVE);
+	this->Bind(wxEVT_MENU, &mw::TasksWindow::OnTaskDeleteClick, this, wxID_DELETE);
 	m_tasks_data_view_list->Connect(wxEVT_DATAVIEW_ITEM_ACTIVATED, wxDataViewEventHandler(mw::TasksWindow::OnItemActivated), nullptr, this);
 	m_toolbar->Bind(wxEVT_TOOL, &mw::TasksWindow::OnToolbarButtonClick, this);
 	m_new_task_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mw::TasksWindow::OnNewTaskButton), NULL, this);
@@ -136,9 +139,6 @@ void mw::TasksWindow::OnItemContextMenu(wxDataViewEvent& event)
 		menu.Append(wxID_EDIT, "Edit");
 		menu.Append(wxID_REMOVE, "Archive");
 		menu.Append(wxID_DELETE, "Delete");
-		Bind(wxEVT_MENU, &mw::TasksWindow::OnTaskEditClick, this, wxID_EDIT);
-		Bind(wxEVT_MENU, &mw::TasksWindow::OnTaskArchieveClick, this, wxID_REMOVE);
-		Bind(wxEVT_MENU, &mw::TasksWindow::OnTaskDeleteClick, this, wxID_DELETE);
 		wxPoint pos = event.GetPosition();
 		PopupMenu(&menu, pos);
 	}

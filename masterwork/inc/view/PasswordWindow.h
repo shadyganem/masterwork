@@ -31,7 +31,8 @@ namespace mw
 		virtual void OnMenuCopyClick(wxCommandEvent& event);
 		virtual void OnMenuDeleteClick(wxCommandEvent& event);
 		virtual void AddPassword(mw::Password& password);
-
+	private:
+		void GetSelectedPasswords(std::vector<mw::Password>& passwords);
 	public:
 
 		wxToolBar* m_toolbar;
