@@ -45,6 +45,7 @@ namespace mw
 		void DeleteTask(Task& task);
 		void DeleteTasks(std::vector<mw::Task>& tasks);
 		void DeleteReminders(std::vector<mw::Reminder>& reminders);
+		void DeletePasswords(std::vector<mw::Password>& passwords);
 ;		void ArchiveTask(Task& task);
 		void ArchiveTasks(std::vector<mw::Task>& tasks);
 		void UnarchiveTask(Task& task);

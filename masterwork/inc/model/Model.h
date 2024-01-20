@@ -30,6 +30,7 @@ public:
 	bool SetActiveUser(mw::User& user);
 	bool DeleteTask(mw::Task& task);
 	bool DeleteReminder(mw::Reminder& reminder);
+	bool DeletePassword(mw::Password& password);
 	bool ArchiveTask(mw::Task& task);
 	bool UnarchiveTask(mw::Task& task);
 	bool DeleteProject(mw::Project& project);

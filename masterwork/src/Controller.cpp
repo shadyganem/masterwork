@@ -175,6 +175,17 @@ void mw::Controller::DeleteReminders(std::vector<mw::Reminder>& reminders)
 	PostUpdateUI(REMINDERS_WINDOW_ID);
 }
 
+void mw::Controller::DeletePasswords(std::vector<mw::Password>& passwords)
+{
+	for (int i = 0; i < passwords.size(); i++)
+	{
+		m_mutex.Lock();
+		m_model.DeletePassword(passwords[i]);
+		m_mutex.Unlock();
+	}
+	PostUpdateUI(PASSWORDS_WINDOW_ID);
+}
+
 void mw::Controller::ArchiveTask(Task& task)
 {
 	task.StampLastUpdateTime();

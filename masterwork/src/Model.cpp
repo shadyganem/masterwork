@@ -518,6 +518,25 @@ bool Model::DeleteReminder(mw::Reminder& reminder)
 
 }
 
+bool Model::DeletePassword(mw::Password& password)
+{
+	try
+	{
+		this->ConnectDataBase();
+
+		std::string sql = "DELETE FROM passwords WHERE uid=" + std::to_string(password.uid) + " ;";
+
+		m_db_handler.ExeQuery(sql.c_str());
+
+		this->DisconnectDb();
+	}
+	catch (...)
+	{
+		this->DisconnectDb();
+		return false;
+	}
+}
+
 bool Model::ArchiveTask(mw::Task& task)
 {
 	try

@@ -49,7 +49,8 @@ mw::PasswordWindow::PasswordWindow(wxWindow* parent, wxWindowID winid, const wxP
 
 	
 
-	this->Bind(wxEVT_MENU, &mw::PasswordWindow::OnMenuClick, this, wxID_COPY);
+	this->Bind(wxEVT_MENU, &mw::PasswordWindow::OnMenuCopyClick, this, wxID_COPY);
+	this->Bind(wxEVT_MENU, &mw::PasswordWindow::OnMenuDeleteClick, this, wxID_DELETE);
 
 	m_new_password_button->Bind(wxEVT_BUTTON, &mw::PasswordWindow::OnNewPasswordButton, this);
 	m_passwords_data_view_list->Bind(wxEVT_DATAVIEW_ITEM_CONTEXT_MENU, &mw::PasswordWindow::OnContextMenu, this);
@@ -99,36 +100,46 @@ void mw::PasswordWindow::OnContextMenu(wxDataViewEvent& event)
 	wxDataViewColumn* col;
 	m_passwords_data_view_list->HitTest(pos, item, col);
 	int row = m_passwords_data_view_list->ItemToRow(item);
+
+	m_menu_selected_password = m_index_to_password_map[row];
 	wxMenu menu;
 	if (col->GetTitle() == "password")
 	{
 		menu.Append(wxID_COPY, "Copy password To Clipboard");
-		mw::Password password = m_index_to_password_map[row];
-		m_text_for_copy = password.encrypted_password;
-		PopupMenu(&menu);
+		m_text_for_copy = m_menu_selected_password.encrypted_password;
 	}
 
 	if (col->GetTitle() == "url")
 	{
 		menu.Append(wxID_COPY, "Copy url To Clipboard");
 		m_text_for_copy = m_passwords_data_view_list->GetTextValue(row, event.GetColumn());
-		PopupMenu(&menu);
 	}
 
 	if (col->GetTitle() == "username")
 	{
 		menu.Append(wxID_COPY, "Copy username To Clipboard");
 		m_text_for_copy = m_passwords_data_view_list->GetTextValue(row, event.GetColumn());
-		PopupMenu(&menu);
 	}
+
+	//menu.Append(ID_EDIT_PASSWORD, "Edit");
+	menu.Append(wxID_DELETE, "Delete");
+	PopupMenu(&menu);
 	event.Skip();
 }
 
-void mw::PasswordWindow::OnMenuClick(wxCommandEvent& event)
+void mw::PasswordWindow::OnMenuCopyClick(wxCommandEvent& event)
 {
 	mw::Clipboard clipboard;
 	clipboard.CopyTextToClipboard(m_text_for_copy);
 	m_text_for_copy.clear();
+}
+
+void mw::PasswordWindow::OnMenuDeleteClick(wxCommandEvent& event)
+{
+	mw::Controller& controller = mw::Controller::Get();
+	std::vector<mw::Password> passwords;
+	passwords.push_back(m_menu_selected_password);
+	controller.DeletePasswords(passwords);
 }
 
 void mw::PasswordWindow::AddPassword(mw::Password& password)
