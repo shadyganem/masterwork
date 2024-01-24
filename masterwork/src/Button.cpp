@@ -3,14 +3,12 @@
 mw::Button::Button(wxWindow* parent, wxWindowID id, const wxString& label, const wxPoint& pos, const wxSize& size, long style, const wxValidator& validator, const wxString& name) : wxButton(parent, id, label, pos, size, style, validator, name)
 {
 	m_hover_colour = wxColour(255, 255, 255);
-	this->Connect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(Button::OnEnterWindow), NULL, this);
-	this->Connect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(Button::OnLeaveWindow), NULL, this);
+	this->Bind(wxEVT_ENTER_WINDOW, &mw::Button::OnEnterWindow, this, NULL);
+	this->Bind(wxEVT_LEAVE_WINDOW, &mw::Button::OnLeaveWindow, this, NULL);
 }
 
 mw::Button::~Button()
 {
-	this->Disconnect(wxEVT_ENTER_WINDOW, wxMouseEventHandler(Button::OnEnterWindow), NULL, this);
-	this->Disconnect(wxEVT_LEAVE_WINDOW, wxMouseEventHandler(Button::OnLeaveWindow), NULL, this);
 }
 
 void mw::Button::OnEnterWindow(wxMouseEvent& event)
