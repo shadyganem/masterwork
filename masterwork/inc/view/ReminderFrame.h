@@ -7,7 +7,7 @@
 #include "wx/wx.h"
 #include "controller/Controller.h"
 #include <wx/clrpicker.h>
-
+#include "view/Button.h"
 
 namespace mw
 {
@@ -21,15 +21,21 @@ namespace mw
 		void SetReminder(const mw::Reminder& reminder);
 	private:
 		void OnSaveButton(wxCommandEvent& event);
+		void OnCancelButton(wxCommandEvent& event);
+		void OnRepeatOptionsChange(wxCommandEvent& event);
+		void HideAllRepeatOptions();
 		mw::Reminder m_reminder;
 		// Member variables for the form components
 		wxTextCtrl* title_input;
 		wxTextCtrl* text_input;
-		wxButton* save_button;
+		mw::Button* m_save_button;
+		mw::Button* m_cancel_button;
 		bool m_new_reminder;
 		wxChoice* m_repeat_options;
 		wxCheckListBox* m_alert_options_checklist_box;
 		wxColourPickerCtrl* m_color_picker;
+		wxStaticBoxSizer* m_options_box;
+		wxBoxSizer* m_v_sizer;
 	};
 }
 
