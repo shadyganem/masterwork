@@ -33,6 +33,7 @@ namespace mw
 		bool m_new_reminder;
 		wxChoice* m_repeat_options;
 		wxCheckListBox* m_alert_options_checklist_box;
+		wxCheckListBox* m_days_of_the_week;
 		wxColourPickerCtrl* m_color_picker;
 		wxStaticBoxSizer* m_options_box;
 		wxBoxSizer* m_v_sizer;

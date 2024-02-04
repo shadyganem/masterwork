@@ -79,3 +79,16 @@ std::vector<std::string> mw::Reminder::GetAlertOptions()
 	return options;
 }
 
+std::vector<std::string> mw::Reminder::GetDaysOfTheWeekOptions()
+{
+	std::vector<std::string> options;
+	options.push_back("Sunday");
+	options.push_back("Monday");
+	options.push_back("Tuesday");
+	options.push_back("Wednesday");
+	options.push_back("Thursday");
+	options.push_back("Friday");
+	options.push_back("Saturday");
+	return options;
+}
+

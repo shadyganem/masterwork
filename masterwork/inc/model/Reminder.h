@@ -33,6 +33,7 @@ namespace mw
 		std::string RepeatOptionToString(mw::ReminderRepeatOptions option);
 		static std::vector<std::string> GetRepeatOptions();
 		static std::vector<std::string> GetAlertOptions();
+		static std::vector<std::string> GetDaysOfTheWeekOptions();
 		
 	public:
 		int user_uid;

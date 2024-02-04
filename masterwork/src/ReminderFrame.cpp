@@ -26,6 +26,14 @@ mw::ReminderFrame::ReminderFrame(wxWindow* parent, wxWindowID id, const wxString
     // Create a wxCheckListBox for multi-selection
     m_alert_options_checklist_box = new wxCheckListBox(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxStringArray);
 
+
+    options.clear();
+    options = mw::Reminder::GetDaysOfTheWeekOptions();
+    wxStringArray.Clear();
+    wxStringArray.assign(options.begin(), options.end());
+
+    m_days_of_the_week = new wxCheckListBox(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxStringArray);
+
     // Create a vertical sizer to arrange the components
     m_v_sizer = new wxBoxSizer(wxVERTICAL);
 
@@ -42,6 +50,7 @@ mw::ReminderFrame::ReminderFrame(wxWindow* parent, wxWindowID id, const wxString
     m_options_box->Add(m_repeat_options, 0, wxALL, 5);
     m_options_box->Add(m_color_picker, 0, wxALL, 5);
     m_options_box->Add(m_alert_options_checklist_box, 0, wxALL, 5);
+    m_options_box->Add(m_days_of_the_week, 0, wxALL, 5);
 
 
     m_v_sizer->Add(m_options_box, 0, wxEXPAND | wxALL, 10);
