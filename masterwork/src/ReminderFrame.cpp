@@ -1,4 +1,6 @@
 #include "view/ReminderFrame.h"
+#include <chrono>
+#include <ctime>
 
 mw::ReminderFrame::ReminderFrame(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style) 
 	: wxFrame(parent, id, title, pos, size, style)
@@ -34,6 +36,20 @@ mw::ReminderFrame::ReminderFrame(wxWindow* parent, wxWindowID id, const wxString
 
     m_days_of_the_week = new wxCheckListBox(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxStringArray);
 
+    // Create a dropdown list for selecting the day of the month
+    wxString days[] = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" ,"16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"};
+    wxArrayString daysArray(31, days);
+    wxComboBox* dayDropdown = new wxComboBox(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, daysArray, wxCB_DROPDOWN | wxCB_READONLY);
+
+
+
+    m_alert_date = new wxDatePickerCtrl(this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DROPDOWN | wxDP_SHOWCENTURY);
+    m_alert_time = new mw::TimePicker(this, wxID_ANY);
+    auto now = std::chrono::system_clock::now();
+    std::time_t currentTime = std::chrono::system_clock::to_time_t(now);
+    std::tm* localTime = std::localtime(&currentTime);
+    m_alert_time->SetTime(localTime->tm_hour+1, 0, 0);
+
     // Create a vertical sizer to arrange the components
     m_v_sizer = new wxBoxSizer(wxVERTICAL);
 
@@ -48,9 +64,12 @@ mw::ReminderFrame::ReminderFrame(wxWindow* parent, wxWindowID id, const wxString
     // Group Options using StaticBoxSizer
     m_options_box = new wxStaticBoxSizer(wxVERTICAL, this, "Options");
     m_options_box->Add(m_repeat_options, 0, wxALL, 5);
+    m_options_box->Add(m_alert_date, 0, wxALL, 5);
+    m_options_box->Add(m_alert_time, 0, wxALL, 5);
     m_options_box->Add(m_color_picker, 0, wxALL, 5);
     m_options_box->Add(m_alert_options_checklist_box, 0, wxALL, 5);
     m_options_box->Add(m_days_of_the_week, 0, wxALL, 5);
+    m_options_box->Add(dayDropdown, 0, wxALL, 5);
 
 
     m_v_sizer->Add(m_options_box, 0, wxEXPAND | wxALL, 10);

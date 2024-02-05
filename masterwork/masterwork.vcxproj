@@ -65,6 +65,7 @@
     <ClInclude Include="inc\view\PreferencesFrame.h" />
     <ClInclude Include="inc\view\LoginFrame.h" />
     <ClInclude Include="inc\model\SqlStatement.h" />
+    <ClInclude Include="inc\view\TimePicker.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\SqlStatement.cpp" />
@@ -112,6 +113,7 @@
     <ClCompile Include="src\TaskEditPanel.cpp" />
     <ClCompile Include="src\StagehandThread.cpp" />
     <ClCompile Include="src\TitleBar.cpp" />
+    <ClCompile Include="src\TimePicker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="resources\style\style.xml" />

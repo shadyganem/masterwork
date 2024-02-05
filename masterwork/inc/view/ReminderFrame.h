@@ -8,6 +8,9 @@
 #include "controller/Controller.h"
 #include <wx/clrpicker.h>
 #include "view/Button.h"
+#include <wx/datectrl.h>
+#include "view/TimePicker.h"
+
 
 namespace mw
 {
@@ -33,6 +36,8 @@ namespace mw
 		bool m_new_reminder;
 		wxChoice* m_repeat_options;
 		wxCheckListBox* m_alert_options_checklist_box;
+		wxDatePickerCtrl* m_alert_date;
+		mw::TimePicker* m_alert_time;
 		wxCheckListBox* m_days_of_the_week;
 		wxColourPickerCtrl* m_color_picker;
 		wxStaticBoxSizer* m_options_box;

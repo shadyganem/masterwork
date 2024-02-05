@@ -61,9 +61,7 @@ std::vector<std::string> mw::Reminder::GetRepeatOptions()
 	options.push_back("One-Time");
 	options.push_back("Specific Days of the Week");
 	options.push_back("Once a Month");
-	options.push_back("Once a Year");
-	options.push_back("Bi-Weekly");
-	options.push_back("Quarterly");
+	options.push_back("Bi-Weekly");	
 	// TODO: implement the custom option
 	//options.push_back("Custom");
 	return options;
