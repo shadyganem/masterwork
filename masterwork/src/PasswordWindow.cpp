@@ -85,7 +85,7 @@ void mw::PasswordWindow::OnUpdateUI(wxEvent& event)
 
 void mw::PasswordWindow::OnNewPasswordButton(wxCommandEvent& event)
 {
-	mw::NewPasswordFrame* new_password_frame = new mw::NewPasswordFrame(this);
+	mw::PasswordFrame* new_password_frame = new mw::PasswordFrame(this);
 	new_password_frame->Center();
 	new_password_frame->Show();
 }
@@ -172,11 +172,17 @@ void mw::PasswordWindow::OnMenuDeleteClick(wxCommandEvent& event)
 
 void mw::PasswordWindow::OnMenuEditClick(wxCommandEvent& event)
 {
-	// TODO: handle the edit click event 
-	// open a frame for edting passwords
-	//mw::NewPasswordFrame* password_frame = new mw::NewPasswordFrame(this);
-	//password_frame->Center();
-	//password_frame->Show();
+	std::vector<mw::Password> passwords;
+	this->GetSelectedPasswords(passwords);
+	
+	for (int i = 0; i < passwords.size(); i++)
+	{
+		mw::PasswordFrame* password_frame = new mw::PasswordFrame(this);
+		password_frame->SetPassword(passwords[i]);
+		password_frame->Center();
+		password_frame->Show();
+		
+	}
 }
 
 void mw::PasswordWindow::AddPassword(mw::Password& password)

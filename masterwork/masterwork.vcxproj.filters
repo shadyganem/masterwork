@@ -129,7 +129,7 @@
     <ClInclude Include="inc\model\Password.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\view\NewPasswordFrame.h">
+    <ClInclude Include="inc\view\PasswordFrame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\view\LoginDialog.h">
@@ -269,7 +269,7 @@
     <ClCompile Include="src\Password.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\NewPasswordFrame.cpp">
+    <ClCompile Include="src\PasswordFrame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\LoginDialog.cpp">

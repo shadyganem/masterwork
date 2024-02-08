@@ -6,7 +6,7 @@
 #include "mwDefines.h"
 #include <wx/dataview.h>
 #include "view/Button.h"
-#include "view/NewPasswordFrame.h"
+#include "view/PasswordFrame.h"
 #include "model/Password.h"
 #include "controller/Clipboard.h"
 
@@ -16,13 +16,7 @@ namespace mw
     class PasswordWindow : public wxScrolledWindow
     {
 	public:
-		PasswordWindow(wxWindow* parent,
-			wxWindowID winid = wxID_ANY,
-			const wxPoint& pos = wxDefaultPosition,
-			const wxSize& size = wxDefaultSize,
-			long style = wxScrolledWindowStyle,
-			const wxString& name = wxASCII_STR(wxPanelNameStr));
-
+		PasswordWindow(wxWindow* parent, wxWindowID winid = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxScrolledWindowStyle, const wxString& name = wxASCII_STR(wxPanelNameStr));
 		~PasswordWindow();
 
 		virtual void OnUpdateUI(wxEvent& event);

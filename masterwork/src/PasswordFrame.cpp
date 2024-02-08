@@ -1,6 +1,6 @@
-#include "view/NewPasswordFrame.h"
+#include "view/PasswordFrame.h"
 
-mw::NewPasswordFrame::NewPasswordFrame(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style) 
+mw::PasswordFrame::PasswordFrame(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style) 
 	: wxFrame(parent, id, title, pos, size, style)
 {
     // Create main sizer
@@ -32,18 +32,28 @@ mw::NewPasswordFrame::NewPasswordFrame(wxWindow* parent, wxWindowID id, const wx
 
     // Create Add button
     wxButton* addButton = new wxButton(this, wxID_ANY, wxT("Add"));
-    addButton->Bind(wxEVT_BUTTON, &NewPasswordFrame::OnAddButtonClicked, this);
+    addButton->Bind(wxEVT_BUTTON, &PasswordFrame::OnAddButtonClicked, this);
     mainSizer->Add(addButton, 0, wxALL | wxALIGN_CENTER, 10);
 
     // Set the main sizer for the frame
     SetSizerAndFit(mainSizer);
 }
 
-mw::NewPasswordFrame::~NewPasswordFrame()
+mw::PasswordFrame::~PasswordFrame()
 {
 }
 
-void mw::NewPasswordFrame::OnAddButtonClicked(wxCommandEvent& event)
+void mw::PasswordFrame::SetPassword(mw::Password password)
+{
+    this->m_password = password;
+    this->SetTitle(this->m_password.username);
+    username_textctrl->SetValue(m_password.username);
+    password_textctrl->SetValue(m_password.encrypted_password);
+    url_textctrl->SetValue(m_password.url);
+    notes_textctrl->SetValue(m_password.notes);
+}
+
+void mw::PasswordFrame::OnAddButtonClicked(wxCommandEvent& event)
 {
     
 

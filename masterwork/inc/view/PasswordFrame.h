@@ -11,12 +11,13 @@
 
 namespace mw
 {
-    class NewPasswordFrame : public wxFrame
+    class PasswordFrame : public wxFrame
     {
 
     public:
-        NewPasswordFrame(wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Password"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(450, 400), long style = wxDEFAULT_FRAME_STYLE | wxFRAME_FLOAT_ON_PARENT | wxTAB_TRAVERSAL);
-        ~NewPasswordFrame();
+        PasswordFrame(wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Password"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(800, 800), long style = wxDEFAULT_FRAME_STYLE | wxFRAME_FLOAT_ON_PARENT | wxTAB_TRAVERSAL);
+        ~PasswordFrame();
+        virtual void SetPassword(mw::Password password);
     private:
         virtual void OnAddButtonClicked(wxCommandEvent& event);
     private:
