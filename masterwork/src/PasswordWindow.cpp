@@ -51,6 +51,7 @@ mw::PasswordWindow::PasswordWindow(wxWindow* parent, wxWindowID winid, const wxP
 
 	this->Bind(wxEVT_MENU, &mw::PasswordWindow::OnMenuCopyClick, this, wxID_COPY);
 	this->Bind(wxEVT_MENU, &mw::PasswordWindow::OnMenuDeleteClick, this, wxID_DELETE);
+	this->Bind(wxEVT_MENU, &mw::PasswordWindow::OnMenuEditClick, this, wxID_EDIT);
 
 	m_new_password_button->Bind(wxEVT_BUTTON, &mw::PasswordWindow::OnNewPasswordButton, this);
 	m_passwords_data_view_list->Bind(wxEVT_DATAVIEW_ITEM_CONTEXT_MENU, &mw::PasswordWindow::OnContextMenu, this);
@@ -129,8 +130,9 @@ void mw::PasswordWindow::OnContextMenu(wxDataViewEvent& event)
 		}
 	}
 
-	//menu.Append(ID_EDIT_PASSWORD, "Edit");
+	menu.Append(wxID_EDIT, "Edit");
 	menu.Append(wxID_DELETE, "Delete");
+
 	PopupMenu(&menu);
 	event.Skip();
 }
@@ -166,6 +168,15 @@ void mw::PasswordWindow::OnMenuDeleteClick(wxCommandEvent& event)
 		this->GetSelectedPasswords(passwords_for_deletion);
 		controller.DeletePasswords(passwords_for_deletion);
 	}
+}
+
+void mw::PasswordWindow::OnMenuEditClick(wxCommandEvent& event)
+{
+	// TODO: handle the edit click event 
+	// open a frame for edting passwords
+	//mw::NewPasswordFrame* password_frame = new mw::NewPasswordFrame(this);
+	//password_frame->Center();
+	//password_frame->Show();
 }
 
 void mw::PasswordWindow::AddPassword(mw::Password& password)

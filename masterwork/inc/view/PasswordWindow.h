@@ -30,6 +30,7 @@ namespace mw
 		virtual void OnContextMenu(wxDataViewEvent& event);
 		virtual void OnMenuCopyClick(wxCommandEvent& event);
 		virtual void OnMenuDeleteClick(wxCommandEvent& event);
+		virtual void OnMenuEditClick(wxCommandEvent& event);
 		virtual void AddPassword(mw::Password& password);
 	private:
 		void GetSelectedPasswords(std::vector<mw::Password>& passwords);
