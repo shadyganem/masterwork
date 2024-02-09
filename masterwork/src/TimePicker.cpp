@@ -33,9 +33,18 @@ int mw::TimePicker::GetSecond() const
     return m_second_spinctrl->GetValue(); 
 }
 
+time_t mw::TimePicker::GetTime()
+{
+    return time_t();
+}
+
 void mw::TimePicker::SetTime(int hour, int minute, int second)
 {
     m_hour_spinctrl->SetValue(hour%24);
     m_minute_spinctrl->SetValue(minute%60);
     m_second_spinctrl->SetValue(second%60);
+}
+
+void mw::TimePicker::SetTime(time_t time)
+{
 }

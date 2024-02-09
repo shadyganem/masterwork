@@ -39,8 +39,8 @@ mw::ReminderFrame::ReminderFrame(wxWindow* parent, wxWindowID id, const wxString
     // Create a dropdown list for selecting the day of the month
     wxString days[] = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" ,"16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"};
     wxArrayString daysArray(31, days);
-    wxComboBox* dayDropdown = new wxComboBox(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, daysArray, wxCB_DROPDOWN | wxCB_READONLY);
-
+    wxComboBox* day_dropdown = new wxComboBox(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, daysArray, wxCB_DROPDOWN | wxCB_READONLY);
+    day_dropdown->SetSelection(0);
 
 
     m_alert_date = new wxDatePickerCtrl(this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DROPDOWN | wxDP_SHOWCENTURY);
@@ -54,12 +54,12 @@ mw::ReminderFrame::ReminderFrame(wxWindow* parent, wxWindowID id, const wxString
     m_v_sizer = new wxBoxSizer(wxVERTICAL);
 
     // Group Title and Note using StaticBoxSizer
-    wxStaticBoxSizer* titleNoteBox = new wxStaticBoxSizer(wxVERTICAL, this, "Title and Note");
-    titleNoteBox->Add(new wxStaticText(this, wxID_ANY, wxT("Title:")), 0, wxALL, 5);
-    titleNoteBox->Add(title_input, 0, wxEXPAND | wxALL, 5);
-    titleNoteBox->Add(new wxStaticText(this, wxID_ANY, wxT("Note:")), 0, wxALL, 5);
-    titleNoteBox->Add(text_input, 0, wxEXPAND | wxALL, 5);
-    m_v_sizer->Add(titleNoteBox, 0, wxEXPAND | wxALL, 10);
+    wxStaticBoxSizer* title_note_box = new wxStaticBoxSizer(wxVERTICAL, this, "Title and Note");
+    title_note_box->Add(new wxStaticText(this, wxID_ANY, wxT("Title:")), 0, wxALL, 5);
+    title_note_box->Add(title_input, 0, wxEXPAND | wxALL, 5);
+    title_note_box->Add(new wxStaticText(this, wxID_ANY, wxT("Note:")), 0, wxALL, 5);
+    title_note_box->Add(text_input, 0, wxEXPAND | wxALL, 5);
+    m_v_sizer->Add(title_note_box, 0, wxEXPAND | wxALL, 10);
 
     // Group Options using StaticBoxSizer
     m_options_box = new wxStaticBoxSizer(wxVERTICAL, this, "Options");
@@ -69,7 +69,7 @@ mw::ReminderFrame::ReminderFrame(wxWindow* parent, wxWindowID id, const wxString
     m_options_box->Add(m_color_picker, 0, wxALL, 5);
     m_options_box->Add(m_alert_options_checklist_box, 0, wxALL, 5);
     m_options_box->Add(m_days_of_the_week, 0, wxALL, 5);
-    m_options_box->Add(dayDropdown, 0, wxALL, 5);
+    m_options_box->Add(day_dropdown, 0, wxALL, 5);
 
 
     m_v_sizer->Add(m_options_box, 0, wxEXPAND | wxALL, 10);

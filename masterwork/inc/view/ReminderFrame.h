@@ -10,6 +10,7 @@
 #include "view/Button.h"
 #include <wx/datectrl.h>
 #include "view/TimePicker.h"
+#include "model/TimeOfDay.h"
 
 
 namespace mw

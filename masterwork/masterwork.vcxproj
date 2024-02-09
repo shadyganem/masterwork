@@ -66,6 +66,7 @@
     <ClInclude Include="inc\view\LoginFrame.h" />
     <ClInclude Include="inc\model\SqlStatement.h" />
     <ClInclude Include="inc\view\TimePicker.h" />
+    <ClInclude Include="inc\model\TimeOfDay.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\SqlStatement.cpp" />
@@ -114,6 +115,7 @@
     <ClCompile Include="src\StagehandThread.cpp" />
     <ClCompile Include="src\TitleBar.cpp" />
     <ClCompile Include="src\TimePicker.cpp" />
+    <ClCompile Include="src\TimeOfDay.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="resources\style\style.xml" />

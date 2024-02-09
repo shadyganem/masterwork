@@ -156,6 +156,9 @@
     <ClInclude Include="inc\view\TimePicker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="inc\model\TimeOfDay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\MainFrame.cpp">
@@ -294,6 +297,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\TimePicker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TimeOfDay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

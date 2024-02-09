@@ -21,6 +21,11 @@ mw::DateTime::~DateTime()
 {
 }
 
+time_t mw::DateTime::GetTime()
+{
+	return m_time_t;
+}
+
 double mw::DateTime::DiffTime(DateTime& time1, DateTime& time2)
 {
 	return std::difftime(time1.m_time_t, time2.m_time_t);
