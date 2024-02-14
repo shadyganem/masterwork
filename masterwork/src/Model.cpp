@@ -333,7 +333,7 @@ bool Model::AddReminder(mw::Reminder& reminder) {
 		sqlite3_bind_int64(statement, 10, reminder.end_time);
 		sqlite3_bind_int64(statement, 11, reminder.last_update);
 		sqlite3_bind_text(statement, 12, reminder.color.c_str(), -1, SQLITE_STATIC);
-		sqlite3_bind_text(statement, 13, reminder.json_alert_repeat_option.c_str(), -1, SQLITE_STATIC);
+		sqlite3_bind_text(statement, 13, reminder.dump_json_alert_repeat_options().c_str(), -1, SQLITE_STATIC);
 
 		// Execute the statement
 		m_db_handler.Step(statement);

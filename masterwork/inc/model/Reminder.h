@@ -35,6 +35,7 @@ namespace mw
 		static std::vector<std::string> GetAlertTimingOptions();
 		static std::vector<std::string> GetDaysOfTheWeekOptions();
 		static std::vector<std::string> GetAlertMethodOptions();
+		virtual std::string dump_json_alert_repeat_options();
 		
 	public:
 		int user_uid;
@@ -50,6 +51,7 @@ namespace mw
 		time_t reminder_time;
 		int ttl;
 		std::string color;
+	private:
 		std::string json_alert_repeat_option;
 		
 	};

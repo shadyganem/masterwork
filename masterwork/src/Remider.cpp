@@ -1,4 +1,5 @@
 #include "model/Reminder.h"
+#include "model/json.hpp"
 
 mw::Reminder::Reminder()
 {
@@ -98,5 +99,12 @@ std::vector<std::string> mw::Reminder::GetAlertMethodOptions()
 	options.push_back("Email Notification");
 	options.push_back("SMS message");
 	return options;
+}
+
+std::string mw::Reminder::dump_json_alert_repeat_options()
+{
+	nlohmann::json j;
+
+	return this->json_alert_repeat_option;
 }
 
