@@ -67,7 +67,7 @@ std::vector<std::string> mw::Reminder::GetRepeatOptions()
 	return options;
 }
 
-std::vector<std::string> mw::Reminder::GetAlertOptions()
+std::vector<std::string> mw::Reminder::GetAlertTimingOptions()
 {
 	std::vector<std::string> options;
 	options.push_back("At time of event");
@@ -87,6 +87,15 @@ std::vector<std::string> mw::Reminder::GetDaysOfTheWeekOptions()
 	options.push_back("Thursday");
 	options.push_back("Friday");
 	options.push_back("Saturday");
+	return options;
+}
+
+std::vector<std::string> mw::Reminder::GetAlertMethodOptions()
+{
+	std::vector<std::string> options;
+	options.push_back("Pop-Up Notificiation");
+	options.push_back("Email Notification");
+	options.push_back("SMS message");
 	return options;
 }
 

@@ -21,7 +21,7 @@ mw::ReminderFrame::ReminderFrame(wxWindow* parent, wxWindowID id, const wxString
     m_color_picker = new wxColourPickerCtrl(this, wxID_ANY, wxColour(0, 0, 0), wxDefaultPosition, wxDefaultSize, wxCLRP_SHOW_LABEL);
 
     options.clear();
-    options = mw::Reminder::GetAlertOptions();
+    options = mw::Reminder::GetAlertTimingOptions();
     wxStringArray.Clear();
     wxStringArray.assign(options.begin(), options.end());
 
