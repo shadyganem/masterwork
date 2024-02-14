@@ -4,6 +4,7 @@ mw::Reminder::Reminder()
 {
 	this->StampCreationTime();
 	this->title = "New Reminder";
+	this->json_alert_repeat_option = "{]";
 }
 
 mw::Reminder::~Reminder()

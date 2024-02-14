@@ -50,7 +50,7 @@ namespace mw
 		time_t reminder_time;
 		int ttl;
 		std::string color;
-		std::string json_repeat_option;
+		std::string json_alert_repeat_option;
 		
 	};
 }
