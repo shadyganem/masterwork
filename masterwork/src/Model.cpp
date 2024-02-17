@@ -23,7 +23,6 @@ bool Model::InitModel()
 	InitNotificationsTable();
 	InitRemindersTable();
 	InitPasswordsTable();
-	InitAlertTimesTable();
 	is_initialized = true;
 	return true;
 }
@@ -43,7 +42,6 @@ bool Model::AddUser(mw::User& user)
 		std::string sql = "INSERT INTO users(username, is_active, status, hashed_password, is_password_protected) "
 			"VALUES (?, ?, ?, ?, ?);";
 
-		logger.Info("Executing query: " + sql);
 
 		sqlite3_stmt* statement;
 		m_db_handler.Prepare(sql.c_str(), &statement);
@@ -164,8 +162,6 @@ bool Model::AddTask(mw::Task& task) {
 		std::string sql = "INSERT INTO tasks(name, parent_uid, description, status, priority, start_time, deadline, project_uid, last_update, notification_enabled) "
 			"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
-		logger.Info("Executing query: " + sql);
-
 		sqlite3_stmt* statement;
 		m_db_handler.Prepare(sql.c_str(), &statement);
 
@@ -254,8 +250,6 @@ bool Model::AddNotification(mw::Notification& notification) {
 		std::string sqlInsert = "INSERT INTO notifications(user_uid, hash, text, details, status, priority, repeat, start_time, end_time, last_update, ttl, color) "
 			"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
-		logger.Info("Executing query: " + sqlInsert);
-
 		sqlite3_stmt* statementInsert;
 		m_db_handler.Prepare(sqlInsert.c_str(), &statementInsert);
 
@@ -312,10 +306,8 @@ bool Model::AddReminder(mw::Reminder& reminder) {
 		}
 
 		// Use parameterized query
-		std::string sql = "INSERT INTO reminders(user_uid, hash, title, text, status, priority, repeat, creation_time, reminder_time, end_time, last_update, color, json_alert_repeat_option) "
-			"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-
-		logger.Info("Executing query: " + sql);
+		std::string sql = "INSERT INTO reminders(user_uid, hash, title, text, status, priority, creation_time, end_time, last_update, color, json_alert_data) "
+			"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
 		sqlite3_stmt* statement;
 		m_db_handler.Prepare(sql.c_str(), &statement);
@@ -327,13 +319,11 @@ bool Model::AddReminder(mw::Reminder& reminder) {
 		sqlite3_bind_text(statement, 4, reminder.text.c_str(), -1, SQLITE_STATIC);
 		sqlite3_bind_int(statement, 5, reminder.status);
 		sqlite3_bind_int(statement, 6, reminder.priority);
-		sqlite3_bind_int(statement, 7, reminder.repeat);
-		sqlite3_bind_int64(statement, 8, reminder.creation_time);
-		sqlite3_bind_int64(statement, 9, reminder.reminder_time);
-		sqlite3_bind_int64(statement, 10, reminder.end_time);
-		sqlite3_bind_int64(statement, 11, reminder.last_update);
-		sqlite3_bind_text(statement, 12, reminder.color.c_str(), -1, SQLITE_STATIC);
-		sqlite3_bind_text(statement, 13, reminder.dump_json_alert_repeat_options().c_str(), -1, SQLITE_STATIC);
+		sqlite3_bind_int64(statement, 7, reminder.creation_time);
+		sqlite3_bind_int64(statement, 8, reminder.end_time);
+		sqlite3_bind_int64(statement, 9, reminder.last_update);
+		sqlite3_bind_text(statement, 10, reminder.color.c_str(), -1, SQLITE_STATIC);
+		sqlite3_bind_text(statement, 11, reminder.dump_json_alert_data().c_str(), -1, SQLITE_STATIC);
 
 		// Execute the statement
 		m_db_handler.Step(statement);
@@ -374,8 +364,6 @@ bool Model::AddPassword(mw::Password& password) {
 		// Use parameterized query
 		std::string sql = "INSERT INTO passwords(user_uid, username, encrypted_password, url, notes, creation_time, last_update) "
 			"VALUES (?, ?, ?, ?, ?, ?, ?);";
-
-		logger.Info("Executing query: " + sql);
 
 		sqlite3_stmt* statement;
 		m_db_handler.Prepare(sql.c_str(), &statement);
@@ -598,8 +586,6 @@ bool Model::DeleteProject(mw::Project& project)
 			";";
 		m_db_handler.Update(sql.c_str());
 
-		logger.Info(sql);
-
 		m_db_handler.Update(sql.c_str());
 		this->DisconnectDb();
 	}
@@ -695,12 +681,10 @@ bool Model::GetAllProjects(std::vector<mw::Project>& projects_vect, const mw::Us
 		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 			return false;
 
-		logger.Info("selecting all projects for " + user.username);
 		Records records;
 		Record row;
 		std::string sql = "SELECT * FROM projects WHERE user_uid=" + std::to_string(user.uid) + " "
 			              "AND status!=-1 ;";
-		logger.Info("Executinig query " + sql);
 		m_db_handler.Select(sql.c_str(), records);
 		mw::Project proj;
 		if (records.empty())
@@ -804,7 +788,6 @@ bool Model::GetAllReminders(std::vector<mw::Reminder>& reminders, const mw::User
 
 		m_db_handler.Select(sql.c_str(), records);
 
-
 		mw::Reminder reminder;
 
 		if (records.empty())
@@ -823,21 +806,20 @@ bool Model::GetAllReminders(std::vector<mw::Reminder>& reminders, const mw::User
 			reminder.text = row[4];
 			reminder.status = (mw::ReminderStatus)std::stoi(row[5]);
 			reminder.priority = std::stoi(row[6]);
-			reminder.repeat = std::stoi(row[7]);
-			reminder.creation_time = std::stoi(row[8]);
-			reminder.reminder_time = std::stoi(row[9]);
-			reminder.end_time = std::stoi(row[10]);
-			reminder.last_update = std::stoi(row[11]);
-			reminder.color = row[12];
-
+			reminder.creation_time = std::stoi(row[7]);
+			reminder.end_time = std::stoi(row[8]);
+			reminder.last_update = std::stoi(row[9]);
+			reminder.color = row[10];
+			reminder.parse_json_alert_data(row[11]);
 			reminders.push_back(reminder);
 		}
 		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
 			return false;
 		return true;
 	}
-	catch (...)
+	catch (const std::exception& e)
 	{
+		logger.Error("The exception is: " + std::string(e.what()));
 		logger.Error("Exception occured at Model::GetAllReminders(std::vector<mw::Reminder>& reminders, const mw::User& current_user) ");
 		m_db_handler.DisConn(this->m_db_path.c_str());
 		return false;
@@ -935,13 +917,11 @@ bool Model::GetAllTasks(std::vector<mw::Task>& tasks, mw::Project& project)
 			return false;
 
 		mw::Logger logger;
-		logger.Info("selecting all tasks for " + project.name);
 		Records records;
 		Record row;
 		std::string sql = "SELECT * FROM tasks WHERE project_uid=" + std::to_string(project.uid) + " "
 						  "AND archived=0"
 			              ";";
-		logger.Info("Executinig query " + sql);
 		m_db_handler.Select(sql.c_str(), records);
 		mw::Task task;
 		if (records.empty())
@@ -1039,14 +1019,12 @@ bool Model::GetArchiveAllTasks(std::vector<mw::Task>& tasks, mw::Project& curren
 			).count();
 
 		mw::Logger logger;
-		logger.Info("selecting all tasks for " + current_project.name);
 		Records records;
 		Record row;
 		std::string sql = "SELECT * FROM tasks WHERE project_uid=" + std::to_string(current_project.uid) + " "
 			"AND archived=1" + " "
 			"AND last_update >= " + std::to_string(current_epoch_time - num_of_days*24*60*60) + " " 
 			";";
-		logger.Info("Executinig query " + sql);
 		m_db_handler.Select(sql.c_str(), records);
 		mw::Task task;
 		if (records.empty())
@@ -1085,19 +1063,18 @@ bool Model::GetArchiveAllTasks(std::vector<mw::Task>& tasks, mw::Project& curren
 
 bool Model::IsTaskFound(mw::Task& task)
 {
+	mw::Logger logger;
 	try
 	{
 		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 			return false;
 
-		mw::Logger logger;
 		Records records;
 		bool found = true;
 		std::string sql = "SELECT * FROM tasks WHERE uid=" + std::to_string(task.uid) + " "
 		                  "AND archived=0"
 			              ";";
 
-		logger.Info("Executinig query " + sql);
 		m_db_handler.Select(sql.c_str(), records);
 		mw::Task task;
 		if (records.empty())
@@ -1116,19 +1093,19 @@ bool Model::IsTaskFound(mw::Task& task)
 
 bool Model::IsProjectFound(mw::Project& project)
 {
+	mw::Logger logger;
 	try
 	{
 		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 			return false;
 
-		mw::Logger logger;
+		
 		Records records;
 		bool found = true;
 		std::string sql = "SELECT * FROM projects WHERE uid=" + std::to_string(project.uid) + " "
 			              "AND status!=-1"
 			              ";";
 
-		logger.Info("Executinig query " + sql);
 		m_db_handler.Select(sql.c_str(), records);
 		mw::Task task;
 		if (records.empty())
@@ -1245,8 +1222,6 @@ bool Model::UpdateProject(mw::Project& project)
 			"SET name=? "
 			"WHERE uid=?;";
 
-		logger.Info("Executing query: " + sql);
-
 		sqlite3_stmt* statement;
 		m_db_handler.Prepare(sql.c_str(), &statement);
 
@@ -1288,7 +1263,6 @@ bool Model::UpdateUser(mw::User& user)
 			"SET username=?, status=?, hashed_password=? "
 			"WHERE uid=?;";
 
-		logger.Info("Executing query: " + sql);
 
 		sqlite3_stmt* statement;
 		m_db_handler.Prepare(sql.c_str(), &statement);
@@ -1335,7 +1309,6 @@ bool Model::UpdateNotification(mw::Notification& notification) {
 			"end_time=?, last_update=?, ttl=?, color=? "
 			"WHERE uid=?;";
 
-		logger.Info("Executing query: " + sql);
 
 		sqlite3_stmt* statement;
 		m_db_handler.Prepare(sql.c_str(), &statement);
@@ -1387,7 +1360,6 @@ bool Model::DisconnectDb()
 bool Model::InitUsersTable()
 {
 	mw::Logger logger;
-	logger.Info("Initialzing users table");
 	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 		return false;
 
@@ -1427,7 +1399,6 @@ bool Model::InitUsersTable()
 bool Model::InitProjectsTable()
 {
 	mw::Logger logger;
-	logger.Info("Initialzing projects table");
 	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 		return false;
 
@@ -1452,7 +1423,6 @@ bool Model::InitProjectsTable()
 bool Model::InitTasksTable()
 {
 	mw::Logger logger;
-	logger.Info("Initialzing tasks table");
 	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
 		return false;
 
@@ -1526,13 +1496,11 @@ bool Model::InitRemindersTable()
 		"\"text\"	         TEXT,                          "
 		"\"status\"	         INTEGER NOT NULL DEFAULT 0,    "
 		"\"priority\"	     INTEGER NOT NULL DEFAULT 2,    "
-		"\"repeat\"	         INTEGER NOT NULL DEFAULT 1,    "
 		"\"creation_time\"	 INTEGER NOT NULL,              "
-		"\"reminder_time\"	 INTEGER NOT NULL,              "
 		"\"end_time\"	     INTEGER NOT NULL DEFAULT 0,    "
 		"\"last_update\"	 INTEGER NOT NULL DEFAULT 0,    "
 		"\"color\"	         TEXT DEFAULT '#FFFFFF',        "
-		"\"json_alert_repeat_option\" TEXT NOT NULL,        "
+		"\"json_alert_data\" TEXT NOT NULL,        "
 		"PRIMARY KEY(\"uid\" AUTOINCREMENT)                 "
 		")";
 	m_mutex.lock();
@@ -1567,22 +1535,3 @@ bool Model::InitPasswordsTable()
 	return true;
 }
 
-bool Model::InitAlertTimesTable()
-{
-	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
-		return false;
-
-	const char* sql = "CREATE TABLE IF NOT EXISTS \"reminder_alert_times\" (      "
-		"\"uid\"	INTEGER NOT NULL UNIQUE,"
-		"\"reminder_uid\"	    INTEGER NOT NULL,"
-		"\"value\"              INTEGER NOT NULL,"
-		"PRIMARY KEY(\"uid\" AUTOINCREMENT)"
-		");";
-
-	m_mutex.lock();
-	m_db_handler.ExeQuery(sql);
-	m_mutex.unlock();
-	if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
-		return false;
-	return true;
-}

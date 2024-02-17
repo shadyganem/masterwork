@@ -4,13 +4,15 @@
 #include <ctime>
 #include <vector>
 #include <chrono>
+#include "controller/Logger.h"
 
 namespace mw
 {
 	enum ReminderStatus
 	{
 		ACTIVE,
-		DISABLED
+		DISABLED,
+		INVALID
 	};
 
 	enum ReminderRepeatOptions
@@ -35,7 +37,8 @@ namespace mw
 		static std::vector<std::string> GetAlertTimingOptions();
 		static std::vector<std::string> GetDaysOfTheWeekOptions();
 		static std::vector<std::string> GetAlertMethodOptions();
-		virtual std::string dump_json_alert_repeat_options();
+		virtual std::string dump_json_alert_data();
+		virtual void parse_json_alert_data(std::string data);
 		
 	public:
 		int user_uid;
@@ -52,7 +55,7 @@ namespace mw
 		int ttl;
 		std::string color;
 	private:
-		std::string json_alert_repeat_option;
+		std::string json_alert_data;
 		
 	};
 }

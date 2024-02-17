@@ -5,7 +5,7 @@ mw::Reminder::Reminder()
 {
 	this->StampCreationTime();
 	this->title = "New Reminder";
-	this->json_alert_repeat_option = "{]";
+	this->json_alert_data = "{}";
 }
 
 mw::Reminder::~Reminder()
@@ -28,12 +28,14 @@ std::string mw::Reminder::GetStatus()
 	case ReminderStatus::DISABLED:
 		status_string = "Disabled";
 		break;
+	case ReminderStatus::INVALID:
+		status_string = "Invalid";
+		break;
 	default:
 		status_string = "N/A";
 		break;
 	}
 	return status_string;
-
 }
 
 std::string mw::Reminder::GetEndTime()
@@ -101,10 +103,30 @@ std::vector<std::string> mw::Reminder::GetAlertMethodOptions()
 	return options;
 }
 
-std::string mw::Reminder::dump_json_alert_repeat_options()
+std::string mw::Reminder::dump_json_alert_data()
 {
 	nlohmann::json j;
 
-	return this->json_alert_repeat_option;
+	j["type"] = "specific time";
+	j["hour"] = std::to_string(1);
+
+	return j.dump();
+}
+
+void mw::Reminder::parse_json_alert_data(std::string data)
+{
+	mw::Logger logger;
+	try {
+		this->json_alert_data = data;
+		nlohmann::json j = nlohmann::json::parse(this->json_alert_data);
+
+		std::string type = j["type"];
+		
+	}
+	catch (const nlohmann::json::parse_error&) {
+		; // If parsing fails, the JSON is invalid
+		logger.Error("Error while parsing json string");
+		this->status = mw::ReminderStatus::INVALID;
+	}
 }
 

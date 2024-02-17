@@ -62,7 +62,6 @@ private:
 	bool InitNotificationsTable();
 	bool InitRemindersTable();
 	bool InitPasswordsTable();
-	bool InitAlertTimesTable();
 	std::string m_db_path;
 	mw::DatabaseHandler m_db_handler;
 	bool is_initialized;
