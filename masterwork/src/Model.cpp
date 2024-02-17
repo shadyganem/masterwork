@@ -23,6 +23,7 @@ bool Model::InitModel()
 	InitNotificationsTable();
 	InitRemindersTable();
 	InitPasswordsTable();
+	InitUserPreferencesTable();
 	is_initialized = true;
 	return true;
 }
@@ -1511,27 +1512,74 @@ bool Model::InitRemindersTable()
 	return true;
 }
 
-bool Model::InitPasswordsTable()
-{
-	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
-		return false;
 
-	const char* sql = "CREATE TABLE IF NOT EXISTS \"passwords\" (      "
-		"\"uid\"	            INTEGER NOT NULL UNIQUE,    "
-		"\"user_uid\"	        INTEGER NOT NULL DEFAULT 1, "
-		"\"username\"	        TEXT NOT NULL,              "
-		"\"encrypted_password\" TEXT NOT NULL ,             "
-		"\"url\"	            TEXT,                       "
-		"\"notes\"	            TEXT,                       "
-		"\"creation_time\"	 INTEGER NOT NULL,              "
-		"\"last_update\"	 INTEGER NOT NULL DEFAULT 0,    "
-		"PRIMARY KEY(\"uid\" AUTOINCREMENT)                 "
+bool Model::InitPasswordsTable() {
+	// Lock the mutex to ensure thread safety during database operations
+	std::lock_guard<std::mutex> lock(m_mutex);
+
+	// Connect to the database
+	if (!m_db_handler.Conn(m_db_path.c_str())) {
+		return false; // Return false if connection fails
+	}
+
+	// Define SQL query for creating the "passwords" table
+	const char* sql = "CREATE TABLE IF NOT EXISTS \"passwords\" ("
+		"\"uid\" INTEGER NOT NULL UNIQUE,"
+		"\"user_uid\" INTEGER NOT NULL DEFAULT 1,"
+		"\"username\" TEXT NOT NULL,"
+		"\"encrypted_password\" TEXT NOT NULL,"
+		"\"url\" TEXT,"
+		"\"notes\" TEXT,"
+		"\"creation_time\" INTEGER NOT NULL,"
+		"\"last_update\" INTEGER NOT NULL DEFAULT 0,"
+		"PRIMARY KEY(\"uid\" AUTOINCREMENT)"
 		")";
-	m_mutex.lock();
-	m_db_handler.ExeQuery(sql);
-	m_mutex.unlock();
-	if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
+
+	// Execute the SQL query
+	if (!m_db_handler.ExeQuery(sql)) {
+		// Disconnect from the database if query execution fails
+		m_db_handler.DisConn(m_db_path.c_str());
 		return false;
-	return true;
+	}
+
+	// Disconnect from the database after successful table initialization
+	if (!m_db_handler.DisConn(m_db_path.c_str())) {
+		return false; // Return false if disconnection fails
+	}
+
+	return true; // Return true if initialization is successful
 }
 
+
+bool Model::InitUserPreferencesTable() {
+	// Lock the mutex to ensure thread safety during database operations
+	std::lock_guard<std::mutex> lock(m_mutex);
+
+	// Connect to the database
+	if (!m_db_handler.Conn(m_db_path.c_str())) {
+		return false; // Return false if connection fails
+	}
+
+	// Define SQL query for creating the "user_preferences" table
+	const char* sql = "CREATE TABLE IF NOT EXISTS \"user_preferences\" ("
+		"\"uid\" INTEGER NOT NULL UNIQUE,"
+		"\"user_uid\" INTEGER NOT NULL,"
+		"\"key\" TEXT NOT NULL,"
+		"\"value\" TEXT NOT NULL,"
+		"PRIMARY KEY(\"uid\" AUTOINCREMENT)"
+		")";
+
+	// Execute the SQL query
+	if (!m_db_handler.ExeQuery(sql)) {
+		// Disconnect from the database if query execution fails
+		m_db_handler.DisConn(m_db_path.c_str());
+		return false;
+	}
+
+	// Disconnect from the database after successful table initialization
+	if (!m_db_handler.DisConn(m_db_path.c_str())) {
+		return false; // Return false if disconnection fails
+	}
+
+	return true; // Return true if initialization is successful
+}
