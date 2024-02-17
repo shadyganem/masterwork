@@ -1,5 +1,5 @@
 #include "model/Reminder.h"
-#include "model/json.hpp"
+
 
 mw::Reminder::Reminder()
 {
@@ -46,16 +46,14 @@ std::string mw::Reminder::GetEndTime()
 std::string mw::Reminder::RepeatOptionToString(mw::ReminderRepeatOptions option)
 {
 	switch (option) {
-	case mw::ReminderRepeatOptions::DONT_REPEAT:
-		return "Don't Repeat";
-	case mw::ReminderRepeatOptions::EVERYDAY:
-		return "Every Day";
-	case mw::ReminderRepeatOptions::EVERY_MONTH:
-		return "Every Month";
-	case mw::ReminderRepeatOptions::EVERY_YEAR:
-		return "Every Year";
+	case mw::ReminderRepeatOptions::ONE_TIME:
+		return "One-Time";
+	case mw::ReminderRepeatOptions::DAYS_OF_WEEK:
+		return "Specific Days of the Week";
+	case mw::ReminderRepeatOptions::ONCE_A_MONTH:
+		return "Once a Month";
 	default:
-		return "Unknown Repeat Option";
+		return "N/A";
 	}
 }
 
@@ -65,7 +63,6 @@ std::vector<std::string> mw::Reminder::GetRepeatOptions()
 	options.push_back("One-Time");
 	options.push_back("Specific Days of the Week");
 	options.push_back("Once a Month");
-	options.push_back("Bi-Weekly");	
 	// TODO: implement the custom option
 	//options.push_back("Custom");
 	return options;
@@ -107,8 +104,25 @@ std::string mw::Reminder::dump_json_alert_data()
 {
 	nlohmann::json j;
 
-	j["type"] = "specific time";
-	j["hour"] = std::to_string(1);
+	j["repeat_type"] = this->repeat;
+	j["hour"] = this->hour;
+	j["min"] = this->min;
+	j["sec"] = this->sec;
+	switch (this->repeat)
+	{
+	case mw::ReminderRepeatOptions::ONE_TIME:	
+		j["year"] = this->year;
+		j["month"] = this->month;
+		j["day"] = this->day;
+		break;
+	case mw::ReminderRepeatOptions::DAYS_OF_WEEK:
+		j["days_of_week"] = this->days_of_week;
+		break;
+	case mw::ReminderRepeatOptions::ONCE_A_MONTH:
+		break;
+	default:
+		break;
+	}
 
 	return j.dump();
 }
@@ -116,16 +130,35 @@ std::string mw::Reminder::dump_json_alert_data()
 void mw::Reminder::parse_json_alert_data(std::string data)
 {
 	mw::Logger logger;
+	logger.EnableDebug();
 	try {
 		this->json_alert_data = data;
 		nlohmann::json j = nlohmann::json::parse(this->json_alert_data);
 
-		std::string type = j["type"];
-		
+		this->repeat = j["repeat_type"];
+		this->hour = j["hour"];
+		this->min = j["min"];
+		this->sec = j["sec"];
+
+		switch (this->repeat)
+		{
+		case mw::ReminderRepeatOptions::ONE_TIME:
+			this->year = j["year"];
+			this->month = j["month"];
+			this->day = j["day"];
+			break;
+		case mw::ReminderRepeatOptions::DAYS_OF_WEEK:
+			break;
+		case mw::ReminderRepeatOptions::ONCE_A_MONTH:
+			break;
+		default:
+			break;
+		}
 	}
-	catch (const nlohmann::json::parse_error&) {
+	catch (const std::exception& e) {
 		; // If parsing fails, the JSON is invalid
-		logger.Error("Error while parsing json string");
+		logger.Error("The exception is: " + std::string(e.what()));
+
 		this->status = mw::ReminderStatus::INVALID;
 	}
 }

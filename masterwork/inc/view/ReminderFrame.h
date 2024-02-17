@@ -11,6 +11,8 @@
 #include <wx/datectrl.h>
 #include "view/TimePicker.h"
 #include "model/TimeOfDay.h"
+#include <wx/timectrl.h>
+
 
 
 namespace mw
@@ -28,6 +30,7 @@ namespace mw
 		void OnCancelButton(wxCommandEvent& event);
 		void OnRepeatOptionsChange(wxCommandEvent& event);
 		void HideAllRepeatOptions();
+		void GetSelectedDaysOfTheWeek(std::vector<std::string> &selecteds_days);
 		mw::Reminder m_reminder;
 		// Member variables for the form components
 		wxTextCtrl* title_input;
@@ -36,13 +39,14 @@ namespace mw
 		mw::Button* m_cancel_button;
 		bool m_new_reminder;
 		wxChoice* m_repeat_options;
-		wxCheckListBox* m_alert_options_checklist_box;
-		wxDatePickerCtrl* m_alert_date;
-		mw::TimePicker* m_alert_time;
+		wxCheckListBox* m_alert_timing_checklist_box;
 		wxCheckListBox* m_days_of_the_week;
 		wxColourPickerCtrl* m_color_picker;
 		wxStaticBoxSizer* m_options_box;
 		wxBoxSizer* m_v_sizer;
+		wxTimePickerCtrl* m_alert_timepicker;
+		wxDatePickerCtrl* m_alert_datepicker;
+		wxComboBox* m_day_dropdown;
 	};
 }
 

@@ -26,29 +26,30 @@ mw::ReminderFrame::ReminderFrame(wxWindow* parent, wxWindowID id, const wxString
     wxStringArray.assign(options.begin(), options.end());
 
     // Create a wxCheckListBox for multi-selection
-    m_alert_options_checklist_box = new wxCheckListBox(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxStringArray);
-
+    m_alert_timing_checklist_box = new wxCheckListBox(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxStringArray);
+    
 
     options.clear();
     options = mw::Reminder::GetDaysOfTheWeekOptions();
     wxStringArray.Clear();
     wxStringArray.assign(options.begin(), options.end());
 
-    m_days_of_the_week = new wxCheckListBox(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxStringArray);
-
+    this->m_days_of_the_week = new wxCheckListBox(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxStringArray);
+    this->m_days_of_the_week->Hide();
     // Create a dropdown list for selecting the day of the month
     wxString days[] = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" ,"16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"};
     wxArrayString daysArray(31, days);
-    wxComboBox* day_dropdown = new wxComboBox(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, daysArray, wxCB_DROPDOWN | wxCB_READONLY);
-    day_dropdown->SetSelection(0);
+    this->m_day_dropdown = new wxComboBox(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, daysArray, wxCB_DROPDOWN | wxCB_READONLY);
+    this->m_day_dropdown->SetSelection(0);
+    this->m_day_dropdown->Hide();
 
 
-    m_alert_date = new wxDatePickerCtrl(this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DROPDOWN | wxDP_SHOWCENTURY);
-    m_alert_time = new mw::TimePicker(this, wxID_ANY);
+    this->m_alert_datepicker = new wxDatePickerCtrl(this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DROPDOWN | wxDP_SHOWCENTURY);
+    this->m_alert_timepicker = new wxTimePickerCtrl(this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxTP_DEFAULT);
+
     auto now = std::chrono::system_clock::now();
     std::time_t currentTime = std::chrono::system_clock::to_time_t(now);
     std::tm* localTime = std::localtime(&currentTime);
-    m_alert_time->SetTime(localTime->tm_hour+1, 0, 0);
 
     // Create a vertical sizer to arrange the components
     m_v_sizer = new wxBoxSizer(wxVERTICAL);
@@ -63,15 +64,14 @@ mw::ReminderFrame::ReminderFrame(wxWindow* parent, wxWindowID id, const wxString
 
     // Group Options using StaticBoxSizer
     m_options_box = new wxStaticBoxSizer(wxVERTICAL, this, "Options");
-    m_options_box->Add(m_repeat_options, 0, wxALL, 5);
-    m_options_box->Add(m_alert_date, 0, wxALL, 5);
-    m_options_box->Add(m_alert_time, 0, wxALL, 5);
-    m_options_box->Add(m_color_picker, 0, wxALL, 5);
-    m_options_box->Add(m_alert_options_checklist_box, 0, wxALL, 5);
-    m_options_box->Add(m_days_of_the_week, 0, wxALL, 5);
-    m_options_box->Add(day_dropdown, 0, wxALL, 5);
-
-
+    m_options_box->Add(this->m_repeat_options, 0, wxALL, 5);
+    m_options_box->Add(this->m_alert_timepicker, 0, wxALL, 5);
+    m_options_box->Add(this->m_alert_datepicker, 0, wxALL, 5);
+    m_options_box->Add(this->m_day_dropdown, 0, wxALL, 5);
+    m_options_box->Add(this->m_days_of_the_week, 0, wxALL, 5);
+    m_options_box->Add(this->m_color_picker, 0, wxALL, 5);
+    m_options_box->Add(this->m_alert_timing_checklist_box, 0, wxALL, 5);
+    
     m_v_sizer->Add(m_options_box, 0, wxEXPAND | wxALL, 10);
 
     // Add Save button with centered alignment
@@ -105,19 +105,33 @@ void mw::ReminderFrame::OnSaveButton(wxCommandEvent& event)
         m_reminder.title = std::string(title.mb_str());
     m_reminder.text = std::string(text.mb_str());
     m_reminder.status = ReminderStatus::ACTIVE;
-    m_reminder.repeat = m_repeat_options->GetSelection();
+    m_reminder.repeat = (mw::ReminderRepeatOptions)m_repeat_options->GetSelection();
     wxArrayInt checklist_selections;
-    m_alert_options_checklist_box->GetSelections(checklist_selections);
+    this->m_alert_timing_checklist_box->GetSelections(checklist_selections);
 
     wxColor color = m_color_picker->GetColour();
     m_reminder.color = m_reminder.RGBToHexString(color.GetRed(), color.GetGreen(), color.GetBlue());
+
+
+    int hour = 0, min = 0, sec = 0;
+    this->m_alert_timepicker->GetTime(&hour, &min, &sec);
+    this->m_reminder.hour = hour;
+    this->m_reminder.min = min;
+    this->m_reminder.sec = sec;
+
+    wxDateTime date = this->m_alert_datepicker->GetValue();
+    this->m_reminder.day = date.GetDay();
+    this->m_reminder.month = date.GetMonth();
+    this->m_reminder.year = date.GetYear();
+
+
+    this->GetSelectedDaysOfTheWeek(m_reminder.days_of_week);
     // You can continue setting other reminder properties here
+
     if (m_new_reminder == true)
         m_reminder.StampCreationTime();
     mw::Controller& controller = mw::Controller::Get();
-
     controller.AddReminder(m_reminder);
-
     this->Close();
 }
 
@@ -130,25 +144,43 @@ void mw::ReminderFrame::OnRepeatOptionsChange(wxCommandEvent& event)
 {
     int selected_index = m_repeat_options->GetSelection();
 
-
     // for very repeat option there will be a different UI
-
-    if (selected_index == 2)
+    switch (selected_index)
     {
-        this->m_color_picker->Hide();
-    }
-    else
-    {
-        this->m_color_picker->Show(true);
+    case 0:
+        this->m_alert_datepicker->Show(true);
+        this->m_days_of_the_week->Hide();
+        this->m_day_dropdown->Hide();
+        break;
+    case 1:
+        this->m_days_of_the_week->Show(true);
+        this->m_day_dropdown->Hide();
+        this->m_alert_datepicker->Hide();
+        break;
+    case 2:
+        this->m_day_dropdown->Show(true);
+        this->m_days_of_the_week->Hide();
+        this->m_alert_datepicker->Hide();
+        break;
+    default:
+        break;
     }
 
     this->m_v_sizer->Layout();
-
-
 }
 
 void mw::ReminderFrame::HideAllRepeatOptions()
 {
     
+}
+
+void mw::ReminderFrame::GetSelectedDaysOfTheWeek(std::vector<std::string>& selecteds_days)
+{
+    int item_count = this->m_days_of_the_week->GetCount();
+    for (int i = 0; i < item_count; i++) {
+        if (this->m_days_of_the_week->IsChecked(i)) {
+            selecteds_days.push_back(this->m_days_of_the_week->GetString(i).ToStdString());
+        }
+    }
 }
 

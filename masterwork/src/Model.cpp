@@ -1501,7 +1501,7 @@ bool Model::InitRemindersTable()
 		"\"end_time\"	     INTEGER NOT NULL DEFAULT 0,    "
 		"\"last_update\"	 INTEGER NOT NULL DEFAULT 0,    "
 		"\"color\"	         TEXT DEFAULT '#FFFFFF',        "
-		"\"json_alert_data\" TEXT NOT NULL,        "
+		"\"json_alert_data\" TEXT NOT NULL,                 "
 		"PRIMARY KEY(\"uid\" AUTOINCREMENT)                 "
 		")";
 	m_mutex.lock();

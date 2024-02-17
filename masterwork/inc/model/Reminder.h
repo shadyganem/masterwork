@@ -5,6 +5,8 @@
 #include <vector>
 #include <chrono>
 #include "controller/Logger.h"
+#include "model/json.hpp"
+
 
 namespace mw
 {
@@ -17,10 +19,9 @@ namespace mw
 
 	enum ReminderRepeatOptions
 	{
-		DONT_REPEAT,
-		EVERYDAY,
-		EVERY_MONTH,
-		EVERY_YEAR
+		ONE_TIME,
+		DAYS_OF_WEEK,
+		ONCE_A_MONTH
 	};
 
 	class Reminder : public ModelItem
@@ -47,13 +48,16 @@ namespace mw
 		unsigned long long hash;
 		std::string text;
 		ReminderStatus status;
-		int repeat;
+		mw::ReminderRepeatOptions repeat;
 		int priority;
 		time_t start_time;
 		time_t end_time;
 		time_t reminder_time;
 		int ttl;
 		std::string color;
+		int hour = 0, min = 0, sec = 0;
+		int day = 0, month = 1, year = 0;
+		std::vector<std::string> days_of_week;
 	private:
 		std::string json_alert_data;
 		
