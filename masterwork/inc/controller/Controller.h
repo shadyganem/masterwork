@@ -11,7 +11,6 @@
 #include "controller/Logger.h"
 #include <vector>
 #include <map>
-#include "controller/NotificationFactory.h"
 #include <thread>
 
 namespace mw
@@ -53,23 +52,18 @@ namespace mw
 		void DeleteProject(Project& project);
 		void AddTask(Task& task);
 		void AddProject(Project& project, bool post_update_ui = true);
-		void AddNotification(mw::Notification& notification, bool post_update_ui = true);
 		void AddUser(mw::User& user, bool set_active=false, bool post_update_ui = true);
 		void AddReminder(mw::Reminder& reminder, bool post_update_ui = true);
 		void AddPassword(mw::Password& password, bool post_update_ui = true);
-		void UpdateNotification(mw::Notification& notification, bool post_update_ui = true);
 		void GetAllUsers(std::vector<mw::User>& users);
 		void GetProjectsForActiveUser(std::vector<std::string>& projects);
 		void GetProjectsForActiveUser(std::vector<Project>& projects);
-		void GetNotificationsForActiveUser(std::vector<mw::Notification>& notifications);
 		void GetRemindersForActiveUser(std::vector<mw::Reminder>& reminders);
 		void GetTasksForActiveProject(std::vector<Task>& tasks);
 		void GetPasswordsForActiveUser(std::vector<mw::Password>& passwords);
 		void GetArchiveTasksForActiveProject(std::vector<Task>& tasks);
 		void RequestUpdateUI(int wind_id=-2);
 		void SetActiveWindow(int winid);
-		int GetNumOfNotifications(int& num, bool poll=true);
-		void UpdateNotifications();
 
 	private:
 		Controller() {}
@@ -91,7 +85,6 @@ namespace mw
 		std::map<int, Task> m_seen_tasks;
 		bool m_is_project_selected;
 		int m_active_winid;
-		int m_num_of_notifications;
 	public:
 		wxColour m_backgroud_color;
 		wxColour m_foreground_color;

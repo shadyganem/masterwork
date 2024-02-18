@@ -20,7 +20,6 @@ bool Model::InitModel()
 	InitUsersTable();
 	InitProjectsTable();
 	InitTasksTable();
-	InitNotificationsTable();
 	InitRemindersTable();
 	InitPasswordsTable();
 	InitUserPreferencesTable();
@@ -202,84 +201,6 @@ bool Model::AddTask(mw::Task& task) {
 		}
 
 		return true;
-	}
-	catch (const std::exception& e) {
-		logger.Error("Exception occurred: " + std::string(e.what()));
-		m_db_handler.DisConn(this->m_db_path.c_str());
-		return false;
-	}
-}
-
-bool Model::AddNotification(mw::Notification& notification) {
-	mw::Logger logger;
-
-	try {
-		notification.StampLastUpdateTime();
-		notification.Hash();
-
-		// Check if user UID is valid
-		if (notification.user_uid == 0) {
-			throw std::runtime_error("Cannot add Notification with user UID = 0");
-		}
-
-		// RAII for database connection
-		if (!m_db_handler.Conn(this->m_db_path.c_str())) {
-			logger.Error("Failed to connect to the database.");
-			return false;
-		}
-
-		// Use parameterized query to check for existing hash
-		std::string sqlCheckHash = "SELECT * FROM notifications WHERE hash=?;";
-		Records records;
-
-		sqlite3_stmt* statement;
-		m_db_handler.Prepare(sqlCheckHash.c_str(), &statement);
-		sqlite3_bind_int64(statement, 1, notification.hash);
-
-		//m_db_handler.SelectPrepared(statement, records);
-		m_db_handler.Finalize(statement);
-
-		if (!records.empty()) {
-			// Notification with the same hash already exists
-			if (!m_db_handler.DisConn(this->m_db_path.c_str())) {
-				logger.Error("Failed to disconnect from the database.");
-			}
-			return true;
-		}
-
-		// Use parameterized query for inserting
-		std::string sqlInsert = "INSERT INTO notifications(user_uid, hash, text, details, status, priority, repeat, start_time, end_time, last_update, ttl, color) "
-			"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-
-		sqlite3_stmt* statementInsert;
-		m_db_handler.Prepare(sqlInsert.c_str(), &statementInsert);
-
-		// Bind parameters
-		sqlite3_bind_int64(statementInsert, 1, notification.user_uid);
-		sqlite3_bind_int64(statementInsert, 2, notification.hash);
-		sqlite3_bind_text(statementInsert, 3, notification.text.c_str(), -1, SQLITE_STATIC);
-		sqlite3_bind_text(statementInsert, 4, notification.details.c_str(), -1, SQLITE_STATIC);
-		sqlite3_bind_int(statementInsert, 5, notification.status);
-		sqlite3_bind_int(statementInsert, 6, notification.priority);
-		sqlite3_bind_int(statementInsert, 7, notification.repeat);
-		sqlite3_bind_int64(statementInsert, 8, notification.start_time);
-		sqlite3_bind_int64(statementInsert, 9, notification.end_time);
-		sqlite3_bind_int64(statementInsert, 10, notification.last_update);
-		sqlite3_bind_int64(statementInsert, 11, notification.ttl);
-		sqlite3_bind_int64(statementInsert, 12, notification.color);
-
-		// Execute the statement
-		m_db_handler.Step(statementInsert);
-		m_db_handler.Finalize(statementInsert);
-
-		// RAII for database disconnection
-		if (!m_db_handler.DisConn(this->m_db_path.c_str())) {
-			logger.Error("Failed to disconnect from the database.");
-			return false;
-		}
-
-		return true;
-
 	}
 	catch (const std::exception& e) {
 		logger.Error("Exception occurred: " + std::string(e.what()));
@@ -710,62 +631,6 @@ bool Model::GetAllProjects(std::vector<mw::Project>& projects_vect, const mw::Us
 	catch(const std::exception& e)
 	{
 		logger.Error("The exception is: " + std::string(e.what()));
-		logger.Error("Exception occured at mwModel::GetAllProjects(std::vector<mwProject>& prjects_vect, const mwUser& user) ");
-		m_db_handler.DisConn(this->m_db_path.c_str());
-		return false;
-	}
-}
-
-bool Model::GetAllNotifications(std::vector<mw::Notification>& notifications_vect, const mw::User& currnet_user)
-{
-	mw::Logger logger;
-	try
-	{
-		if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
-			return false;
-
-		Records records;
-		Record row;
-
-
-		std::string sql = "SELECT * FROM notifications WHERE user_uid=" + std::to_string(currnet_user.uid) + " "
-			"AND repeat>0 ;";
-
-
-		m_db_handler.Select(sql.c_str(), records);
-
-		mw::Notification notification;
-
-		if (records.empty())
-		{
-			logger.Warning("No records where found for: " + sql);
-		}
-
-		for (int i = 0; i < records.size(); i++)
-		{
-			row = records[i];
-			notification.uid = std::stoi(row[0]);
-			notification.user_uid = std::stoi(row[1]);
-			notification.hash = std::stoull(row[2]);
-			notification.text = row[3];
-			notification.details = row[4];
-			notification.status = (mw::NotificationStatus)std::stoi(row[5]);
-			notification.priority = std::stoi(row[6]);
-			notification.repeat = std::stoi(row[7]);
-			notification.start_time = std::stoi(row[8]);
-			notification.end_time = std::stoi(row[9]);
-			notification.last_update = std::stoi(row[10]);
-			notification.ttl = std::stoi(row[11]);
-			notification.color = std::stoi(row[12]);
-
-			notifications_vect.push_back(notification);
-		}
-		if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
-			return false;
-		return true;
-	}
-	catch (...)
-	{
 		logger.Error("Exception occured at mwModel::GetAllProjects(std::vector<mwProject>& prjects_vect, const mwUser& user) ");
 		m_db_handler.DisConn(this->m_db_path.c_str());
 		return false;
@@ -1292,58 +1157,6 @@ bool Model::UpdateUser(mw::User& user)
 	}
 }
 
-bool Model::UpdateNotification(mw::Notification& notification) {
-	mw::Logger logger;
-
-	try {
-		notification.StampLastUpdateTime();
-
-		// RAII for database connection
-		if (!m_db_handler.Conn(this->m_db_path.c_str())) {
-			logger.Error("Failed to connect to the database.");
-			return false;
-		}
-
-		// Use parameterized query
-		std::string sql = "UPDATE notifications "
-			"SET text=?, details=?, status=?, priority=?, repeat=?, "
-			"end_time=?, last_update=?, ttl=?, color=? "
-			"WHERE uid=?;";
-
-
-		sqlite3_stmt* statement;
-		m_db_handler.Prepare(sql.c_str(), &statement);
-
-		// Bind parameters
-		sqlite3_bind_text(statement, 1, notification.text.c_str(), -1, SQLITE_STATIC);
-		sqlite3_bind_text(statement, 2, notification.details.c_str(), -1, SQLITE_STATIC);
-		sqlite3_bind_int(statement, 3, notification.status);
-		sqlite3_bind_int(statement, 4, notification.priority);
-		sqlite3_bind_int(statement, 5, notification.repeat);
-		sqlite3_bind_int64(statement, 6, notification.end_time);
-		sqlite3_bind_int64(statement, 7, notification.last_update);
-		sqlite3_bind_int64(statement, 8, notification.ttl);
-		sqlite3_bind_int64(statement, 9, notification.color);
-		sqlite3_bind_int64(statement, 10, notification.uid);
-
-		// Execute the statement
-		m_db_handler.Step(statement);
-		m_db_handler.Finalize(statement);
-
-		// RAII for database disconnection
-		if (!m_db_handler.DisConn(this->m_db_path.c_str())) {
-			logger.Error("Failed to disconnect from the database.");
-			return false;
-		}
-
-		return true;
-	}
-	catch (const std::exception& e) {
-		logger.Error("Exception occurred: " + std::string(e.what()));
-		return false;
-	}
-}
-
 bool Model::ConnectDataBase()
 {
 	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
@@ -1450,35 +1263,6 @@ bool Model::InitTasksTable()
 	m_db_handler.ExeQuery(sql);
 	m_mutex.unlock();
 
-	if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
-		return false;
-	return true;
-}
-
-bool Model::InitNotificationsTable()
-{
-	if (m_db_handler.Conn(this->m_db_path.c_str()) == false)
-		return false;
-
-	const char* sql = "CREATE TABLE IF NOT EXISTS \"notifications\" (      "
-						"\"uid\"	        INTEGER NOT NULL UNIQUE,       "
-						"\"user_uid\"	    INTEGER NOT NULL DEFAULT 1,    "
-						"\"hash\"	        BIGINT NOT NULL DEFAULT 0,    "
-						"\"text\"	        TEXT,                          "
-		                "\"details\"	    TEXT NOT NULL ,    "
-						"\"status\"	        INTEGER NOT NULL DEFAULT 0,    "
-						"\"priority\"	    INTEGER NOT NULL DEFAULT 2,    "
-		                "\"repeat\"	        INTEGER NOT NULL DEFAULT 1,    "
-						"\"start_time\"	    INTEGER NOT NULL,              "
-						"\"end_time\"	    INTEGER NOT NULL DEFAULT 0,    "
-                 		"\"last_update\"	INTEGER NOT NULL DEFAULT 0,    "
-						"\"ttl\"	        INTEGER NOT NULL DEFAULT 0,    "
-						"\"color\"	        INTEGER DEFAULT -1,            "
-						"PRIMARY KEY(\"uid\" AUTOINCREMENT)                "
-						")";
-	m_mutex.lock();
-	m_db_handler.ExeQuery(sql);
-	m_mutex.unlock();
 	if (m_db_handler.DisConn(this->m_db_path.c_str()) == false)
 		return false;
 	return true;

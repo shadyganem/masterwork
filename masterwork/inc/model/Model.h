@@ -6,7 +6,6 @@
 #include "model/Task.h"
 #include "model/Project.h"
 #include "model/Reminder.h"
-#include "model/Notification.h"
 #include "model/User.h"
 #include "model/Password.h"
 #include <string>
@@ -23,7 +22,6 @@ public:
 	bool AddUser(mw::User& user);
 	bool AddProject(mw::Project& project);
 	bool AddTask(mw::Task& task);
-	bool AddNotification(mw::Notification& notification);
 	bool AddReminder(mw::Reminder& reminder);
 	bool AddPassword(mw::Password& password);
 	bool GetActiveUser(mw::User& user);
@@ -37,7 +35,6 @@ public:
 	bool GetAllUsers(std::vector<mw::User>& ret_users_vect);
 	bool GetActiveProject(mw::Project& project, mw::User& user);
 	bool GetAllProjects(std::vector<mw::Project>& prjects_vect, const mw::User& currnet_user);
-	bool GetAllNotifications(std::vector<mw::Notification>& notifications_vect, const mw::User& currnet_user);
 	bool GetAllReminders(std::vector<mw::Reminder>& reminders, const mw::User& current_user);
 	bool GetAllPasswords(std::vector<mw::Password>& passwords, const mw::User& currnet_user);
 	bool SetActiveProject(mw::Project& project);
@@ -50,7 +47,6 @@ public:
 	bool UpdateTask(mw::Task& task);
 	bool UpdateProject(mw::Project& project);
 	bool UpdateUser(mw::User& user);
-	bool UpdateNotification(mw::Notification& notification);
 
 
 private:
@@ -59,7 +55,6 @@ private:
 	bool InitUsersTable();
 	bool InitProjectsTable();
 	bool InitTasksTable();
-	bool InitNotificationsTable();
 	bool InitRemindersTable();
 	bool InitPasswordsTable();
 	bool InitUserPreferencesTable();

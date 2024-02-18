@@ -18,7 +18,7 @@
 #include <wx/bmpbuttn.h>
 #include <wx/panel.h>
 #include "model/Task.h"
-
+#include "model/DateTime.h"
 #include <wx/timectrl.h>
 #include "controller/Logger.h"
 #include "controller/Controller.h"
