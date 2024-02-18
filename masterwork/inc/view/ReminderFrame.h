@@ -29,8 +29,10 @@ namespace mw
 		void OnSaveButton(wxCommandEvent& event);
 		void OnCancelButton(wxCommandEvent& event);
 		void OnRepeatOptionsChange(wxCommandEvent& event);
+		void OnAlertTimingOptionChanged(wxCommandEvent& event);
 		void HideAllRepeatOptions();
 		void GetSelectedDaysOfTheWeek(std::vector<std::string> &selecteds_days);
+		void GetSelectedAlertTimingOptions(std::vector<std::string> &selected);
 		mw::Reminder m_reminder;
 		// Member variables for the form components
 		wxTextCtrl* title_input;

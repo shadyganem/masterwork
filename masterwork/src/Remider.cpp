@@ -108,6 +108,7 @@ std::string mw::Reminder::dump_json_alert_data()
 	j["hour"] = this->hour;
 	j["min"] = this->min;
 	j["sec"] = this->sec;
+	j["alert_timing"] = this->alert_timing;
 	switch (this->repeat)
 	{
 	case mw::ReminderRepeatOptions::ONE_TIME:	
@@ -139,6 +140,7 @@ void mw::Reminder::parse_json_alert_data(std::string data)
 		this->hour = j["hour"];
 		this->min = j["min"];
 		this->sec = j["sec"];
+		this->alert_timing = j["alert_timing"];
 
 		switch (this->repeat)
 		{
@@ -148,6 +150,7 @@ void mw::Reminder::parse_json_alert_data(std::string data)
 			this->day = j["day"];
 			break;
 		case mw::ReminderRepeatOptions::DAYS_OF_WEEK:
+			this->days_of_week = j["days_of_week"];
 			break;
 		case mw::ReminderRepeatOptions::ONCE_A_MONTH:
 			break;

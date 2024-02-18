@@ -27,7 +27,7 @@ mw::ReminderFrame::ReminderFrame(wxWindow* parent, wxWindowID id, const wxString
 
     // Create a wxCheckListBox for multi-selection
     m_alert_timing_checklist_box = new wxCheckListBox(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxStringArray);
-    
+    m_alert_timing_checklist_box->Check(0, true);
 
     options.clear();
     options = mw::Reminder::GetDaysOfTheWeekOptions();
@@ -85,6 +85,7 @@ mw::ReminderFrame::ReminderFrame(wxWindow* parent, wxWindowID id, const wxString
     m_save_button->Bind(wxEVT_BUTTON, &mw::ReminderFrame::OnSaveButton, this);
     m_cancel_button->Bind(wxEVT_BUTTON, &mw::ReminderFrame::OnCancelButton, this);
     m_repeat_options->Bind(wxEVT_CHOICE, &mw::ReminderFrame::OnRepeatOptionsChange, this);
+    m_alert_timing_checklist_box->Bind(wxEVT_CHECKLISTBOX, &mw::ReminderFrame::OnAlertTimingOptionChanged, this);
 }
 
 mw::ReminderFrame::~ReminderFrame()
@@ -126,7 +127,7 @@ void mw::ReminderFrame::OnSaveButton(wxCommandEvent& event)
 
 
     this->GetSelectedDaysOfTheWeek(m_reminder.days_of_week);
-    // You can continue setting other reminder properties here
+    this->GetSelectedAlertTimingOptions(m_reminder.alert_timing);
 
     if (m_new_reminder == true)
         m_reminder.StampCreationTime();
@@ -169,6 +170,29 @@ void mw::ReminderFrame::OnRepeatOptionsChange(wxCommandEvent& event)
     this->m_v_sizer->Layout();
 }
 
+void mw::ReminderFrame::OnAlertTimingOptionChanged(wxCommandEvent& event)
+{
+    int count = this->m_alert_timing_checklist_box->GetCount();
+
+    int checkedCount = 0;
+
+    // Count the number of checked items
+    for (int i = 0; i < count; ++i)
+    {
+        if (this->m_alert_timing_checklist_box->IsChecked(i))
+        {
+            checkedCount++;
+        }
+    }
+
+    if (checkedCount == 0)
+    {
+        // If no item is selected, prevent unchecking the currently checked item
+        int itemIndex = event.GetInt();
+        this->m_alert_timing_checklist_box->Check(itemIndex);
+    }
+}
+
 void mw::ReminderFrame::HideAllRepeatOptions()
 {
     
@@ -180,6 +204,16 @@ void mw::ReminderFrame::GetSelectedDaysOfTheWeek(std::vector<std::string>& selec
     for (int i = 0; i < item_count; i++) {
         if (this->m_days_of_the_week->IsChecked(i)) {
             selecteds_days.push_back(this->m_days_of_the_week->GetString(i).ToStdString());
+        }
+    }
+}
+
+void mw::ReminderFrame::GetSelectedAlertTimingOptions(std::vector<std::string>& selected)
+{
+    int item_count = this->m_alert_timing_checklist_box->GetCount();
+    for (int i = 0; i < item_count; i++) {
+        if (this->m_alert_timing_checklist_box->IsChecked(i)) {
+            selected.push_back(this->m_alert_timing_checklist_box->GetString(i).ToStdString());
         }
     }
 }

@@ -58,6 +58,7 @@ namespace mw
 		int hour = 0, min = 0, sec = 0;
 		int day = 0, month = 1, year = 0;
 		std::vector<std::string> days_of_week;
+		std::vector<std::string> alert_timing;
 	private:
 		std::string json_alert_data;
 		
