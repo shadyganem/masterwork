@@ -1,5 +1,10 @@
 #include "model/Reminder.h"
 
+const std::map<mw::ReminderRepeatOptions, std::string> mw::Reminder::repeat_option_to_string = {
+	{mw::ReminderRepeatOptions::ONE_TIME, "One-Time"},
+	{mw::ReminderRepeatOptions::DAYS_OF_WEEK, "Specific Days of the Week"},
+	{mw::ReminderRepeatOptions::ONCE_A_MONTH, "Once a Month"}
+};
 
 mw::Reminder::Reminder()
 {
@@ -45,15 +50,12 @@ std::string mw::Reminder::GetEndTime()
 
 std::string mw::Reminder::RepeatOptionToString(mw::ReminderRepeatOptions option)
 {
-	switch (option) {
-	case mw::ReminderRepeatOptions::ONE_TIME:
-		return "One-Time";
-	case mw::ReminderRepeatOptions::DAYS_OF_WEEK:
-		return "Specific Days of the Week";
-	case mw::ReminderRepeatOptions::ONCE_A_MONTH:
-		return "Once a Month";
-	default:
-		return "N/A";
+	auto iter = repeat_option_to_string.find(option);
+	if (iter != repeat_option_to_string.end()) {
+		return iter->second;
+	}
+	else {
+		return "N/A"; 
 	}
 }
 
