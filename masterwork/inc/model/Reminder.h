@@ -61,6 +61,7 @@ namespace mw
 		std::vector<std::string> days_of_week;
 		std::vector<std::string> alert_timing;
 		const static std::map<mw::ReminderRepeatOptions, std::string> repeat_option_to_string;
+		const static std::map<mw::ReminderStatus, std::string> reminder_status_to_string;
 	private:
 		std::string json_alert_data;
 		

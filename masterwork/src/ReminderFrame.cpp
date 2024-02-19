@@ -166,7 +166,7 @@ void mw::ReminderFrame::OnRepeatOptionsChange(wxCommandEvent& event)
     default:
         break;
     }
-
+    this->m_options_box->Layout();
     this->m_v_sizer->Layout();
 }
 

@@ -6,6 +6,12 @@ const std::map<mw::ReminderRepeatOptions, std::string> mw::Reminder::repeat_opti
 	{mw::ReminderRepeatOptions::ONCE_A_MONTH, "Once a Month"}
 };
 
+const  std::map<mw::ReminderStatus, std::string> mw::Reminder::reminder_status_to_string = {
+	{mw::ReminderStatus::ACTIVE, "Active"},
+	{mw::ReminderStatus::DISABLED, "Disabled"},
+	{mw::ReminderStatus::INVALID, "Invalid"}
+};
+
 mw::Reminder::Reminder()
 {
 	this->StampCreationTime();
@@ -25,22 +31,13 @@ void mw::Reminder::Hash()
 std::string mw::Reminder::GetStatus()
 {
 	std::string status_string;
-	switch (this->status)
-	{
-	case ReminderStatus::ACTIVE:
-		status_string = "Active";
-		break;
-	case ReminderStatus::DISABLED:
-		status_string = "Disabled";
-		break;
-	case ReminderStatus::INVALID:
-		status_string = "Invalid";
-		break;
-	default:
-		status_string = "N/A";
-		break;
+	auto iter = this->reminder_status_to_string.find(this->status);
+	if (iter != this->reminder_status_to_string.end()) {
+		return iter->second;
 	}
-	return status_string;
+	else {
+		return "N/A";
+	}
 }
 
 std::string mw::Reminder::GetEndTime()
