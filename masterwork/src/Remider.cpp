@@ -62,11 +62,10 @@ std::string mw::Reminder::RepeatOptionToString(mw::ReminderRepeatOptions option)
 std::vector<std::string> mw::Reminder::GetRepeatOptions()
 {
 	std::vector<std::string> options;
-	options.push_back("One-Time");
-	options.push_back("Specific Days of the Week");
-	options.push_back("Once a Month");
-	// TODO: implement the custom option
-	//options.push_back("Custom");
+	for (const auto& pair : mw::Reminder::repeat_option_to_string) 
+	{
+		options.push_back(pair.second);
+	}
 	return options;
 }
 

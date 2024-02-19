@@ -19,6 +19,7 @@ namespace mw
 
 	enum ReminderRepeatOptions
 	{
+		// remember to update the repeat_option_to_string map to include new items
 		ONE_TIME,
 		DAYS_OF_WEEK,
 		ONCE_A_MONTH
