@@ -438,7 +438,7 @@ void mw::Controller::PostProjectChangedEevent(int win_id)
 	if (this->m_event_handlers.count(win_id) != 0)
 	{
 		wxEvtHandler* event_handler = this->m_event_handlers[win_id];
-		wxPostEvent(event_handler, wxCommandEvent(mwUpdateUI, win_id));
+		wxPostEvent(event_handler, wxCommandEvent(mwProjectChanged, win_id));
 	}
 }
 
