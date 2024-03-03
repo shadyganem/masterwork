@@ -157,7 +157,6 @@ void mw::MainFrame::PauseStagehandThread()
 	mw::Logger logger;
 	if (m_stagehand_thread)         // does the thread still exist?
 	{
-
 		if (m_stagehand_thread->Pause() != wxTHREAD_NO_ERROR)
 			logger.Error("Can't pause Stagehand thread!");
 	}

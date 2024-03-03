@@ -6,10 +6,17 @@ const std::map<mw::ReminderRepeatOptions, std::string> mw::Reminder::repeat_opti
 	{mw::ReminderRepeatOptions::ONCE_A_MONTH, "Once a Month"}
 };
 
-const  std::map<mw::ReminderStatus, std::string> mw::Reminder::reminder_status_to_string = {
+const std::map<mw::ReminderStatus, std::string> mw::Reminder::reminder_status_to_string = {
 	{mw::ReminderStatus::ACTIVE, "Active"},
 	{mw::ReminderStatus::DISABLED, "Disabled"},
 	{mw::ReminderStatus::INVALID, "Invalid"}
+};
+
+const std::map<mw::ReminderAlertTiming, std::string> mw::Reminder::alert_timing_to_string = {
+	{mw::ReminderAlertTiming::AT_TIME_OF_EVENT, "At time of event"},
+	{mw::ReminderAlertTiming::TEN_MINUTES_BEOFORE, "10 Minutes Before"},
+	{mw::ReminderAlertTiming::ONE_HOUR_BEFORE, "1 Hour Before"},
+	{mw::ReminderAlertTiming::ONE_DAY_BEFORE, "1 Day Before"}	
 };
 
 mw::Reminder::Reminder()
@@ -17,6 +24,7 @@ mw::Reminder::Reminder()
 	this->StampCreationTime();
 	this->title = "New Reminder";
 	this->json_alert_data = "{}";
+	this->alert_methods.push_back("Pop-Up Notificiation");
 }
 
 mw::Reminder::~Reminder()
@@ -69,10 +77,10 @@ std::vector<std::string> mw::Reminder::GetRepeatOptions()
 std::vector<std::string> mw::Reminder::GetAlertTimingOptions()
 {
 	std::vector<std::string> options;
-	options.push_back("At time of event");
-	options.push_back("10 minutes before");
-	options.push_back("1 hour before");
-	options.push_back("1 day before");
+	for (const auto& pair : mw::Reminder::alert_timing_to_string)
+	{
+		options.push_back(pair.second);
+	}
 	return options;
 }
 
@@ -107,6 +115,7 @@ std::string mw::Reminder::dump_json_alert_data()
 	j["min"] = this->min;
 	j["sec"] = this->sec;
 	j["alert_timing"] = this->alert_timing;
+	j["alert_methods"] = this->alert_methods;
 	switch (this->repeat)
 	{
 	case mw::ReminderRepeatOptions::ONE_TIME:	
@@ -139,7 +148,6 @@ void mw::Reminder::parse_json_alert_data(std::string data)
 		this->min = j["min"];
 		this->sec = j["sec"];
 		this->alert_timing = j["alert_timing"];
-
 		switch (this->repeat)
 		{
 		case mw::ReminderRepeatOptions::ONE_TIME:
