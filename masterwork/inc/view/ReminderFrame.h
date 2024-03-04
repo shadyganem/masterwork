@@ -49,6 +49,7 @@ namespace mw
 		wxTimePickerCtrl* m_alert_timepicker;
 		wxDatePickerCtrl* m_alert_datepicker;
 		wxComboBox* m_day_dropdown;
+		wxBoxSizer* m_main_sizer;
 	};
 }
 

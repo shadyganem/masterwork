@@ -2,10 +2,11 @@
 #include <chrono>
 #include <ctime>
 
-mw::ReminderFrame::ReminderFrame(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style) 
-	: wxFrame(parent, id, title, pos, size, style)
+mw::ReminderFrame::ReminderFrame(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style)
+    : wxFrame(parent, id, title, pos, size, style)
 {
     m_new_reminder = true;
+
     // Create input fields and button
     title_input = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
     text_input = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_TAB);
@@ -17,7 +18,7 @@ mw::ReminderFrame::ReminderFrame(wxWindow* parent, wxWindowID id, const wxString
     wxStringArray.assign(options.begin(), options.end());
     m_repeat_options = new wxChoice(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxStringArray, 0);
     m_repeat_options->SetSelection(0);
-    
+
     m_color_picker = new wxColourPickerCtrl(this, wxID_ANY, wxColour(0, 0, 0), wxDefaultPosition, wxDefaultSize, wxCLRP_SHOW_LABEL);
 
     options.clear();
@@ -37,7 +38,7 @@ mw::ReminderFrame::ReminderFrame(wxWindow* parent, wxWindowID id, const wxString
     this->m_days_of_the_week = new wxCheckListBox(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxStringArray);
     this->m_days_of_the_week->Hide();
     // Create a dropdown list for selecting the day of the month
-    wxString days[] = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" ,"16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"};
+    wxString days[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" ,"16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" };
     wxArrayString daysArray(31, days);
     this->m_day_dropdown = new wxComboBox(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, daysArray, wxCB_DROPDOWN | wxCB_READONLY);
     this->m_day_dropdown->SetSelection(0);
@@ -52,34 +53,35 @@ mw::ReminderFrame::ReminderFrame(wxWindow* parent, wxWindowID id, const wxString
     std::tm* localTime = std::localtime(&currentTime);
 
     // Create a vertical sizer to arrange the components
-    m_v_sizer = new wxBoxSizer(wxVERTICAL);
+    m_main_sizer = new wxBoxSizer(wxVERTICAL);
 
-    // Group Title and Note using StaticBoxSizer
-    wxStaticBoxSizer* title_note_box = new wxStaticBoxSizer(wxVERTICAL, this, "Title and Note");
-    title_note_box->Add(new wxStaticText(this, wxID_ANY, wxT("Title:")), 0, wxALL, 5);
-    title_note_box->Add(title_input, 0, wxEXPAND | wxALL, 5);
-    title_note_box->Add(new wxStaticText(this, wxID_ANY, wxT("Note:")), 0, wxALL, 5);
-    title_note_box->Add(text_input, 0, wxEXPAND | wxALL, 5);
-    m_v_sizer->Add(title_note_box, 0, wxEXPAND | wxALL, 10);
+    // Group Title and Note using GridSizer
+    wxGridSizer* title_note_grid = new wxGridSizer(2, 2, 5, 5);
+    title_note_grid->Add(new wxStaticText(this, wxID_ANY, wxT("Title:")), 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
+    title_note_grid->Add(title_input, 1, wxEXPAND | wxALL, 5);
+    title_note_grid->Add(new wxStaticText(this, wxID_ANY, wxT("Note:")), 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
+    title_note_grid->Add(text_input, 1, wxEXPAND | wxALL, 5);
+    m_main_sizer->Add(title_note_grid, 0, wxEXPAND | wxALL, 10);
 
-    // Group Options using StaticBoxSizer
-    m_options_box = new wxStaticBoxSizer(wxVERTICAL, this, "Options");
-    m_options_box->Add(this->m_repeat_options, 0, wxALL, 5);
-    m_options_box->Add(this->m_alert_timepicker, 0, wxALL, 5);
-    m_options_box->Add(this->m_alert_datepicker, 0, wxALL, 5);
-    m_options_box->Add(this->m_day_dropdown, 0, wxALL, 5);
-    m_options_box->Add(this->m_days_of_the_week, 0, wxALL, 5);
-    m_options_box->Add(this->m_color_picker, 0, wxALL, 5);
-    m_options_box->Add(this->m_alert_timing_checklist_box, 0, wxALL, 5);
-    
-    m_v_sizer->Add(m_options_box, 0, wxEXPAND | wxALL, 10);
+    // Group Options using GridSizer
+    wxGridSizer* options_grid = new wxGridSizer(2, 3, 5, 5);
+    options_grid->Add(this->m_repeat_options, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+    options_grid->Add(this->m_color_picker, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+    options_grid->Add(this->m_alert_timing_checklist_box, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+    options_grid->Add(this->m_alert_timepicker, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+    options_grid->Add(this->m_alert_datepicker, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+    options_grid->Add(this->m_day_dropdown, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+    options_grid->Add(this->m_days_of_the_week, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+    m_main_sizer->Add(options_grid, 0, wxEXPAND | wxALL, 10);
 
-    // Add Save button with centered alignment
-    m_v_sizer->Add(m_save_button, 0, wxALIGN_CENTER_HORIZONTAL | wxALL, 10);
-    m_v_sizer->Add(m_cancel_button, 0, wxALIGN_CENTER_HORIZONTAL | wxALL, 10);
+    // Add Save and Cancel buttons with centered alignment
+    wxBoxSizer* button_sizer = new wxBoxSizer(wxHORIZONTAL);
+    button_sizer->Add(m_save_button, 0, wxALIGN_CENTER_VERTICAL | wxALL, 10);
+    button_sizer->Add(m_cancel_button, 0, wxALIGN_CENTER_VERTICAL | wxALL, 10);
+    m_main_sizer->Add(button_sizer, 0, wxALIGN_CENTER_HORIZONTAL | wxALL, 10);
 
-    // Set the sizer for the frame
-    this->SetSizerAndFit(m_v_sizer);
+    // Set the main sizer for the frame
+    this->SetSizerAndFit(m_main_sizer);
 
     // Connect the Save button click event to the event handler
     m_save_button->Bind(wxEVT_BUTTON, &mw::ReminderFrame::OnSaveButton, this);
@@ -166,8 +168,7 @@ void mw::ReminderFrame::OnRepeatOptionsChange(wxCommandEvent& event)
     default:
         break;
     }
-    this->m_options_box->Layout();
-    this->m_v_sizer->Layout();
+    this->m_main_sizer->Layout();
 }
 
 void mw::ReminderFrame::OnAlertTimingOptionChanged(wxCommandEvent& event)
