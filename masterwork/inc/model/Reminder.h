@@ -13,6 +13,7 @@ namespace mw
 	enum ReminderStatus
 	{
 		ACTIVE,
+		COMPLETE,
 		DISABLED,
 		INVALID
 	};
@@ -50,6 +51,7 @@ namespace mw
 		static std::vector<std::string> GetAlertMethodOptions();
 		virtual std::string dump_json_alert_data();
 		virtual void parse_json_alert_data(std::string data);
+		virtual bool ready();
 		
 	public:
 		int user_uid;
@@ -65,8 +67,8 @@ namespace mw
 		time_t reminder_time;
 		int ttl;
 		std::string color;
-		int hour = 0, min = 0, sec = 0;
-		int day = 0, month = 1, year = 0;
+		int hour, min, sec;
+		int day, month, year;
 		std::vector<std::string> days_of_week;
 		std::vector<std::string> alert_timing;
 		std::vector<std::string> alert_methods;
@@ -74,6 +76,7 @@ namespace mw
 		const static std::map<mw::ReminderStatus, std::string> reminder_status_to_string;
 		const static std::map<mw::ReminderAlertTiming, std::string> alert_timing_to_string;
 	private:
+		bool isTimePassed(int hour, int min, int sec, int day, int month, int year);
 		std::string json_alert_data;
 		
 	};

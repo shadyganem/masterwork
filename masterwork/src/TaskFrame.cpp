@@ -95,7 +95,7 @@ mw::TaskFrame::TaskFrame(wxWindow* parent, wxWindowID id, const wxString& title,
 
 	fgSizer1->Add(bSizer50, 0, wxEXPAND, 5);
 
-	m_enable_notifications = new wxCheckBox(m_details_panel, wxID_ANY, wxT("Enable Notifications"), wxDefaultPosition, wxDefaultSize, 0);
+	m_enable_notifications = new wxCheckBox(m_details_panel, wxID_ANY, wxT("Add a Reminder"), wxDefaultPosition, wxDefaultSize, 0);
 	m_enable_notifications->Set3StateValue(wxCheckBoxState::wxCHK_CHECKED);
 	fgSizer1->Add(m_enable_notifications, 0, wxALL, 5);
 

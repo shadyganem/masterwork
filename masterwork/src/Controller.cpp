@@ -344,6 +344,17 @@ void mw::Controller::AddPassword(mw::Password& password, bool post_update_ui)
 	}
 }
 
+void mw::Controller::UpdateRreminder(mw::Reminder& reminder, bool post_update_ui)
+{
+	m_mutex.Lock();
+	m_model.UpdateReminder(reminder);
+	m_mutex.Unlock();
+	if (post_update_ui)
+	{
+		this->PostUpdateUI(REMINDERS_WINDOW_ID);
+	}
+}
+
 void mw::Controller::GetAllUsers(std::vector<mw::User>& users)
 {
 	m_model.GetAllUsers(users);
@@ -369,8 +380,10 @@ void mw::Controller::GetProjectsForActiveUser(std::vector<Project>& projects)
 
 void mw::Controller::GetRemindersForActiveUser(std::vector<mw::Reminder>& reminders)
 {
+	m_mutex.Lock();
 	this->m_model.GetActiveUser(m_active_user);
 	this->m_model.GetAllReminders(reminders, m_active_user);
+	m_mutex.Unlock();
 }
 
 void mw::Controller::GetTasksForActiveProject(std::vector<Task>& tasks)

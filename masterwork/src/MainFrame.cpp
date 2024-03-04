@@ -74,15 +74,14 @@ mw::MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize
 
 
 	this->Bind(wxEVT_CHAR_HOOK, &mw::MainFrame::OnCharHook, this);
-	Connect(m_notification_timer->GetId(), wxEVT_TIMER, wxTimerEventHandler(mw::MainFrame::OnNotificationTimer));
-	Connect(wxID_ANY, wxEVT_THREAD, wxThreadEventHandler(mw::MainFrame::OnNotificationThread));
+	this->Bind(wxEVT_TIMER, &mw::MainFrame::OnNotificationTimer, this, m_notification_timer->GetId());
+	this->Bind(wxEVT_THREAD, &mw::MainFrame::OnNotificationThread, this);
 	m_1sec_timer->Start(1000);
-	m_notification_timer->StartOnce(30000);
+	m_notification_timer->StartOnce(10000);
 }
 
 mw::MainFrame::~MainFrame()
 {
-	Disconnect(m_notification_timer->GetId(), wxEVT_TIMER, wxTimerEventHandler(mw::MainFrame::OnNotificationTimer));
 }
 
 void mw::MainFrame::InitMenuBar()
@@ -318,7 +317,7 @@ void mw::MainFrame::OnNotificationThread(wxThreadEvent& even)
 {
 	// push notifications to the user
 	mw::Controller& conroller = mw::Controller::Get();
-	m_notification_timer->StartOnce(30000);
+	m_notification_timer->StartOnce(10000);
 }
 
 void mw::MainFrame::OnNewTaskButton(wxCommandEvent& event)

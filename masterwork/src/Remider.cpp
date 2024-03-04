@@ -8,6 +8,7 @@ const std::map<mw::ReminderRepeatOptions, std::string> mw::Reminder::repeat_opti
 
 const std::map<mw::ReminderStatus, std::string> mw::Reminder::reminder_status_to_string = {
 	{mw::ReminderStatus::ACTIVE, "Active"},
+	{mw::ReminderStatus::COMPLETE, "Complete"},
 	{mw::ReminderStatus::DISABLED, "Disabled"},
 	{mw::ReminderStatus::INVALID, "Invalid"}
 };
@@ -171,4 +172,60 @@ void mw::Reminder::parse_json_alert_data(std::string data)
 		this->status = mw::ReminderStatus::INVALID;
 	}
 }
+
+bool mw::Reminder::isTimePassed(int hour, int min, int sec, int day, int month, int year) 
+{
+	// Get the current time
+	auto currentTime = std::chrono::system_clock::now();
+	std::time_t currentTimeT = std::chrono::system_clock::to_time_t(currentTime);
+
+	std::tm currentTimeInfo;
+	if (localtime_s(&currentTimeInfo, &currentTimeT) != 0) {
+		// Handle error if localtime_s fails
+		throw std::runtime_error("Failed to get local time");
+	}
+
+	// Create a std::tm object for the provided date and time
+	std::tm targetTimeInfo = {};
+	targetTimeInfo.tm_hour = hour;
+	targetTimeInfo.tm_min = min;
+	targetTimeInfo.tm_sec = sec;
+	targetTimeInfo.tm_mday = day;
+	targetTimeInfo.tm_mon = month - 1; // Month is 0-based in std::tm
+	targetTimeInfo.tm_year = year - 1900; // Year is years since 1900 in std::tm
+
+	// Convert the target time to a time_t object
+	std::time_t targetTimeT = std::mktime(&targetTimeInfo);
+
+	// Compare the target time with the current time
+	if (targetTimeT < currentTimeT)
+		return true;
+	return false;
+}
+
+
+bool mw::Reminder::ready()
+{
+	switch (repeat) {
+	case ONE_TIME:
+		if (isTimePassed(hour, min, sec, day, month, year))
+		{
+			this->status = mw::ReminderStatus::COMPLETE;
+			return true;
+		}
+		break;
+	case DAYS_OF_WEEK:
+		// Handle DAYS_OF_WEEK option
+		break;
+	case ONCE_A_MONTH:
+		// Handle ONCE_A_MONTH option
+		break;
+	default:
+		// Handle default case (if needed)
+		break;
+	}
+	
+	return false;
+}
+
 

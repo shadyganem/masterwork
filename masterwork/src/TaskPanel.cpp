@@ -89,7 +89,7 @@ mw::TaskPanel::TaskPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, co
 
 	fgSizer1->Add(bSizer50, 0, wxEXPAND, 5);
 
-	m_enable_notifications = new wxCheckBox(m_main_panel, wxID_ANY, wxT("Enable Notifications"), wxDefaultPosition, wxDefaultSize, 0);
+	m_enable_notifications = new wxCheckBox(m_main_panel, wxID_ANY, wxT("Add a Reminder"), wxDefaultPosition, wxDefaultSize, 0);
 	m_enable_notifications->Set3StateValue(wxCheckBoxState::wxCHK_CHECKED);
 	fgSizer1->Add(m_enable_notifications, 0, wxALL, 5);
 
@@ -288,7 +288,6 @@ void mw::TaskPanel::OnNewTaskTimer(wxTimerEvent& event)
 	m_task_name->SetBackgroundColour(m_default_task_name_background_colour);
 	m_task_name->Refresh();
 }
-
 
 void mw::TaskPanel::ResetDeadlinePickers()
 {	

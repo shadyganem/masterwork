@@ -47,6 +47,7 @@ public:
 	bool UpdateTask(mw::Task& task);
 	bool UpdateProject(mw::Project& project);
 	bool UpdateUser(mw::User& user);
+	bool UpdateReminder(mw::Reminder& reminder);
 
 
 private:

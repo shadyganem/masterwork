@@ -649,7 +649,8 @@ bool Model::GetAllReminders(std::vector<mw::Reminder>& reminders, const mw::User
 		Record row;
 
 
-		std::string sql = "SELECT * FROM reminders WHERE user_uid=" + std::to_string(current_user.uid) + " ;";
+		std::string sql = "SELECT * FROM reminders WHERE user_uid=" + std::to_string(current_user.uid) + 
+			              " AND status = " + std::to_string(mw::ReminderStatus::ACTIVE) + "; ";
 
 
 		m_db_handler.Select(sql.c_str(), records);
@@ -1153,6 +1154,54 @@ bool Model::UpdateUser(mw::User& user)
 	}
 	catch (const std::exception& e) {
 		logger.Error("Exception occurred: " + std::string(e.what()));
+		return false;
+	}
+}
+
+bool Model::UpdateReminder(mw::Reminder& reminder)
+{
+	mw::Logger logger;
+
+	try {
+		// RAII for database connection
+		if (!m_db_handler.Conn(this->m_db_path.c_str())) {
+			logger.Error("Failed to connect to the database.");
+			return false;
+		}
+		reminder.StampLastUpdateTime();
+
+		// Use parameterized query
+		std::string sql = "UPDATE reminders SET title=?, text=?, status=?, priority=?, end_time=?, last_update=?, color=?, json_alert_data=? WHERE uid=?;";
+
+		sqlite3_stmt* statement;
+		m_db_handler.Prepare(sql.c_str(), &statement);
+
+		// Bind parameters
+		sqlite3_bind_text(statement, 1, reminder.title.c_str(), -1, SQLITE_STATIC);
+		sqlite3_bind_text(statement, 2, reminder.text.c_str(), -1, SQLITE_STATIC);
+		sqlite3_bind_int(statement, 3, reminder.status);
+		sqlite3_bind_int(statement, 4, reminder.priority);
+		sqlite3_bind_int64(statement, 5, reminder.end_time);
+		sqlite3_bind_int64(statement, 6, reminder.last_update);
+		sqlite3_bind_text(statement, 7, reminder.color.c_str(), -1, SQLITE_STATIC);
+		sqlite3_bind_text(statement, 8, reminder.dump_json_alert_data().c_str(), -1, SQLITE_STATIC);
+		sqlite3_bind_int64(statement, 9, reminder.uid);
+
+		// Execute the statement
+		m_db_handler.Step(statement);
+		m_db_handler.Finalize(statement);
+
+		// RAII for database disconnection
+		if (!m_db_handler.DisConn(this->m_db_path.c_str())) {
+			logger.Error("Failed to disconnect from the database.");
+			return false;
+		}
+
+		return true;
+	}
+	catch (const std::exception& e) {
+		logger.Error("Exception occurred: " + std::string(e.what()));
+		m_db_handler.DisConn(this->m_db_path.c_str());
 		return false;
 	}
 }

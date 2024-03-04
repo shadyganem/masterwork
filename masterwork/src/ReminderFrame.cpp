@@ -45,26 +45,27 @@ mw::ReminderFrame::ReminderFrame(wxWindow* parent, wxWindowID id, const wxString
     this->m_day_dropdown->Hide();
 
 
-    this->m_alert_datepicker = new wxDatePickerCtrl(this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DROPDOWN | wxDP_SHOWCENTURY);
     this->m_alert_timepicker = new wxTimePickerCtrl(this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxTP_DEFAULT);
+    this->m_alert_datepicker = new wxDatePickerCtrl(this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DROPDOWN);
 
-    auto now = std::chrono::system_clock::now();
-    std::time_t currentTime = std::chrono::system_clock::to_time_t(now);
-    std::tm* localTime = std::localtime(&currentTime);
+    //std::time_t current_time = std::time(nullptr);
+    //wxDateTime now(current_time);
+    //this->m_alert_timepicker->SetTime(now.GetHour() + 1, 0, 0);
+    //this->m_alert_datepicker->SetValue(current_time);
 
     // Create a vertical sizer to arrange the components
     m_main_sizer = new wxBoxSizer(wxVERTICAL);
 
     // Group Title and Note using GridSizer
-    wxGridSizer* title_note_grid = new wxGridSizer(2, 2, 5, 5);
-    title_note_grid->Add(new wxStaticText(this, wxID_ANY, wxT("Title:")), 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
-    title_note_grid->Add(title_input, 1, wxEXPAND | wxALL, 5);
-    title_note_grid->Add(new wxStaticText(this, wxID_ANY, wxT("Note:")), 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
-    title_note_grid->Add(text_input, 1, wxEXPAND | wxALL, 5);
-    m_main_sizer->Add(title_note_grid, 0, wxEXPAND | wxALL, 10);
+    wxGridSizer* title_note_grid = new wxGridSizer(4, 1, 5, 0);
+    title_note_grid->Add(new wxStaticText(this, wxID_ANY, wxT("Title:")), 0, wxEXPAND, 0); // Set proportion to 0
+    title_note_grid->Add(title_input, 3, wxEXPAND | wxALL, 0);
+    title_note_grid->Add(new wxStaticText(this, wxID_ANY, wxT("Note:")), 0, wxEXPAND, 0);
+    title_note_grid->Add(text_input, 3, wxEXPAND | wxALL, 0);
+    m_main_sizer->Add(title_note_grid, 0, wxEXPAND | wxALL, 5); // Adjusted proportion here
 
     // Group Options using GridSizer
-    wxGridSizer* options_grid = new wxGridSizer(2, 3, 5, 5);
+    wxGridSizer* options_grid = new wxGridSizer(2, 3, 5, 0);
     options_grid->Add(this->m_repeat_options, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
     options_grid->Add(this->m_color_picker, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
     options_grid->Add(this->m_alert_timing_checklist_box, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
@@ -72,7 +73,7 @@ mw::ReminderFrame::ReminderFrame(wxWindow* parent, wxWindowID id, const wxString
     options_grid->Add(this->m_alert_datepicker, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
     options_grid->Add(this->m_day_dropdown, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
     options_grid->Add(this->m_days_of_the_week, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-    m_main_sizer->Add(options_grid, 0, wxEXPAND | wxALL, 10);
+    m_main_sizer->Add(options_grid, 0, wxEXPAND | wxALL, 5);
 
     // Add Save and Cancel buttons with centered alignment
     wxBoxSizer* button_sizer = new wxBoxSizer(wxHORIZONTAL);
@@ -124,7 +125,7 @@ void mw::ReminderFrame::OnSaveButton(wxCommandEvent& event)
 
     wxDateTime date = this->m_alert_datepicker->GetValue();
     this->m_reminder.day = date.GetDay();
-    this->m_reminder.month = date.GetMonth();
+    this->m_reminder.month = date.GetMonth()+1;
     this->m_reminder.year = date.GetYear();
 
 
