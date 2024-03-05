@@ -28,11 +28,18 @@ namespace mw
 
 	enum ReminderAlertTiming
 	{
-		// remember to update the repeat_option_to_string map to include new items
+		// remember to update the alert_timing_to_string map to include new items
 		AT_TIME_OF_EVENT,
 		TEN_MINUTES_BEOFORE,
 		ONE_HOUR_BEFORE,
 		ONE_DAY_BEFORE
+	};
+
+	enum ReminderAlertMethod
+	{
+		POPUP_NOTIFICATION,
+		EMAIL_NOTIFICATION,
+		SMS_MESSAGE
 	};
 
 	class Reminder : public ModelItem
@@ -71,11 +78,16 @@ namespace mw
 		int day, month, year;
 		std::vector<std::string> days_of_week;
 		std::vector<std::string> alert_timing;
-		std::vector<std::string> alert_methods;
-		const static std::map<mw::ReminderRepeatOptions, std::string> repeat_option_to_string;
-		const static std::map<mw::ReminderStatus, std::string> reminder_status_to_string;
-		const static std::map<mw::ReminderAlertTiming, std::string> alert_timing_to_string;
+		std::vector<std::string> alert_methods_str;
+		std::vector<mw::ReminderAlertMethod> alert_methods;
 	private:
+		static std::map<mw::ReminderRepeatOptions, std::string> repeat_option_to_string;
+		static std::map<mw::ReminderStatus, std::string> reminder_status_to_string;
+		static std::map<mw::ReminderAlertTiming, std::string> alert_timing_to_string;
+		static std::map<std::string, mw::ReminderAlertTiming> string_to_alert_timing;
+		static std::map<mw::ReminderAlertMethod, std::string> alert_method_to_string;
+		static std::map<std::string, mw::ReminderAlertMethod> string_to_alert_method;
+		
 		bool isTimePassed(int hour, int min, int sec, int day, int month, int year);
 		std::string json_alert_data;
 		

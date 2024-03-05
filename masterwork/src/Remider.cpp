@@ -1,23 +1,42 @@
 #include "model/Reminder.h"
 
-const std::map<mw::ReminderRepeatOptions, std::string> mw::Reminder::repeat_option_to_string = {
+std::map<mw::ReminderRepeatOptions, std::string> mw::Reminder::repeat_option_to_string = {
 	{mw::ReminderRepeatOptions::ONE_TIME, "One-Time"},
 	{mw::ReminderRepeatOptions::DAYS_OF_WEEK, "Specific Days of the Week"},
 	{mw::ReminderRepeatOptions::ONCE_A_MONTH, "Once a Month"}
 };
 
-const std::map<mw::ReminderStatus, std::string> mw::Reminder::reminder_status_to_string = {
+std::map<mw::ReminderStatus, std::string> mw::Reminder::reminder_status_to_string = {
 	{mw::ReminderStatus::ACTIVE, "Active"},
 	{mw::ReminderStatus::COMPLETE, "Complete"},
 	{mw::ReminderStatus::DISABLED, "Disabled"},
 	{mw::ReminderStatus::INVALID, "Invalid"}
 };
 
-const std::map<mw::ReminderAlertTiming, std::string> mw::Reminder::alert_timing_to_string = {
+std::map<mw::ReminderAlertTiming, std::string> mw::Reminder::alert_timing_to_string = {
 	{mw::ReminderAlertTiming::AT_TIME_OF_EVENT, "At time of event"},
 	{mw::ReminderAlertTiming::TEN_MINUTES_BEOFORE, "10 Minutes Before"},
 	{mw::ReminderAlertTiming::ONE_HOUR_BEFORE, "1 Hour Before"},
 	{mw::ReminderAlertTiming::ONE_DAY_BEFORE, "1 Day Before"}	
+};
+
+std::map<std::string, mw::ReminderAlertTiming> mw::Reminder::string_to_alert_timing = {
+	{"At time of event", mw::ReminderAlertTiming::AT_TIME_OF_EVENT},
+	{"10 Minutes Before", mw::ReminderAlertTiming::TEN_MINUTES_BEOFORE},
+	{"1 Hour Before", mw::ReminderAlertTiming::ONE_HOUR_BEFORE},
+	{"1 Day Before", mw::ReminderAlertTiming::ONE_DAY_BEFORE}
+};
+
+std::map<mw::ReminderAlertMethod, std::string> mw::Reminder::alert_method_to_string = {
+	{mw::ReminderAlertMethod::POPUP_NOTIFICATION, "Pop-Up Notificiation"},
+	{mw::ReminderAlertMethod::EMAIL_NOTIFICATION, "Email Notificiation"},
+	{mw::ReminderAlertMethod::SMS_MESSAGE, "SMS Message"}
+};
+
+std::map<std::string, mw::ReminderAlertMethod> mw::Reminder::string_to_alert_method = {
+	{"Pop-Up Notificiation" ,mw::ReminderAlertMethod::POPUP_NOTIFICATION},
+	{"Email Notificiation", mw::ReminderAlertMethod::EMAIL_NOTIFICATION},
+	{"SMS Message", mw::ReminderAlertMethod::SMS_MESSAGE}
 };
 
 mw::Reminder::Reminder()
@@ -25,7 +44,9 @@ mw::Reminder::Reminder()
 	this->StampCreationTime();
 	this->title = "New Reminder";
 	this->json_alert_data = "{}";
-	this->alert_methods.push_back("Pop-Up Notificiation");
+	this->alert_methods.push_back(mw::ReminderAlertMethod::POPUP_NOTIFICATION);
+
+
 }
 
 mw::Reminder::~Reminder()
@@ -149,6 +170,12 @@ void mw::Reminder::parse_json_alert_data(std::string data)
 		this->min = j["min"];
 		this->sec = j["sec"];
 		this->alert_timing = j["alert_timing"];
+		std::vector<int> temp_vec = j["alert_methods"];
+		this->alert_methods.clear();
+		for (int i = 0; i < temp_vec.size(); i++)
+		{
+			this->alert_methods.push_back((mw::ReminderAlertMethod)temp_vec[i]);
+		}
 		switch (this->repeat)
 		{
 		case mw::ReminderRepeatOptions::ONE_TIME:
