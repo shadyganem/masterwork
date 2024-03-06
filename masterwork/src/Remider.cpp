@@ -45,8 +45,6 @@ mw::Reminder::Reminder()
 	this->title = "New Reminder";
 	this->json_alert_data = "{}";
 	this->alert_methods.push_back(mw::ReminderAlertMethod::POPUP_NOTIFICATION);
-
-
 }
 
 mw::Reminder::~Reminder()
