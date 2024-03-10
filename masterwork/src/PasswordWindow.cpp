@@ -33,6 +33,11 @@ mw::PasswordWindow::PasswordWindow(wxWindow* parent, wxWindowID winid, const wxP
 
 	m_passwords_data_view_list = new wxDataViewListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_MULTIPLE | wxDV_HORIZ_RULES);
 
+	wxFont font(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL); // Define a font with size 12
+	m_passwords_data_view_list->SetFont(font);
+	m_passwords_data_view_list->SetRowHeight(40);
+
+
 	m_passwords_data_view_list->AppendColumn(new wxDataViewColumn("username", new wxDataViewTextRenderer(), 0, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT));
 	m_passwords_data_view_list->AppendColumn(new wxDataViewColumn("url", new wxDataViewTextRenderer(), 1, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT));
 	m_passwords_data_view_list->AppendColumn(new wxDataViewColumn("notes", new wxDataViewTextRenderer(), 2, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT));

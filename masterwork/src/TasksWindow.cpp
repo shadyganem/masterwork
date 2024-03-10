@@ -31,6 +31,11 @@ mw::TasksWindow::TasksWindow(wxWindow* parent, wxWindowID winid, const wxPoint& 
 	m_tasks_data_view_list = new wxDataViewListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_MULTIPLE | wxDV_HORIZ_RULES);
 
 
+	wxFont font(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL); // Define a font with size 12
+	m_tasks_data_view_list->SetFont(font);
+	m_tasks_data_view_list->SetRowHeight(40);
+	
+
 	wxDataViewColumn* m_uid_column = new wxDataViewColumn("uid", new wxDataViewTextRenderer(), 0, wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT);
 	m_uid_column->SetSortable(true);
 	m_tasks_data_view_list->AppendColumn(m_uid_column);
@@ -59,6 +64,7 @@ mw::TasksWindow::TasksWindow(wxWindow* parent, wxWindowID winid, const wxPoint& 
 
 	this->SetSizer(m_tasks_sizer);
 
+	
 	m_tasks_data_view_list->Bind(wxEVT_DATAVIEW_ITEM_CONTEXT_MENU, &mw::TasksWindow::OnItemContextMenu, this);
 	m_tasks_data_view_list->Bind(wxEVT_DATAVIEW_SELECTION_CHANGED, &mw::TasksWindow::OnSelectionChanged, this);
 	this->Bind(mwProjectChanged, &mw::TasksWindow::OnProjectChanged, this);
