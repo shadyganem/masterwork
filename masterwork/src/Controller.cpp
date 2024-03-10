@@ -3,7 +3,7 @@
 void mw::Controller::Init()
 {
 	m_logger.Clear();
-	m_logger.Disable();
+	m_logger.EnableDebug();
 	m_logger.Info("Intializing controller");
 	m_model.SetDatabasePath("mw.db");
 	m_model.InitModel();

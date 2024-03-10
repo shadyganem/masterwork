@@ -242,10 +242,6 @@ void mw::TasksWindow::OnTaskMoveClick(wxCommandEvent& event)
 	mw::Controller& controller = mw::Controller::Get();
 	// the project uid of the selected projected is embeded in the event id up binding
 	int project_uid = event.GetId() - 3;
-	mw::Logger logger;
-	logger.EnableDebug();
-	logger.Debug("project uid = " + std::to_string(project_uid));
-	logger.DisableDebug();
 	if (m_tasks_data_view_list->GetSelectedItemsCount() == 0)
 		return;
 	std::vector<mw::Task> tasks_for_moving;
