@@ -264,7 +264,7 @@ void mw::Controller::AddTask(Task& task)
 		m_model.AddTask(task);
 	}
 	m_mutex.Unlock();
-	PostUpdateUI(MAIN_FRAME_ID);
+	//PostUpdateUI(MAIN_FRAME_ID);
 	PostUpdateUI(TASKS_WINDOW_ID);
 	PostUpdateUI(ARCHIVE_WINDOW_ID);
 	PostUpdateUI(REMINDERS_WINDOW_ID);

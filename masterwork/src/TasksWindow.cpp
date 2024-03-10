@@ -63,9 +63,9 @@ mw::TasksWindow::TasksWindow(wxWindow* parent, wxWindowID winid, const wxPoint& 
 	m_tasks_data_view_list->Bind(wxEVT_DATAVIEW_SELECTION_CHANGED, &mw::TasksWindow::OnSelectionChanged, this);
 	this->Bind(mwProjectChanged, &mw::TasksWindow::OnProjectChanged, this);
 	this->Bind(mwUpdateUI, &mw::TasksWindow::OnUpdateUI, this);
-	this->Bind(wxEVT_MENU, &mw::TasksWindow::OnTaskEditClick, this, wxID_EDIT);
-	this->Bind(wxEVT_MENU, &mw::TasksWindow::OnTaskArchieveClick, this, wxID_REMOVE);
-	this->Bind(wxEVT_MENU, &mw::TasksWindow::OnTaskDeleteClick, this, wxID_DELETE);
+	this->Bind(wxEVT_MENU, &mw::TasksWindow::OnTaskEditClick, this, 0);
+	this->Bind(wxEVT_MENU, &mw::TasksWindow::OnTaskArchieveClick, this, 1);
+	this->Bind(wxEVT_MENU, &mw::TasksWindow::OnTaskDeleteClick, this, 2);
 	m_tasks_data_view_list->Connect(wxEVT_DATAVIEW_ITEM_ACTIVATED, wxDataViewEventHandler(mw::TasksWindow::OnItemActivated), nullptr, this);
 	m_toolbar->Bind(wxEVT_TOOL, &mw::TasksWindow::OnToolbarButtonClick, this);
 	m_new_task_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(mw::TasksWindow::OnNewTaskButton), NULL, this);
@@ -131,16 +131,37 @@ void mw::TasksWindow::OnSelectionChanged(wxDataViewEvent& event)
 
 void mw::TasksWindow::OnItemContextMenu(wxDataViewEvent& event)
 {
+	mw::Controller& controller = mw::Controller::Get();
+	std::vector<mw::Project> projects; 
+	controller.GetProjectsForActiveUser(projects);
+
+	mw::Project active_project;
+	controller.GetActiveProject(active_project);
 	wxDataViewItem item = event.GetItem();
 	if (item.IsOk())
 	{
+		wxMenu* move_submenu = new wxMenu;
 		wxMenu menu;
 		// using wxID_REMOVE to archive tasks
-		menu.Append(wxID_EDIT, "Edit");
-		menu.Append(wxID_REMOVE, "Archive");
-		menu.Append(wxID_DELETE, "Delete");
+		menu.Append(0, "Edit");
+		menu.Append(1, "Archive");
+		menu.Append(2, "Delete");
+
+		// Create a submenu for moving tasks
+		for (const auto& project : projects) 
+		{
+			// Append each project as a submenu item
+			if (project.uid != active_project.uid)
+			{
+				move_submenu->Append(3 + project.uid, wxString::FromUTF8(project.name));
+				this->Bind(wxEVT_MENU, &mw::TasksWindow::OnTaskMoveClick, this, 3 + project.uid);
+			}
+		}
+
+		menu.AppendSubMenu(move_submenu, "Move To");
+		
 		wxPoint pos = event.GetPosition();
-		PopupMenu(&menu, pos);
+		PopupMenu(&menu, pos); // Show the menu and get the ID of the selected item
 	}
 	event.Skip();
 }
@@ -207,6 +228,29 @@ void mw::TasksWindow::OnTaskArchieveClick(wxCommandEvent& event)
 	mw::Controller& controller = mw::Controller::Get();
 	this->GetSelectedTasks(tasks_for_archiving);
 	controller.ArchiveTasks(tasks_for_archiving);
+}
+
+void mw::TasksWindow::OnTaskMoveClick(wxCommandEvent& event)
+{
+	
+	mw::Controller& controller = mw::Controller::Get();
+	// the project uid of the selected projected is embeded in the event id up binding
+	int project_uid = event.GetId() - 3;
+	mw::Logger logger;
+	logger.EnableDebug();
+	logger.Debug("project uid = " + std::to_string(project_uid));
+	logger.DisableDebug();
+	if (m_tasks_data_view_list->GetSelectedItemsCount() == 0)
+		return;
+	std::vector<mw::Task> tasks_for_moving;
+	this->GetSelectedTasks(tasks_for_moving);
+	for (int i = 0; i < tasks_for_moving.size(); i++)
+	{
+		tasks_for_moving[i].project_uid = project_uid;
+		controller.AddTask(tasks_for_moving[i]);
+	}
+	
+	
 }
 
 void mw::TasksWindow::AddTask(mw::Task& task)

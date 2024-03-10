@@ -30,6 +30,7 @@ namespace mw
 		virtual void OnTaskEditClick(wxCommandEvent& event);
 		virtual void OnTaskDeleteClick(wxCommandEvent& event);
 		virtual void OnTaskArchieveClick(wxCommandEvent& event);
+		virtual void OnTaskMoveClick(wxCommandEvent& event);
 		virtual void AddTask(mw::Task& task);
 		virtual void OnToolbarButtonClick(wxCommandEvent& event);
 		virtual void OnNewTasksFrameCloseEvent(wxCloseEvent& event);

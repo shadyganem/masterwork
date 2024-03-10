@@ -1030,7 +1030,7 @@ bool Model::UpdateTask(mw::Task& task)
 
 		// Use parameterized query
 		std::string sql = "UPDATE tasks "
-			"SET name=?, description=?, status=?, priority=?, deadline=?, last_update=?, notification_enabled=? "
+			"SET name=?, description=?, status=?, priority=?, deadline=?, last_update=?, notification_enabled=?, project_uid=? "
 			"WHERE uid=?;";
 
 		// RAII for database connection
@@ -1050,7 +1050,8 @@ bool Model::UpdateTask(mw::Task& task)
 		sqlite3_bind_int64(statement, 5, task.deadline);
 		sqlite3_bind_int64(statement, 6, task.last_update);
 		sqlite3_bind_int(statement, 7, task.notification_enabled ? 1 : 0);
-		sqlite3_bind_int64(statement, 8, task.uid);
+		sqlite3_bind_int64(statement, 8, task.project_uid);
+		sqlite3_bind_int64(statement, 9, task.uid);
 
 		// Execute the statement
 		m_db_handler.Step(statement);
